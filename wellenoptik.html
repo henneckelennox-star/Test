@@ -543,8 +543,8 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <p>Geht Licht vom optisch <b>dichteren</b> ins <b>dünnere</b> Medium (<span class="m">n</span>₁ &gt; <span class="m">n</span>₂), wird es vom Lot weg gebrochen. Beim Grenzwinkel ist β = 90°. Für größere Einfallswinkel gibt es keinen gebrochenen Strahl mehr: Das Licht wird zu 100 % reflektiert.</p>
       <div class="key"><span class="lbl">Grenzwinkel</span><div class="eq big">α<sub>G</sub> = arcsin<span class="up">(</span><span class="frac"><span>n<sub>2</sub></span><span>n<sub>1</sub></span></span><span class="up">)</span> &nbsp;<span style="font-size:.7em">für n₁ &gt; n₂</span></div></div>
       <h3>Anwendung aus dem Skript: der Regensensor</h3>
-      <p>Hinter der Windschutzscheibe schickt eine LED Licht schräg in das Glas (<span class="m">n</span> = 1,52). An der Außenseite trifft es unter θ auf die Grenzfläche Glas–Luft und wird <b>total reflektiert</b> (α<sub>G</sub> = 41,1°). So kommt es beim Empfänger an.</p>
-      <p>Sitzt dort ein <b>Regentropfen</b>, ist außen nicht mehr Luft, sondern Wasser (<span class="m">n</span> = 1,33). Der Grenzwinkel steigt auf 61,0°. Bei θ = 50° gibt es keine Totalreflexion mehr, und das Licht verschwindet im Tropfen. Der Empfänger misst weniger, und der Scheibenwischer springt an.</p>
+      <p>Der Sensor klebt innen hinter der Windschutzscheibe, meist hinter dem Rückspiegel. Eine <b>Infrarot-LED</b> (unsichtbares Licht, etwa 880 nm; in der Animation rot gezeichnet) schickt Licht über eine kleine Optik (Koppelprisma) <b>schräg</b> in das Glas (<span class="m">n</span> ≈ 1,52). An der Außenseite trifft es unter θ, meist etwa 45° bis 50°, auf die Grenzfläche Glas–Luft und wird <b>total reflektiert</b> (α<sub>G</sub> = 41,1°). Nach einer oder mehreren Reflexionen landet es bei einer <b>Fotodiode</b> (Empfänger).</p>
+      <p>Sitzt dort ein <b>Regentropfen</b>, ist außen nicht mehr Luft, sondern Wasser (<span class="m">n</span> = 1,33). Der Grenzwinkel steigt auf 61,0°. Bei θ = 50° gibt es an dieser Stelle keine Totalreflexion mehr: Ein großer Teil des Lichts wird in den Tropfen hinein <b>gebrochen</b> (ausgekoppelt). An der Fotodiode kommt weniger an. Je mehr Tropfen, desto schwächer das Signal: Die Elektronik schaltet den Wischer ein und wählt bei starkem Regen eine schnellere Stufe.</p>
       <p class="hint">Probier's aus: Schalte Regen an und stell θ über 61° ein. Dann wird auch unter dem Tropfen total reflektiert, und der Sensor „sieht“ den Regen nicht mehr.</p>
     </div>
     <div class="bench">
@@ -769,7 +769,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <ul style="color:#cfd5e4">
         <li><b>Doppelspalt, Einzelspalt:</b> Die Streifen liegen meist nur wenige cm neben der Mitte, bei <span class="m">e</span> von einigen Metern. Das sind Winkel unter 5°, der Fehler liegt unter 0,5 %. ✔</li>
         <li><b>Gitter:</b> Die Winkel sind oft 15° bis 60°. Die Näherung ist <b>verboten</b>. Erst α = arctan(<span class="m">a</span>/<span class="m">e</span>), dann sin α ausrechnen! ✘</li>
-        <li>Faustregel: Bis etwa <b>10°</b> ist der Fehler etwa 1 %, also meist in Ordnung.</li>
+        <li>Faustregel: Bis etwa <b>10°</b> bleibt der Fehler unter 1,5 %, also meist in Ordnung.</li>
       </ul>
       <p class="hint">Die Näherung α ≈ sin α gilt nur im <b>Bogenmaß</b> (rad), nicht in Grad!</p>
     </div>
@@ -984,7 +984,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 
 <section class="topic" id="polarisation">
   <div class="t-head"><span class="t-num">3.3</span><h2>Polarisation</h2></div>
-  <div class="kurz"><span class="k">Kurz gesagt</span><p>Ein Polfilter ist wie ein <b>Lattenzaun</b>: Nur Schwingungen in Richtung der Latten kommen durch. Zwei gekreuzte Zäune lassen nichts durch.</p></div>
+  <div class="kurz"><span class="k">Kurz gesagt</span><p>Ein Polfilter ist wie ein <b>Lattenzaun</b> (vereinfachtes Bild): Nur Schwingungen in der Durchlassrichtung kommen durch. Zwei gekreuzte Zäune lassen nichts durch.</p></div>
   <div class="t-body full">
     <div class="bench">
       <div class="bench-top"><span>Unpolarisiertes Licht · Polarisator · Analysator</span><span class="live">● live</span></div>
@@ -1343,7 +1343,7 @@ sim($('cvRain'),(dt,t)=>{ const {ctx,W,H}=fit($('cvRain')); ctx.clearRect(0,0,W,
   const by=gy1+4; ctx.fillStyle='#1a2133'; ctx.fillRect(pts[0].x-50,by,pts[4].x-pts[0].x+100,Math.min(90,H-by-40));
   ctx.fillStyle=COL.red; ctx.shadowColor=COL.red; ctx.shadowBlur=18; ctx.beginPath(); ctx.arc(pts[0].x,by+22,9,0,7); ctx.fill(); ctx.shadowBlur=0;
   ctx.fillStyle='rgba(255,77,77,'+(0.15+0.85*RN.sig)+')'; ctx.shadowColor=COL.red; ctx.shadowBlur=24*RN.sig; ctx.fillRect(pts[4].x-12,by+12,24,20); ctx.shadowBlur=0;
-  label(ctx,'LED',pts[0].x,by+52,COL.text,'12px "IBM Plex Sans", sans-serif'); label(ctx,'Empfänger',pts[4].x,by+52,COL.text,'12px "IBM Plex Sans", sans-serif');
+  label(ctx,'IR-LED',pts[0].x,by+52,COL.text,'12px "IBM Plex Sans", sans-serif'); label(ctx,'Fotodiode',pts[4].x,by+52,COL.text,'12px "IBM Plex Sans", sans-serif');
   // Signalbalken
   const sy=H-26, sw=Math.min(W-40,420), sx=(W-sw)/2; ctx.fillStyle='rgba(255,255,255,.08)'; ctx.fillRect(sx,sy,sw,10); ctx.fillStyle=RN.sig>.8?COL.green:COL.pink; ctx.fillRect(sx,sy,sw*RN.sig,10);
   label(ctx,'Signal '+Math.round(RN.sig*100)+' %'+(RN.sig<.8?'  →  Wischer an!':''),W/2,sy-8,RN.sig>.8?COL.green:COL.pink,'600 12px "IBM Plex Mono", monospace');
@@ -1531,7 +1531,7 @@ sim($('cvStand'),(dt,t)=>{ const {ctx,W,H}=fit($('cvStand')); ctx.clearRect(0,0,
 });
 
 /* ---------- 3.1 Mach-Zehnder ---------- */
-const MZ={phi:0,n1:0,target:0,k:0,trace:[]}; const MZ_L=0.05, MZ_LAM=633e-9, MZ_NAIR=2.9e-4;
+const MZ={phi:0,n1:0,target:0,k:0,trace:[]}; const MZ_L=0.05, MZ_LAM=633e-9, MZ_NAIR=2.92e-4;
 bind('mzP','mzPv',v=>fmt(v,2)+' π',v=>MZ.phi=v*Math.PI);
 $('mzGas').onclick=()=>MZ.target=MZ_NAIR; $('mzVac').onclick=()=>MZ.target=0;
 sim($('cvMZ'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMZ')); ctx.clearRect(0,0,W,H);
@@ -1588,7 +1588,7 @@ const QZ=[
  ['Wie lang ist ein λ/2-Dipol für 100 MHz?',['3 m','1,5 m','30 cm'],1,'λ = c/f = 3 m, die Hälfte davon sind 1,5 m.'],
  ['Licht mit λ = 500 nm hat die Frequenz …',['1,5·10¹⁴ Hz','6,0·10¹⁴ Hz','6,0·10¹⁷ Hz'],1,'f = c/λ = 3·10⁸ m/s / 5·10⁻⁷ m = 6·10¹⁴ Hz.'],
  ['Was bleibt beim Übergang in ein anderes Medium gleich?',['die Wellenlänge','die Geschwindigkeit','die Frequenz'],2,'Die Frequenz gibt die Quelle vor. v und λ sinken beide um den Faktor n.'],
- ['Warum meldet der Regensensor Regen?',['Wasser absorbiert rotes Licht','Mit Wasser außen steigt der Grenzwinkel, und die Totalreflexion bricht zusammen','Tropfen wirken wie Spiegel'],1,'Glas→Wasser: αG = 61°. Bei θ = 50° tritt Licht in den Tropfen aus, und am Empfänger kommt weniger an.'],
+ ['Warum meldet der Regensensor Regen?',['Wasser verschluckt das Infrarotlicht vollständig','Mit Wasser außen steigt der Grenzwinkel, und die Totalreflexion bricht zusammen','Tropfen wirken wie Spiegel'],1,'Glas→Wasser: αG = 61°. Bei θ = 50° tritt Licht in den Tropfen aus, und am Empfänger kommt weniger an.'],
  ['Für destruktive Interferenz muss gelten …',['Δs = kλ','Δs = (k + ½)λ','Δs = 2kλ'],1,'Ein halbes λ Versatz bedeutet: Berg trifft Tal.'],
  ['Vergrößert man beim Doppelspalt den Spaltabstand d, dann …',['rücken die Maxima zusammen','rücken sie auseinander','ändert sich nichts'],0,'a_k = kλe/d: großes d ergibt kleines a_k.'.replace('a_k','aₖ')],
  ['Mehr Spalte bei gleicher Gitterkonstante bewirken …',['andere Lagen der Maxima','schärfere und hellere Maxima','mehr Ordnungen'],1,'Die Lage folgt aus d sin α = kλ, sie bleibt gleich. Mit N werden die Maxima schmaler und intensiver.'],
@@ -2038,7 +2038,7 @@ tour($('cvWater'),[
  {set:{wC:1},dur:7,cap:'Gleiche Tiefe (<span class="m">c</span>₂ = <span class="m">c</span>₁): kein Knick. In allen Fällen gilt: Die <b>Frequenz bleibt gleich</b>, die Berge hängen an der Grenze lückenlos zusammen.'},
  {set:{wC:.55,wA:35},dur:3,cap:'Nochmal von vorn …'}]);
 tour($('cvRain'),[
- {set:{rnT:50},start:()=>{ if(RN.rain) $('rnRain').click(); RN.drops=[]; },dur:8,cap:'Trockene Scheibe: Das LED-Licht trifft außen unter 50° auf die Grenze Glas–Luft. 50° &gt; 41,1° (Grenzwinkel), also <b>Totalreflexion</b>. Das volle Signal kommt am Empfänger an.'},
+ {set:{rnT:50},start:()=>{ if(RN.rain) $('rnRain').click(); RN.drops=[]; },dur:8,cap:'Trockene Scheibe: Das Infrarotlicht der LED (hier rot gezeichnet) trifft außen unter 50° auf die Grenze Glas–Luft. 50° &gt; 41,1° (Grenzwinkel), also <b>Totalreflexion</b>. Das volle Signal kommt am Empfänger an.'},
  {start:()=>{ if(!RN.rain) $('rnRain').click(); },dur:11,cap:'Es regnet: Wo ein Tropfen sitzt, grenzt Glas an Wasser, und der Grenzwinkel steigt auf 61°. 50° &lt; 61°, also tritt Licht in den Tropfen aus. Das Signal sinkt, und der Wischer springt an!'},
  {set:{rnT:66},dur:9,cap:'Bei θ = 66° (&gt; 61°) würde auch unter Tropfen total reflektiert, und der Sensor bemerkt keinen Regen. Deshalb muss θ zwischen 41° und 61° liegen.'},
  {set:{rnT:50},start:()=>{ if(RN.rain) $('rnRain').click(); RN.wipe=0; },dur:4,cap:'Regen vorbei, der Wischer macht die Scheibe frei.'}]);
@@ -2137,7 +2137,7 @@ tour($('cvDip'),[
 
 tour($('cvEMS'),[
  {set:{emsP:-2},tween:2.5,dur:8,cap:'<b>Radiowellen</b>: λ von Metern bis Kilometern, so groß wie ein Haus. Sie tragen Radio, Funk und Fernsehen. UKW-Radio: 100 MHz, also λ = 3 m.'},
- {set:{emsP:.9},tween:3,dur:8,cap:'<b>Mikrowellen</b>: λ von mm bis m. Handy, WLAN (λ = 12,5 cm) und der Mikrowellenherd, der Wassermoleküle zum Schwingen bringt.'},
+ {set:{emsP:.9},tween:3,dur:8,cap:'<b>Mikrowellen</b>: λ von mm bis m. Handy, WLAN (λ = 12,5 cm) und der Mikrowellenherd (2,45 GHz), der Wassermoleküle in Drehbewegung versetzt und so das Essen erwärmt.'},
  {set:{emsP:5},tween:3,dur:7,cap:'<b>Infrarot</b>: Wärmestrahlung. Jeder warme Körper strahlt IR ab, das nutzen Wärmebildkameras. Auch die TV-Fernbedienung sendet Infrarot.'},
  {set:{emsP:6.25},tween:2.5,dur:9,cap:'<b>Sichtbares Licht</b>: nur 380 bis 780 nm, ein <b>winziger Streifen</b> des Spektrums! Rot hat das größte λ, Violett das kleinste.'},
  {set:{emsP:7.3},tween:2.5,dur:7,cap:'<b>Ultraviolett</b>: energiereicher als Licht, deshalb Sonnenbrand. Man nutzt es zum Desinfizieren und zur Geldschein-Prüfung.'},
