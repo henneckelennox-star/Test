@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wellenoptik Q3</title>
+<meta name="description" content="Alle Themen des Physik-LK-Skripts Q3 interaktiv: EM-Wellen, Reflexion, Brechung, Totalreflexion, Interferenz, Einzel- und Doppelspalt, Gitter, Auflösungsvermögen, stehende Wellen, Mach-Zehnder.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=STIX+Two+Text:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --ink:#070a12;
+  --panel:#0d1220;
+  --panel2:#121a2c;
+  --line:rgba(160,180,230,.14);
+  --line2:rgba(160,180,230,.26);
+  --text:#e6ebf5;
+  --muted:#8e98b0;
+  --red:#ff4d4d;
+  --na:#ffc93c;
+  --cyan:#46d9ff;
+  --violet:#a98bff;
+  --green:#5dffa0;
+  --pink:#ff5fa8;
+  --display:"Syne","Avenir Next","Segoe UI",sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --math:"STIX Two Text","Cambria Math",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ink);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0 0 .45em;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(1.7rem,4.4vw,3rem);font-weight:800;hyphens:auto;overflow-wrap:break-word}
+h3{font-size:1.22rem;font-weight:700}
+p{margin:0 0 1em}
+a{color:var(--cyan)}
+b,strong{color:#fff;font-weight:600}
+.m{font-family:var(--math);font-style:italic;font-size:1.08em}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+sub,sup{font-size:.68em}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+/* ---------- Navigation ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(7,10,18,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;align-items:center}
+.nav-in::-webkit-scrollbar{display:none}
+.nav a{flex:none;color:var(--muted);text-decoration:none;font-size:.84rem;padding:5px 11px;border-radius:7px;border:1px solid transparent;white-space:nowrap}
+.nav a:hover{color:#fff;border-color:var(--line2)}
+.nav .grp{flex:none;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--na);padding:0 4px 0 12px}
+.nav .grp:first-child{padding-left:0}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;height:min(84vh,760px);min-height:560px;overflow:hidden;border-bottom:1px solid var(--line)}
+#emView{position:absolute;inset:0}
+#emView canvas{display:block}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(7,10,18,.94) 0%,rgba(7,10,18,.6) 40%,rgba(7,10,18,0) 70%),linear-gradient(0deg,var(--ink) 0%,rgba(7,10,18,0) 22%)}
+.hero-txt{position:absolute;z-index:2;left:max(16px,5vw);top:50%;transform:translateY(-50%);max-width:560px;padding-right:16px}
+.eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--na)}
+.hero h1{font-size:clamp(3rem,9vw,6.4rem);font-weight:800;margin:.18em 0 .2em;letter-spacing:-.03em}
+.hero h1 span{color:var(--red);text-shadow:0 0 38px rgba(255,77,77,.55)}
+.hero p{color:#c3cadb;font-size:1.1rem;max-width:480px}
+.em-ctrl{position:absolute;z-index:3;right:16px;bottom:18px;width:min(330px,calc(100% - 32px));background:rgba(13,18,32,.86);border:1px solid var(--line2);border-radius:12px;padding:14px 16px;backdrop-filter:blur(8px)}
+@media(max-width:760px){
+  .hero{height:auto;min-height:0;display:flex;flex-direction:column}
+  #emView{position:relative;height:340px;order:2}
+  .hero::after{display:none}
+  .hero-txt{position:relative;transform:none;top:auto;left:auto;padding:36px 16px 10px;order:1}
+  .em-ctrl{position:relative;right:auto;bottom:auto;margin:0 16px 20px;width:auto;order:3}
+}
+.fallback{position:absolute;inset:0;display:none;place-items:center;color:var(--muted);text-align:center;padding:24px}
+.no3d .fallback{display:grid}
+
+/* ---------- Layout ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding-inline:16px}
+.day{padding-block:70px 10px}
+.day-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;border-top:2px solid var(--na);padding-top:16px;margin-bottom:10px}
+.day-head .n{font-family:var(--mono);color:var(--na);font-size:.85rem;letter-spacing:.14em;text-transform:uppercase}
+.day-head h2{margin:0;font-size:clamp(1.5rem,3.4vw,2.2rem)}
+.topic{padding-block:54px 18px;scroll-margin-top:60px}
+.t-head{display:flex;gap:14px;align-items:baseline;margin-bottom:14px}
+.t-num{font-family:var(--mono);font-size:.82rem;color:var(--cyan);flex:none}
+.t-body{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:34px;align-items:start}
+.t-body.flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr)}
+.t-body.full{grid-template-columns:minmax(0,1fr)}
+@media(max-width:980px){.t-body,.t-body.flip{grid-template-columns:minmax(0,1fr);gap:22px}}
+.txt{max-width:64ch}
+.txt p{color:#cfd5e4}
+.key{border:1px solid var(--line2);background:var(--panel);border-radius:10px;padding:14px 16px;margin:16px 0}
+.key .lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.eq{font-family:var(--math);font-style:italic;font-size:1.3rem;color:#fff;overflow-x:auto;white-space:nowrap;padding:3px 0}
+.eq.big{font-size:1.65rem}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em}
+.frac>span{padding:0 .2em;line-height:1.22}
+.frac>span+span{border-top:1.4px solid currentColor}
+.up{font-style:normal}
+.hint{font-size:.9rem;color:var(--muted)}
+.warn{border-left:3px solid var(--na);padding:8px 14px;background:rgba(255,201,60,.07);border-radius:0 8px 8px 0;font-size:.95rem;margin:14px 0}
+ol.st{counter-reset:s;list-style:none;padding:0;margin:0}
+ol.st li{counter-increment:s;position:relative;padding:2px 0 12px 38px;color:#cfd5e4;font-size:.97rem}
+ol.st li::before{content:counter(s);position:absolute;left:0;top:3px;width:25px;height:25px;border-radius:6px;display:grid;place-items:center;font-family:var(--mono);font-size:.78rem;color:var(--cyan);border:1px solid rgba(70,217,255,.4)}
+
+/* ---------- Simulationen ---------- */
+.bench{background:var(--panel);border:1px solid var(--line2);border-radius:14px;overflow:hidden}
+.bench-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);flex-wrap:wrap}
+.bench-top .live{color:var(--green)}
+.bench canvas{display:block;width:100%;touch-action:none}
+.cv-lg{height:440px}.cv-md{height:340px}.cv-sm{height:200px}.cv-xs{height:130px}
+@media(max-width:700px){.cv-lg{height:360px}.cv-md{height:300px}}
+.ctrls{display:flex;flex-wrap:wrap;gap:12px 22px;padding:14px;border-top:1px solid var(--line)}
+.ctrl{flex:1 1 170px;min-width:0}
+.ctrl label{display:flex;justify-content:space-between;gap:8px;font-size:.82rem;color:var(--muted)}
+.ctrl label b{font-family:var(--mono);font-weight:500;color:#fff;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;background:rgba(255,255,255,.12);margin:10px 0 4px;outline-offset:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:4px solid var(--red);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:#fff;border:4px solid var(--red);cursor:pointer}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button.b{font-family:var(--body);font-size:.84rem;padding:7px 13px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);cursor:pointer}
+button.b:hover{border-color:var(--cyan)}
+button.b.on{border-color:var(--red);background:rgba(255,77,77,.14)}
+.outs{display:flex;flex-wrap:wrap;gap:8px;padding:0 14px 14px}
+.o{flex:1 1 130px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-width:0}
+.o span{display:block;font-size:.72rem;color:var(--muted)}
+.o b{font-family:var(--mono);font-weight:500;font-size:.95rem;font-variant-numeric:tabular-nums}
+.o.good b{color:var(--green)} .o.bad b{color:var(--pink)}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
+.calc label{font-size:.78rem;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.calc input{font-family:var(--mono);font-size:.95rem;background:var(--ink);color:#fff;border:1px solid var(--line2);border-radius:7px;padding:7px 9px;width:100%}
+.res{margin-top:12px;font-family:var(--mono);font-size:.95rem;color:var(--green);background:rgba(93,255,160,.07);border:1px solid rgba(93,255,160,.25);border-radius:8px;padding:9px 12px;overflow-x:auto}
+svg text{font-family:var(--math);font-style:italic}
+
+/* ---------- Aufgaben / Quiz / Formeln ---------- */
+details{border:1px solid var(--line);border-radius:10px;margin-top:10px;background:var(--panel)}
+summary{cursor:pointer;padding:10px 14px;color:var(--cyan);font-weight:500;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ ";font-family:var(--mono)}
+details[open] summary::before{content:"– "}
+details .in{padding:0 14px 12px;color:#cfd5e4;font-size:.96rem}
+.task{margin-top:16px}
+.task>p{margin:0}
+.task .tg{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--na)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.fc{background:var(--panel);padding:14px 16px}
+.fc span{font-size:.76rem;color:var(--muted);display:block}
+.fc .eq{font-size:1.2rem}
+.check{columns:3 260px;column-gap:28px}
+.check label{display:flex;gap:10px;align-items:flex-start;break-inside:avoid;padding:5px 0;font-size:.95rem;color:#cfd5e4;cursor:pointer}
+.check input{accent-color:var(--green);margin-top:5px;flex:none}
+.check h3{font-size:.8rem;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--na);margin:10px 0 4px;break-after:avoid}
+.qz{border-top:1px solid var(--line);padding:16px 0}
+.qz .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opt{font-family:var(--body);font-size:.95rem;text-align:left;padding:8px 13px;border-radius:8px;border:1px solid var(--line2);background:var(--panel);color:var(--text);cursor:pointer}
+.opt.r{border-color:var(--green);background:rgba(93,255,160,.1)}
+.opt.w{border-color:var(--pink);background:rgba(255,95,168,.1)}
+.ex{display:none;margin-top:8px;font-size:.92rem;color:#cfd5e4}
+.ex.s{display:block}
+.link-card{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid rgba(255,77,77,.4);background:linear-gradient(90deg,rgba(255,77,77,.1),transparent);border-radius:12px;padding:14px 18px;margin-top:18px}
+.link-card a{font-weight:600;text-decoration:none}
+footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;color:var(--muted);font-size:.85rem}
+</style>
+
+</head>
+<body>
+<nav class="nav" aria-label="Themen">
+  <div class="nav-in">
+    <span class="grp">Tag 1</span>
+    <a href="#em">EM-Welle</a><a href="#reflexion">Reflexion</a><a href="#brechung">Brechung</a><a href="#wasser">Wasserwellen</a><a href="#total">Totalreflexion</a><a href="#interferenz">Interferenz</a><a href="#einzelspalt">Einzelspalt</a><a href="#doppelspalt">Doppelspalt</a>
+    <span class="grp">Tag 2</span>
+    <a href="#gitter">Gitter</a><a href="#spektren">Spektren</a><a href="#aufloesung">Auflösung</a><a href="#stehend">Stehende Wellen</a>
+    <span class="grp">Tag 3</span>
+    <a href="#mz">Mach-Zehnder</a><a href="#formeln">Formeln</a><a href="#check">Checkliste</a><a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<header class="hero" id="em">
+  <div id="emView"><div class="fallback">Die 3D-Welle braucht eine Internetverbindung (three.js).</div></div>
+  <div class="hero-txt">
+    <div class="eyebrow">Physik LK · Q3 · Elektromagnetische Wellen</div>
+    <h1>Wellen&shy;optik <span>Q3</span></h1>
+    <p>Dein komplettes Skript zum Anfassen: von <span class="m">c</span> = λ·<span class="m">f</span> über Doppelspalt und Gitter bis zum Mach-Zehnder-Interferometer. Jede Formel mit einer Simulation, die du selbst bedienst.</p>
+  </div>
+  <div class="em-ctrl">
+    <div class="ctrl"><label>Vakuum-Wellenlänge λ₀ <b id="emLv">633 nm</b></label><input type="range" id="emL" min="380" max="780" step="1" value="633"></div>
+    <div class="ctrl"><label>Glasblock n <b id="emNv">1,50</b></label><input type="range" id="emN" min="1" max="2" step="0.01" value="1.5"></div>
+    <div class="outs" style="padding:6px 0 0">
+      <div class="o"><span>f = c/λ₀</span><b id="emF">–</b></div>
+      <div class="o"><span>λ im Glas</span><b id="emLm">–</b></div>
+      <div class="o"><span>v = c/n</span><b id="emV">–</b></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================================================= TAG 1 -->
+<div class="day"><div class="day-head"><span class="n">Nachmittag 1</span><h2>Brechung, Totalreflexion, Beugung und Doppelspalt</h2></div></div>
+
+<section class="topic" id="em-text">
+  <div class="t-head"><span class="t-num">1.1</span><h2>Die elektromagnetische Welle</h2></div>
+  <div class="t-body">
+    <div class="txt">
+      <p>Licht ist eine elektromagnetische Welle: Ein elektrisches Feld <span class="m">E</span> (oben in 3D, farbig) und ein magnetisches Feld <span class="m">B</span> (bläulich) schwingen senkrecht zueinander und senkrecht zur Ausbreitungsrichtung. Es ist also eine <b>Transversalwelle</b>.</p>
+      <div class="key"><span class="lbl">Grundgleichung</span><div class="eq big">c = λ · f</div></div>
+      <p>Im Glasblock oben passiert das Entscheidende für alles Weitere: Die Welle wird langsamer, <span class="m">v</span> = <span class="m">c</span>/<span class="m">n</span>. Die <b>Frequenz bleibt gleich</b>, denn die Schwingungen müssen an der Grenzfläche im Takt bleiben. Deshalb wird die <b>Wellenlänge kürzer</b>:</p>
+      <div class="key"><span class="lbl">Im Medium</span><div class="eq">v = <span class="frac"><span>c</span><span>n</span></span> &nbsp;&nbsp; λ<sub>Medium</sub> = <span class="frac"><span>λ<sub>0</sub></span><span>n</span></span> &nbsp;&nbsp; f = konstant</div></div>
+      <p class="hint">Schieb oben den Regler für λ₀: Die Farbe des <span class="m">E</span>-Feldes entspricht der echten Farbe des Lichts. Mit dem Regler für <span class="m">n</span> siehst du, wie die Welle im Glas zusammengestaucht wird.</p>
+    </div>
+    <div>
+      <div class="bench">
+        <div class="bench-top"><span>Spektrum · λ₀ ↔ f</span><span class="live">folgt dem Regler oben</span></div>
+        <canvas id="cvSpec" class="cv-xs"></canvas>
+      </div>
+      <div class="task">
+        <span class="tg">Aufgabe</span>
+        <p>Rotes Laserlicht (λ₀ = 633 nm) tritt in Plexiglas (<span class="m">n</span> = 1,49) ein. Berechne <span class="m">f</span>, <span class="m">v</span> und λ im Plexiglas.</p>
+        <details><summary>Lösung</summary><div class="in">
+          <span class="m">f</span> = <span class="m">c</span>/λ₀ = 3,00·10⁸ m/s / 633·10⁻⁹ m = <b>4,74·10¹⁴ Hz</b> (bleibt gleich).<br>
+          <span class="m">v</span> = <span class="m">c</span>/<span class="m">n</span> = 3,00·10⁸ m/s / 1,49 = <b>2,01·10⁸ m/s</b>.<br>
+          λ = <span class="m">v</span>/<span class="m">f</span> = λ₀/<span class="m">n</span> = <b>425 nm</b>. Die Farbe ändert sich trotzdem nicht, denn sie hängt an der Frequenz.
+        </div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="reflexion">
+  <div class="t-head"><span class="t-num">1.2</span><h2>Reflexion</h2></div>
+  <div class="t-body flip">
+    <div>
+      <div class="bench">
+        <div class="bench-top"><span>Huygens · Reflexion am Spiegel</span><span class="live">● live</span></div>
+        <canvas id="cvRefH" class="cv-md"></canvas>
+        <div class="ctrls">
+          <div class="ctrl"><label>Einfallswinkel α <b id="refAv">40°</b></label><input type="range" id="refA" min="10" max="75" value="40"></div>
+          <div class="btns"><button class="b" id="refP">❚❚ Pause</button><button class="b" id="refR">↺ Neustart</button></div>
+        </div>
+      </div>
+      <div class="bench" style="margin-top:18px">
+        <div class="bench-top"><span>Fermat · Weg A → P → B</span><span>P ziehen</span></div>
+        <canvas id="cvRefF" class="cv-md"></canvas>
+        <canvas id="cvRefG" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+        <div class="outs" style="padding-top:12px"><div class="o"><span>α</span><b id="rfA">–</b></div><div class="o"><span>β</span><b id="rfB">–</b></div><div class="o"><span>Laufzeit ggü. Minimum</span><b id="rfT">–</b></div></div>
+      </div>
+    </div>
+    <div class="txt">
+      <p>Bei der <b>Reflexion</b> wird eine Welle an einer Grenzfläche zurückgeworfen. Frequenz, Wellenlänge und Geschwindigkeit bleiben gleich.</p>
+      <div class="key"><span class="lbl">Reflexionsgesetz</span><div class="eq big">α = β</div><div class="hint">Einfallswinkel = Reflexionswinkel, beide zum <b>Lot</b> gemessen, nicht zur Oberfläche!</div></div>
+      <h3>Mit Huygens</h3>
+      <p>Die Wellenfront trifft schräg auf. Ein Teil ist schon reflektiert, während der Rest noch auf die Wand zuläuft. Die Elementarwellen laufen gleich schnell zurück, deshalb entsteht eine <b>gespiegelte</b> Wellenfront. Die beiden Dreiecke in der Animation sind kongruent: gleiche Hypotenuse <span class="m">AB</span> und gleiche Kathete <span class="m">c</span>·Δ<span class="m">t</span>. Daraus folgt α = β.</p>
+      <h3>Mit Fermat</h3>
+      <p>Das Licht nimmt den Weg mit der kleinsten Laufzeit. Mit <span class="m">l</span>₁ = √(<span class="m">x</span>² + <span class="m">a</span>²) und <span class="m">l</span>₂ = √((<span class="m">d</span> − <span class="m">x</span>)² + <span class="m">b</span>²):</p>
+      <div class="eq">t(x) = <span class="frac"><span>√(x² + a²)</span><span>c</span></span> + <span class="frac"><span>√((d − x)² + b²)</span><span>c</span></span></div>
+      <div class="eq">0 = <span class="frac"><span>dt</span><span>dx</span></span> ⇒ 0 = <span class="frac"><span>x</span><span>l<sub>1</sub></span></span> − <span class="frac"><span>d − x</span><span>l<sub>2</sub></span></span> = sin α − sin β</div>
+      <p>Also ist sin α = sin β und damit α = β. Zieh den Punkt P: Die Laufzeit ist genau dann minimal, wenn beide Winkel gleich sind. Der gestrichelte Trick mit dem Spiegelbild B′ zeigt es geometrisch: Der kürzeste Weg nach B′ ist eine Gerade.</p>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="brechung">
+  <div class="t-head"><span class="t-num">1.3</span><h2>Brechung und das Brechungsgesetz</h2></div>
+  <div class="t-body">
+    <div class="txt">
+      <p>Beim Übergang in ein anderes Medium ändert sich die Geschwindigkeit und damit die <b>Richtung</b>. Das beschreibt das Snellius'sche Brechungsgesetz:</p>
+      <div class="key"><span class="lbl">Brechungsgesetz</span><div class="eq big">n<sub>1</sub> sin α = n<sub>2</sub> sin β &nbsp;⇔&nbsp; <span class="frac"><span>sin α</span><span>sin β</span></span> = <span class="frac"><span>c<sub>1</sub></span><span>c<sub>2</sub></span></span></div></div>
+      <h3>Herleitung nach Fermat (dein Blatt „Fritsch“)</h3>
+      <ol class="st">
+        <li>Ist <span class="m">c</span>₁ &gt; <span class="m">c</span>₂, ist die gerade Linie von P nach Q <b>nicht</b> der schnellste Weg. Das Licht legt lieber mehr Strecke im schnellen Medium zurück.</li>
+        <li>Gesucht ist der Brechungspunkt F: <span class="m">t</span>(<span class="m">x</span>) = <span class="m">s</span>₁/<span class="m">c</span>₁ + <span class="m">s</span>₂/<span class="m">c</span>₂ = √(<span class="m">x</span>² + <span class="m">a</span>²)/<span class="m">c</span>₁ + √((<span class="m">b</span> − <span class="m">x</span>)² + <span class="m">a</span>²)/<span class="m">c</span>₂</li>
+        <li>Minimum: <span class="m">t′</span>(<span class="m">x</span>) = 0. Der Bruch ist null, wenn sein Zähler null ist.</li>
+        <li>Quadrieren und <span class="m">s</span>₁² = <span class="m">x</span>² + <span class="m">a</span>², <span class="m">s</span>₂² = (<span class="m">b</span> − <span class="m">x</span>)² + <span class="m">a</span>² einsetzen ergibt <span class="m">c</span>₂² sin²α = <span class="m">c</span>₁² sin²β.</li>
+        <li>Wurzel ziehen: sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂. ✔</li>
+      </ol>
+      <p class="warn">Aus deinem Skript: Beim Übergang Luft → Plexiglas ist der Brechungswinkel <b>nicht proportional</b> zum Einfallswinkel. Bei α = 30° ist β = 19,6°, bei α = 60° ist β = 35,5°, also nicht das Doppelte. Konstant ist nur das Verhältnis der <i>Sinuswerte</i>.</p>
+    </div>
+    <div>
+      <div class="bench">
+        <div class="bench-top"><span>Fermat · schnellster Weg P → F → Q</span><span>F, P, Q ziehen</span></div>
+        <canvas id="cvBrF" class="cv-md"></canvas>
+        <canvas id="cvBrG" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+        <div class="ctrls">
+          <div class="ctrl"><label>c₁ oben <b id="brC1v">3,00·10⁸ m/s</b></label><input type="range" id="brC1" min="1" max="3" step="0.01" value="3"></div>
+          <div class="ctrl"><label>c₂ unten <b id="brC2v">2,01·10⁸ m/s</b></label><input type="range" id="brC2" min="1" max="3" step="0.01" value="2.01"></div>
+          <div class="btns"><button class="b" id="brOpt">⚡ Schnellsten Weg finden</button></div>
+        </div>
+        <div class="outs"><div class="o"><span>sin α / sin β</span><b id="brS">–</b></div><div class="o"><span>c₁ / c₂</span><b id="brC">–</b></div><div class="o"><span>Laufzeit ggü. Minimum</span><b id="brT">–</b></div></div>
+      </div>
+      <div class="bench" style="margin-top:18px">
+        <div class="bench-top"><span>Huygens · Elementarwellen an der Grenzfläche</span><span class="live">● live</span></div>
+        <canvas id="cvBrH" class="cv-lg"></canvas>
+        <div class="ctrls">
+          <div class="ctrl"><label>α <b id="bhAv">40°</b></label><input type="range" id="bhA" min="10" max="75" value="40"></div>
+          <div class="ctrl"><label>n₁ <b id="bhN1v">1,00</b></label><input type="range" id="bhN1" min="1" max="2.4" step="0.01" value="1"></div>
+          <div class="ctrl"><label>n₂ <b id="bhN2v">1,49</b></label><input type="range" id="bhN2" min="1" max="2.4" step="0.01" value="1.49"></div>
+        </div>
+      </div>
+      <div class="link-card"><span>Noch tiefer? Brechung in 3D mit Fresnel, Brewster und Prisma:</span><a href="https://claude.ai/artifact/Fg5eMxWtEaSMeUbavy2LXT" target="_blank" rel="noopener">Das Brechungsgesetz →</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="wasser">
+  <div class="t-head"><span class="t-num">1.4</span><h2>Wasserwellen als Anschauung</h2></div>
+  <div class="t-body flip">
+    <div class="bench">
+      <div class="bench-top"><span>Wellenwanne · Draufsicht</span><span class="live">● live</span></div>
+      <canvas id="cvWater" class="cv-lg"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Einfallswinkel <b id="wAv">35°</b></label><input type="range" id="wA" min="0" max="65" value="35"></div>
+        <div class="ctrl"><label>c im flachen Wasser / c im tiefen <b id="wCv">0,55</b></label><input type="range" id="wC" min="0.35" max="1" step="0.01" value="0.55"></div>
+      </div>
+      <div class="outs"><div class="o"><span>Frequenz</span><b>gleich</b></div><div class="o"><span>λ₂ / λ₁</span><b id="wL">–</b></div><div class="o"><span>Brechungswinkel</span><b id="wB">–</b></div></div>
+    </div>
+    <div class="txt">
+      <p>Wasserwellen sind in <b>flachem Wasser langsamer</b> als in tiefem. Laufen sie schräg auf eine flachere Zone zu, knicken die Wellenfronten ab, genau wie Licht an Glas. Deshalb laufen Wellen am Strand fast immer parallel zur Küste an.</p>
+      <p>In der Wellenwanne siehst du beides gleichzeitig:</p>
+      <ol class="st">
+        <li>Die Wellenberge links und rechts der Grenze hängen lückenlos zusammen. Pro Sekunde kommen auf beiden Seiten gleich viele an, die <b>Frequenz bleibt gleich</b>.</li>
+        <li>Rechts ist die Welle langsamer. Aus <span class="m">c</span> = λ<span class="m">f</span> mit gleichem <span class="m">f</span> folgt: <b>λ wird kleiner</b>, die Berge rücken zusammen.</li>
+        <li>Die Richtung knickt <b>zum Lot hin</b> ab, mit sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂.</li>
+      </ol>
+      <div class="key"><span class="lbl">Merksatz</span><div class="eq">f bleibt · c ↓ ⇒ λ ↓ · Richtung knickt zum Lot</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="total">
+  <div class="t-head"><span class="t-num">1.5</span><h2>Totalreflexion und der Regensensor</h2></div>
+  <div class="t-body">
+    <div class="txt">
+      <p>Geht Licht vom optisch <b>dichteren</b> ins <b>dünnere</b> Medium (<span class="m">n</span>₁ &gt; <span class="m">n</span>₂), wird es vom Lot weg gebrochen. Beim Grenzwinkel ist β = 90°. Für größere Einfallswinkel gibt es keinen gebrochenen Strahl mehr: Das Licht wird zu 100 % reflektiert.</p>
+      <div class="key"><span class="lbl">Grenzwinkel</span><div class="eq big">α<sub>G</sub> = arcsin<span class="up">(</span><span class="frac"><span>n<sub>2</sub></span><span>n<sub>1</sub></span></span><span class="up">)</span> &nbsp;<span style="font-size:.7em">für n₁ &gt; n₂</span></div></div>
+      <h3>Anwendung aus dem Skript: der Regensensor</h3>
+      <p>Hinter der Windschutzscheibe schickt eine LED Licht schräg in das Glas (<span class="m">n</span> = 1,52). An der Außenseite trifft es unter θ auf die Grenzfläche Glas–Luft und wird <b>total reflektiert</b> (α<sub>G</sub> = 41,1°). So kommt es beim Empfänger an.</p>
+      <p>Sitzt dort ein <b>Regentropfen</b>, ist außen nicht mehr Luft, sondern Wasser (<span class="m">n</span> = 1,33). Der Grenzwinkel steigt auf 61,0°. Bei θ = 50° gibt es keine Totalreflexion mehr, und das Licht verschwindet im Tropfen. Der Empfänger misst weniger, und der Scheibenwischer springt an.</p>
+      <p class="hint">Probier's aus: Schalte Regen an und stell θ über 61° ein. Dann wird auch unter dem Tropfen total reflektiert, und der Sensor „sieht“ den Regen nicht mehr.</p>
+    </div>
+    <div class="bench">
+      <div class="bench-top"><span>Regensensor · Schnitt durch die Scheibe</span><span class="live">● live</span></div>
+      <canvas id="cvRain" class="cv-lg"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Winkel θ an der Außenseite <b id="rnTv">50°</b></label><input type="range" id="rnT" min="30" max="75" step="0.5" value="50"></div>
+        <div class="btns"><button class="b" id="rnRain">🌧 Regen an</button><button class="b" id="rnWipe">Wischen</button></div>
+      </div>
+      <div class="outs">
+        <div class="o"><span>α<sub>G</sub> Glas → Luft</span><b>41,1°</b></div>
+        <div class="o"><span>α<sub>G</sub> Glas → Wasser</span><b>61,0°</b></div>
+        <div class="o" id="rnSigBox"><span>Signal am Empfänger</span><b id="rnSig">–</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="interferenz">
+  <div class="t-head"><span class="t-num">1.6</span><h2>Beugung und Interferenz</h2></div>
+  <div class="t-body flip">
+    <div class="bench">
+      <div class="bench-top"><span>Überlagerung zweier Wellen</span><span class="live">● live</span></div>
+      <canvas id="cvInt" class="cv-lg"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Gangunterschied Δs <b id="inSv">0,00 λ</b></label><input type="range" id="inS" min="0" max="2" step="0.01" value="0"></div>
+        <div class="btns"><button class="b" data-ds="0">Δs = 0</button><button class="b" data-ds="0.5">Δs = λ/2</button><button class="b" data-ds="1">Δs = λ</button><button class="b" data-ds="1.5">Δs = 3λ/2</button></div>
+      </div>
+      <div class="outs"><div class="o"><span>Δφ = 2π·Δs/λ</span><b id="inP">–</b></div><div class="o" id="inBox"><span>Ergebnis</span><b id="inR">–</b></div></div>
+    </div>
+    <div class="txt">
+      <p><b>Beugung</b>: Hinter einer Öffnung oder an einem Hindernis breitet sich eine Welle auch in den geometrischen Schattenraum aus. Treffen mehrere <b>kohärente</b> Teilwellen aufeinander (gleiche Frequenz, feste Phasenbeziehung), überlagern sie sich: <b>Interferenz</b>.</p>
+      <p>Entscheidend ist der <b>Gangunterschied</b> Δ<span class="m">s</span>, also wie viel weiter die eine Welle bis zum Beobachtungspunkt läuft als die andere.</p>
+      <div class="key"><span class="lbl">Maxima · konstruktiv</span><div class="eq">Δs = k · λ &nbsp;&nbsp;(k = 0, 1, 2, …)</div></div>
+      <div class="key"><span class="lbl">Minima · destruktiv</span><div class="eq">Δs = (k + ½) · λ</div></div>
+      <div class="key"><span class="lbl">Phasendifferenz</span><div class="eq">Δφ = 2π · <span class="frac"><span>Δs</span><span>λ</span></span></div></div>
+      <p class="hint">Ein Gangunterschied von einer ganzen Wellenlänge entspricht 2π, also 360°. Die Wellen liegen dann wieder Berg auf Berg.</p>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="einzelspalt">
+  <div class="t-head"><span class="t-num">1.7</span><h2>Der Einzelspalt</h2></div>
+  <div class="t-body">
+    <div class="txt">
+      <p>Schickt man monochromatisches Licht durch einen einzigen schmalen Spalt der Breite <span class="m">b</span>, entsteht kein scharfer Streifen, sondern ein breites <b>Beugungsbild</b>: ein helles Hauptmaximum mit schwächeren Nebenmaxima.</p>
+      <p>Warum dunkle Stellen? Man teilt den Spalt gedanklich in zwei Hälften. Beträgt der Gangunterschied zwischen Rand und Mitte λ/2, löschen sich die Elementarwellen paarweise aus.</p>
+      <div class="key"><span class="lbl">Minima am Einzelspalt</span><div class="eq">b · sin α<sub>k</sub> = k · λ &nbsp;&nbsp;(k = 1, 2, …)</div></div>
+      <p><b>Je schmaler der Spalt, desto breiter das Bild.</b> Das ist typisch für Beugung und einer der Beweise, dass Licht eine Welle ist.</p>
+    </div>
+    <div class="bench">
+      <div class="bench-top"><span>Intensität hinter dem Einzelspalt</span><span>Winkel α</span></div>
+      <canvas id="cvSingle" class="cv-md"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Spaltbreite b <b id="sbBv">4,0 µm</b></label><input type="range" id="sbB" min="1" max="20" step="0.1" value="4"></div>
+        <div class="ctrl"><label>Wellenlänge λ <b id="sbLv">633 nm</b></label><input type="range" id="sbL" min="400" max="700" value="633"></div>
+      </div>
+      <div class="outs"><div class="o"><span>1. Minimum bei</span><b id="sbM">–</b></div><div class="o"><span>Breite Hauptmax.</span><b id="sbW">–</b></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="doppelspalt">
+  <div class="t-head"><span class="t-num">1.8</span><h2>Der Doppelspalt</h2></div>
+  <div class="t-body full">
+    <div class="bench">
+      <div class="bench-top"><span>Wellenwanne · zwei kohärente Quellen S₁, S₂ (nicht maßstäblich)</span><span>Punkt A auf dem Schirm ziehen</span></div>
+      <canvas id="cvDouble" class="cv-lg"></canvas>
+      <canvas id="cvDScreen" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Spaltabstand d <b id="dsDv">0,40 mm</b></label><input type="range" id="dsD" min="0.1" max="1" step="0.01" value="0.4"></div>
+        <div class="ctrl"><label>Wellenlänge λ <b id="dsLv">633 nm</b></label><input type="range" id="dsL" min="400" max="700" value="633"></div>
+        <div class="ctrl"><label>Schirmabstand e <b id="dsEv">2,00 m</b></label><input type="range" id="dsE" min="0.5" max="4" step="0.05" value="2"></div>
+        <div class="btns"><button class="b" id="dsMode">Anzeige: Momentbild</button></div>
+      </div>
+      <div class="outs"><div class="o"><span>Gangunterschied bei A</span><b id="dsDs">–</b></div><div class="o" id="dsBox"><span>bei A</span><b id="dsRes">–</b></div><div class="o"><span>a₁ (1. Maximum, echter Maßstab)</span><b id="dsA1">–</b></div><div class="o"><span>Streifenabstand</span><b id="dsSp">–</b></div></div>
+    </div>
+  </div>
+  <div class="t-body" style="margin-top:30px">
+    <div class="txt">
+      <h3>Herleitung (dein Arbeitsblatt)</h3>
+      <svg viewBox="0 0 540 260" width="100%" role="img" aria-label="Skizze zur Herleitung am Doppelspalt" style="max-width:560px;display:block;margin:6px 0 14px">
+        <rect x="0" y="0" width="540" height="260" fill="#0d1220"/>
+        <line x1="60" y1="14" x2="60" y2="92" stroke="#e6ebf5" stroke-width="4"/>
+        <line x1="60" y1="108" x2="60" y2="152" stroke="#e6ebf5" stroke-width="4"/>
+        <line x1="60" y1="168" x2="60" y2="246" stroke="#e6ebf5" stroke-width="4"/>
+        <line x1="470" y1="14" x2="470" y2="246" stroke="#e6ebf5" stroke-width="4"/>
+        <line x1="60" y1="130" x2="470" y2="130" stroke="#8e98b0" stroke-width="1"/>
+        <line x1="60" y1="130" x2="470" y2="40" stroke="#8e98b0" stroke-width="1" stroke-dasharray="5 4"/>
+        <line x1="60" y1="100" x2="470" y2="40" stroke="#ff4d4d" stroke-width="2.2"/>
+        <line x1="60" y1="160" x2="470" y2="40" stroke="#ff4d4d" stroke-width="2.2"/>
+        <line x1="60" y1="100" x2="76.2" y2="155.3" stroke="#46d9ff" stroke-width="1.6"/>
+        <line x1="60" y1="160" x2="76.2" y2="155.3" stroke="#ffc93c" stroke-width="4"/>
+        <path d="M100,130 A40,40 0 0 0 99.1,121.4" fill="none" stroke="#ffc93c" stroke-width="1.8"/>
+        <path d="M60,114 A14,14 0 0 0 64,113.4" fill="none" stroke="#ffc93c" stroke-width="1.6"/>
+        <polyline points="72.4,156.4 73.5,152.6 77.3,151.5" fill="none" stroke="#46d9ff" stroke-width="1.2"/>
+        <polyline points="462,130 462,122 470,122" fill="none" stroke="#8e98b0" stroke-width="1.2"/>
+        <circle cx="60" cy="100" r="3.5" fill="#fff"/><circle cx="60" cy="160" r="3.5" fill="#fff"/><circle cx="470" cy="40" r="4" fill="#fff"/><circle cx="470" cy="130" r="3.5" fill="#fff"/><circle cx="60" cy="130" r="2.5" fill="#fff"/><circle cx="76.2" cy="155.3" r="2.5" fill="#46d9ff"/>
+        <text x="40" y="100" fill="#fff" font-size="17">S₁</text><text x="40" y="172" fill="#fff" font-size="17">S₂</text><text x="42" y="136" fill="#fff" font-size="15">M</text>
+        <text x="80" y="170" fill="#46d9ff" font-size="15">P</text><text x="478" y="44" fill="#fff" font-size="17">A</text><text x="478" y="136" fill="#fff" font-size="17">O</text>
+        <text x="104" y="128" fill="#ffc93c" font-size="16">α</text><text x="66" y="124" fill="#ffc93c" font-size="12">α</text>
+        <text x="30" y="200" fill="#ffc93c" font-size="15">Δs</text><line x1="48" y1="194" x2="64" y2="162" stroke="#ffc93c" stroke-width=".8"/>
+        <line x1="24" y1="100" x2="24" y2="160" stroke="#8e98b0"/><text x="10" y="136" fill="#8e98b0" font-size="16">d</text>
+        <line x1="60" y1="236" x2="470" y2="236" stroke="#8e98b0"/><text x="262" y="230" fill="#8e98b0" font-size="16">e</text>
+        <line x1="500" y1="40" x2="500" y2="130" stroke="#8e98b0"/><text x="508" y="92" fill="#8e98b0" font-size="16">a</text>
+        <text x="270" y="68" fill="#ff4d4d" font-size="14" style="font-style:normal;font-family:IBM Plex Sans,sans-serif">Wege zum Punkt A</text>
+      </svg>
+      <ol class="st">
+        <li>Im rechtwinkligen Dreieck M O A (Pythagoras): <span class="m">MA</span> = √(<span class="m">e</span>² + <span class="m">a</span>²)</li>
+        <li>Trigonometrie im selben Dreieck: sin α = <span class="m">a</span> / √(<span class="m">e</span>² + <span class="m">a</span>²)</li>
+        <li>Die Wege S₁A und S₂A sind verschieden lang. Der Unterschied ist der Gangunterschied Δ<span class="m">s</span>.</li>
+        <li>P ist der Punkt auf S₂A, bis zu dem S₁A reichen würde (Zirkelschlag um A).</li>
+        <li>Weil <span class="m">e</span> ≫ <span class="m">d</span> ist, laufen S₁A und S₂A praktisch parallel. Das Dreieck S₁S₂P wird rechtwinklig.</li>
+        <li>Damit ist ∠S₂S₁P = α, und es gilt sin α = Δ<span class="m">s</span> / <span class="m">d</span>.</li>
+        <li>Gleichsetzen (2 und 6) mit der Maximumsbedingung Δ<span class="m">s</span> = <span class="m">k</span>λ:</li>
+      </ol>
+      <div class="key"><span class="lbl">exakt</span><div class="eq">λ = <span class="frac"><span>d · a<sub>k</sub></span><span>k · √(e² + a<sub>k</sub>²)</span></span></div></div>
+      <div class="key"><span class="lbl">kleine Winkel: √(e² + a²) ≈ e</span><div class="eq big">λ = <span class="frac"><span>d · a<sub>k</sub></span><span>k · e</span></span></div></div>
+    </div>
+    <div>
+      <div class="bench">
+        <div class="bench-top"><span>Rechner · Wellenlänge aus dem Schirmbild</span><span>Werte eintragen</span></div>
+        <div style="padding:14px">
+          <div class="calc">
+            <label for="cD">Spaltabstand d (mm)<input id="cD" type="number" step="any" value="0.2"></label>
+            <label for="cE">Schirmabstand e (m)<input id="cE" type="number" step="any" value="2.5"></label>
+            <label for="cA">Abstand a<sub>k</sub> (cm)<input id="cA" type="number" step="any" value="1.6"></label>
+            <label for="cK">Ordnung k<input id="cK" type="number" step="1" min="1" value="2"></label>
+          </div>
+          <div class="res" id="cRes">–</div>
+        </div>
+      </div>
+      <div class="task">
+        <span class="tg">Vorgehen in der Klausur</span>
+        <ol class="st" style="margin-top:8px"><li>Größen aus der Skizze bestimmen (<span class="m">d</span>, <span class="m">e</span>).</li><li>Für das gewählte Maximum <span class="m">k</span> den Abstand <span class="m">a<sub>k</sub></span> messen.</li><li><span class="m">d</span> und <span class="m">e</span> einsetzen.</li><li>λ berechnen.</li><li>Einheiten kontrollieren: Kommt ein Wert zwischen 380 und 780 nm raus?</li></ol>
+      </div>
+      <div class="task">
+        <span class="tg">Aufgabe</span>
+        <p>Doppelspalt mit <span class="m">d</span> = 0,20 mm, Schirm in <span class="m">e</span> = 2,5 m. Das 2. Maximum liegt <span class="m">a</span>₂ = 1,6 cm neben der Mitte. Welche Wellenlänge hat das Licht?</p>
+        <details><summary>Lösung</summary><div class="in">λ = <span class="m">d</span>·<span class="m">a</span>₂/(<span class="m">k</span>·<span class="m">e</span>) = 0,20·10⁻³ m · 0,016 m / (2 · 2,5 m) = <b>6,4·10⁻⁷ m = 640 nm</b> (rot). Die exakte Formel liefert 640 nm; der Unterschied liegt unter 0,01 %.</div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= TAG 2 -->
+<div class="day"><div class="day-head"><span class="n">Nachmittag 2</span><h2>Gitter, Spektren, Auflösungsvermögen und stehende Wellen</h2></div></div>
+
+<section class="topic" id="gitter">
+  <div class="t-head"><span class="t-num">2.1</span><h2>Beugung am Gitter</h2></div>
+  <div class="t-body flip">
+    <div class="bench">
+      <div class="bench-top"><span>Intensität hinter N Spalten</span><span>Winkel α</span></div>
+      <canvas id="cvGrat" class="cv-md"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Anzahl Spalte N <b id="grNv">2</b></label><input type="range" id="grN" min="2" max="40" value="2"></div>
+        <div class="ctrl"><label>Gitterkonstante g <b id="grGv">300 /mm</b></label><input type="range" id="grG" min="100" max="1000" step="10" value="300"></div>
+        <div class="ctrl"><label>Wellenlänge λ <b id="grLv">633 nm</b></label><input type="range" id="grL" min="400" max="700" value="633"></div>
+      </div>
+      <div class="outs"><div class="o"><span>d = 1/g</span><b id="grD">–</b></div><div class="o"><span>α (1. Ordnung)</span><b id="grA1">–</b></div><div class="o"><span>höchste Ordnung k<sub>max</sub></span><b id="grK">–</b></div></div>
+    </div>
+    <div class="txt">
+      <p>Ein Beugungsgitter hat sehr viele Spalte im gleichen Abstand <span class="m">d</span> (Gitterkonstante). Die Maxima liegen an denselben Stellen wie beim Doppelspalt. Aber: <b>Je mehr Spalte, desto schärfer und heller</b> werden sie, und dazwischen wird es fast dunkel. Zieh N von 2 auf 40!</p>
+      <div class="key"><span class="lbl">Gittergleichung</span><div class="eq big">d · sin α = k · λ</div></div>
+      <div class="key"><span class="lbl">Geometrie des Aufbaus</span><div class="eq">tan α = <span class="frac"><span>a</span><span>e</span></span> &nbsp;⇒&nbsp; α = arctan<span class="up">(</span><span class="frac"><span>a</span><span>e</span></span><span class="up">)</span></div></div>
+      <p class="warn">Beim Gitter sind die Winkel groß, deshalb gilt die Näherung sin α ≈ tan α hier <b>nicht</b>. Erst α = arctan(<span class="m">a</span>/<span class="m">e</span>) ausrechnen, dann λ = <span class="m">d</span>·sin α / <span class="m">k</span>. Taschenrechner auf <b>DEG</b> stellen!</p>
+      <div class="key"><span class="lbl">höchste beobachtbare Ordnung</span><div class="eq">sin α ≤ 1 ⇒ k · λ ≤ d ⇒ k<sub>max</sub> = ⌊d / λ⌋</div></div>
+      <div class="bench" style="margin-top:16px">
+        <div class="bench-top"><span>Rechner · Wellenlänge mit dem Gitter</span></div>
+        <div style="padding:14px">
+          <div class="calc">
+            <label for="gG">g (Linien/mm)<input id="gG" type="number" step="any" value="500"></label>
+            <label for="gA">a (cm)<input id="gA" type="number" step="any" value="30.8"></label>
+            <label for="gE">e (m)<input id="gE" type="number" step="any" value="1"></label>
+            <label for="gK">k<input id="gK" type="number" step="1" min="1" value="1"></label>
+          </div>
+          <div class="res" id="gRes">–</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="spektren">
+  <div class="t-head"><span class="t-num">2.2</span><h2>Spektren und überlappende Ordnungen</h2></div>
+  <div class="t-body">
+    <div class="txt">
+      <p>Weißes (polychromatisches) Licht enthält alle Wellenlängen. Für jede gilt <b>separat</b> <span class="m">d</span> sin α = <span class="m">k</span>λ. Rot (großes λ) wird stärker gebeugt als Violett, und jede Ordnung wird zu einem Regenbogen. Achtung: Beim Prisma ist es umgekehrt, dort wird Violett am stärksten abgelenkt.</p>
+      <p>In höheren Ordnungen werden die Spektren breiter und <b>überlappen</b> sich. Mit sichtbarem Licht von 400 bis 750 nm gilt:</p>
+      <ul style="color:#cfd5e4">
+        <li>1. und 2. Ordnung: 1 · 750 nm &lt; 2 · 400 nm = 800 nm → <b>keine</b> Überlappung.</li>
+        <li>2. und 3. Ordnung: 2 · 750 nm = 1500 nm &gt; 3 · 400 nm = 1200 nm → <b>Überlappung!</b></li>
+      </ul>
+      <p class="hint">Vorgehen bei Aufgaben: Gittergleichung aufstellen, die möglichen Ordnungen prüfen, dann Winkel oder Positionen vergleichen.</p>
+    </div>
+    <div class="bench">
+      <div class="bench-top"><span>Weißes Licht am Gitter · Schirm als Halbkreis (−90° … 90°)</span></div>
+      <canvas id="cvSpecG" class="cv-md"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Gitterkonstante g <b id="spGv">300 /mm</b></label><input type="range" id="spG" min="100" max="900" step="10" value="300"></div>
+        <div class="btns"><button class="b on" id="spOv">Überlappung markieren</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="aufloesung">
+  <div class="t-head"><span class="t-num">2.3</span><h2>Auflösungsvermögen und die Natrium-D-Linien</h2></div>
+  <div class="t-body flip">
+    <div class="bench">
+      <div class="bench-top"><span>Zoom auf die Natrium-D-Linien (589,0 nm und 589,6 nm)</span></div>
+      <canvas id="cvRes" class="cv-md"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>beleuchtete Spalte N <b id="rsNv">200</b></label><input type="range" id="rsN" min="0" max="100" value="55"></div>
+        <div class="ctrl"><label>Ordnung n <b id="rsKv">1</b></label><input type="range" id="rsK" min="1" max="3" value="1"></div>
+      </div>
+      <div class="outs"><div class="o"><span>A = n · N</span><b id="rsA">–</b></div><div class="o"><span>nötig: λ/Δλ</span><b>982</b></div><div class="o" id="rsBox"><span>Linien</span><b id="rsV">–</b></div></div>
+    </div>
+    <div class="txt">
+      <p>Natriumdampflampen leuchten gelb, aber genau hingesehen sind es <b>zwei</b> Linien: λ₁ = 589,0 nm und λ₂ = 589,6 nm. Das <b>Auflösungsvermögen</b> sagt, ob ein Aufbau zwei so nahe Linien noch trennen kann:</p>
+      <div class="key"><span class="lbl">Definition</span><div class="eq big">A = <span class="frac"><span>λ</span><span>Δλ</span></span></div></div>
+      <div class="key"><span class="lbl">Gitter · Doppelspalt</span><div class="eq">A = n · N &nbsp;&nbsp;·&nbsp;&nbsp; A = 2n</div><div class="hint">n = betrachtete Ordnung, N = Anzahl beleuchteter Spalte. Der Doppelspalt ist einfach N = 2.</div></div>
+      <p>Für die D-Linien braucht man <span class="m">A</span> = 589,3 nm / 0,6 nm ≈ <b>982</b>. Ein Doppelspalt (<span class="m">A</span> = 2<span class="m">n</span>) schafft das nie. Ein Gitter mit 491 beleuchteten Spalten in der 2. Ordnung oder 982 Spalten in der 1. Ordnung dagegen schon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="stehend">
+  <div class="t-head"><span class="t-num">2.4</span><h2>Stehende elektromagnetische Wellen</h2></div>
+  <div class="t-body">
+    <div class="txt">
+      <p>Wie bei Seil- oder Wasserwellen: Laufen zwei Wellen gleicher Frequenz und Wellenlänge <b>gegeneinander</b>, z. B. eine Mikrowelle und ihre Reflexion an einer Metallplatte, entsteht eine <b>stehende Welle</b>. Sie hat feste <b>Knoten</b> (immer null) und <b>Bäuche</b> (maximale Schwingung).</p>
+      <div class="key"><span class="lbl">Abstand Knoten – Knoten (oder Bauch – Bauch)</span><div class="eq big">λ / 2</div></div>
+      <div class="key"><span class="lbl">zwischen zwei Reflektoren im Abstand l</span><div class="eq">Grundschwingung: λ = 2l &nbsp;·&nbsp; allgemein: l = m · <span class="frac"><span>λ</span><span>2</span></span></div></div>
+      <p>So misst man im Unterricht die Wellenlänge von Mikrowellen: Mit einer Sonde die Knoten suchen, den Abstand messen, verdoppeln.</p>
+      <div class="task">
+        <span class="tg">Aufgabe</span>
+        <p>Vor einer Metallplatte findet die Sonde Knoten im Abstand von 1,6 cm. Bestimme λ und <span class="m">f</span> der Mikrowelle.</p>
+        <details><summary>Lösung</summary><div class="in">λ = 2 · 1,6 cm = <b>3,2 cm</b>; <span class="m">f</span> = <span class="m">c</span>/λ = 3,0·10⁸ m/s / 0,032 m ≈ <b>9,4 GHz</b>.</div></details>
+      </div>
+    </div>
+    <div class="bench">
+      <div class="bench-top"><span>Resonator der Länge l = 16 cm</span><span class="live">● live</span></div>
+      <canvas id="cvStand" class="cv-md"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Schwingungsmode m <b id="stMv">3</b></label><input type="range" id="stM" min="1" max="10" value="3"></div>
+        <div class="btns"><button class="b on" id="stSep">Einzelwellen zeigen</button></div>
+      </div>
+      <div class="outs"><div class="o"><span>λ = 2l/m</span><b id="stL">–</b></div><div class="o"><span>Knotenabstand λ/2</span><b id="stK">–</b></div><div class="o"><span>f = c/λ</span><b id="stF">–</b></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= TAG 3 -->
+<div class="day"><div class="day-head"><span class="n">Nachmittag 3</span><h2>Mach-Zehnder-Interferometer und Gesamtwiederholung</h2></div></div>
+
+<section class="topic" id="mz">
+  <div class="t-head"><span class="t-num">3.1</span><h2>Das Mach-Zehnder-Interferometer</h2></div>
+  <div class="t-body full">
+    <div class="bench">
+      <div class="bench-top"><span>Aufbau wie auf Folie 8 · Ports 1–4</span><span class="live">● live</span></div>
+      <canvas id="cvMZ" class="cv-lg"></canvas>
+      <canvas id="cvMZt" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+      <div class="ctrls">
+        <div class="ctrl"><label>Phasenverschiebung ΔΦ durch das Element <b id="mzPv">0,00 π</b></label><input type="range" id="mzP" min="0" max="4" step="0.01" value="0"></div>
+        <div class="btns"><button class="b" id="mzGas">Gas einlassen (Küvette L = 5,0 cm)</button><button class="b" id="mzVac">Abpumpen</button></div>
+      </div>
+      <div class="outs">
+        <div class="o"><span>I₄ = I₁ cos²(ΔΦ/2)</span><b id="mzI4">–</b></div>
+        <div class="o"><span>I₃ = I₁ sin²(ΔΦ/2)</span><b id="mzI3">–</b></div>
+        <div class="o"><span>(I₄ − I₃)/(I₄ + I₃) = cos ΔΦ</span><b id="mzC">–</b></div>
+        <div class="o"><span>gezählte Wechsel k</span><b id="mzK">0</b></div>
+        <div class="o"><span>n<sub>Gas</sub> = 1 + λk/L</span><b id="mzN">–</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="t-body" style="margin-top:30px">
+    <div class="txt">
+      <h3>So funktioniert es</h3>
+      <ol class="st">
+        <li>Der Strahl I₁ trifft bei Port 1 auf einen <b>50:50-Strahlteiler</b>. Die Hälfte geht geradeaus (unterer Weg), die Hälfte wird nach oben reflektiert (oberer Weg).</li>
+        <li>Zwei Spiegel lenken beide Teilstrahlen zum <b>zweiten Strahlteiler</b>. Dort werden sie wieder zusammengeführt und verlassen das Gerät über <b>Port 3</b> (rechts) oder <b>Port 4</b> (oben).</li>
+        <li>An jedem Ausgang überlagern sich zwei Anteile, einer von jedem Weg. Sind die optischen Wege gleich lang, kommen sie an Port 4 <b>gleichphasig</b> an (hell). An Port 3 kommen sie <b>gegenphasig</b> an (dunkel), wegen der Phasensprünge bei den Reflexionen.</li>
+        <li>Ein Element im oberen Weg verschiebt die Phase um ΔΦ. Dann wandert die Helligkeit zwischen den Ports hin und her. Die Energie bleibt erhalten: I₃ + I₄ = I₁.</li>
+      </ol>
+      <div class="key"><span class="lbl">Phase und Gangunterschied</span><div class="eq">ΔΦ = 2π · <span class="frac"><span>Δs</span><span>λ</span></span> &nbsp;·&nbsp; konstruktiv: ΔΦ = 2πk &nbsp;·&nbsp; destruktiv: ΔΦ = (2k+1)π</div></div>
+      <div class="key"><span class="lbl">Intensitäten an den Ports</span><div class="eq"><span class="frac"><span>I<sub>4</sub> − I<sub>3</sub></span><span>I<sub>4</sub> + I<sub>3</sub></span></span> = cos ΔΦ</div><div class="hint">Denn cos²(ΔΦ/2) − sin²(ΔΦ/2) = cos ΔΦ. Aus gemessenen Intensitäten lässt sich so ΔΦ bestimmen.</div></div>
+    </div>
+    <div class="txt">
+      <h3>Brechungsindex eines Gases messen</h3>
+      <p>In den oberen Weg kommt eine Küvette der Länge <span class="m">L</span>. Lässt man Gas hinein, steigt <span class="m">n</span>. Im Gas passen mehr Wellenlängen auf die Strecke <span class="m">L</span>, der optische Weg wird länger. Jedes Mal, wenn eine Wellenlänge hinzukommt, wird Port 4 einmal dunkel und wieder hell. Man <b>zählt</b> diese Wechsel:</p>
+      <div class="key"><span class="lbl">gezählte Wechsel</span><div class="eq">k = <span class="frac"><span>L</span><span>λ<sub>Gas</sub></span></span> − <span class="frac"><span>L</span><span>λ<sub>Vakuum</sub></span></span> = <span class="frac"><span>L (n − 1)</span><span>λ<sub>Vakuum</sub></span></span></div></div>
+      <div class="key"><span class="lbl">umgestellt</span><div class="eq big">n<sub>Gas</sub> = 1 + <span class="frac"><span>λ<sub>Vakuum</sub> · k</span><span>L</span></span></div></div>
+      <p class="hint">Drück oben „Gas einlassen“: Luft (<span class="m">n</span> = 1,000 29) in der 5-cm-Küvette mit HeNe-Laser (633 nm) ergibt etwa 23 Wechsel.</p>
+      <div class="task">
+        <span class="tg">Aufgabe</span>
+        <p>Beim Befüllen einer 5,0 cm langen Küvette zählt man 23 Hell-Dunkel-Wechsel (λ = 633 nm). Bestimme <span class="m">n</span><sub>Gas</sub> und prüfe auf Plausibilität.</p>
+        <details><summary>Lösung</summary><div class="in"><span class="m">n</span> = 1 + 633·10⁻⁹ m · 23 / 0,050 m = <b>1,000 291</b>. Plausibel: Gase haben <span class="m">n</span> knapp über 1 (Luft: 1,000 29).</div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="formeln">
+  <div class="t-head"><span class="t-num">3.2</span><h2>Formelsammlung zum Auswendiglernen</h2></div>
+  <div class="fgrid">
+    <div class="fc"><span>Elektromagnetische Welle</span><div class="eq">c = λ f</div></div>
+    <div class="fc"><span>Medium</span><div class="eq">v = c / n</div></div>
+    <div class="fc"><span>Reflexion</span><div class="eq">α = β</div></div>
+    <div class="fc"><span>Brechung</span><div class="eq">n₁ sin α = n₂ sin β</div></div>
+    <div class="fc"><span>Totalreflexion (n₁ &gt; n₂)</span><div class="eq">α<sub>G</sub> = arcsin(n₂/n₁)</div></div>
+    <div class="fc"><span>Interferenz-Maximum</span><div class="eq">Δs = k λ</div></div>
+    <div class="fc"><span>Interferenz-Minimum</span><div class="eq">Δs = (k + ½) λ</div></div>
+    <div class="fc"><span>Phasendifferenz</span><div class="eq">Δφ = 2π Δs / λ</div></div>
+    <div class="fc"><span>Einzelspalt-Minima</span><div class="eq">b sin α = k λ</div></div>
+    <div class="fc"><span>Doppelspalt</span><div class="eq">λ = d a<sub>k</sub> / (k e)</div></div>
+    <div class="fc"><span>Gitter</span><div class="eq">d sin α = k λ</div></div>
+    <div class="fc"><span>Geometrie</span><div class="eq">tan α = a / e</div></div>
+    <div class="fc"><span>höchste Ordnung</span><div class="eq">k λ ≤ d</div></div>
+    <div class="fc"><span>Auflösungsvermögen</span><div class="eq">A = λ / Δλ</div></div>
+    <div class="fc"><span>Doppelspalt · Gitter</span><div class="eq">A = 2n · A = nN</div></div>
+    <div class="fc"><span>stehende Welle</span><div class="eq">Knotenabstand = λ/2</div></div>
+    <div class="fc"><span>Grundschwingung</span><div class="eq">λ = 2l</div></div>
+    <div class="fc"><span>Mach-Zehnder</span><div class="eq">(I₄−I₃)/(I₄+I₃) = cos ΔΦ</div></div>
+    <div class="fc"><span>Gas im Interferometer</span><div class="eq">n<sub>Gas</sub> = 1 + λ<sub>V</sub> k / L</div></div>
+  </div>
+  <p class="hint" style="margin-top:14px">Nicht nur auswendig lernen: Erkenne zuerst die physikalische Situation (Spalt? Gitter? Grenzfläche? zwei Wege?) und wähle dann die passende Bedingung.</p>
+</section>
+
+<section class="topic" id="check">
+  <div class="t-head"><span class="t-num">3.3</span><h2>Prüfungs-Checkliste</h2></div>
+  <p class="hint">Deine Haken werden in diesem Browser gespeichert.</p>
+  <div class="check" id="checkList"></div>
+</section>
+
+<section class="topic" id="quiz">
+  <div class="t-head"><span class="t-num">3.4</span><h2>Schnelltest über alles</h2><span class="mono" id="qScore" style="margin-left:auto;color:var(--green)"></span></div>
+  <div id="quizBody" class="txt" style="max-width:none"></div>
+</section>
+
+</main>
+<footer><div class="wrap">Wellenoptik Q3 · interaktive Zusammenfassung von Skript und Lernzettel · Alle Simulationen rechnen live im Browser.</div></footer>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI;
+const fmt=(x,d=1)=>(Math.round(x*10**d)/10**d).toFixed(d).replace('.',',');
+const COL={red:'#ff4d4d',na:'#ffc93c',cyan:'#46d9ff',violet:'#a98bff',green:'#5dffa0',pink:'#ff5fa8',text:'#e6ebf5',muted:'#8e98b0',grid:'rgba(160,180,230,.1)',panel:'#0d1220',ink:'#070a12'};
+function wl(l){ let r=0,g=0,b=0;
+  if(l<440){r=-(l-440)/60;b=1;} else if(l<490){g=(l-440)/50;b=1;} else if(l<510){g=1;b=-(l-510)/20;}
+  else if(l<580){r=(l-510)/70;g=1;} else if(l<645){r=1;g=-(l-645)/65;} else r=1;
+  let f=1; if(l<420) f=.3+.7*(l-380)/40; else if(l>700) f=.3+.7*(780-l)/80;
+  return [Math.round(255*Math.pow(r*f,.8)),Math.round(255*Math.pow(g*f,.8)),Math.round(255*Math.pow(b*f,.8))]; }
+const wlc=(l,a=1)=>{const c=wl(l);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';};
+function fresnel(n1,n2,a){ const s=n1/n2*Math.sin(a); if(s>=1) return {R:1,T:0,tir:true};
+  const b=Math.asin(s),ca=Math.cos(a),cb=Math.cos(b),rs=(n1*ca-n2*cb)/(n1*ca+n2*cb),rp=(n2*ca-n1*cb)/(n2*ca+n1*cb),R=(rs*rs+rp*rp)/2; return {R,T:1-R,tir:false,b}; }
+function fit(cv){ const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2), w=Math.max(1,Math.round(r.width)), h=Math.max(1,Math.round(r.height));
+  if(cv.width!==w*dpr||cv.height!==h*dpr){cv.width=w*dpr;cv.height=h*dpr;} const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); return {ctx,W:w,H:h}; }
+function bind(id,out,f,cb){ const el=$(id); const u=()=>{ const v=+el.value; if(out) $(out).textContent=f(v); cb&&cb(v); }; el.addEventListener('input',u); u(); return el; }
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+window.W3={wl,wlc,fmt};
+
+/* ---------- Registry: nur sichtbare Canvas zeichnen ---------- */
+const sims=[];
+const io=new IntersectionObserver(es=>es.forEach(e=>{const s=sims.find(s=>s.cv===e.target); if(s) s.vis=e.isIntersecting;}),{rootMargin:'100px'});
+function sim(cv,draw){ const s={cv,draw,vis:false}; sims.push(s); io.observe(cv); return s; }
+let last=performance.now(), T=0;
+function loop(now){ const dt=Math.min(.05,(now-last)/1000); last=now; T+=reduce?dt*.35:dt;
+  for(const s of sims) if(s.vis) s.draw(reduce?dt*.35:dt,T); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+function pointer(cv,e){ const r=cv.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top,W:r.width,H:r.height}; }
+function label(ctx,t,x,y,c,font,align){ ctx.font=font||'italic 17px "STIX Two Text", Georgia, serif'; ctx.fillStyle=c||COL.text; ctx.textAlign=align||'center'; ctx.fillText(t,x,y); }
+function arcBetween(ctx,P,a1,a2,r){ let d=a2-a1; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; ctx.beginPath(); ctx.arc(P.x,P.y,r,a1,a1+d,d<0); ctx.stroke(); return a1+d/2; }
+
+/* ---------- 1.1 Spektrum-Leiste ---------- */
+let emLambda=633;
+sim($('cvSpec'),()=>{ const {ctx,W,H}=fit($('cvSpec')); ctx.clearRect(0,0,W,H);
+  const L=16,R=16,y0=26,h=34, X=l=>L+(l-380)/400*(W-L-R);
+  for(let x=L;x<W-R;x++){ const l=380+(x-L)/(W-L-R)*400; ctx.fillStyle=wlc(l); ctx.fillRect(x,y0,1.2,h); }
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.textAlign='center';
+  for(const l of [400,500,600,700]){ ctx.fillText(l+' nm',X(l),y0+h+16); ctx.fillText(fmt(3e8/(l*1e-9)/1e14,2)+'·10¹⁴ Hz',X(l),y0+h+32); }
+  const x=X(emLambda); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,y0-8); ctx.lineTo(x,y0+h+4); ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.moveTo(x-6,y0-14); ctx.lineTo(x+6,y0-14); ctx.lineTo(x,y0-6); ctx.fill();
+  ctx.textAlign='left'; ctx.fillStyle=COL.muted; ctx.fillText('violett · kurzwellig · hohe Frequenz',L,16); ctx.textAlign='right'; ctx.fillText('rot · langwellig · niedrige Frequenz',W-R,16);
+});
+function emOut(){ const l=+$('emL').value, n=+$('emN').value; emLambda=l; $('emLv').textContent=l+' nm'; $('emNv').textContent=fmt(n,2);
+  $('emF').textContent=fmt(3e8/(l*1e-9)/1e14,2)+'·10¹⁴ Hz'; $('emLm').textContent=Math.round(l/n)+' nm'; $('emV').textContent=fmt(3/n,2)+'·10⁸ m/s'; }
+$('emL').addEventListener('input',emOut); $('emN').addEventListener('input',emOut); emOut();
+
+/* ---------- Huygens (Reflexion & Brechung) ---------- */
+function huygens(cv,S){
+  return (dt)=>{ if(S.playing) S.tau+=dt;
+    const {ctx,W,H}=fit(cv); ctx.clearRect(0,0,W,H);
+    const refl=S.mode==='refl', sc=Math.max(.5,Math.min(W,900)/900);
+    const yb=H*(refl?.74:.46), a=rad(S.alpha), n1=S.n1, n2=refl?S.n1:S.n2;
+    const s=n1/n2*Math.sin(a), tir=!refl&&s>=1, b=refl?a:(tir?0:Math.asin(s)), back=refl||tir;
+    const base=170*sc, v1=base/n1, v2=base/n2, vout=back?v1:v2;
+    const w=Math.min(W*.2,H*.24), AB=w/Math.cos(a);
+    const A={x:W/2-AB/2,y:yb}, B={x:A.x+AB,y:yb};
+    const k1={x:Math.sin(a),y:Math.cos(a)}, k2=back?{x:Math.sin(a),y:-Math.cos(a)}:{x:Math.sin(b),y:Math.cos(b)};
+    const Dt=AB*Math.sin(a)/v1, t0=-(yb*.8)/(v1*Math.cos(a)), freeze=3.2, after=2.2;
+    let t=t0+S.tau; if(t>Dt){ const o=t-Dt; t=o<freeze?Dt:Dt+(o-freeze); if(o>freeze+after){S.tau=0;t=t0;} }
+    // Hintergrund
+    if(refl){ const g=ctx.createLinearGradient(0,yb,0,H); g.addColorStop(0,'#5b6478'); g.addColorStop(.06,'#262c3a'); g.addColorStop(1,'#141926'); ctx.fillStyle=g; ctx.fillRect(0,yb,W,H-yb);
+      label(ctx,'Spiegel',14,yb+24,COL.muted,'13px "IBM Plex Sans", sans-serif','left'); }
+    else { ctx.fillStyle='rgba(70,140,255,'+(0.06+0.1*(n2-1))+')'; ctx.fillRect(0,yb,W,H-yb); ctx.strokeStyle='rgba(143,232,255,.7)'; ctx.beginPath(); ctx.moveTo(0,yb); ctx.lineTo(W,yb); ctx.stroke();
+      label(ctx,'Medium 1 · n₁ = '+fmt(n1,2),14,20,COL.muted,'13px "IBM Plex Sans", sans-serif','left'); label(ctx,'Medium 2 · n₂ = '+fmt(n2,2),14,yb+22,COL.muted,'13px "IBM Plex Sans", sans-serif','left'); }
+    const big=4000;
+    ctx.fillStyle='rgba(255,77,77,.07)';
+    ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.lineTo(B.x-k1.x*big,B.y-k1.y*big); ctx.lineTo(A.x-k1.x*big,A.y-k1.y*big); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.lineTo(B.x+k2.x*big,B.y+k2.y*big); ctx.lineTo(A.x+k2.x*big,A.y+k2.y*big); ctx.fill();
+    ctx.setLineDash([6,5]); ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(A.x,yb-130*sc); ctx.lineTo(A.x,refl?yb:yb+130*sc); ctx.stroke(); ctx.setLineDash([]);
+    const pos=(i,tt)=>{const X=A.x+i*AB,ti=i*Dt; return tt<ti?{x:X-k1.x*v1*(ti-tt),y:yb-k1.y*v1*(ti-tt)}:{x:X+k2.x*vout*(tt-ti),y:yb+k2.y*vout*(tt-ti)};};
+    const front=tt=>{const is=[];for(let j=0;j<=40;j++)is.push(j/40);const ik=tt/Dt;if(ik>0&&ik<1)is.push(ik);is.sort((p,q)=>p-q);ctx.beginPath();is.forEach((i,j)=>{const p=pos(i,tt);j?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);});ctx.stroke();};
+    const Tp=28*Math.max(sc,.7)/v1; ctx.lineWidth=1.4;
+    for(let m=-9;m<=9;m++){ if(!m) continue; ctx.strokeStyle='rgba(255,77,77,'+(0.3-Math.abs(m)*.022)+')'; front(t-m*Tp); }
+    for(let j=0;j<=8;j++){ const i=j/8,ti=i*Dt; if(t<=ti) continue; const X=A.x+i*AB;
+      ctx.lineWidth=1.2; ctx.strokeStyle='rgba(70,217,255,.55)';
+      ctx.beginPath(); back?ctx.arc(X,yb,vout*(t-ti),Math.PI,2*Math.PI):ctx.arc(X,yb,vout*(t-ti),0,Math.PI); ctx.stroke();
+      if(tir){ ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,95,168,.55)'; ctx.beginPath(); ctx.arc(X,yb,v2*(t-ti),0,Math.PI); ctx.stroke(); ctx.setLineDash([]); }
+      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X,yb,2.3,0,7); ctx.fill(); }
+    ctx.strokeStyle=COL.red; ctx.lineWidth=3.2; ctx.shadowColor=COL.red; ctx.shadowBlur=14; front(t); ctx.shadowBlur=0;
+    if(t>=Dt-1e-6){
+      if(!tir){
+        const Ap={x:B.x-k1.x*v1*Dt,y:yb-k1.y*v1*Dt}, Bp={x:A.x+k2.x*vout*Dt,y:yb+k2.y*vout*Dt};
+        ctx.lineWidth=2;
+        ctx.fillStyle='rgba(255,201,60,.13)'; ctx.strokeStyle=COL.na; ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(Ap.x,Ap.y); ctx.lineTo(B.x,B.y); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle='rgba(70,217,255,.13)'; ctx.strokeStyle=COL.cyan; ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(Bp.x,Bp.y); ctx.lineTo(B.x,B.y); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.strokeStyle=COL.na; const mA=arcBetween(ctx,A,0,Math.atan2(Ap.y-A.y,Ap.x-A.x),32);
+        ctx.strokeStyle=COL.cyan; const mB=arcBetween(ctx,B,Math.PI,Math.atan2(Bp.y-B.y,Bp.x-B.x),32);
+        label(ctx,'α',A.x+48*Math.cos(mA),A.y+48*Math.sin(mA)+6,COL.na); label(ctx,'β',B.x+48*Math.cos(mB),B.y+48*Math.sin(mB)+6,COL.cyan);
+        label(ctx,'c₁·Δt',(Ap.x+B.x)/2+26,(Ap.y+B.y)/2,COL.na);
+        label(ctx,(refl?'c₁':'c₂')+'·Δt',(A.x+Bp.x)/2+(refl?-30:-28),(A.y+Bp.y)/2+(refl?0:10),COL.cyan);
+        label(ctx,'A′',Ap.x+4,Ap.y-10,'#fff'); label(ctx,'B′',Bp.x+(refl?-14:-8),Bp.y+(refl?-8:20),'#fff');
+        const bw=Math.min(310,W*.52), bx=W-bw-12, by=12;
+        ctx.fillStyle='rgba(7,10,18,.85)'; ctx.strokeStyle='rgba(255,201,60,.4)'; ctx.lineWidth=1; ctx.beginPath(); ctx.rect(bx,by,bw,56); ctx.fill(); ctx.stroke();
+        ctx.font='13px "IBM Plex Mono", monospace'; ctx.textAlign='left'; ctx.fillStyle=COL.text;
+        if(refl){ ctx.fillText('gleiche Hypotenuse AB, gleiche',bx+12,by+23); ctx.fillText('Kathete c·Δt ⇒ α = β',bx+12,by+43); }
+        else { ctx.fillText('sin α / sin β = '+fmt(Math.sin(a)/Math.sin(b),3),bx+12,by+23); ctx.fillText('c₁ / c₂ = n₂ / n₁ = '+fmt(n2/n1,3),bx+12,by+43); }
+      } else {
+        ctx.fillStyle='rgba(7,10,18,.88)'; ctx.fillRect(10,H-58,Math.min(W-20,520),46);
+        label(ctx,'c₂·Δt > AB: keine Tangente von B an die Kreise ⇒ Totalreflexion',20,H-30,COL.pink,'13px "IBM Plex Sans", sans-serif','left');
+      }
+      label(ctx,'A',A.x-4,A.y+(refl?20:-10),'#fff'); label(ctx,'B',B.x+12,B.y+(refl?20:-8),'#fff');
+    }
+  };
+}
+const RH={mode:'refl',alpha:40,n1:1,tau:0,playing:true};
+bind('refA','refAv',v=>v+'°',v=>RH.alpha=v);
+$('refP').onclick=()=>{RH.playing=!RH.playing;$('refP').textContent=RH.playing?'❚❚ Pause':'▶ Abspielen';};
+$('refR').onclick=()=>RH.tau=0;
+sim($('cvRefH'),huygens($('cvRefH'),RH));
+const BH={mode:'refr',alpha:40,n1:1,n2:1.49,tau:0,playing:true};
+bind('bhA','bhAv',v=>v+'°',v=>BH.alpha=v); bind('bhN1','bhN1v',v=>fmt(v,2),v=>BH.n1=v); bind('bhN2','bhN2v',v=>fmt(v,2),v=>BH.n2=v);
+sim($('cvBrH'),huygens($('cvBrH'),BH));
+
+/* ---------- Fermat (Reflexion & Brechung) ---------- */
+function fermat(cv,gcv,S,out){
+  const geo=()=>{ const r=cv.getBoundingClientRect(),W=r.width,H=r.height, yb=S.mode==='refl'?H*.84:H*.5;
+    const P={x:S.P.x*W,y:S.P.y*H}, Q={x:S.Q.x*W,y:S.Q.y*H};
+    const tf=x=>Math.hypot(x-P.x,yb-P.y)/S.c1+Math.hypot(Q.x-x,Q.y-yb)/S.c2();
+    let lo=-W,hi=2*W; for(let k=0;k<90;k++){const m1=lo+(hi-lo)/3,m2=hi-(hi-lo)/3; if(tf(m1)<tf(m2))hi=m2; else lo=m1;}
+    return {W,H,yb,P,Q,tf,xm:(lo+hi)/2}; };
+  let drag=null;
+  cv.addEventListener('pointerdown',e=>{ const p=pointer(cv,e),g=geo(); const c=[['P',g.P],['Q',g.Q],['X',{x:S.x*g.W,y:g.yb}]]; let best=null,bd=36;
+    for(const [k,q] of c){const d=Math.hypot(q.x-p.x,q.y-p.y); if(d<bd){bd=d;best=k;}} if(!best&&Math.abs(p.y-g.yb)<28) best='X';
+    if(best){drag=best;S.anim=null;cv.setPointerCapture(e.pointerId);move(e);} });
+  const move=e=>{ if(!drag) return; const p=pointer(cv,e),cl=(v,a,b)=>Math.max(a,Math.min(b,v)), g=geo();
+    if(drag==='X') S.x=cl(p.x/p.W,0,1);
+    else { const o=drag==='P'?S.P:S.Q; o.x=cl(p.x/p.W,.04,.96);
+      if(S.mode==='refl') o.y=cl(p.y/p.H,.08,.72); else o.y=drag==='P'?cl(p.y/p.H,.06,.42):cl(p.y/p.H,.58,.94); } };
+  cv.addEventListener('pointermove',move); cv.addEventListener('pointerup',()=>drag=null); cv.addEventListener('pointercancel',()=>drag=null);
+  S.optimize=()=>{const g=geo(); S.anim={from:S.x,to:Math.max(0,Math.min(1,g.xm/g.W)),t:0};};
+  return (dt)=>{
+    if(S.anim){S.anim.t=Math.min(1,S.anim.t+dt/1.1);const e=1-Math.pow(1-S.anim.t,3);S.x=S.anim.from+(S.anim.to-S.anim.from)*e;if(S.anim.t>=1)S.anim=null;}
+    const {ctx,W,H}=fit(cv), g=geo(), {yb,P,Q,tf,xm}=g, refl=S.mode==='refl';
+    ctx.clearRect(0,0,W,H);
+    if(refl){ const gr=ctx.createLinearGradient(0,yb,0,H); gr.addColorStop(0,'#5b6478'); gr.addColorStop(.12,'#262c3a'); gr.addColorStop(1,'#141926'); ctx.fillStyle=gr; ctx.fillRect(0,yb,W,H-yb); }
+    else { ctx.fillStyle='rgba(70,140,255,.13)'; ctx.fillRect(0,yb,W,H-yb); ctx.strokeStyle='rgba(143,232,255,.7)'; ctx.beginPath(); ctx.moveTo(0,yb); ctx.lineTo(W,yb); ctx.stroke();
+      label(ctx,'c₁ (schneller)',14,20,COL.muted,'13px "IBM Plex Sans", sans-serif','left'); label(ctx,'c₂',14,yb+22,COL.muted,'13px "IBM Plex Sans", sans-serif','left'); }
+    const X={x:S.x*W,y:yb}, tc=tf(X.x), tm=tf(xm), rel=(tc/tm-1)*100, ok=rel<.05, col=ok?COL.green:COL.na;
+    ctx.setLineDash([3,6]); ctx.strokeStyle='rgba(255,255,255,.28)'; ctx.lineWidth=1.4;
+    if(refl){ const Bm={x:Q.x,y:2*yb-Q.y}; ctx.beginPath(); ctx.moveTo(X.x,X.y); ctx.lineTo(Bm.x,Bm.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(xm,yb); ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,.3)'; ctx.beginPath(); ctx.arc(Bm.x,Bm.y,6,0,7); ctx.fill(); label(ctx,'B′ (Spiegelbild)',Bm.x,Bm.y-12,COL.muted,'12px "IBM Plex Sans", sans-serif'); }
+    else { ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(Q.x,Q.y); ctx.stroke(); }
+    ctx.setLineDash([8,6]); ctx.strokeStyle='rgba(93,255,160,.5)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(xm,yb); ctx.lineTo(Q.x,Q.y); ctx.stroke();
+    ctx.setLineDash([6,5]); ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X.x,yb-110); ctx.lineTo(X.x,refl?yb:yb+110); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle=col; ctx.lineWidth=3.4; ctx.shadowColor=col; ctx.shadowBlur=12; ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(X.x,X.y); ctx.lineTo(Q.x,Q.y); ctx.stroke(); ctx.shadowBlur=0;
+    const up=-Math.PI/2, aP=Math.atan2(P.y-yb,P.x-X.x), aQ=Math.atan2(Q.y-yb,Q.x-X.x);
+    ctx.lineWidth=2; ctx.strokeStyle=COL.na; const m1=arcBetween(ctx,X,up,aP,40);
+    ctx.strokeStyle=COL.cyan; const m2=refl?arcBetween(ctx,X,up,aQ,40):arcBetween(ctx,X,Math.PI/2,aQ,40);
+    label(ctx,'α',X.x+56*Math.cos(m1),yb+56*Math.sin(m1)+6,COL.na); label(ctx,'β',X.x+56*Math.cos(m2),yb+56*Math.sin(m2)+6,COL.cyan);
+    const dot=(p,c,t)=>{ctx.fillStyle=c;ctx.shadowColor=c;ctx.shadowBlur=16;ctx.beginPath();ctx.arc(p.x,p.y,8,0,7);ctx.fill();ctx.shadowBlur=0;label(ctx,t,p.x,p.y-15,'#fff','600 13px "IBM Plex Sans", sans-serif');};
+    dot(P,COL.pink,refl?'A':'P'); dot(Q,COL.violet,refl?'B':'Q'); dot(X,col,refl?'P':'F');
+    const sa=Math.abs(X.x-P.x)/Math.hypot(X.x-P.x,yb-P.y), sb=Math.abs(Q.x-X.x)/Math.hypot(Q.x-X.x,Q.y-yb);
+    out(sa,sb,ok,rel);
+    const G=fit(gcv),c2=G.ctx; c2.clearRect(0,0,G.W,G.H);
+    let mn=1e9,mx=-1e9; const vs=[]; for(let i=0;i<=200;i++){const v=tf(i/200*W); vs.push(v); mn=Math.min(mn,v); mx=Math.max(mx,v);}
+    const gy=v=>G.H-16-(v-mn)/((mx-mn)||1)*(G.H-34);
+    c2.font='11px "IBM Plex Mono", monospace'; c2.fillStyle=COL.muted; c2.textAlign='left'; c2.fillText('Laufzeit t(x)',10,14); c2.textAlign='right'; c2.fillText('Lage von '+(refl?'P':'F')+' →',G.W-10,G.H-3);
+    c2.strokeStyle=COL.violet; c2.lineWidth=2; c2.beginPath(); vs.forEach((v,i)=>{const x=i/200*G.W; i?c2.lineTo(x,gy(v)):c2.moveTo(x,gy(v));}); c2.stroke();
+    c2.fillStyle=COL.green; c2.beginPath(); c2.arc(xm/W*G.W,gy(tm),5,0,7); c2.fill();
+    c2.fillStyle=col; c2.beginPath(); c2.arc(S.x*G.W,gy(tc),6,0,7); c2.fill();
+  };
+}
+const RF={mode:'refl',P:{x:.15,y:.18},Q:{x:.85,y:.4},x:.35,c1:1,c2:()=>1};
+sim($('cvRefF'),fermat($('cvRefF'),$('cvRefG'),RF,(sa,sb,ok,rel)=>{ $('rfA').textContent=fmt(deg(Math.asin(sa)))+'°'; $('rfB').textContent=fmt(deg(Math.asin(sb)))+'°'; $('rfT').textContent=ok?'Minimum ✓':'+'+fmt(rel,2)+' %'; }));
+const BF={mode:'refr',P:{x:.15,y:.16},Q:{x:.8,y:.86},x:.62,c1:3,c2:()=>+$('brC2').value};
+bind('brC1','brC1v',v=>fmt(v,2)+'·10⁸ m/s',v=>BF.c1=v); bind('brC2','brC2v',v=>fmt(v,2)+'·10⁸ m/s');
+$('brOpt').onclick=()=>BF.optimize&&BF.optimize();
+sim($('cvBrF'),fermat($('cvBrF'),$('cvBrG'),BF,(sa,sb,ok,rel)=>{ $('brS').textContent=fmt(sa/sb,3); $('brC').textContent=fmt(BF.c1/BF.c2(),3); $('brT').textContent=ok?'Minimum ✓':'+'+fmt(rel,2)+' %';
+  $('brS').style.color=ok?COL.green:''; }));
+
+/* ---------- 1.4 Wellenwanne ---------- */
+const WS={a:35,c:.55}; const wOff=document.createElement('canvas'); let wImg=null;
+bind('wA','wAv',v=>v+'°',v=>WS.a=v); bind('wC','wCv',v=>fmt(v,2),v=>WS.c=v);
+sim($('cvWater'),(dt,t)=>{ const {ctx,W,H}=fit($('cvWater'));
+  const gw=Math.min(260,Math.round(W/3)), gh=Math.round(gw*H/W); if(wOff.width!==gw||wOff.height!==gh){wOff.width=gw;wOff.height=gh;wImg=wOff.getContext('2d').createImageData(gw,gh);}
+  const d=wImg.data, x0=gw*.46, a=rad(WS.a), lam1=gw/9, K1=2*Math.PI/lam1, K2=K1/WS.c, k1x=K1*Math.cos(a), ky=K1*Math.sin(a), k2x=Math.sqrt(Math.max(0,K2*K2-ky*ky)), om=2*Math.PI*.7*t;
+  for(let j=0;j<gh;j++) for(let i=0;i<gw;i++){ const sh=i>x0, ph=(sh?k2x:k1x)*(i-x0)+ky*(j-gh/2)-om; const v=Math.cos(ph), q=(j*gw+i)*4;
+    const s=(v+1)/2; if(sh){ d[q]=40+s*120; d[q+1]=70+s*140; d[q+2]=90+s*120; } else { d[q]=8+s*60; d[q+1]=30+s*140; d[q+2]=70+s*185; } d[q+3]=255; }
+  wOff.getContext('2d').putImageData(wImg,0,0); ctx.imageSmoothingEnabled=true; ctx.drawImage(wOff,0,0,W,H);
+  const X0=x0/gw*W; ctx.strokeStyle='rgba(255,255,255,.7)'; ctx.setLineDash([7,6]); ctx.beginPath(); ctx.moveTo(X0,0); ctx.lineTo(X0,H); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx,'tief · schnell',12,22,'#fff','600 13px "IBM Plex Sans", sans-serif','left'); label(ctx,'flach · langsam',X0+12,22,'#fff','600 13px "IBM Plex Sans", sans-serif','left');
+  const b=Math.asin(Math.min(1,Math.sin(a)*WS.c)), cy=H*.55;
+  ctx.strokeStyle=COL.red; ctx.lineWidth=3; ctx.shadowColor=COL.red; ctx.shadowBlur=10; ctx.beginPath(); ctx.moveTo(X0-Math.cos(a)*W*.36,cy-Math.sin(a)*W*.36); ctx.lineTo(X0,cy); ctx.lineTo(X0+Math.cos(b)*W*.4,cy+Math.sin(b)*W*.4); ctx.stroke(); ctx.shadowBlur=0;
+  ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X0-120,cy); ctx.lineTo(X0+120,cy); ctx.stroke(); ctx.setLineDash([]);
+  ctx.lineWidth=2; ctx.strokeStyle=COL.na; const m1=arcBetween(ctx,{x:X0,y:cy},Math.PI,Math.PI+a,46); ctx.strokeStyle=COL.cyan; const m2=arcBetween(ctx,{x:X0,y:cy},0,b,46);
+  if(WS.a>2){ label(ctx,'α',X0+62*Math.cos(m1),cy+62*Math.sin(m1)+6,COL.na); label(ctx,'β',X0+62*Math.cos(m2),cy+62*Math.sin(m2)+6,COL.cyan); }
+  $('wL').textContent=fmt(WS.c,2); $('wB').textContent=fmt(deg(b))+'°';
+});
+
+/* ---------- 1.5 Regensensor ---------- */
+const RN={th:50,rain:false,drops:[],wipe:-1,sig:1,spawn:0};
+bind('rnT','rnTv',v=>fmt(v)+'°',v=>RN.th=v);
+$('rnRain').onclick=()=>{RN.rain=!RN.rain; $('rnRain').classList.toggle('on',RN.rain); $('rnRain').textContent=RN.rain?'🌧 Regen aus':'🌧 Regen an';};
+$('rnWipe').onclick=()=>{ if(RN.wipe<0) RN.wipe=0; };
+sim($('cvRain'),(dt,t)=>{ const {ctx,W,H}=fit($('cvRain')); ctx.clearRect(0,0,W,H);
+  const gy0=H*.36, gy1=H*.36+Math.min(90,H*.2), th=rad(RN.th), n=1.52;
+  // Himmel & Scheibe
+  const sky=ctx.createLinearGradient(0,0,0,gy0); sky.addColorStop(0,'#0b1426'); sky.addColorStop(1,'#16223b'); ctx.fillStyle=sky; ctx.fillRect(0,0,W,gy0);
+  ctx.fillStyle='rgba(150,220,255,.16)'; ctx.fillRect(0,gy0,W,gy1-gy0); ctx.strokeStyle='rgba(170,230,255,.7)'; ctx.lineWidth=1.2; ctx.strokeRect(-2,gy0,W+4,gy1-gy0);
+  label(ctx,'außen · Luft (n = 1,00)',12,20,COL.muted,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'Windschutzscheibe · Glas (n = 1,52)',12,gy0+18,'#cfe9ff','12px "IBM Plex Sans", sans-serif','left');
+  // Strahlweg: Zickzack im Glas
+  const tk=gy1-gy0, dx=tk*Math.tan(th), xs=W*.5-2*dx, pts=[{x:xs,y:gy1}];
+  for(let i=1;i<=4;i++) pts.push({x:xs+i*dx,y:i%2?gy0:gy1});
+  const tops=[pts[1],pts[3]];
+  // Regen
+  if(RN.rain){ RN.spawn-=dt; if(RN.spawn<=0){ RN.spawn=.12+Math.random()*.2; RN.drops.push({x:W*.15+Math.random()*W*.7,r:0,rm:10+Math.random()*16,fall:-Math.random()*40}); } }
+  for(const d of RN.drops){ if(d.fall<gy0){ d.fall+=dt*420; } else d.r=Math.min(d.rm,d.r+dt*40); }
+  if(RN.drops.length>60) RN.drops.shift();
+  // Wischer
+  if(RN.wipe>=0){ RN.wipe+=dt*1.3; const wx=RN.wipe*W*1.1; RN.drops=RN.drops.filter(d=>d.x>wx); ctx.fillStyle='rgba(20,20,26,.95)'; ctx.fillRect(wx-6,gy0-26,12,24); ctx.fillRect(wx-40,gy0-6,80,6); if(RN.wipe>1){RN.wipe=-1;} }
+  // Tropfen zeichnen
+  for(const d of RN.drops){ if(d.fall<gy0){ ctx.fillStyle='rgba(120,190,255,.8)'; ctx.fillRect(d.x-1,d.fall-8,2,8); continue; }
+    ctx.fillStyle='rgba(90,170,255,.55)'; ctx.strokeStyle='rgba(180,225,255,.8)'; ctx.beginPath(); ctx.ellipse(d.x,gy0,d.r,d.r*.62,0,Math.PI,2*Math.PI); ctx.fill(); ctx.stroke(); }
+  // Reflexionen
+  let I=1; const leaks=[];
+  tops.forEach(p=>{ const wet=RN.drops.some(d=>d.fall>=gy0&&Math.abs(d.x-p.x)<d.r*.9); const F=fresnel(n,wet?1.33:1,th); p.R=F.R; p.tir=F.tir; if(!F.tir) leaks.push({p,b:F.b,I:I*F.T}); I*=F.R; });
+  RN.sig+= (I-RN.sig)*Math.min(1,dt*6);
+  let Ic=1;
+  for(let i=0;i<4;i++){ const a=pts[i],b=pts[i+1]; ctx.strokeStyle='rgba(255,77,77,'+(0.25+0.75*Ic)+')'; ctx.lineWidth=2+2*Ic; ctx.shadowColor=COL.red; ctx.shadowBlur=12*Ic; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    if(i===0) Ic*=tops[0].R; if(i===2) Ic*=tops[1].R; }
+  ctx.shadowBlur=0;
+  leaks.forEach(l=>{ ctx.strokeStyle='rgba(255,77,77,'+(0.3+0.6*l.I)+')'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(l.p.x,gy0); ctx.lineTo(l.p.x+Math.sin(l.b)*90,gy0-Math.cos(l.b)*90); ctx.stroke(); });
+  tops.forEach(p=>{ ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,255,255,.4)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(p.x,gy0-50); ctx.lineTo(p.x,gy1); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle=COL.na; ctx.lineWidth=1.6; arcBetween(ctx,{x:p.x,y:gy0},Math.PI/2,Math.PI/2-th,26); arcBetween(ctx,{x:p.x,y:gy0},Math.PI/2,Math.PI/2+th,26);
+    label(ctx,p.tir?'TR ✓':'✗',p.x,gy0-58,p.tir?COL.green:COL.pink,'600 12px "IBM Plex Mono", monospace'); });
+  // Sensorgehäuse
+  const by=gy1+4; ctx.fillStyle='#1a2133'; ctx.fillRect(pts[0].x-50,by,pts[4].x-pts[0].x+100,Math.min(90,H-by-40));
+  ctx.fillStyle=COL.red; ctx.shadowColor=COL.red; ctx.shadowBlur=18; ctx.beginPath(); ctx.arc(pts[0].x,by+22,9,0,7); ctx.fill(); ctx.shadowBlur=0;
+  ctx.fillStyle='rgba(255,77,77,'+(0.15+0.85*RN.sig)+')'; ctx.shadowColor=COL.red; ctx.shadowBlur=24*RN.sig; ctx.fillRect(pts[4].x-12,by+12,24,20); ctx.shadowBlur=0;
+  label(ctx,'LED',pts[0].x,by+52,COL.text,'12px "IBM Plex Sans", sans-serif'); label(ctx,'Empfänger',pts[4].x,by+52,COL.text,'12px "IBM Plex Sans", sans-serif');
+  // Signalbalken
+  const sy=H-26, sw=Math.min(W-40,420), sx=(W-sw)/2; ctx.fillStyle='rgba(255,255,255,.08)'; ctx.fillRect(sx,sy,sw,10); ctx.fillStyle=RN.sig>.8?COL.green:COL.pink; ctx.fillRect(sx,sy,sw*RN.sig,10);
+  label(ctx,'Signal '+Math.round(RN.sig*100)+' %'+(RN.sig<.8?'  →  Wischer an!':''),W/2,sy-8,RN.sig>.8?COL.green:COL.pink,'600 12px "IBM Plex Mono", monospace');
+  if(RN.sig<.8 && RN.wipe<0 && RN.rain) RN.wipe=0;
+  $('rnSig').textContent=Math.round(RN.sig*100)+' %'; $('rnSigBox').className='o '+(RN.sig>.8?'good':'bad');
+});
+
+/* ---------- 1.6 Interferenz ---------- */
+let inDs=0;
+bind('inS','inSv',v=>fmt(v,2)+' λ',v=>inDs=v);
+document.querySelectorAll('[data-ds]').forEach(b=>b.onclick=()=>{ $('inS').value=b.dataset.ds; $('inS').dispatchEvent(new Event('input')); });
+sim($('cvInt'),(dt,t)=>{ const {ctx,W,H}=fit($('cvInt')); ctx.clearRect(0,0,W,H);
+  const lam=Math.max(120,W/4), k=2*Math.PI/lam, om=2*Math.PI*.5*t, ph=2*Math.PI*inDs, rows=[H*.17,H*.42,H*.74], A=Math.min(34,H*.09);
+  const wave=(y,f,col,amp,lw)=>{ ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.beginPath(); for(let x=0;x<=W;x+=3){ const v=f(x); x?ctx.lineTo(x,y-v*amp):ctx.moveTo(x,y-v*amp);} ctx.stroke(); };
+  rows.forEach(y=>{ctx.strokeStyle=COL.grid;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();});
+  wave(rows[0],x=>Math.sin(k*x-om),COL.red,A,2.4); wave(rows[1],x=>Math.sin(k*x-om-ph),COL.cyan,A,2.4);
+  const amp=Math.abs(2*Math.cos(ph/2)); ctx.shadowColor='#fff'; ctx.shadowBlur=10; wave(rows[2],x=>Math.sin(k*x-om)+Math.sin(k*x-om-ph),'#fff',A,3.2); ctx.shadowBlur=0;
+  ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.beginPath(); ctx.moveTo(0,rows[2]-2*A); ctx.lineTo(W,rows[2]-2*A); ctx.moveTo(0,rows[2]+2*A); ctx.lineTo(W,rows[2]+2*A); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx,'Welle 1',10,rows[0]-A-8,COL.red,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'Welle 2 · um Δs verschoben',10,rows[1]-A-8,COL.cyan,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'Summe (Superposition)',10,rows[2]-2*A-8,'#fff','12px "IBM Plex Sans", sans-serif','left');
+  // Gangunterschied-Klammer
+  const x0=W*.12, x1=x0+inDs*lam; ctx.strokeStyle=COL.na; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x0,rows[1]+A+14); ctx.lineTo(x1,rows[1]+A+14); ctx.stroke(); if(inDs>.02) label(ctx,'Δs',(x0+x1)/2,rows[1]+A+30,COL.na);
+  $('inP').textContent=fmt(ph/Math.PI,2)+' π  ('+Math.round(deg(ph))+'°)';
+  const fr=inDs%1, con=fr<.04||fr>.96, des=Math.abs(fr-.5)<.04;
+  $('inR').textContent=con?'konstruktiv · Maximum':des?'destruktiv · Minimum':'teilweise · Amplitude '+fmt(amp,2)+'·A'; $('inBox').className='o '+(con?'good':des?'bad':'');
+});
+
+/* ---------- 1.7 Einzelspalt ---------- */
+const SB={b:4,l:633};
+bind('sbB','sbBv',v=>fmt(v)+' µm',v=>SB.b=v); bind('sbL','sbLv',v=>v+' nm',v=>SB.l=v);
+sim($('cvSingle'),()=>{ const {ctx,W,H}=fit($('cvSingle')); ctx.clearRect(0,0,W,H);
+  const L=40,R=16,T=16,sh=46,B=40+sh, pw=W-L-R, ph=H-T-B, amax=40, X=a=>L+(a+amax)/(2*amax)*pw, Y=v=>T+ph-v*ph;
+  const I=a=>{ const be=Math.PI*SB.b*1000*Math.sin(rad(a))/SB.l; return Math.abs(be)<1e-6?1:Math.pow(Math.sin(be)/be,2); };
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.strokeStyle=COL.grid; ctx.lineWidth=1; ctx.textAlign='center';
+  for(let a=-40;a<=40;a+=10){ ctx.beginPath(); ctx.moveTo(X(a),T); ctx.lineTo(X(a),T+ph); ctx.stroke(); ctx.fillText(a+'°',X(a),T+ph+14); }
+  ctx.strokeStyle=wlc(SB.l); ctx.lineWidth=2.4; ctx.shadowColor=wlc(SB.l); ctx.shadowBlur=10; ctx.beginPath(); for(let i=0;i<=pw;i++){ const a=-amax+i/pw*2*amax; i?ctx.lineTo(L+i,Y(I(a))):ctx.moveTo(L+i,Y(I(a))); } ctx.stroke(); ctx.shadowBlur=0;
+  for(let x=0;x<=pw;x++){ const a=-amax+x/pw*2*amax; ctx.fillStyle=wlc(SB.l,Math.min(1,Math.sqrt(I(a))*1.1)); ctx.fillRect(L+x,H-sh-6,1.2,sh); }
+  ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.strokeRect(L,H-sh-6,pw,sh);
+  for(let k=1;k<=4;k++){ const s=k*SB.l/(SB.b*1000); if(s>=1) break; const a=deg(Math.asin(s)); if(a>amax) break;
+    for(const sg of [-1,1]){ ctx.fillStyle=COL.pink; ctx.beginPath(); ctx.arc(X(sg*a),Y(0),3.5,0,7); ctx.fill(); }
+    label(ctx,'k='+k,X(a),Y(0)-8,COL.pink,'11px "IBM Plex Mono", monospace'); }
+  const s1=SB.l/(SB.b*1000); $('sbM').textContent=s1<1?'α = '+fmt(deg(Math.asin(s1)))+'°':'kein Minimum'; $('sbW').textContent=s1<1?fmt(2*deg(Math.asin(s1)))+'°':'> 180°';
+});
+
+/* ---------- 1.8 Doppelspalt ---------- */
+const DS={d:.4,l:633,e:2,mode:'wave',Ay:.3,drag:false}; const dOff=document.createElement('canvas'); let dImg=null;
+bind('dsD','dsDv',v=>fmt(v,2)+' mm',v=>DS.d=v); bind('dsL','dsLv',v=>v+' nm',v=>DS.l=v); bind('dsE','dsEv',v=>fmt(v,2)+' m',v=>DS.e=v);
+$('dsMode').onclick=()=>{ DS.mode=DS.mode==='wave'?'int':'wave'; $('dsMode').textContent='Anzeige: '+(DS.mode==='wave'?'Momentbild':'Intensität (zeitgemittelt)'); };
+const dcv=$('cvDouble');
+const dGeo=()=>{ const r=dcv.getBoundingClientRect(),W=r.width,H=r.height; const bx=W*.2, sx=W-26, dpx=24+DS.d*110, lpx=10+(DS.l-400)/300*12; return {W,H,bx,sx,dpx,lpx,cy:H/2}; };
+dcv.addEventListener('pointerdown',e=>{ const p=pointer(dcv,e),g=dGeo(); if(Math.abs(p.x-g.sx)<40){DS.drag=true;dcv.setPointerCapture(e.pointerId);DS.Ay=Math.max(.03,Math.min(.97,p.y/g.H));} });
+dcv.addEventListener('pointermove',e=>{ if(!DS.drag) return; const p=pointer(dcv,e); DS.Ay=Math.max(.03,Math.min(.97,p.y/p.H)); });
+dcv.addEventListener('pointerup',()=>DS.drag=false); dcv.addEventListener('pointercancel',()=>DS.drag=false);
+sim(dcv,(dt,t)=>{ const {ctx,W,H}=fit(dcv), g=dGeo(); const sc=.3;
+  const gw=Math.round(W*sc), gh=Math.round(H*sc); if(dOff.width!==gw||dOff.height!==gh){dOff.width=gw;dOff.height=gh;dImg=dOff.getContext('2d').createImageData(gw,gh);}
+  const dd=dImg.data, k=2*Math.PI/(g.lpx*sc), om=2*Math.PI*.8*t, bxs=g.bx*sc, s1y=(g.cy-g.dpx/2)*sc, s2y=(g.cy+g.dpx/2)*sc, wave=DS.mode==='wave';
+  for(let j=0;j<gh;j++) for(let i=0;i<gw;i++){ const q=(j*gw+i)*4; let v;
+    if(i<bxs){ v=wave?Math.cos(k*(i-bxs)-om)*.8:.64; }
+    else { const r1=Math.hypot(i-bxs,j-s1y)+1e-3, r2=Math.hypot(i-bxs,j-s2y)+1e-3, f1=1/Math.sqrt(r1/(g.lpx*sc)+1), f2=1/Math.sqrt(r2/(g.lpx*sc)+1);
+      if(wave) v=(Math.cos(k*r1-om)*f1+Math.cos(k*r2-om)*f2)*.95; else { const re=Math.cos(k*r1)*f1+Math.cos(k*r2)*f2, im=Math.sin(k*r1)*f1+Math.sin(k*r2)*f2; v=(re*re+im*im)*.5; } }
+    if(wave){ const s=Math.max(0,Math.min(1,(v+1.2)/2.4)); dd[q]=10+s*245; dd[q+1]=12+s*70; dd[q+2]=24+s*70; }
+    else { const s=Math.min(1,v); dd[q]=10+s*245; dd[q+1]=12+s*120; dd[q+2]=24+s*60; }
+    dd[q+3]=255; }
+  dOff.getContext('2d').putImageData(dImg,0,0); ctx.imageSmoothingEnabled=true; ctx.drawImage(dOff,0,0,W,H);
+  // Blende
+  ctx.fillStyle='#d9dfeb'; const gap=Math.max(4,g.lpx*.5);
+  ctx.fillRect(g.bx-3,0,6,g.cy-g.dpx/2-gap/2); ctx.fillRect(g.bx-3,g.cy-g.dpx/2+gap/2,6,g.dpx-gap); ctx.fillRect(g.bx-3,g.cy+g.dpx/2+gap/2,6,H);
+  // Schirm & Punkt A
+  ctx.fillStyle='#d9dfeb'; ctx.fillRect(g.sx,0,4,H);
+  const A={x:g.sx,y:DS.Ay*H}, S1={x:g.bx,y:g.cy-g.dpx/2}, S2={x:g.bx,y:g.cy+g.dpx/2};
+  ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(S1.x,S1.y); ctx.lineTo(A.x,A.y); ctx.moveTo(S2.x,S2.y); ctx.lineTo(A.x,A.y); ctx.stroke();
+  ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,255,255,.4)'; ctx.beginPath(); ctx.moveTo(g.bx,g.cy); ctx.lineTo(g.sx,g.cy); ctx.stroke(); ctx.setLineDash([]);
+  const dsl=(Math.hypot(A.x-S2.x,A.y-S2.y)-Math.hypot(A.x-S1.x,A.y-S1.y))/g.lpx, fr=((dsl%1)+1)%1, con=fr<.08||fr>.92, des=Math.abs(fr-.5)<.08;
+  ctx.fillStyle=con?COL.green:des?COL.pink:COL.na; ctx.beginPath(); ctx.arc(A.x,A.y,8,0,7); ctx.fill();
+  label(ctx,'A',A.x-16,A.y+5,'#fff'); label(ctx,'S₁',S1.x-16,S1.y+5,'#fff'); label(ctx,'S₂',S2.x-16,S2.y+5,'#fff'); label(ctx,'O',g.sx-12,g.cy-6,'#fff');
+  label(ctx,'Licht',14,20,'#fff','600 12px "IBM Plex Sans", sans-serif','left');
+  $('dsDs').textContent='Δs = '+fmt(dsl,2)+' λ'; $('dsRes').textContent=con?'Maximum (hell)':des?'Minimum (dunkel)':'dazwischen'; $('dsBox').className='o '+(con?'good':des?'bad':'');
+  // maßstäbliches Schirmbild
+  const G=fit($('cvDScreen')), c=G.ctx; c.clearRect(0,0,G.W,G.H);
+  const half=40, px=G.W/(2*half), lam=DS.l*1e-9, d=DS.d*1e-3, e=DS.e, bslit=0.08e-3;
+  for(let x=0;x<G.W;x++){ const amm=(x-G.W/2)/px, al=Math.atan(amm*1e-3/e), s=Math.sin(al), be=Math.PI*bslit*s/lam, env=Math.abs(be)<1e-9?1:Math.pow(Math.sin(be)/be,2), I=Math.pow(Math.cos(Math.PI*d*s/lam),2)*env;
+    c.fillStyle=wlc(DS.l,Math.min(1,Math.sqrt(I)*1.05)); c.fillRect(x,14,1.2,G.H-44); }
+  c.font='11px "IBM Plex Mono", monospace'; c.fillStyle=COL.muted; c.textAlign='center';
+  for(let m=-40;m<=40;m+=10){ const x=G.W/2+m*px; c.fillRect(x,G.H-30,1,6); c.fillText(m+' mm',x,G.H-12); }
+  const a1=e*Math.tan(Math.asin(lam/d))*1000;
+  c.fillStyle='#fff'; for(const sg of [-1,1]){ const x=G.W/2+sg*a1*px; c.beginPath(); c.moveTo(x,6); c.lineTo(x-5,0); c.lineTo(x+5,0); c.fill(); }
+  c.textAlign='left'; c.fillText('Schirmbild im echten Maßstab',8,11);
+  $('dsA1').textContent=fmt(a1,1)+' mm'; $('dsSp').textContent=fmt(lam*e/d*1000,2)+' mm';
+});
+function calcD(){ const d=+$('cD').value*1e-3, e=+$('cE').value, a=+$('cA').value*1e-2, k=Math.max(1,Math.round(+$('cK').value));
+  if(!(d>0&&e>0&&a>0)){ $('cRes').textContent='Bitte positive Werte eintragen.'; return; }
+  const lx=d*a/(k*Math.sqrt(e*e+a*a)), ln=d*a/(k*e);
+  $('cRes').innerHTML='λ (Näherung) = '+fmt(ln*1e9,1)+' nm &nbsp;·&nbsp; λ (exakt) = '+fmt(lx*1e9,1)+' nm &nbsp;<span style="display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:middle;background:'+(ln*1e9>=380&&ln*1e9<=780?wlc(ln*1e9):'transparent')+'"></span>'; }
+['cD','cE','cA','cK'].forEach(id=>$(id).addEventListener('input',calcD)); calcD();
+
+/* ---------- 2.1 Gitter ---------- */
+const GR={N:2,g:300,l:633};
+bind('grN','grNv',v=>v,v=>GR.N=v); bind('grG','grGv',v=>v+' /mm',v=>GR.g=v); bind('grL','grLv',v=>v+' nm',v=>GR.l=v);
+sim($('cvGrat'),()=>{ const {ctx,W,H}=fit($('cvGrat')); ctx.clearRect(0,0,W,H);
+  const L=40,R=14,T=16,sh=40,B=34+sh,pw=W-L-R,ph=H-T-B,amax=80, X=a=>L+(a+amax)/(2*amax)*pw, Y=v=>T+ph-v*ph;
+  const d=1e6/GR.g, N=GR.N;
+  const I=a=>{ const x=Math.PI*d*Math.sin(rad(a))/GR.l, sn=Math.sin(x); if(Math.abs(sn)<1e-9) return 1; const v=Math.sin(N*x)/(N*sn); return v*v; };
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.strokeStyle=COL.grid; ctx.textAlign='center';
+  for(let a=-80;a<=80;a+=20){ ctx.beginPath(); ctx.moveTo(X(a),T); ctx.lineTo(X(a),T+ph); ctx.stroke(); ctx.fillText(a+'°',X(a),T+ph+14); }
+  const col=wlc(GR.l); ctx.strokeStyle=col; ctx.lineWidth=2; ctx.shadowColor=col; ctx.shadowBlur=8; ctx.beginPath();
+  const steps=Math.max(pw*3,1200); for(let i=0;i<=steps;i++){ const a=-amax+i/steps*2*amax, x=L+i/steps*pw; i?ctx.lineTo(x,Y(I(a))):ctx.moveTo(x,Y(I(a))); } ctx.stroke(); ctx.shadowBlur=0;
+  for(let i=0;i<=pw;i++){ let m=0; for(let s=0;s<3;s++){ const a=-amax+(i+s/3)/pw*2*amax; m=Math.max(m,I(a)); } ctx.fillStyle=wlc(GR.l,Math.min(1,Math.sqrt(m))); ctx.fillRect(L+i,H-sh-6,1.2,sh); }
+  const km=Math.floor(d/GR.l);
+  for(let k=-km;k<=km;k++){ const a=deg(Math.asin(k*GR.l/d)); if(Math.abs(a)>amax) continue; label(ctx,'k='+k,X(a),T+10,COL.text,'11px "IBM Plex Mono", monospace'); }
+  $('grD').textContent=fmt(d/1000,2)+' µm'; $('grA1').textContent=GR.l<d?fmt(deg(Math.asin(GR.l/d)))+'°':'–'; $('grK').textContent=km;
+});
+function calcG(){ const g=+$('gG').value, a=+$('gA').value*1e-2, e=+$('gE').value, k=Math.max(1,Math.round(+$('gK').value));
+  if(!(g>0&&a>0&&e>0)){ $('gRes').textContent='Bitte positive Werte eintragen.'; return; }
+  const d=1e-3/g, al=Math.atan(a/e), l=d*Math.sin(al)/k;
+  $('gRes').innerHTML='d = '+fmt(d*1e6,3)+' µm · α = arctan(a/e) = '+fmt(deg(al),2)+'° · λ = d·sin α / k = <b style="color:#fff">'+fmt(l*1e9,1)+' nm</b> · k<sub>max</sub> = '+Math.floor(d/l); }
+['gG','gA','gE','gK'].forEach(id=>$(id).addEventListener('input',calcG)); calcG();
+
+/* ---------- 2.2 Spektren ---------- */
+const SP={g:300,ov:true};
+bind('spG','spGv',v=>v+' /mm',v=>SP.g=v);
+$('spOv').onclick=()=>{SP.ov=!SP.ov;$('spOv').classList.toggle('on',SP.ov);};
+sim($('cvSpecG'),()=>{ const {ctx,W,H}=fit($('cvSpecG')); ctx.clearRect(0,0,W,H);
+  const d=1e6/SP.g, cx=W/2, cy=H-24, R=Math.min(W*.46,H-50);
+  ctx.strokeStyle='rgba(255,255,255,.15)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cx,cy,R,Math.PI,2*Math.PI); ctx.stroke();
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.textAlign='center';
+  for(let a=-90;a<=90;a+=30){ const p=rad(a-90); ctx.fillText(a+'°',cx+(R+14)*Math.cos(p),cy+(R+14)*Math.sin(p)+4); }
+  ctx.fillStyle='#fff'; ctx.fillRect(cx-3,cy-6,6,12); label(ctx,'Gitter',cx,cy+18,COL.muted,'11px "IBM Plex Sans", sans-serif');
+  ctx.globalCompositeOperation='lighter';
+  const ranges=[];
+  for(let k=-4;k<=4;k++){ if(!k) continue; let a0=null,a1=null;
+    for(let l=400;l<=750;l+=1.5){ const s=k*l/d; if(Math.abs(s)>1) continue; const a=Math.asin(s), p=a-Math.PI/2;
+      ctx.strokeStyle=wlc(l,.75); ctx.lineWidth=2.2; ctx.beginPath(); ctx.moveTo(cx+(R-16)*Math.cos(p),cy+(R-16)*Math.sin(p)); ctx.lineTo(cx+(R+2)*Math.cos(p),cy+(R+2)*Math.sin(p)); ctx.stroke();
+      ctx.strokeStyle=wlc(l,.035); ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+(R-18)*Math.cos(p),cy+(R-18)*Math.sin(p)); ctx.stroke();
+      if(a0===null) a0=a; a1=a; }
+    if(a0!==null) ranges.push({k,a0,a1}); }
+  ctx.strokeStyle='rgba(255,255,255,.9)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,cy-R); ctx.stroke();
+  ctx.globalCompositeOperation='source-over';
+  label(ctx,'k=0 (weiß)',cx,cy-R-8,'#fff','11px "IBM Plex Mono", monospace');
+  ranges.forEach(r=>{ const m=(r.a0+r.a1)/2-Math.PI/2; label(ctx,'k='+r.k,cx+(R-34)*Math.cos(m),cy+(R-34)*Math.sin(m)+4,COL.text,'11px "IBM Plex Mono", monospace'); });
+  if(SP.ov){ ranges.filter(r=>r.k>0).forEach(r=>{ const nx=ranges.find(q=>q.k===r.k+1); if(!nx||nx.a0>=r.a1) return;
+    const p0=nx.a0-Math.PI/2, p1=r.a1-Math.PI/2; ctx.strokeStyle=COL.na; ctx.lineWidth=4; ctx.beginPath(); ctx.arc(cx,cy,R+8,p0,p1); ctx.stroke();
+    const m=(p0+p1)/2; label(ctx,r.k+'./'+(r.k+1)+'. überlappen',cx+(R-58)*Math.cos(m),cy+(R-58)*Math.sin(m)+4,COL.na,'600 11px "IBM Plex Mono", monospace'); }); }
+});
+
+/* ---------- 2.3 Auflösungsvermögen ---------- */
+const RS={N:200,n:1};
+const nOf=v=>Math.round(Math.pow(10,.3+v/100*(Math.log10(3000)-.3)));
+bind('rsN','rsNv',v=>nOf(v),v=>RS.N=nOf(v)); bind('rsK','rsKv',v=>v,v=>RS.n=v);
+sim($('cvRes'),()=>{ const {ctx,W,H}=fit($('cvRes')); ctx.clearRect(0,0,W,H);
+  const L=16,R=16,T=30,B=40,pw=W-L-R,ph=H-T-B, d=1e6/600, l1=589.0, l2=589.6, n=RS.n, N=RS.N, lm=(l1+l2)/2;
+  const s0=n*lm/d, sep=n*(l2-l1)/d, hw=Math.max(3.2*sep,4*lm/(N*d));
+  const I=(s,l)=>{ const x=Math.PI*d*s/l, sn=Math.sin(x); if(Math.abs(sn)<1e-12) return 1; const v=Math.sin(N*x)/(N*sn); return v*v; };
+  const vals=[]; let mx=0; for(let i=0;i<=pw;i++){ const s=s0-hw+i/pw*2*hw; const a=I(s,l1), b=I(s,l2); vals.push([a,b]); mx=Math.max(mx,a+b); }
+  const Y=v=>T+ph-v/Math.max(mx,1e-9)*ph;
+  ctx.fillStyle='rgba(255,201,60,.12)'; ctx.beginPath(); ctx.moveTo(L,T+ph); vals.forEach((v,i)=>ctx.lineTo(L+i,Y(v[0]+v[1]))); ctx.lineTo(L+pw,T+ph); ctx.fill();
+  ctx.lineWidth=1.3; ctx.setLineDash([3,3]);
+  ctx.strokeStyle='rgba(255,201,60,.55)'; ctx.beginPath(); vals.forEach((v,i)=>i?ctx.lineTo(L+i,Y(v[0])):ctx.moveTo(L+i,Y(v[0]))); ctx.stroke();
+  ctx.strokeStyle='rgba(255,140,40,.55)'; ctx.beginPath(); vals.forEach((v,i)=>i?ctx.lineTo(L+i,Y(v[1])):ctx.moveTo(L+i,Y(v[1]))); ctx.stroke(); ctx.setLineDash([]);
+  ctx.strokeStyle=COL.na; ctx.lineWidth=2.6; ctx.shadowColor=COL.na; ctx.shadowBlur=10; ctx.beginPath(); vals.forEach((v,i)=>i?ctx.lineTo(L+i,Y(v[0]+v[1])):ctx.moveTo(L+i,Y(v[0]+v[1]))); ctx.stroke(); ctx.shadowBlur=0;
+  const xs=s=>L+(s-(s0-hw))/(2*hw)*pw;
+  for(const [l,t,al] of [[l1,'589,0 nm ','right'],[l2,' 589,6 nm','left']]){ const x=xs(n*l/d); ctx.fillStyle=COL.text; ctx.fillRect(x-.5,T+ph,1,8); label(ctx,t,x,T+ph+22,COL.text,'11px "IBM Plex Mono", monospace',al); }
+  label(ctx,'Summe der beiden Linien (Gitter 600 /mm, '+n+'. Ordnung)',L,18,COL.muted,'12px "IBM Plex Sans", sans-serif','left');
+  const A=n*N, ok=A>=982; $('rsA').textContent=A; $('rsV').textContent=ok?'getrennt ✓':'verschmolzen ✗'; $('rsBox').className='o '+(ok?'good':'bad');
+});
+
+/* ---------- 2.4 Stehende Welle ---------- */
+const ST={m:3,sep:true};
+bind('stM','stMv',v=>v,v=>ST.m=v);
+$('stSep').onclick=()=>{ST.sep=!ST.sep;$('stSep').classList.toggle('on',ST.sep);};
+sim($('cvStand'),(dt,t)=>{ const {ctx,W,H}=fit($('cvStand')); ctx.clearRect(0,0,W,H);
+  const x0=34, x1=W-34, len=x1-x0, cy=H*.5, A=Math.min(H*.2,60), m=ST.m, k=m*Math.PI/len, om=2*Math.PI*.45*t;
+  ctx.fillStyle='#8e98b0'; ctx.fillRect(x0-12,cy-A*2.1,10,A*4.2); ctx.fillRect(x1+2,cy-A*2.1,10,A*4.2);
+  label(ctx,'Metall',x0-7,cy+A*2.1+16,COL.muted,'11px "IBM Plex Sans", sans-serif'); label(ctx,'Metall',x1+7,cy+A*2.1+16,COL.muted,'11px "IBM Plex Sans", sans-serif');
+  ctx.strokeStyle=COL.grid; ctx.beginPath(); ctx.moveTo(x0,cy); ctx.lineTo(x1,cy); ctx.stroke();
+  const draw=(f,col,lw,sh)=>{ ctx.strokeStyle=col; ctx.lineWidth=lw; if(sh){ctx.shadowColor=col;ctx.shadowBlur=12;} ctx.beginPath(); for(let x=0;x<=len;x+=2){ const y=cy-f(x)*A; x?ctx.lineTo(x0+x,y):ctx.moveTo(x0+x,y);} ctx.stroke(); ctx.shadowBlur=0; };
+  ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=1; for(const s of [1,-1]){ ctx.beginPath(); for(let x=0;x<=len;x+=2){ const y=cy-s*2*Math.abs(Math.sin(k*x))*A; x?ctx.lineTo(x0+x,y):ctx.moveTo(x0+x,y);} ctx.stroke(); }
+  if(ST.sep){ draw(x=>Math.sin(k*x-om),'rgba(255,77,77,.6)',1.6); draw(x=>-Math.sin(-k*x-om),'rgba(70,217,255,.6)',1.6); }
+  draw(x=>Math.sin(k*x-om)-Math.sin(-k*x-om),'#fff',3,true);
+  for(let j=0;j<=m;j++){ const x=x0+j*len/m; ctx.fillStyle=COL.pink; ctx.beginPath(); ctx.arc(x,cy,5,0,7); ctx.fill(); }
+  for(let j=0;j<m;j++){ const x=x0+(j+.5)*len/m; ctx.fillStyle=COL.green; ctx.beginPath(); ctx.arc(x,cy-2*A-10,3.5,0,7); ctx.fill(); }
+  if(m>=1){ const xa=x0, xb=x0+len/m, yb=cy+2*A+26; ctx.strokeStyle=COL.na; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(xa,yb-5); ctx.lineTo(xa,yb); ctx.lineTo(xb,yb); ctx.lineTo(xb,yb-5); ctx.stroke(); label(ctx,'λ/2',(xa+xb)/2,yb+17,COL.na); }
+  label(ctx,'● Knoten',x0,22,COL.pink,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'● Bäuche',x0+80,22,COL.green,'12px "IBM Plex Sans", sans-serif','left');
+  if(ST.sep){ label(ctx,'→ hinlaufend',x0+160,22,COL.red,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'← reflektiert',x0+262,22,COL.cyan,'12px "IBM Plex Sans", sans-serif','left'); }
+  const lam=2*16/m; $('stL').textContent=fmt(lam,2)+' cm'; $('stK').textContent=fmt(lam/2,2)+' cm'; $('stF').textContent=fmt(3e8/(lam/100)/1e9,2)+' GHz';
+});
+
+/* ---------- 3.1 Mach-Zehnder ---------- */
+const MZ={phi:0,n1:0,target:0,k:0,trace:[]}; const MZ_L=0.05, MZ_LAM=633e-9, MZ_NAIR=2.9e-4;
+bind('mzP','mzPv',v=>fmt(v,2)+' π',v=>MZ.phi=v*Math.PI);
+$('mzGas').onclick=()=>MZ.target=MZ_NAIR; $('mzVac').onclick=()=>MZ.target=0;
+sim($('cvMZ'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMZ')); ctx.clearRect(0,0,W,H);
+  const rate=MZ_NAIR/7; if(MZ.n1<MZ.target) MZ.n1=Math.min(MZ.target,MZ.n1+rate*dt); else if(MZ.n1>MZ.target) MZ.n1=Math.max(MZ.target,MZ.n1-rate*dt);
+  const phGas=2*Math.PI*MZ_L*MZ.n1/MZ_LAM; MZ.k=Math.floor(phGas/(2*Math.PI)+1e-9);
+  const ph=MZ.phi+phGas, I4=Math.pow(Math.cos(ph/2),2), I3=Math.pow(Math.sin(ph/2),2);
+  const s=Math.min(W/840,H/440), ox=(W-740*s)/2, oy=(H-400*s)/2, P=(x,y)=>({x:ox+x*s,y:oy+y*s});
+  const in0=P(0,320), bs1=P(160,320), m1=P(160,90), m2=P(560,320), bs2=P(560,90), out4=P(560,0), out3=P(700,90);
+  const beam=(a,b,I,off)=>{ ctx.strokeStyle='rgba(255,77,77,'+(0.12+0.88*I)+')'; ctx.lineWidth=2+4*I; ctx.shadowColor=COL.red; ctx.shadowBlur=18*I; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.shadowBlur=0;
+    if(I>.02){ ctx.strokeStyle='rgba(255,230,230,'+(.7*I)+')'; ctx.lineWidth=1.4; ctx.setLineDash([6,18]); ctx.lineDashOffset=-(t*90)%24; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.setLineDash([]); } };
+  beam(in0,bs1,1); beam(bs1,m2,.5); beam(m2,bs2,.5); beam(bs1,m1,.5); beam(m1,bs2,.5); beam(bs2,out4,I4); beam(bs2,out3,I3);
+  const mirror=(c,full)=>{ ctx.save(); ctx.translate(c.x,c.y); ctx.rotate(-Math.PI/4); if(full){ ctx.fillStyle='#cfd6e6'; ctx.fillRect(-34*s,-4*s,68*s,8*s); ctx.fillStyle='#5b6478'; ctx.fillRect(-34*s,4*s,68*s,5*s); } else { ctx.strokeStyle='#e6ebf5'; ctx.lineWidth=2; ctx.setLineDash([6,4]); ctx.beginPath(); ctx.moveTo(-34*s,0); ctx.lineTo(34*s,0); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle='rgba(180,220,255,.18)'; ctx.fillRect(-34*s,-5*s,68*s,10*s);} ctx.restore(); };
+  mirror(bs1,false); mirror(bs2,false); mirror(m1,true); mirror(m2,true);
+  // Phasenelement / Küvette
+  const ce=P(360,90); ctx.fillStyle='rgba(169,139,255,'+(0.2+MZ.n1/MZ_NAIR*.5)+')'; ctx.strokeStyle=COL.violet; ctx.lineWidth=1.5; ctx.fillRect(ce.x-70*s,ce.y-20*s,140*s,40*s); ctx.strokeRect(ce.x-70*s,ce.y-20*s,140*s,40*s);
+  label(ctx,'ΔΦ',ce.x,ce.y+46*s,COL.violet); label(ctx,MZ.n1>0?'Gas':'Vakuum',ce.x,ce.y-28*s,COL.muted,'12px "IBM Plex Sans", sans-serif');
+  // Detektoren
+  const det=(c,I,name,dir)=>{ ctx.fillStyle='rgba(255,77,77,'+(0.1+0.9*I)+')'; ctx.shadowColor=COL.red; ctx.shadowBlur=30*I; ctx.beginPath(); ctx.arc(c.x,c.y,14*s+4,0,7); ctx.fill(); ctx.shadowBlur=0; ctx.strokeStyle='#e6ebf5'; ctx.lineWidth=1.5; ctx.stroke();
+    if(dir==='u') label(ctx,name+' · '+Math.round(I*100)+' %',c.x-14*s-12,c.y+5,'#fff','600 12px "IBM Plex Mono", monospace','right'); else label(ctx,name,c.x,c.y+14*s+20,'#fff','600 12px "IBM Plex Mono", monospace'), label(ctx,Math.round(I*100)+' %',c.x,c.y+14*s+35,'#fff','600 12px "IBM Plex Mono", monospace'); };
+  det(out4,I4,'Port 4','u'); det(out3,I3,'Port 3','r');
+  label(ctx,'1',bs1.x-44*s,bs1.y+30*s,'#fff'); label(ctx,'2',bs1.x+14*s,bs1.y+64*s,'#fff'); label(ctx,'I₁',in0.x+30*s,in0.y-12*s,'#fff');
+  ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(bs1.x,bs1.y+70*s); ctx.lineTo(bs1.x,bs1.y+20*s); ctx.stroke();
+  label(ctx,'Strahlteiler',bs1.x+46*s,bs1.y+44*s,COL.muted,'11px "IBM Plex Sans", sans-serif','left'); label(ctx,'Spiegel',m1.x-40*s,m1.y-30*s,COL.muted,'11px "IBM Plex Sans", sans-serif'); label(ctx,'Spiegel',m2.x+40*s,m2.y+44*s,COL.muted,'11px "IBM Plex Sans", sans-serif');
+  // Werte
+  $('mzI4').textContent=fmt(I4*100,1)+' %'; $('mzI3').textContent=fmt(I3*100,1)+' %'; $('mzC').textContent=fmt(Math.cos(ph),3);
+  $('mzK').textContent=MZ.k; $('mzN').textContent=MZ.k>0?(1+MZ_LAM*MZ.k/MZ_L).toFixed(6).replace('.',','):'–';
+  MZ.trace.push([I3,I4]); if(MZ.trace.length>600) MZ.trace.shift();
+  const G=fit($('cvMZt')), c=G.ctx; c.clearRect(0,0,G.W,G.H);
+  const tr=MZ.trace, n=tr.length, y=v=>G.H-12-v*(G.H-30);
+  c.font='11px "IBM Plex Mono", monospace'; c.fillStyle=COL.muted; c.textAlign='left'; c.fillText('Verlauf: Port 4 (hell) · Port 3 (gestrichelt)',10,14);
+  c.strokeStyle='#ff9d9d'; c.lineWidth=2; c.beginPath(); tr.forEach((v,i)=>{const x=G.W-(n-i)*G.W/600; i?c.lineTo(x,y(v[1])):c.moveTo(x,y(v[1]));}); c.stroke();
+  c.setLineDash([4,3]); c.strokeStyle=COL.red; c.lineWidth=1.5; c.beginPath(); tr.forEach((v,i)=>{const x=G.W-(n-i)*G.W/600; i?c.lineTo(x,y(v[0])):c.moveTo(x,y(v[0]));}); c.stroke(); c.setLineDash([]);
+});
+
+/* ---------- Checkliste ---------- */
+const CHECK=[['Nachmittag 1',['Brechung erklären und Snellius anwenden','Huygens-Prinzip erklären','Geschwindigkeit im Medium bestimmen','Totalreflexion und Grenzwinkel berechnen','Interferenzbedingungen unterscheiden','Phasendifferenz berechnen','Doppelspaltformel herleiten und anwenden']],
+ ['Nachmittag 2',['Gittergleichung anwenden','Beugungswinkel aus der Geometrie bestimmen','Wellenlänge bestimmen','höchste Ordnung bestimmen','Spektren und Überlappung erklären','Auflösungsvermögen berechnen','Natrium-D-Linien einordnen','stehende Wellen mit Knoten, Bäuchen und λ/2 verstehen']],
+ ['Nachmittag 3',['Mach-Zehnder-Aufbau zeichnen und erklären','Gangdifferenz und Phasendifferenz verbinden','konstruktive/destruktive Interferenz am Ausgang erklären','Intensitätsgleichung anwenden','Brechungsindex eines Gases aus Interferenzverschiebungen bestimmen','alle Formeln ohne Vorlage zuordnen']]];
+let saved={}; try{ saved=JSON.parse(localStorage.getItem('wo-check')||'{}'); }catch(e){}
+const cl=$('checkList');
+CHECK.forEach(([h,items],gi)=>{ const hh=document.createElement('h3'); hh.textContent=h; cl.appendChild(hh);
+  items.forEach((t,ii)=>{ const id='ck'+gi+'_'+ii, lb=document.createElement('label'), cb=document.createElement('input'); cb.type='checkbox'; cb.id=id; cb.checked=!!saved[id];
+    cb.onchange=()=>{ saved[id]=cb.checked; try{ localStorage.setItem('wo-check',JSON.stringify(saved)); }catch(e){} };
+    lb.htmlFor=id; lb.appendChild(cb); lb.appendChild(document.createTextNode(t)); cl.appendChild(lb); }); });
+
+/* ---------- Quiz ---------- */
+const QZ=[
+ ['Licht mit λ = 500 nm hat die Frequenz …',['1,5·10¹⁴ Hz','6,0·10¹⁴ Hz','6,0·10¹⁷ Hz'],1,'f = c/λ = 3·10⁸ m/s / 5·10⁻⁷ m = 6·10¹⁴ Hz.'],
+ ['Was bleibt beim Übergang in ein anderes Medium gleich?',['die Wellenlänge','die Geschwindigkeit','die Frequenz'],2,'Die Frequenz gibt die Quelle vor. v und λ sinken beide um den Faktor n.'],
+ ['Warum meldet der Regensensor Regen?',['Wasser absorbiert rotes Licht','Mit Wasser außen steigt der Grenzwinkel, und die Totalreflexion bricht zusammen','Tropfen wirken wie Spiegel'],1,'Glas→Wasser: αG = 61°. Bei θ = 50° tritt Licht in den Tropfen aus, und am Empfänger kommt weniger an.'],
+ ['Für destruktive Interferenz muss gelten …',['Δs = kλ','Δs = (k + ½)λ','Δs = 2kλ'],1,'Ein halbes λ Versatz bedeutet: Berg trifft Tal.'],
+ ['Vergrößert man beim Doppelspalt den Spaltabstand d, dann …',['rücken die Maxima zusammen','rücken sie auseinander','ändert sich nichts'],0,'a_k = kλe/d: großes d ergibt kleines a_k.'.replace('a_k','aₖ')],
+ ['Mehr Spalte bei gleicher Gitterkonstante bewirken …',['andere Lagen der Maxima','schärfere und hellere Maxima','mehr Ordnungen'],1,'Die Lage folgt aus d sin α = kλ, sie bleibt gleich. Mit N werden die Maxima schmaler und intensiver.'],
+ ['Gitter mit 600 Linien/mm, λ = 600 nm. Höchste Ordnung?',['1','2','3'],1,'d = 1,67 µm; k ≤ d/λ = 2,78, also k_max = 2.'.replace('k_max','kₘₐₓ')],
+ ['Kann ein Gitter mit N = 500 in der 2. Ordnung die Na-D-Linien trennen?',['Ja, A = 1000 > 982','Nein, A = 500','Nur mit Doppelspalt'],0,'A = nN = 2·500 = 1000 ≥ λ/Δλ ≈ 982.'],
+ ['Der Abstand zweier benachbarter Knoten einer stehenden Welle ist …',['λ','λ/2','λ/4'],1,'Knoten folgen alle halben Wellenlängen; Knoten zu Bauch sind λ/4.'],
+ ['Am Mach-Zehnder ist ΔΦ = π. Dann ist …',['Port 4 hell, Port 3 dunkel','Port 4 dunkel, Port 3 hell','beide halb hell'],1,'I₄ = I₁cos²(π/2) = 0 und I₃ = I₁sin²(π/2) = I₁.'],
+ ['Küvette L = 5 cm, λ = 633 nm, 23 Wechsel gezählt. n_Gas ≈ …'.replace('n_Gas','n(Gas)'),['1,000 29','1,029','1,29'],0,'n = 1 + λk/L = 1 + 633·10⁻⁹·23/0,05 = 1,000 291.']
+];
+let sc=0,an=0; const qb=$('quizBody');
+QZ.forEach(([q,o,r,e],i)=>{ const d=document.createElement('div'); d.className='qz'; d.innerHTML='<b>'+(i+1)+'. '+q+'</b><div class="opts"></div><div class="ex"></div>';
+  const os=d.querySelector('.opts'), ex=d.querySelector('.ex');
+  o.forEach((t,j)=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=t; b.onclick=()=>{ if(d.dataset.done) return; d.dataset.done=1; an++;
+    if(j===r){b.classList.add('r');sc++;ex.textContent='✓ Richtig. '+e;} else {b.classList.add('w');os.children[r].classList.add('r');ex.textContent='✗ Nicht ganz. '+e;}
+    ex.classList.add('s'); $('qScore').textContent=sc+' / '+an+' richtig'; }; os.appendChild(b); });
+  qb.appendChild(d); });
+
+setTimeout(()=>{ if(!window.__em3d) document.body.classList.add('no3d'); },9000);
+})();
+</script>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+try{
+  const el=document.getElementById('emView');
+  const R=new THREE.WebGLRenderer({antialias:true}); R.setPixelRatio(Math.min(devicePixelRatio,2)); el.appendChild(R.domElement);
+  const scene=new THREE.Scene(); scene.background=new THREE.Color(0x070a12); scene.fog=new THREE.FogExp2(0x070a12,.025);
+  const cam=new THREE.PerspectiveCamera(40,1,.1,200); cam.position.set(6,4.2,14);
+  const ctl=new OrbitControls(cam,R.domElement); ctl.enableZoom=false; ctl.enablePan=false; ctl.enableDamping=true; ctl.autoRotate=!matchMedia('(prefers-reduced-motion: reduce)').matches; ctl.autoRotateSpeed=.35;
+  if(matchMedia('(pointer:coarse)').matches){ ctl.enabled=false; R.domElement.style.pointerEvents='none'; }
+  const comp=new EffectComposer(R); comp.addPass(new RenderPass(scene,cam)); const bloom=new UnrealBloomPass(new THREE.Vector2(256,256),.9,.3,.25); comp.addPass(bloom); comp.addPass(new OutputPass());
+  scene.add(new THREE.AmbientLight(0xffffff,.5)); const dl=new THREE.DirectionalLight(0xffffff,.8); dl.position.set(4,8,6); scene.add(dl);
+  const X0=-11,X1=11,N=300,NA=110;
+  const axis=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(X0,0,0),new THREE.Vector3(X1+.6,0,0)]),new THREE.LineBasicMaterial({color:0x8e98b0}));
+  scene.add(axis);
+  const tip=new THREE.Mesh(new THREE.ConeGeometry(.12,.4,16),new THREE.MeshBasicMaterial({color:0x8e98b0})); tip.rotation.z=-Math.PI/2; tip.position.x=X1+.7; scene.add(tip);
+  const glass=new THREE.Mesh(new THREE.BoxGeometry(5,4.4,4.4),new THREE.MeshPhysicalMaterial({color:0x9fd8ff,transparent:true,opacity:.1,roughness:.1,side:THREE.DoubleSide,depthWrite:false}));
+  glass.position.x=3.5; scene.add(glass);
+  const gedge=new THREE.LineSegments(new THREE.EdgesGeometry(glass.geometry),new THREE.LineBasicMaterial({color:0x9fd8ff,transparent:true,opacity:.5})); gedge.position.copy(glass.position); scene.add(gedge);
+  const sph=new THREE.SphereGeometry(.075,10,10);
+  const eM=new THREE.MeshBasicMaterial({color:0xff4d4d}), bM=new THREE.MeshBasicMaterial({color:0x7fa8ff});
+  const eI=new THREE.InstancedMesh(sph,eM,N), bI=new THREE.InstancedMesh(sph,bM,N); scene.add(eI,bI);
+  const aE=new THREE.BufferGeometry(); aE.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NA*6),3));
+  const aB=new THREE.BufferGeometry(); aB.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NA*6),3));
+  const lE=new THREE.LineSegments(aE,new THREE.LineBasicMaterial({color:0xff4d4d,transparent:true,opacity:.55})), lB=new THREE.LineSegments(aB,new THREE.LineBasicMaterial({color:0x7fa8ff,transparent:true,opacity:.45}));
+  scene.add(lE,lB);
+  const mk=(txt,col)=>{ const c=document.createElement('canvas'); c.width=128; c.height=64; const x=c.getContext('2d'); x.font='italic 44px Georgia, serif'; x.fillStyle=col; x.textAlign='center'; x.fillText(txt,64,46);
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false})); s.scale.set(1.2,.6,1); scene.add(s); return s; };
+  const sE=mk('E','#ff8080'), sB=mk('B','#a8c4ff'), sC=mk('c','#c8cfdd'); sE.position.set(8.6,2.4,0); sB.position.set(8.6,-.4,2.2); sC.position.set(X1+.6,.55,0);
+  const dummy=new THREE.Object3D(), col=new THREE.Color();
+  function resize(){ const w=el.clientWidth,h=el.clientHeight; if(!w||!h) return; R.setSize(w,h); comp.setSize(w,h); cam.aspect=w/h;
+    cam.fov=w/h<1.2?Math.min(75,2*Math.atan(Math.tan(20*Math.PI/180)*1.2/(w/h))*180/Math.PI):40;
+    if(w>760) cam.setViewOffset(w,h,-w*.17,0,w,h); else cam.clearViewOffset(); cam.updateProjectionMatrix(); }
+  new ResizeObserver(resize).observe(el); resize();
+  let vis=true; new IntersectionObserver(e=>vis=e[0].isIntersecting).observe(el);
+  const clock=new THREE.Clock(); let t=0;
+  (function loop(){ requestAnimationFrame(loop); const dt=Math.min(clock.getDelta(),.05); if(!vis) return; t+=dt;
+    const l=+document.getElementById('emL').value, n=+document.getElementById('emN').value;
+    const [r,g,b]=window.W3.wl(l); col.setRGB(r/255,g/255,b/255,THREE.SRGBColorSpace); eM.color.copy(col); lE.material.color.copy(col);
+    glass.visible=gedge.visible=n>1.005;
+    const lv=1.6+(l-380)/400*2.6, k0=2*Math.PI/lv, om=k0*2.4, A=1.7;
+    const phase=x=> x<1? k0*x : x<6? k0*(1+n*(x-1)) : k0*(1+5*n+(x-6));
+    for(let i=0;i<N;i++){ const x=X0+(X1-X0)*i/(N-1), v=Math.sin(phase(x)-om*t)*A;
+      dummy.position.set(x,v,0); dummy.updateMatrix(); eI.setMatrixAt(i,dummy.matrix);
+      dummy.position.set(x,0,v*.8); dummy.updateMatrix(); bI.setMatrixAt(i,dummy.matrix); }
+    eI.instanceMatrix.needsUpdate=bI.instanceMatrix.needsUpdate=true;
+    const pe=aE.attributes.position.array, pb=aB.attributes.position.array;
+    for(let i=0;i<NA;i++){ const x=X0+(X1-X0)*i/(NA-1), v=Math.sin(phase(x)-om*t)*A; pe.set([x,0,0,x,v,0],i*6); pb.set([x,0,0,x,0,v*.8],i*6); }
+    aE.attributes.position.needsUpdate=aB.attributes.position.needsUpdate=true;
+    ctl.update(); comp.render(); })();
+  window.__em3d=true;
+}catch(e){ console.error(e); document.body.classList.add('no3d'); }
+</script>
+
+</body>
+</html>
