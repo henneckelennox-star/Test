@@ -432,7 +432,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <tr><td>Röntgen</td><td>10 pm – 10 nm</td><td>3·10¹⁶ – 3·10¹⁹ Hz</td><td>Atom</td><td>Röntgenbild, CT, Kristallstruktur</td></tr>
     <tr><td>Gamma</td><td>&lt; 10 pm</td><td>&gt; 3·10¹⁹ Hz</td><td>Atomkern</td><td>Radioaktivität, Strahlentherapie, Sterilisation</td></tr>
   </table></div>
-  <p class="hint" style="margin-top:12px">Merke: <b>kleines λ = große f = viel Energie</b> (<span class="m">E</span> = <span class="m">h</span>·<span class="m">f</span>). Deshalb sind UV, Röntgen und Gamma gefährlich, Radiowellen nicht.</p>
+  <p class="hint" style="margin-top:12px">Merke: <b>kleines λ = große f = viel Energie</b> (<span class="m">E</span> = <span class="m">h</span>·<span class="m">f</span>). Deshalb sind UV, Röntgen und Gamma gefährlich, Radiowellen nicht. Die Grenzen zwischen den Bereichen sind fließend und je nach Norm etwas verschieden (UV z. B. 100–380 nm nach DIN).</p>
 </section>
 
 <section class="topic" id="reflexion">
@@ -643,7 +643,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <p>Schickt man monochromatisches Licht durch einen einzigen schmalen Spalt der Breite <span class="m">b</span>, entsteht kein scharfer Streifen, sondern ein breites <b>Beugungsbild</b>: ein helles Hauptmaximum mit schwächeren Nebenmaxima.</p>
       <p>Warum dunkle Stellen? Man teilt den Spalt gedanklich in zwei Hälften. Beträgt der Gangunterschied zwischen Rand und Mitte λ/2, löschen sich die Elementarwellen paarweise aus.</p>
       <div class="key"><span class="lbl">Minima am Einzelspalt (dunkel)</span><div class="eq">b · sin α<sub>k</sub> = k · λ &nbsp;&nbsp;(k = 1, 2, …)</div></div>
-      <div class="key"><span class="lbl">Maxima am Einzelspalt (hell)</span><div class="eq">Hauptmaximum: α = 0 &nbsp;·&nbsp; Nebenmaxima: b · sin α<sub>k</sub> ≈ (k + ½) · λ</div><div class="hint">Genau umgekehrt wie beim Doppelspalt! Die Herleitung siehst du in der Animation unten.</div></div>
+      <div class="key"><span class="lbl">Maxima am Einzelspalt (hell)</span><div class="eq">Hauptmaximum: α = 0 &nbsp;·&nbsp; Nebenmaxima: b · sin α<sub>k</sub> ≈ (k + ½) · λ</div><div class="hint">Näherung, genau liegen sie bei 1,43λ und 2,46λ. Genau umgekehrt wie beim Doppelspalt! Die Herleitung siehst du in der Animation unten.</div></div>
       <p><b>Je schmaler der Spalt, desto breiter das Bild.</b> Das ist typisch für Beugung und einer der Beweise, dass Licht eine Welle ist.</p>
     </div>
     <div class="bench">
@@ -940,11 +940,11 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <p>In den oberen Weg kommt eine Küvette der Länge <span class="m">L</span>. Lässt man Gas hinein, steigt <span class="m">n</span>. Im Gas passen mehr Wellenlängen auf die Strecke <span class="m">L</span>, der optische Weg wird länger. Jedes Mal, wenn eine Wellenlänge hinzukommt, wird Port 4 einmal dunkel und wieder hell. Man <b>zählt</b> diese Wechsel:</p>
       <div class="key"><span class="lbl">gezählte Wechsel</span><div class="eq">k = <span class="frac"><span>L</span><span>λ<sub>Gas</sub></span></span> − <span class="frac"><span>L</span><span>λ<sub>Vakuum</sub></span></span> = <span class="frac"><span>L (n − 1)</span><span>λ<sub>Vakuum</sub></span></span></div></div>
       <div class="key"><span class="lbl">umgestellt</span><div class="eq big">n<sub>Gas</sub> = 1 + <span class="frac"><span>λ<sub>Vakuum</sub> · k</span><span>L</span></span></div></div>
-      <p class="hint">Drück oben „Gas einlassen“: Luft (<span class="m">n</span> = 1,000 29) in der 5-cm-Küvette mit HeNe-Laser (633 nm) ergibt etwa 23 Wechsel.</p>
+      <p class="hint">Drück oben „Gas einlassen“: Luft (<span class="m">n</span> ≈ 1,000 29 bei 0 °C) in der 5-cm-Küvette mit HeNe-Laser (633 nm) ergibt etwa 23 Wechsel.</p>
       <div class="task">
         <span class="tg">Aufgabe</span>
         <p>Beim Befüllen einer 5,0 cm langen Küvette zählt man 23 Hell-Dunkel-Wechsel (λ = 633 nm). Bestimme <span class="m">n</span><sub>Gas</sub> und prüfe auf Plausibilität.</p>
-        <details><summary>Lösung</summary><div class="in"><span class="m">n</span> = 1 + 633·10⁻⁹ m · 23 / 0,050 m = <b>1,000 291</b>. Plausibel: Gase haben <span class="m">n</span> knapp über 1 (Luft: 1,000 29).</div></details>
+        <details><summary>Lösung</summary><div class="in"><span class="m">n</span> = 1 + 633·10⁻⁹ m · 23 / 0,050 m = <b>1,000 291</b>. Plausibel: Gase haben <span class="m">n</span> knapp über 1 (Luft: 1,000 29 bei 0 °C, 1,000 27 bei 20 °C).</div></details>
       </div>
     </div>
   </div>
@@ -2009,7 +2009,9 @@ if(VOICE.ok){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
 const SUBD={'₀':' null','₁':' eins','₂':' zwei','₃':' drei','₄':' vier','₅':' fünf','₆':' sechs','₇':' sieben','₈':' acht','₉':' neun','ₖ':' k','ₘ':' m'};
 const SUPD={'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁻':'minus '};
 function toSpeech(html){ const d=document.createElement('div'); d.innerHTML=html; let t=d.textContent;
-  const R=[[/(\d)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g,(m,a,b)=>a+' hoch '+b.split('').map(c=>SUPD[c]).join('')],[/cos²/g,'Kosinus Quadrat '],[/sin²/g,'Sinus Quadrat '],[/Na-D-Linien/g,'Natrium-D-Linien'],[/IR-LED/g,'Infrarot-L-E-D'],[/\bLED\b/g,'L-E-D'],[/\bUKW\b/g,'U-K-W'],[/\bWLAN\b/g,'W-Lan'],[/\bCT\b/g,'C-T'],[/\bLC\b/g,'L-C'],[/z\.\s?B\./g,'zum Beispiel'],[/\bca\./g,'circa'],[/bzw\./g,'beziehungsweise'],[/d\.\s?h\./g,'das heißt'],[/\bIR\b/g,'Infrarot'],[/\bUV\b/g,'U V'],
+  const R=[[/A → P → B/g,'A über P nach B'],[/P → F → Q/g,'P über F nach Q'],[/3T\s*\/\s*4/g,'drei Viertel T'],[/3λ\s*\/\s*2/g,'drei halbe Lambda'],[/\bmm bis m\b/g,'Millimeter bis Meter'],[/pro mm\b/g,'pro Millimeter'],[/t\(x\)/g,'t von x'],[/n\(Gas\)/g,'n Gas'],[/(\d)l\b/g,'$1 l'],[/(\d)n\)/g,'$1 n)'],[/['’]sche/g,'sche'],[/Na-Linien/g,'Natrium-Linien'],
+    [/in 1\. Ordnung/g,'in erster Ordnung'],[/in der 2\. Ordnung/g,'in der zweiten Ordnung'],[/Die 2\. und 3\. Ordnung/g,'Die zweite und dritte Ordnung'],[/Die 1\. und 2\. Ordnung/g,'Die erste und zweite Ordnung'],[/die 1\. Ordnung/g,'die erste Ordnung'],[/das 1\. Nebenmaximum/g,'das erste Nebenmaximum'],[/(\d)\. Minimum/g,(m,a)=>(['','erstes','zweites','drittes'][+a]||a+'.')+' Minimum'],[/2\. Mode/g,'Zweite Mode'],
+    [/(\d)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g,(m,a,b)=>a+' hoch '+b.split('').map(c=>SUPD[c]).join('')],[/cos²/g,'Kosinus Quadrat '],[/sin²/g,'Sinus Quadrat '],[/Na-D-Linien/g,'Natrium-D-Linien'],[/IR-LED/g,'Infrarot-L-E-D'],[/\bLED\b/g,'L-E-D'],[/\bUKW\b/g,'U-K-W'],[/\bWLAN\b/g,'W-Lan'],[/\bCT\b/g,'C-T'],[/\bLC\b/g,'L-C'],[/z\.\s?B\./g,'zum Beispiel'],[/\bca\./g,'circa'],[/bzw\./g,'beziehungsweise'],[/d\.\s?h\./g,'das heißt'],[/\bIR\b/g,'Infrarot'],[/\bUV\b/g,'U V'],
     [/λ\s*\/\s*2/g,'Lambda halbe'],[/λ\s*\/\s*4/g,'Lambda Viertel'],[/T\s*\/\s*4/g,'T Viertel'],[/T\s*\/\s*2/g,'T halbe'],[/3T\s*\/\s*4/g,'drei Viertel T'],[/I₀\s*\/\s*2/g,'I null halbe'],[/I₀\s*\/\s*8/g,'I null Achtel'],[/I₀\s*\/\s*4/g,'I null Viertel'],
     [/m\/s/g,' Meter pro Sekunde'],[/(\d)\s?GHz/g,'$1 Gigahertz'],[/(\d)\s?MHz/g,'$1 Megahertz'],[/(\d)\s?THz/g,'$1 Terahertz'],[/(\d)\s?kHz/g,'$1 Kilohertz'],[/(\d)\s?Hz/g,'$1 Hertz'],
     [/(\d)\s?nm\b/g,'$1 Nanometer'],[/(\d)\s?µm\b/g,'$1 Mikrometer'],[/(\d)\s?mm\b/g,'$1 Millimeter'],[/(\d)\s?cm\b/g,'$1 Zentimeter'],[/(\d)\s?km\b/g,'$1 Kilometer'],[/(\d)\s?ms\b/g,'$1 Millisekunden'],[/(\d)\s?pm\b/g,'$1 Pikometer'],[/(\d)\s?m\b/g,'$1 Meter'],
@@ -2018,9 +2020,9 @@ function toSpeech(html){ const d=document.createElement('div'); d.innerHTML=html
     [/√/g,' Wurzel aus '],[/½/g,' ein halb'],[/([^\d\s])²/g,'$1 Quadrat '],
     [/ΔΦ|Δφ/g,'Delta Phi'],[/Δλ/g,'Delta Lambda'],[/Δ\s?([std])/g,'Delta $1'],[/Δ/g,'Delta '],[/λ/g,' Lambda '],[/α/g,' Alpha '],[/β/g,' Beta '],[/θ/g,' Theta '],[/[φΦ]/g,' Phi '],[/π/g,' Pi '],[/γ/g,' Gamma '],[/δ/g,' Delta '],
     [/[₀₁₂₃₄₅₆₇₈₉ₖₘ]/g,c=>SUBD[c]],[/°/g,' Grad'],[/%/g,' Prozent'],[/≈/g,' ungefähr '],[/≥/g,' größer gleich '],[/≤/g,' kleiner gleich '],[/>/g,' größer als '],[/</g,' kleiner als '],
-    [/⇒/g,', also '],[/→/g,' zu '],[/·/g,' mal '],[/×/g,' mal '],[/−/g,' minus '],[/=/g,' gleich '],[/\//g,' durch '],[/\+/g,' plus '],[/B′B/g,'B Strich B'],[/([A-Z])′/g,'$1 Strich'],[/[↕•]/g,''],[/’/g,"'"],[/[…]/g,'.'],[/\(\s*\+/g,'(plus'],[/\s+/g,' ']];
+    [/⇒/g,', also '],[/→/g,' in '],[/·/g,' mal '],[/×/g,' mal '],[/−/g,' minus '],[/=/g,' gleich '],[/\//g,' durch '],[/\+/g,' plus '],[/B′B/g,'B Strich B'],[/([A-Z])′/g,'$1 Strich'],[/[↕•]/g,''],[/’/g,"'"],[/[…]/g,'.'],[/\(\s*\+/g,'(plus'],[/\s+/g,' ']];
   R.forEach(([a,b])=>{ t=t.replace(a,b); }); return t.trim(); }
-const AUDIO_SET=new Set(/*AUDIO_LIST*/["1gj76dh", "1g94bm3", "amo753", "14eewyx", "1lkfq8s", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "mbu54a", "1vqheo1", "1cjee2b", "1xjo7up", "a36xxi", "1vhe6vc", "15dlg4q", "5act26", "10i5351", "jb92it", "vntkb2", "6hqm3t", "6aeril", "148f541", "1uzezt6", "a01a16", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "ioqzhw", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "6ak29a", "2yqtck", "5lsn4x", "1h3yx1h", "1lthblu", "1fv1xjd", "knbl96", "1oc2a3b", "1028dv5", "s8ysl", "lwddqj", "pj4u16", "1f21e9o", "1x8oxss", "5n103h", "pn3yqo", "spliuu", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "18cpxs1", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1faguan", "1fjdjjs", "azcaw4", "1a1em2u", "1ww0jhv", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "d41lxn", "1th6wv9", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "a1ez21", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "kst3y6", "1b9amx9", "1rlrmtk", "zw3jkm", "z0t9he", "8r8gyd", "6byoa9", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "1dzt9o8", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "1yz47hq", "eqac6j", "642cak", "56pvbz", "14okjsr", "9sshdr", "1vcy79y", "1v0jvw2", "dtz651", "q1tmm5", "1ipp5l6", "my39kp", "7d6ydp", "12uu9s5", "11yk0d9", "1ca46mg", "1j1kh5c", "16x4l3p", "1q9njyl", "1c9nkja", "galxaw", "3chumh", "kl0vya", "1t2t5wh", "1ufkekf", "10ls2qq", "13rrpum", "19yx3w9", "tlgsxv", "i38ob0", "16jo7ya", "15q1xfw", "nb7kol", "15g7p7z", "5iap91", "hwl2we", "1pgaded", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "zujp9e", "79vwkn", "1avfk9s", "apbc0x", "1pg8jw5", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "k9xrk4", "q1nwrv"]); const AUD=new Audio(); AUD.preload='auto';
+const AUDIO_SET=new Set(/*AUDIO_LIST*/["62ld75", "1g94bm3", "amo753", "14eewyx", "connf1", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "14d8q8f", "1vqheo1", "1cjee2b", "1squw3e", "a36xxi", "1vhe6vc", "15dlg4q", "1y6u6ui", "10i5351", "wws5m0", "umltvh", "6hqm3t", "6aeril", "1f2z4tp", "1uzezt6", "1daepf8", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "1uu6ngg", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "rp12yl", "2yqtck", "5lsn4x", "1h3yx1h", "1e1b0r2", "iwyz81", "knbl96", "1oc2a3b", "a5ev2k", "s8ysl", "lc2jq2", "pj4u16", "1uigiv2", "zlszr5", "5n103h", "1hebqso", "w9i7cy", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "1tlds99", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1t2ho71", "1fjdjjs", "azcaw4", "1a1em2u", "17unmin", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "oxahh8", "1p6kzch", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "7ifqmd", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "153sqc0", "1b9amx9", "ga42hr", "c635sq", "1yac8h9", "8r8gyd", "1evupa5", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "sfe79g", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "1813yt6", "eqac6j", "642cak", "56pvbz", "1osc1at", "9sshdr", "1izriw2", "1v0jvw2", "dtz651", "1w7758c", "4111fy", "1kxxi6d", "lt1uf2", "bqr27v", "8fqsoz", "1ca46mg", "aibh2e", "rkc1y9", "fleyj1", "1x3doby", "galxaw", "3chumh", "11u8ymm", "1t2t5wh", "1ufkekf", "10ls2qq", "13rrpum", "15723e8", "17jhd73", "i38ob0", "16jo7ya", "15q1xfw", "nb7kol", "15g7p7z", "5iap91", "hwl2we", "qmxild", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "cmqb48", "79vwkn", "1avfk9s", "apbc0x", "jfj935", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "94tdld", "q1nwrv"]); const AUD=new Audio(); AUD.preload='auto';
 VOICE.useFile=true; try{ if(localStorage.getItem('wo-voice-name')&&localStorage.getItem('wo-voice-name')!=='__file') VOICE.useFile=false; }catch(e){}
 function hashStr(t){ let h=5381; for(let i=0;i<t.length;i++){ h=((h<<5)+h+t.charCodeAt(i))|0; } return (h>>>0).toString(36); }
 window.__hashStr=hashStr;
@@ -2068,8 +2070,8 @@ let tl=performance.now();
 
 tour($('emL').closest('.em-ctrl'),[
  {set:{emL:633,emN:1.5},dur:7,cap:'Das ist Licht: Das <b>E-Feld</b> (farbig) und das <b>B-Feld</b> (blau) schwingen senkrecht zueinander und senkrecht zur Laufrichtung.'},
- {set:{emL:430},dur:6,cap:'Kürzere Wellenlänge → höhere Frequenz: Aus Rot wird Violett. <span class="m">c</span> = λ·<span class="m">f</span> bleibt gleich.'},
- {set:{emL:720},dur:6,cap:'Längere Wellenlänge → niedrigere Frequenz → tiefrot.'},
+ {set:{emL:430},dur:6,cap:'Kürzere Wellenlänge bedeutet höhere Frequenz: Aus Rot wird Violett. <span class="m">c</span> = λ·<span class="m">f</span> bleibt gleich.'},
+ {set:{emL:720},dur:6,cap:'Längere Wellenlänge bedeutet niedrigere Frequenz, also tiefrot.'},
  {set:{emN:2},dur:7,cap:'Im Glasblock wird die Welle langsamer (<span class="m">v</span> = <span class="m">c</span>/<span class="m">n</span>). Die Wellenlänge schrumpft, die Frequenz bleibt gleich.'},
  {set:{emN:1,emL:633},dur:5,cap:'Ohne Glas (<span class="m">n</span> = 1) läuft die Welle überall gleich schnell.'}]);
 tour($('cvRefH'),[
@@ -2084,14 +2086,14 @@ tour($('cvRefF'),[
 tour($('cvBrF'),[
  {set:{brC2:2.01},start:()=>BF.anim={from:BF.x,to:.47,t:0},dur:7,cap:'Die gerade Linie von P nach Q ist der <i>kürzeste</i> Weg, aber nicht der <i>schnellste</i>, denn unten ist das Licht langsamer (<span class="m">c</span>₂ &lt; <span class="m">c</span>₁).'},
  {start:()=>BF.optimize(),dur:7,cap:'Schneller ist es, mehr Strecke oben im schnellen Medium zurückzulegen. Das Minimum von <span class="m">t</span>(<span class="m">x</span>) liefert den Knickpunkt F.'},
- {dur:6,cap:'Genau im Minimum gilt sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂. Das ist das Brechungsgesetz! Vergleich die beiden Werte unten.'},
+ {dur:6,cap:'Genau im Minimum gilt sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂. Das ist das Brechungsgesetz! Vergleiche die beiden Werte unten.'},
  {set:{brC2:1.2},at:[[2,()=>BF.optimize()]],dur:8,cap:'Ist das untere Medium noch langsamer, lohnt sich der Umweg noch mehr: stärkerer Knick.'},
  {set:{brC2:2.01},at:[[2,()=>BF.optimize()]],dur:5,cap:'Zurück zu Luft → Plexiglas.'}]);
 tour($('cvBrH'),[
  {set:{bhA:40,bhN1:1,bhN2:1.49},start:()=>BH.tau=0,dur:7,cap:'Luft → Plexiglas: Die Elementarwellen im Glas wachsen langsamer (Radius <span class="m">c</span>₂·Δ<span class="m">t</span>).'},
  {dur:6,cap:'Die Tangente B′B ist deshalb gekippt: Die Welle wird <b>zum Lot hin</b> gebrochen, und sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂.'},
  {set:{bhN2:2.4},start:()=>BH.tau=0,dur:12,cap:'Diamant (<span class="m">n</span> = 2,4): Das Licht ist noch langsamer und wird noch stärker gebrochen.'},
- {set:{bhN1:1.5,bhN2:1,bhA:60},start:()=>BH.tau=0,dur:13,cap:'Umgekehrt, Glas → Luft bei großem Winkel: Die Elementarwellen werden größer als AB. Es gibt keine Tangente mehr, also <b>Totalreflexion</b>.'},
+ {set:{bhN1:1.5,bhN2:1,bhA:60},start:()=>BH.tau=0,dur:13,cap:'Umgekehrt, von Glas → Luft bei großem Winkel: Die Elementarwellen werden größer als AB. Es gibt keine Tangente mehr, also <b>Totalreflexion</b>.'},
  {set:{bhN1:1,bhN2:1.49,bhA:40},dur:2.5,cap:'Zurück zum Anfang …'}]);
 tour($('cvWater'),[
  {set:{wA:0,wC:.55},dur:7,cap:'Senkrechter Einfall: Im flachen Wasser ist die Welle langsamer, die Berge rücken zusammen (λ kleiner). Die Richtung bleibt gleich.'},
@@ -2152,7 +2154,7 @@ tour($('cvMZ'),[
  {set:{mzP:1},tween:3,dur:8,cap:'Das Element verschiebt die Phase um ΔΦ = π. Jetzt ist Port 4 dunkel und Port 3 hell. Die Energie wandert nur: I₃ + I₄ = I₁.'},
  {set:{mzP:2},tween:3,dur:6,cap:'ΔΦ = 2π: wie am Anfang. Allgemein: I₄ = I₁·cos²(ΔΦ/2).'},
  {set:{mzP:0},start:()=>$('mzGas').click(),dur:11,cap:'Gas strömt in die Küvette: <span class="m">n</span> steigt, und der optische Weg wird länger. Jeder Hell-Dunkel-Wechsel an Port 4 bedeutet eine Wellenlänge mehr. Schau auf den Zähler!'},
- {dur:6,cap:'Aus <span class="m">k</span> Wechseln folgt <span class="m">n</span>(Gas) = 1 + λ·<span class="m">k</span>/<span class="m">L</span> ≈ 1,00029 für Luft.'}]);
+ {dur:6,cap:'Aus <span class="m">k</span> Wechseln folgt <span class="m">n</span>(Gas) = 1 + λ·<span class="m">k</span>/<span class="m">L</span> ≈ 1,0003 für Luft.'}]);
 tour($('cvMi'),[
  {set:{miD:0},dur:7,cap:'Der Strahlteiler schickt das Laserlicht in zwei Arme: zum festen Spiegel M₁ (oben) und zum beweglichen Spiegel M₂ (rechts).'},
  {dur:7,cap:'Beide Teilstrahlen laufen zurück und werden am Strahlteiler wieder vereinigt. Auf dem Schirm interferieren sie, und es entstehen Ringe.'},
@@ -2178,7 +2180,7 @@ tour($('cvCmp'),[
  {set:{cmN:5},tween:1,dur:7,cap:'5 Spalte: gleiche Lage der Maxima, aber schmaler, dazwischen fast dunkel.'},
  {set:{cmN:30},tween:4,dur:8,cap:'<b>Gitter</b>: sehr scharfe, helle Linien, ideal zum Messen von λ. Die Helligkeit wächst mit <span class="m">N</span>².'},
  {set:{cmL:430},dur:7,cap:'Blaues Licht: Alles rückt nach innen (kleineres λ). Rotes Licht liegt außen, so entstehen Spektren.'},
- {set:{cmL:633,cmN:1},tween:2,dur:6,cap:'Merke: Einzelspalt → Formel für die <b>Minima</b>. Doppelspalt und Gitter → Formel für die <b>Maxima</b>.'}]);
+ {set:{cmL:633,cmN:1},tween:2,dur:6,cap:'Merke: Beim Einzelspalt beschreibt die Formel die <b>Minima</b>, bei Doppelspalt und Gitter die <b>Maxima</b>.'}]);
 
 tour($('cvLC'),[
  {set:{lcC:10,lcL:100},start:()=>{ setDamp(false); lcGoto(0); },dur:7,cap:'<b>Start (t = 0):</b> Der Kondensator ist voll geladen (+ oben, − unten). Die ganze Energie steckt im <b>elektrischen Feld</b> zwischen den Platten (rot).'},
@@ -2279,7 +2281,7 @@ tour($('cvFib'),[
     phase='intro'; pt=0;
     $('thEye').textContent='Kapitel '+(idx+1)+' von '+chapters.length+' · Nachmittag '+c.day+(c.num?' · Thema '+c.num:'');
     $('thTitle').textContent=c.first?c.title:c.sub; $('thKurz').innerHTML=c.first?c.kurz:'';
-    speakHTML('Kapitel '+(idx+1)+'. '+(c.first?sent(c.title)+'Kurz gesagt: '+c.kurz:sent(c.sub)));
+    speakHTML(introText(c,idx));
     card.classList.add('show'); $('thCh').textContent=(idx+1)+' · '+c.title; setSub(c.first?'':'<span style="color:var(--muted)">'+c.title+'</span>'); dots(); ui(); }
   function play(){ const c=chapters[idx]; phase='play'; card.classList.remove('show'); c.T.run=playing; go(c.T,0); dots(); }
   VID.tick=dt=>{ if(!TH.on) return; const c=chapters[idx];
@@ -2316,7 +2318,8 @@ tour($('cvFib'),[
   lvv.onchange=()=>setVoiceOn(lvv.checked);
   vs.onchange=()=>{ if(vs.value==='__file'){ VOICE.useFile=true; try{ localStorage.setItem('wo-voice-name','__file'); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); voiceUI(); showCtrl(); return; } VOICE.useFile=false; const v=germanVoices().find(x=>x.name===vs.value); if(v){ VOICE.voice=v; try{ localStorage.setItem('wo-voice-name',v.name); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); } showCtrl(); };
   voiceUI();
-  window.__allNarration=()=>{ const out=[]; chapters.forEach((c,i)=>{ out.push('Kapitel '+(i+1)+'. '+(c.first?sent(c.title)+'Kurz gesagt: '+c.kurz:sent(c.sub))); c.T.steps.forEach(x=>out.push(x.cap)); }); out.push('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); return out.map(h=>{ const t=toSpeech(h); return {h:hashStr(t),t}; }); };
+  function introText(c,i){ return 'Kapitel '+(i+1)+': '+(c.first?sent(c.title)+'Kurz gesagt: '+c.kurz:sent(c.sub.replace(/([?!])\s·\s/g,'$1 ').replace(/\s·\s/g,', '))); }
+  window.__allNarration=()=>{ const out=[]; chapters.forEach((c,i)=>{ out.push(introText(c,i)); c.T.steps.forEach(x=>out.push(x.cap)); }); out.push('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); return out.map(h=>{ const t=toSpeech(h); return {h:hashStr(t),t}; }); };
   $('lvStart').onclick=()=>open(0); $('lvPoster').onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); };
   $('lvCont').onclick=()=>open(load());
   [$('vStart'),$('vStart2')].forEach(b=>b&&(b.onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); }));
