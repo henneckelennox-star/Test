@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Das Brechungsgesetz</title>
+<meta name="description" content="Das Brechungsgesetz von Snellius interaktiv in 3D erklärt – für den Physik-Leistungskurs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05060d;
+  --bg2:#0a0d1a;
+  --panel:rgba(255,255,255,.035);
+  --panel-strong:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.09);
+  --text:#e8ecf5;
+  --muted:#9aa3b8;
+  --cyan:#37e2ff;
+  --violet:#9b6bff;
+  --pink:#ff4fb3;
+  --green:#3dff7a;
+  --orange:#ffb347;
+  --red:#ff5a6e;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,system-ui,sans-serif;font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:
+    radial-gradient(1200px 600px at 85% 20%,rgba(155,107,255,.08),transparent 60%),
+    radial-gradient(900px 500px at 10% 60%,rgba(55,226,255,.06),transparent 60%);
+}
+h1,h2,h3{font-family:"Space Grotesk",Inter,sans-serif;line-height:1.15;margin:0 0 .5em}
+h2{font-size:clamp(1.9rem,4vw,2.8rem)}
+h3{font-size:1.25rem}
+p{margin:0 0 1em}
+a{color:var(--cyan)}
+b,strong{color:#fff}
+.m{font-family:"STIX Two Text","Cambria Math",Georgia,serif;font-style:italic;font-size:1.08em}
+.mono{font-family:"JetBrains Mono",monospace}
+sub,sup{font-size:.7em}
+.grad{background:linear-gradient(92deg,var(--cyan),var(--violet) 55%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ---------- Navigation ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:18px;
+  padding:12px 22px;background:rgba(5,6,13,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line)}
+nav .logo{font-family:"Space Grotesk";font-weight:700;white-space:nowrap}
+nav .links{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav .links::-webkit-scrollbar{display:none}
+nav .links a{color:var(--muted);text-decoration:none;font-size:.86rem;padding:6px 11px;border-radius:99px;white-space:nowrap;transition:.2s}
+nav .links a:hover,nav .links a.active{color:#fff;background:rgba(255,255,255,.08)}
+#progress{position:fixed;top:0;left:0;height:2px;z-index:60;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));width:0}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;height:100vh;min-height:620px;overflow:hidden}
+#heroView{position:absolute;inset:0}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(5,6,13,.92) 0%,rgba(5,6,13,.55) 38%,transparent 65%),linear-gradient(0deg,var(--bg) 0%,transparent 25%)}
+.hero-content{position:absolute;z-index:2;left:max(22px,6vw);top:50%;transform:translateY(-48%);max-width:620px}
+.kicker{display:inline-block;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);
+  border:1px solid rgba(55,226,255,.35);padding:5px 12px;border-radius:99px;margin-bottom:22px;background:rgba(55,226,255,.06)}
+.hero h1{font-size:clamp(2.8rem,7.5vw,5.6rem);letter-spacing:-.02em;margin-bottom:.25em}
+.hero .tagline{font-size:1.2rem;color:#c4cbe0;max-width:520px}
+.hero-formula{font-family:"STIX Two Text",serif;font-style:italic;font-size:clamp(1.8rem,4.5vw,2.8rem);margin:26px 0 30px;
+  text-shadow:0 0 24px rgba(61,255,122,.55),0 0 60px rgba(55,226,255,.3);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:99px;font-weight:600;text-decoration:none;
+  font-size:.98rem;border:1px solid var(--line);color:#fff;background:rgba(255,255,255,.05);cursor:pointer;transition:.25s;font-family:inherit}
+.btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
+.btn.primary{background:linear-gradient(92deg,#1fc8ff,#8b5cff);border:none;box-shadow:0 10px 40px -10px rgba(120,100,255,.8)}
+.hero .btns{display:flex;gap:12px;flex-wrap:wrap}
+@media(max-width:700px){.hero::after{background:linear-gradient(180deg,rgba(5,6,13,.7) 0%,rgba(5,6,13,.45) 55%,var(--bg) 100%)}.hero-content{top:46%}}
+.scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:var(--muted);font-size:.8rem;
+  letter-spacing:.2em;text-transform:uppercase;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,8px)}}
+
+/* ---------- Layout ---------- */
+section{max-width:1200px;margin:0 auto;padding:110px 20px 30px}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:12px}
+.sec-num{font-family:"JetBrains Mono";color:var(--cyan);font-size:.95rem;border:1px solid rgba(55,226,255,.35);border-radius:10px;padding:2px 10px}
+.lead{font-size:1.15rem;color:#c4cbe0;max-width:820px;margin-bottom:34px}
+.grid{display:grid;gap:22px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(min-width:600px) and (max-width:900px){.g4,.g3{grid-template-columns:repeat(2,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden}
+.card h3{display:flex;align-items:center;gap:10px}
+.card .ico{font-size:1.5rem}
+.card.glow{box-shadow:0 0 0 1px rgba(55,226,255,.15),0 30px 80px -40px rgba(55,226,255,.35)}
+.note{border-left:3px solid var(--violet);background:rgba(155,107,255,.07);padding:14px 18px;border-radius:0 12px 12px 0;margin:18px 0;font-size:.97rem}
+.note.cyan{border-color:var(--cyan);background:rgba(55,226,255,.06)}
+.note.orange{border-color:var(--orange);background:rgba(255,179,71,.07)}
+.tag{display:inline-block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--violet);font-weight:700;margin-bottom:6px}
+
+/* ---------- Formeln ---------- */
+.formula-box{text-align:center;padding:30px 20px;margin:26px 0;border-radius:var(--radius);
+  background:radial-gradient(circle at 50% 0%,rgba(61,255,122,.12),transparent 70%),var(--panel);border:1px solid rgba(61,255,122,.25)}
+.formula-box .big{font-family:"STIX Two Text",serif;font-style:italic;font-size:clamp(1.6rem,4vw,2.5rem);color:#fff}
+.formula-box .cap{color:var(--muted);font-size:.9rem;margin-top:8px}
+.eq{font-family:"STIX Two Text",serif;font-style:italic;font-size:1.3rem;text-align:center;margin:14px 0;color:#fff;overflow-x:auto;white-space:nowrap;padding:4px 0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .15em}
+.frac>span{padding:0 .2em;line-height:1.25}
+.frac>span+span{border-top:1.5px solid currentColor}
+.up{font-style:normal;font-size:1.9em;vertical-align:middle;font-weight:300;line-height:1}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+ol.steps li{counter-increment:s;position:relative;padding:4px 0 14px 46px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:4px;width:30px;height:30px;border-radius:50%;
+  display:grid;place-items:center;font-family:"JetBrains Mono";font-size:.85rem;background:rgba(55,226,255,.12);color:var(--cyan);border:1px solid rgba(55,226,255,.3)}
+
+table.n{width:100%;border-collapse:collapse;font-size:.95rem}
+table.n td,table.n th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.n th{color:var(--muted);font-weight:500;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}
+table.n td:last-child,table.n th:last-child{text-align:right;font-family:"JetBrains Mono"}
+.bar{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));display:inline-block;vertical-align:middle;margin-right:8px}
+
+/* ---------- 3D-Labor ---------- */
+.lab{display:grid;grid-template-columns:1fr 370px;gap:0;align-items:start;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--bg2);
+  box-shadow:0 40px 120px -50px rgba(155,107,255,.5)}
+.viewport{position:relative;height:640px;background:#05060d;overflow:hidden}
+.viewport.small{height:560px}
+.viewport canvas{display:block}
+.vp-hint{position:absolute;left:14px;bottom:12px;font-size:.78rem;color:var(--muted);z-index:3;pointer-events:none;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:99px}
+.vp-buttons{position:absolute;top:12px;left:12px;z-index:3;display:flex;gap:6px;flex-wrap:wrap}
+.vp-buttons button,.chip{font-family:inherit;font-size:.8rem;padding:6px 12px;border-radius:99px;border:1px solid var(--line);
+  background:rgba(10,13,26,.75);color:#dfe5f5;cursor:pointer;transition:.2s}
+.vp-buttons button:hover,.chip:hover{border-color:var(--cyan);color:#fff}
+.vp-buttons button.on{background:rgba(55,226,255,.18);border-color:var(--cyan)}
+.vp-status{position:absolute;top:12px;right:12px;z-index:3;font-weight:600;font-size:.88rem;padding:6px 14px;border-radius:99px;background:rgba(10,13,26,.8);border:1px solid var(--line);transition:.3s}
+.vp-status.tir{border-color:var(--pink);color:var(--pink);box-shadow:0 0 24px rgba(255,79,179,.45)}
+.panel{padding:20px;border-left:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);display:flex;flex-direction:column;gap:14px;max-height:640px;overflow-y:auto;scrollbar-width:thin}
+.viewport.small+.panel{max-height:560px}
+@media(max-width:960px){.lab{grid-template-columns:1fr}.viewport,.viewport.small{height:430px}.panel,.viewport.small+.panel{max-height:none}.panel{border-left:none;border-top:1px solid var(--line)}}
+.ctrl label{display:flex;justify-content:space-between;font-size:.88rem;color:var(--muted);margin-bottom:4px}
+.ctrl label b{font-family:"JetBrains Mono";color:#fff;font-weight:600}
+.ctrl .row{display:flex;gap:8px;align-items:center}
+select{font-family:inherit;font-size:.9rem;background:#0f1324;color:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 10px;width:100%}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,.1);outline:none;margin:8px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:4px solid var(--cyan);cursor:pointer;box-shadow:0 0 12px rgba(55,226,255,.6)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;border:4px solid var(--cyan);cursor:pointer}
+.toggles{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88rem;color:#cdd3e4}
+.toggles input{accent-color:var(--cyan)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.live-eq{font-family:"STIX Two Text",serif;font-style:italic;text-align:center;font-size:1.12rem;padding:12px;border-radius:12px;background:rgba(61,255,122,.07);border:1px solid rgba(61,255,122,.25);color:#fff}
+.live-eq.tir{background:rgba(255,79,179,.08);border-color:rgba(255,79,179,.35)}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ro{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+.ro span{display:block;font-size:.76rem;color:var(--muted)}
+.ro b{font-family:"JetBrains Mono";font-size:.95rem}
+.meter{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;display:flex}
+.meter i{display:block;height:100%}
+canvas.plot{width:100%;height:190px;display:block;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
+
+/* 2D-Demos */
+.demo{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:var(--bg2)}
+.demo canvas.main{width:100%;height:520px;display:block;cursor:default;touch-action:none}
+@media(max-width:700px){.demo canvas.main{height:420px}}
+.demo .bar2{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;padding:16px 20px;border-top:1px solid var(--line)}
+.demo .bar2 .ctrl{flex:1 1 200px}
+.demo-out{display:flex;flex-wrap:wrap;gap:10px;padding:0 20px 18px}
+.demo-out .ro{flex:1 1 150px}
+
+/* Labels 3D */
+.lbl{font-family:"STIX Two Text",serif;font-style:italic;font-size:22px;color:#fff;text-shadow:0 0 8px #000,0 0 3px #000;pointer-events:none;white-space:nowrap}
+.lbl.a{color:var(--orange)} .lbl.b{color:var(--cyan)}
+.lbl.small{font-family:Inter;font-style:normal;font-size:12px;color:#cfd6ea;background:rgba(5,6,13,.65);padding:3px 8px;border-radius:8px;border:1px solid var(--line)}
+
+/* Aufgaben */
+details{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-top:12px}
+summary{cursor:pointer;padding:12px 18px;font-weight:600;color:var(--cyan);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";transition:.2s}
+details[open] summary::before{content:"▾ "}
+details .inner{padding:0 18px 16px}
+.quiz-q{margin-bottom:24px}
+.quiz-q .opts{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.opt{text-align:left;font-family:inherit;font-size:.97rem;padding:11px 16px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;transition:.2s}
+.opt:hover{border-color:rgba(55,226,255,.5)}
+.opt.right{border-color:var(--green);background:rgba(61,255,122,.1)}
+.opt.wrong{border-color:var(--red);background:rgba(255,90,110,.1)}
+.explain{display:none;font-size:.92rem;color:#cbd2e6;margin-top:8px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.04)}
+.explain.show{display:block}
+#score{font-family:"JetBrains Mono";color:var(--green)}
+
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:60px 20px 50px;border-top:1px solid var(--line);margin-top:80px}
+
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.fallback{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:30px;color:var(--muted);z-index:5}
+.no3d .fallback{display:grid}
+svg text{font-family:"STIX Two Text",serif;font-style:italic}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav>
+  <div class="logo"><span class="grad">n₁ sin α = n₂ sin β</span></div>
+  <div class="links">
+    <a href="#phaenomen">Phänomen</a>
+    <a href="#labor">3D-Labor</a>
+    <a href="#huygens">Huygens</a>
+    <a href="#fermat">Fermat</a>
+    <a href="#totalreflexion">Totalreflexion</a>
+    <a href="#dispersion">Dispersion</a>
+    <a href="#fresnel">Fresnel</a>
+    <a href="#aufgaben">Aufgaben</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div id="heroView"><div class="fallback">3D-Szene benötigt eine Internetverbindung (three.js).</div></div>
+  <div class="hero-content">
+    <span class="kicker">Physik-LK · Wellenoptik</span>
+    <h1><span class="grad">Das Brechungs&shy;gesetz</span></h1>
+    <p class="tagline">Warum knickt ein Lichtstrahl ab, wenn er ins Wasser oder ins Glas eintritt? Und warum steckt dahinter eine einzige, erstaunlich einfache Gleichung?</p>
+    <div class="hero-formula">n<sub>1</sub> · sin α = n<sub>2</sub> · sin β</div>
+    <div class="btns">
+      <a class="btn primary" href="#labor">Zum 3D-Labor →</a>
+      <a class="btn" href="#phaenomen">Von vorn erklären</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scrollen ↓</div>
+</header>
+
+<!-- ================= 1 PHÄNOMEN ================= -->
+<section id="phaenomen">
+  <div class="sec-head reveal"><span class="sec-num">01</span><h2>Das Phänomen</h2></div>
+  <p class="lead reveal">Trifft Licht schräg auf die Grenzfläche zweier durchsichtiger Stoffe, teilt es sich auf: Ein Teil wird <b>reflektiert</b>, der Rest dringt ein und ändert dabei seine Richtung – er wird <b>gebrochen</b>. Das kennst du vom „geknickten“ Strohhalm im Glas oder vom Schwimmbecken, das flacher aussieht, als es ist.</p>
+
+  <div class="grid g2">
+    <div class="card reveal">
+      <span class="tag">Begriffe</span>
+      <h3>Die Geometrie der Brechung</h3>
+      <svg viewBox="0 0 420 300" width="100%" style="max-height:300px" aria-label="Skizze: Einfallswinkel und Brechungswinkel">
+        <defs>
+          <linearGradient id="wat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f7bff" stop-opacity=".35"/><stop offset="1" stop-color="#1f7bff" stop-opacity=".08"/></linearGradient>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3dff7a"/></marker>
+        </defs>
+        <rect x="0" y="150" width="420" height="150" fill="url(#wat)"/>
+        <line x1="0" y1="150" x2="420" y2="150" stroke="#8fe8ff" stroke-width="1.5"/>
+        <line x1="210" y1="10" x2="210" y2="290" stroke="#fff" stroke-opacity=".55" stroke-dasharray="6 5"/>
+        <!-- einfallend: alpha = 50° -->
+        <line x1="95" y1="53.6" x2="210" y2="150" stroke="#3dff7a" stroke-width="3" marker-end="url(#ar)"/>
+        <!-- reflektiert -->
+        <line x1="210" y1="150" x2="325" y2="53.6" stroke="#3dff7a" stroke-width="1.6" stroke-opacity=".45" marker-end="url(#ar)"/>
+        <!-- gebrochen: n=1.5 -> beta = 30.7° -->
+        <line x1="210" y1="150" x2="286.6" y2="279" stroke="#3dff7a" stroke-width="3" marker-end="url(#ar)"/>
+        <path d="M210,95 A55,55 0 0 0 167.9,114.6" fill="none" stroke="#ffb347" stroke-width="2"/>
+        <path d="M210,210 A60,60 0 0 0 240.6,201.6" fill="none" stroke="#37e2ff" stroke-width="2"/>
+        <text x="172" y="100" fill="#ffb347" font-size="22">α</text>
+        <text x="220" y="232" fill="#37e2ff" font-size="22">β</text>
+        <text x="216" y="24" fill="#fff" font-size="14" style="font-style:normal;font-family:Inter">Einfallslot</text>
+        <text x="12" y="140" fill="#cfd6ea" font-size="14" style="font-style:normal;font-family:Inter">Medium 1: Luft (n₁)</text>
+        <text x="12" y="176" fill="#cfd6ea" font-size="14" style="font-style:normal;font-family:Inter">Medium 2: Glas (n₂)</text>
+        <text x="40" y="44" fill="#3dff7a" font-size="13" style="font-style:normal;font-family:Inter">einfallender Strahl</text>
+        <text x="300" y="44" fill="#3dff7a" fill-opacity=".7" font-size="13" style="font-style:normal;font-family:Inter">reflektiert</text>
+        <text x="296" y="272" fill="#3dff7a" font-size="13" style="font-style:normal;font-family:Inter">gebrochen</text>
+      </svg>
+      <p style="font-size:.95rem;color:#cbd2e6;margin-top:10px">Alle Winkel werden immer zum <b>Einfallslot</b> gemessen – der Senkrechten auf der Grenzfläche –, <i>nicht</i> zur Oberfläche. <span style="color:var(--orange)">α</span> heißt Einfallswinkel, <span style="color:var(--cyan)">β</span> Brechungswinkel. Einfallender Strahl, Lot, reflektierter und gebrochener Strahl liegen in <b>einer Ebene</b> (der Einfallsebene).</p>
+    </div>
+
+    <div class="card reveal">
+      <span class="tag">Kernidee</span>
+      <h3>Licht ist in Materie langsamer</h3>
+      <p>Im Vakuum läuft Licht mit <span class="m">c</span><sub>0</sub> ≈ 3,00 · 10<sup>8</sup> m/s. In einem Stoff ist es langsamer. Der <b>Brechungsindex</b> gibt an, um welchen Faktor:</p>
+      <div class="eq">n = <span class="frac"><span>c<sub>0</sub></span><span>c<sub>Medium</sub></span></span> &nbsp;≥ 1</div>
+      <table class="n">
+        <tr><th>Stoff</th><th>n (bei 589 nm)</th></tr>
+        <tr><td><span class="bar" style="width:4px"></span>Luft</td><td>1,0003</td></tr>
+        <tr><td><span class="bar" style="width:46px"></span>Wasser</td><td>1,33</td></tr>
+        <tr><td><span class="bar" style="width:69px"></span>Plexiglas</td><td>1,49</td></tr>
+        <tr><td><span class="bar" style="width:73px"></span>Kronglas</td><td>1,52</td></tr>
+        <tr><td><span class="bar" style="width:87px"></span>Flintglas</td><td>1,62</td></tr>
+        <tr><td><span class="bar" style="width:199px"></span>Diamant</td><td>2,42</td></tr>
+      </table>
+      <p style="font-size:.93rem;color:var(--muted);margin-top:12px;margin-bottom:0">Ein Stoff mit größerem <span class="m">n</span> heißt <b>optisch dichter</b>. Das hat nichts mit der Massendichte zu tun!</p>
+    </div>
+  </div>
+
+  <div class="formula-box reveal">
+    <div class="big">n<sub>1</sub> · sin α = n<sub>2</sub> · sin β
+      &nbsp;&nbsp;⇔&nbsp;&nbsp;
+      <span class="frac"><span>sin α</span><span>sin β</span></span> = <span class="frac"><span>n<sub>2</sub></span><span>n<sub>1</sub></span></span> = <span class="frac"><span>c<sub>1</sub></span><span>c<sub>2</sub></span></span>
+    </div>
+    <div class="cap">Brechungsgesetz nach Snellius (1621) – schon um 984 von Ibn Sahl in Bagdad beschrieben.</div>
+  </div>
+
+  <div class="grid g4">
+    <div class="card reveal"><h3><span class="ico">⤵</span>dünn → dicht</h3><p style="margin:0;font-size:.95rem">Aus dem optisch dünneren ins dichtere Medium (<span class="m">n</span><sub>1</sub> &lt; <span class="m">n</span><sub>2</sub>) wird der Strahl <b>zum Lot hin</b> gebrochen: β &lt; α.</p></div>
+    <div class="card reveal"><h3><span class="ico">⤴</span>dicht → dünn</h3><p style="margin:0;font-size:.95rem">Umgekehrt (<span class="m">n</span><sub>1</sub> &gt; <span class="m">n</span><sub>2</sub>) wird er <b>vom Lot weg</b> gebrochen: β &gt; α. Ab einem Grenzwinkel droht <b>Totalreflexion</b>.</p></div>
+    <div class="card reveal"><h3><span class="ico">⬇</span>senkrecht</h3><p style="margin:0;font-size:.95rem">Bei α = 0° ist sin α = 0, also auch β = 0°. Das Licht wird langsamer, aber es <b>knickt nicht</b> ab.</p></div>
+    <div class="card reveal"><h3><span class="ico">⇄</span>umkehrbar</h3><p style="margin:0;font-size:.95rem">Der Lichtweg ist umkehrbar: Schickt man Licht rückwärts entlang des gebrochenen Strahls, läuft es exakt den alten Weg zurück.</p></div>
+  </div>
+
+  <div class="note cyan reveal"><b>Was bleibt gleich, was ändert sich?</b> Die <b>Frequenz</b> <span class="m">f</span> bleibt beim Übergang erhalten – sie wird von der Quelle bestimmt, und an der Grenzfläche müssen die Schwingungen beider Seiten im Takt bleiben. Weil <span class="m">c</span> = λ · <span class="m">f</span> gilt und die Geschwindigkeit sinkt, wird die <b>Wellenlänge kürzer</b>: &nbsp;<span class="m">λ</span><sub>Medium</sub> = <span class="m">λ</span><sub>0</sub> / <span class="m">n</span>. Das kannst du gleich im 3D-Labor an den enger werdenden Wellenfronten sehen.</div>
+</section>
+
+<!-- ================= 2 LABOR ================= -->
+<section id="labor">
+  <div class="sec-head reveal"><span class="sec-num">02</span><h2>Das 3D-Labor</h2></div>
+  <p class="lead reveal">Hier kannst du selbst experimentieren. Stelle den Einfallswinkel und die beiden Medien ein und dreh die Szene mit der Maus oder dem Finger. Die leuchtenden Scheiben sind <b>Wellenfronten</b>: Achte darauf, wie sie im optisch dichteren Medium langsamer werden und enger zusammenrücken.</p>
+
+  <div class="lab reveal">
+    <div class="viewport" id="labView">
+      <div class="fallback">Die 3D-Szene konnte nicht geladen werden.<br>Bitte mit Internetverbindung öffnen (three.js wird von cdn.jsdelivr.net geladen).</div>
+      <div class="vp-buttons">
+        <button data-cam="side" class="on">Seitenansicht</button>
+        <button data-cam="persp">3D-Ansicht</button>
+        <button data-cam="top">Von oben schräg</button>
+      </div>
+      <div class="vp-status" id="labStatus">Brechung zum Lot hin</div>
+      <div class="vp-hint">Ziehen = drehen · Mausrad = zoomen</div>
+    </div>
+    <div class="panel">
+      <div class="ctrl">
+        <label>Einfallswinkel α <b id="alphaVal">45,0°</b></label>
+        <input type="range" id="alpha" min="0" max="89" step="0.5" value="45">
+      </div>
+      <div class="ctrl">
+        <label>Medium 1 (oben) <b id="n1Val">n₁ = 1,00</b></label>
+        <select id="m1"></select>
+        <input type="range" id="n1" min="1" max="2.5" step="0.01" value="1">
+      </div>
+      <div class="ctrl">
+        <label>Medium 2 (unten) <b id="n2Val">n₂ = 1,52</b></label>
+        <select id="m2"></select>
+        <input type="range" id="n2" min="1" max="2.5" step="0.01" value="1.52">
+      </div>
+      <div class="toggles">
+        <label><input type="checkbox" id="tWaves" checked> Wellenfronten</label>
+        <label><input type="checkbox" id="tRefl" checked> Reflexion</label>
+        <label><input type="checkbox" id="tLabels" checked> Beschriftung</label>
+      </div>
+      <div class="btnrow">
+        <button class="chip" id="bSwap">⇅ Medien tauschen</button>
+        <button class="chip" id="bTIR">Totalreflexion zeigen</button>
+        <button class="chip" id="bBrew">Brewster-Winkel</button>
+      </div>
+      <div class="live-eq" id="liveEq">1,00 · sin 45,0° = 1,52 · sin 27,7°</div>
+      <div class="readouts">
+        <div class="ro"><span>Brechungswinkel β</span><b id="roBeta">–</b></div>
+        <div class="ro"><span>Grenzwinkel α<sub>g</sub></span><b id="roCrit">–</b></div>
+        <div class="ro"><span>c<sub>1</sub> = c₀/n₁</span><b id="roV1">–</b></div>
+        <div class="ro"><span>c<sub>2</sub> = c₀/n₂</span><b id="roV2">–</b></div>
+        <div class="ro"><span>λ₁ (bei λ₀ = 532 nm)</span><b id="roL1">–</b></div>
+        <div class="ro"><span>λ₂</span><b id="roL2">–</b></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:4px"><span>reflektiert <b id="roR" class="mono" style="color:#fff">–</b></span><span>durchgelassen <b id="roT" class="mono" style="color:#fff">–</b></span></div>
+        <div class="meter"><i id="mR" style="background:var(--orange);width:5%"></i><i id="mT" style="background:var(--green);width:95%"></i></div>
+      </div>
+      <div>
+        <div style="font-size:.8rem;color:var(--muted);margin-bottom:4px">β in Abhängigkeit von α (aktuelle Medien)</div>
+        <canvas class="plot" id="snellPlot"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card reveal"><span class="tag">Beobachte</span><p style="margin:0">Das Verhältnis <span class="m">sin α / sin β</span> bleibt für ein Medienpaar <b>konstant</b> – egal welches α du einstellst. Die Winkel selbst sind aber <b>nicht</b> proportional (siehe gekrümmte Kurve im Diagramm)!</p></div>
+    <div class="card reveal"><span class="tag">Probiere</span><p style="margin:0">Wähle oben Glas und unten Luft und erhöhe α langsam. Ab dem Grenzwinkel verschwindet der gebrochene Strahl – das Licht wird <b>vollständig reflektiert</b>.</p></div>
+    <div class="card reveal"><span class="tag">Hinweis</span><p style="margin:0">Die Helligkeit der Strahlen folgt den <b>Fresnel-Gleichungen</b> (Abschnitt 07). Bei flachem Einfall wird deutlich mehr Licht reflektiert.</p></div>
+  </div>
+</section>
+
+<!-- ================= 3 HUYGENS ================= -->
+<section id="huygens">
+  <div class="sec-head reveal"><span class="sec-num">03</span><h2>Warum? – Die Herleitung nach Huygens</h2></div>
+  <p class="lead reveal">Das <b>Huygens’sche Prinzip</b>: Jeder Punkt einer Wellenfront ist Ausgangspunkt einer kugelförmigen <b>Elementarwelle</b>. Die neue Wellenfront ist die gemeinsame Tangente (Einhüllende) aller Elementarwellen. Wenden wir das auf eine ebene Welle an, die schräg auf eine Grenzfläche trifft:</p>
+
+  <div class="demo reveal">
+    <canvas class="main" id="huyCanvas"></canvas>
+    <div class="bar2">
+      <div class="ctrl"><label>Einfallswinkel α <b id="hAlphaV">40°</b></label><input type="range" id="hAlpha" min="10" max="75" step="1" value="40"></div>
+      <div class="ctrl"><label>n₁ <b id="hN1V">1,00</b></label><input type="range" id="hN1" min="1" max="2.4" step="0.01" value="1"></div>
+      <div class="ctrl"><label>n₂ <b id="hN2V">1,50</b></label><input type="range" id="hN2" min="1" max="2.4" step="0.01" value="1.5"></div>
+      <div class="btnrow">
+        <button class="chip" id="hPlay">❚❚ Pause</button>
+        <button class="chip" id="hRestart">↺ Neustart</button>
+        <label class="toggles"><input type="checkbox" id="hCons" checked> Konstruktion</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:26px">
+    <div class="card reveal">
+      <h3>Schritt für Schritt</h3>
+      <ol class="steps">
+        <li>Die Wellenfront <b>AA′</b> erreicht zuerst den Punkt <b>A</b> der Grenzfläche. Von dort startet eine Elementarwelle ins Medium 2.</li>
+        <li>Der Rand A′ der Wellenfront braucht noch die Zeit Δ<span class="m">t</span>, bis er bei <b>B</b> ankommt. Er legt dabei <span class="m">c</span><sub>1</sub> · Δ<span class="m">t</span> zurück.</li>
+        <li>In derselben Zeit wächst die Elementarwelle um A im langsameren Medium nur auf den Radius <span class="m">c</span><sub>2</sub> · Δ<span class="m">t</span>.</li>
+        <li>Die neue Wellenfront ist die Tangente von B an diesen Kreis: <b>B′B</b>. Da sie „langsamer vorankommt“, ist sie gekippt – die Welle ist gebrochen.</li>
+      </ol>
+    </div>
+    <div class="card reveal glow">
+      <h3>Die Rechnung</h3>
+      <p style="font-size:.95rem">Beide Dreiecke haben die gemeinsame Hypotenuse <b>AB</b> und einen rechten Winkel (Wellenfront ⟂ Ausbreitungsrichtung). Der Winkel zwischen Wellenfront und Grenzfläche ist gleich dem Winkel zwischen Strahl und Lot:</p>
+      <div class="eq">sin α = <span class="frac"><span>c<sub>1</sub> Δt</span><span>AB</span></span> &nbsp;&nbsp;und&nbsp;&nbsp; sin β = <span class="frac"><span>c<sub>2</sub> Δt</span><span>AB</span></span></div>
+      <p style="font-size:.95rem;margin-bottom:6px">Division: <span class="m">AB</span> und Δ<span class="m">t</span> kürzen sich heraus:</p>
+      <div class="eq" style="font-size:1.45rem"><span class="frac"><span>sin α</span><span>sin β</span></span> = <span class="frac"><span>c<sub>1</sub></span><span>c<sub>2</sub></span></span> = <span class="frac"><span>c<sub>0</sub>/n<sub>1</sub></span><span>c<sub>0</sub>/n<sub>2</sub></span></span> = <span class="frac"><span>n<sub>2</sub></span><span>n<sub>1</sub></span></span></div>
+      <p style="font-size:.95rem;margin:0">Das Brechungsgesetz folgt also allein aus der <b>Wellennatur</b> des Lichts und der unterschiedlichen Ausbreitungsgeschwindigkeit. 🎉</p>
+    </div>
+  </div>
+  <div class="note orange reveal"><b>Und bei Totalreflexion?</b> Wird <span class="m">c</span><sub>2</sub>Δ<span class="m">t</span> größer als <span class="m">AB</span> (möglich, wenn Medium 2 optisch dünner ist), liegt Punkt B <i>innerhalb</i> des Elementarwellen-Kreises. Dann gibt es keine Tangente von B an den Kreis – es entsteht keine gebrochene Welle. Stell dazu in der Simulation n₁ &gt; n₂ und einen großen Winkel ein.</div>
+</section>
+
+<!-- ================= 4 FERMAT ================= -->
+<section id="fermat">
+  <div class="sec-head reveal"><span class="sec-num">04</span><h2>Der schnellste Weg – Fermat</h2></div>
+  <p class="lead reveal">Das <b>Fermat’sche Prinzip</b> (1657): Licht nimmt zwischen zwei Punkten den Weg, für den es (lokal) die <b>kürzeste Zeit</b> braucht. Stell dir eine Rettungsschwimmerin am Strand vor: Sie läuft an Land schneller als sie schwimmt. Der schnellste Weg zur ertrinkenden Person ist deshalb <i>nicht</i> die gerade Linie – sondern ein geknickter Weg mit längerer Strecke an Land.</p>
+
+  <div class="demo reveal">
+    <canvas class="main" id="ferCanvas"></canvas>
+    <canvas class="plot" id="ferGraph" style="border-radius:0;border-left:none;border-right:none;height:150px"></canvas>
+    <div class="bar2">
+      <div class="ctrl"><label>n₁ (oben, „Strand“) <b id="fN1V">1,00</b></label><input type="range" id="fN1" min="1" max="2.4" step="0.01" value="1"></div>
+      <div class="ctrl"><label>n₂ (unten, „Wasser“) <b id="fN2V">1,50</b></label><input type="range" id="fN2" min="1" max="2.4" step="0.01" value="1.5"></div>
+      <div class="btnrow"><button class="chip" id="fOpt">⚡ Schnellsten Weg finden</button></div>
+    </div>
+    <div class="demo-out">
+      <div class="ro"><span>Laufzeit · c₀ (opt. Weg)</span><b id="fT">–</b></div>
+      <div class="ro"><span>gegenüber Minimum</span><b id="fDelta">–</b></div>
+      <div class="ro"><span>n₁ · sin α</span><b id="fS1">–</b></div>
+      <div class="ro"><span>n₂ · sin β</span><b id="fS2">–</b></div>
+    </div>
+  </div>
+  <p class="reveal" style="color:var(--muted);font-size:.9rem;margin-top:10px">Ziehe die Punkte P, Q und den Knickpunkt X mit der Maus/dem Finger. Das Diagramm darunter zeigt die Laufzeit für jede mögliche Lage von X.</p>
+
+  <div class="card reveal glow" style="margin-top:20px">
+    <h3>Herleitung mit Differentialrechnung</h3>
+    <div class="grid g2" style="gap:30px">
+      <div>
+        <p style="font-size:.95rem">P liegt in der Höhe <span class="m">a</span> über der Grenzfläche, Q in der Tiefe <span class="m">b</span> darunter, horizontaler Abstand <span class="m">d</span>. Der Knickpunkt X liegt bei <span class="m">x</span>. Laufzeit:</p>
+        <div class="eq">t(x) = <span class="frac"><span>√(a² + x²)</span><span>c<sub>1</sub></span></span> + <span class="frac"><span>√(b² + (d − x)²)</span><span>c<sub>2</sub></span></span></div>
+        <p style="font-size:.95rem">Minimum ⇒ Ableitung gleich null:</p>
+        <div class="eq">t′(x) = <span class="frac"><span>x</span><span>c<sub>1</sub>√(a² + x²)</span></span> − <span class="frac"><span>d − x</span><span>c<sub>2</sub>√(b² + (d − x)²)</span></span> = 0</div>
+      </div>
+      <div>
+        <p style="font-size:.95rem">Die Brüche sind genau die Sinuswerte der Winkel zum Lot:</p>
+        <div class="eq">sin α = <span class="frac"><span>x</span><span>√(a² + x²)</span></span>, &nbsp; sin β = <span class="frac"><span>d − x</span><span>√(b² + (d − x)²)</span></span></div>
+        <div class="eq">⇒ <span class="frac"><span>sin α</span><span>c<sub>1</sub></span></span> = <span class="frac"><span>sin β</span><span>c<sub>2</sub></span></span> &nbsp;⇔&nbsp; n<sub>1</sub> sin α = n<sub>2</sub> sin β</div>
+        <p style="font-size:.95rem;margin:0">Da <span class="m">t″(x)</span> &gt; 0, ist es tatsächlich ein Minimum. Zwei völlig verschiedene Wege (Wellen, Extremalprinzip) – dasselbe Gesetz!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5 TOTALREFLEXION ================= -->
+<section id="totalreflexion">
+  <div class="sec-head reveal"><span class="sec-num">05</span><h2>Totalreflexion &amp; Glasfaser</h2></div>
+  <p class="lead reveal">Geht Licht vom optisch dichteren ins dünnere Medium (<span class="m">n</span><sub>1</sub> &gt; <span class="m">n</span><sub>2</sub>), wird es vom Lot weg gebrochen. Beim <b>Grenzwinkel</b> α<sub>g</sub> läuft der gebrochene Strahl genau an der Grenzfläche entlang (β = 90°). Für noch größere Winkel gibt das Brechungsgesetz keine Lösung mehr (sin β &gt; 1) – das Licht wird zu 100 % reflektiert.</p>
+
+  <div class="grid g2">
+    <div class="formula-box reveal" style="margin:0">
+      <div class="big">sin α<sub>g</sub> = <span class="frac"><span>n<sub>2</sub></span><span>n<sub>1</sub></span></span></div>
+      <div class="cap">aus n₁ sin α<sub>g</sub> = n₂ · sin 90° = n₂ &nbsp;(nur möglich für n₁ &gt; n₂)</div>
+    </div>
+    <div class="card reveal">
+      <table class="n">
+        <tr><th>Übergang</th><th style="text-transform:none">α<sub>g</sub></th></tr>
+        <tr><td>Wasser → Luft</td><td>48,8°</td></tr>
+        <tr><td>Kronglas → Luft</td><td>41,1°</td></tr>
+        <tr><td>Kronglas → Wasser</td><td>61,0°</td></tr>
+        <tr><td>Diamant → Luft</td><td>24,4°</td></tr>
+        <tr><td>Glasfaser-Kern (1,48) → Mantel (1,46)</td><td>80,6°</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <p class="reveal" style="margin-top:30px">In einer <b>Glasfaser</b> wird Licht durch ständige Totalreflexion über Kilometer geführt – fast ohne Verluste. Stelle unten den Winkel ein, unter dem das Licht auf die Wand trifft. Ist er kleiner als α<sub>g</sub>, tritt bei jeder Reflexion Licht aus und die Faser „leckt“.</p>
+  <div class="lab reveal" style="margin-top:14px">
+    <div class="viewport small" id="fiberView">
+      <div class="fallback">3D-Szene benötigt eine Internetverbindung.</div>
+      <div class="vp-status" id="fiberStatus">Totalreflexion ✓</div>
+      <div class="vp-hint">Ziehen = drehen</div>
+    </div>
+    <div class="panel">
+      <div class="ctrl"><label>Winkel zur Wand-Normalen θ <b id="fbThV">60,0°</b></label><input type="range" id="fbTh" min="15" max="85" step="0.5" value="60"></div>
+      <div class="ctrl"><label>Brechungsindex Kern <b id="fbNV">1,50</b></label><input type="range" id="fbN" min="1.3" max="2.42" step="0.01" value="1.5"></div>
+      <div class="ctrl"><label>Umgebung / Mantel</label>
+        <select id="fbOut"><option value="1">Luft (n = 1,00)</option><option value="1.33">Wasser (n = 1,33)</option><option value="1.46">Mantelglas (n = 1,46)</option></select></div>
+      <div class="readouts">
+        <div class="ro"><span>Grenzwinkel α<sub>g</sub></span><b id="fbCrit">–</b></div>
+        <div class="ro"><span>Licht am Ende</span><b id="fbEnd">–</b></div>
+        <div class="ro"><span>Reflexionen</span><b id="fbCount">–</b></div>
+        <div class="ro"><span>Num. Apertur</span><b id="fbNA">–</b></div>
+      </div>
+      <div class="note" style="margin:0;font-size:.88rem"><b>LK-Extra:</b> Der maximale Eintrittswinkel an der Stirnfläche heißt Akzeptanzwinkel θ<sub>max</sub>. Es gilt die <b>numerische Apertur</b> &nbsp;<span class="m">NA</span> = sin θ<sub>max</sub> = √(<span class="m">n</span><sub>K</sub>² − <span class="m">n</span><sub>M</sub>²).</div>
+    </div>
+  </div>
+
+  <div class="grid g4" style="margin-top:26px">
+    <div class="card reveal"><h3><span class="ico">💎</span>Diamant</h3><p style="margin:0;font-size:.93rem">Wegen α<sub>g</sub> = 24,4° wird Licht im geschliffenen Diamanten oft total reflektiert und tritt oben gebündelt aus – er „funkelt“.</p></div>
+    <div class="card reveal"><h3><span class="ico">🌐</span>Internet</h3><p style="margin:0;font-size:.93rem">Glasfasern übertragen Daten als Lichtpulse. Kern und Mantel haben leicht unterschiedliches <span class="m">n</span> – so bleibt das Licht gefangen.</p></div>
+    <div class="card reveal"><h3><span class="ico">🔭</span>Umlenkprisma</h3><p style="margin:0;font-size:.93rem">In Ferngläsern und Kameras lenken Glasprismen Licht per Totalreflexion um – besser als jeder Spiegel (keine Metallverluste).</p></div>
+    <div class="card reveal"><h3><span class="ico">🏜</span>Fata Morgana</h3><p style="margin:0;font-size:.93rem">Über heißem Asphalt nimmt <span class="m">n</span> der Luft nach unten ab. Flach einfallendes Licht wird allmählich gebrochen und schließlich total reflektiert – der Himmel „spiegelt“ sich.</p></div>
+  </div>
+  <div class="note reveal"><b>Ausblick:</b> Auch bei Totalreflexion dringt ein Teil des Feldes als <b>evaneszente Welle</b> ein Stück (≈ eine Wellenlänge) ins dünnere Medium ein, transportiert aber im Mittel keine Energie. Bringt man ein zweites dichtes Medium sehr nah heran, kann Licht „hinübertunneln“ – die <i>verhinderte Totalreflexion</i>, ein optisches Analogon zum quantenmechanischen Tunneleffekt.</div>
+</section>
+
+<!-- ================= 6 DISPERSION ================= -->
+<section id="dispersion">
+  <div class="sec-head reveal"><span class="sec-num">06</span><h2>Dispersion – Licht in Farben zerlegt</h2></div>
+  <p class="lead reveal">Der Brechungsindex hängt von der Wellenlänge ab: <span class="m">n</span> = <span class="m">n</span>(λ). In Glas gilt <b>normale Dispersion</b> – kurzwelliges (violettes) Licht hat ein größeres <span class="m">n</span> und wird stärker gebrochen als rotes. Ein Prisma fächert weißes Licht deshalb in ein Spektrum auf.</p>
+
+  <div class="lab reveal">
+    <div class="viewport small" id="prismView">
+      <div class="fallback">3D-Szene benötigt eine Internetverbindung.</div>
+      <div class="vp-hint">Ziehen = drehen</div>
+    </div>
+    <div class="panel">
+      <div class="ctrl"><label>Einfallswinkel am Prisma <b id="prEpsV">48,0°</b></label><input type="range" id="prEps" min="20" max="80" step="0.5" value="48"></div>
+      <div class="ctrl"><label>Dispersion überhöht <b id="prBoostV">×4</b></label><input type="range" id="prBoost" min="1" max="10" step="0.5" value="4"></div>
+      <div class="readouts">
+        <div class="ro"><span>n (rot, 700 nm)</span><b id="prNr">–</b></div>
+        <div class="ro"><span>n (violett, 400 nm)</span><b id="prNv">–</b></div>
+        <div class="ro"><span>Ablenkung δ (grün)</span><b id="prDev">–</b></div>
+        <div class="ro"><span>Auffächerung Δδ</span><b id="prSpread">–</b></div>
+      </div>
+      <div class="note cyan" style="margin:0;font-size:.88rem">Modell: Cauchy-Formel für Kronglas BK7, <span class="m">n</span>(λ) = 1,5046 + 0,00420 µm²/λ². Bei ×1 ist die Auffächerung real – nur etwa 1°. Zur Sichtbarkeit kannst du sie überhöhen.</div>
+      <div class="note" style="margin:0;font-size:.88rem"><b>LK-Extra:</b> Beim symmetrischen Durchgang wird die Ablenkung minimal. Mit dem Prismenwinkel γ (hier 60°) gilt dann: &nbsp;<span class="m">n</span> = sin((δ<sub>min</sub> + γ)/2) / sin(γ/2). So misst man Brechungsindizes präzise.</div>
+    </div>
+  </div>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card reveal"><h3><span class="ico">🌈</span>Regenbogen</h3><p style="margin:0;font-size:.93rem">In jedem Regentropfen: Brechung beim Eintritt, Reflexion an der Rückseite, Brechung beim Austritt – mit Dispersion. Rot erscheint unter ≈ 42°, Violett unter ≈ 40° zur Gegenrichtung der Sonne.</p></div>
+    <div class="card reveal"><h3><span class="ico">🔍</span>Farbfehler</h3><p style="margin:0;font-size:.93rem">Linsen haben für jede Farbe eine etwas andere Brennweite (chromatische Aberration). Achromate kombinieren Kron- und Flintglas, um das auszugleichen.</p></div>
+    <div class="card reveal"><h3><span class="ico">⚛</span>Ursache</h3><p style="margin:0;font-size:.93rem">Das Lichtfeld regt Elektronen im Material zu erzwungenen Schwingungen an. Deren Resonanz liegt im UV – je näher die Lichtfrequenz daran, desto stärker die Wirkung, desto größer <span class="m">n</span>.</p></div>
+  </div>
+</section>
+
+<!-- ================= 7 FRESNEL ================= -->
+<section id="fresnel">
+  <div class="sec-head reveal"><span class="sec-num">07</span><h2>Wie viel wird reflektiert? – Fresnel &amp; Brewster</h2></div>
+  <p class="lead reveal">Das Brechungsgesetz sagt, <i>wohin</i> das Licht geht, aber nicht, <i>wie viel</i>. Das beantworten die <b>Fresnel-Gleichungen</b> aus der Elektrodynamik. Man unterscheidet Licht, das senkrecht (s) oder parallel (p) zur Einfallsebene polarisiert ist.</p>
+  <div class="grid g2">
+    <div class="card reveal">
+      <div class="eq">R<sub>s</sub> = <span class="up">(</span><span class="frac"><span>n<sub>1</sub> cos α − n<sub>2</sub> cos β</span><span>n<sub>1</sub> cos α + n<sub>2</sub> cos β</span></span><span class="up">)</span>²</div>
+      <div class="eq">R<sub>p</sub> = <span class="up">(</span><span class="frac"><span>n<sub>2</sub> cos α − n<sub>1</sub> cos β</span><span>n<sub>2</sub> cos α + n<sub>1</sub> cos β</span></span><span class="up">)</span>²</div>
+      <p style="font-size:.95rem">Für unpolarisiertes Licht: <span class="m">R</span> = (<span class="m">R</span><sub>s</sub> + <span class="m">R</span><sub>p</sub>)/2 und <span class="m">T</span> = 1 − <span class="m">R</span>. Bei senkrechtem Einfall: <span class="m">R</span> = ((<span class="m">n</span><sub>1</sub> − <span class="m">n</span><sub>2</sub>)/(<span class="m">n</span><sub>1</sub> + <span class="m">n</span><sub>2</sub>))² ≈ 4 % für Luft/Glas.</p>
+      <div class="note cyan" style="margin-bottom:0"><b>Brewster-Winkel:</b> Stehen reflektierter und gebrochener Strahl senkrecht aufeinander (α + β = 90°), wird p-polarisiertes Licht gar nicht reflektiert (<span class="m">R</span><sub>p</sub> = 0). Mit sin β = cos α folgt aus dem Brechungsgesetz: &nbsp;<b class="m">tan α<sub>B</sub> = n<sub>2</sub>/n<sub>1</sub></b>. Polarisations-Sonnenbrillen nutzen das, um Spiegelungen auf Wasser zu dämpfen.</div>
+    </div>
+    <div class="card reveal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px"><b>Reflexionsgrad in Abhängigkeit von α</b><span style="font-size:.8rem;color:var(--muted)">folgt den Einstellungen im 3D-Labor</span></div>
+      <canvas class="plot" id="fresnelPlot" style="height:300px"></canvas>
+      <div style="display:flex;gap:16px;font-size:.85rem;margin-top:10px;flex-wrap:wrap">
+        <span style="color:#ff6fb8">━ R<sub>s</sub></span><span style="color:#37e2ff">━ R<sub>p</sub></span><span style="color:#fff">━ R (unpolarisiert)</span><span style="color:var(--orange)">┆ aktuelles α</span>
+      </div>
+      <p style="font-size:.88rem;color:var(--muted);margin:10px 0 0" id="fresnelInfo"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 8 AUFGABEN ================= -->
+<section id="aufgaben">
+  <div class="sec-head reveal"><span class="sec-num">08</span><h2>Aufgaben &amp; Selbsttest</h2></div>
+  <p class="lead reveal">Teste dein Verständnis. Die Lösungswege kannst du aufklappen – versuch es aber erst selbst!</p>
+  <div class="grid g2">
+    <div class="reveal">
+      <div class="card">
+        <span class="tag">Aufgabe 1 · Grundlagen</span>
+        <p style="margin:0">Ein Lichtstrahl trifft aus Luft unter α = 60° auf eine Wasseroberfläche (<span class="m">n</span> = 1,33). Berechne den Brechungswinkel.</p>
+        <details><summary>Lösung</summary><div class="inner">
+          <div class="eq">sin β = <span class="frac"><span>n<sub>1</sub></span><span>n<sub>2</sub></span></span> sin α = <span class="frac"><span>1,00</span><span>1,33</span></span> · sin 60° = 0,651</div>
+          <p style="margin:0">⇒ <b>β ≈ 40,6°</b>. Der Strahl wird zum Lot hin gebrochen, weil Wasser optisch dichter ist.</p>
+        </div></details>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <span class="tag">Aufgabe 2 · Totalreflexion</span>
+        <p style="margin:0">Bestimme den Grenzwinkel der Totalreflexion für Diamant (<span class="m">n</span> = 2,42) gegen Luft und erkläre damit das Funkeln.</p>
+        <details><summary>Lösung</summary><div class="inner">
+          <div class="eq">sin α<sub>g</sub> = <span class="frac"><span>1,00</span><span>2,42</span></span> = 0,413 &nbsp;⇒&nbsp; α<sub>g</sub> ≈ 24,4°</div>
+          <p style="margin:0">Schon Licht, das unter mehr als 24,4° auf eine innere Fläche trifft, wird vollständig reflektiert. Durch den Schliff bleibt das Licht lange im Stein „gefangen“ und tritt nur durch wenige Flächen gebündelt aus. Zusammen mit der starken Dispersion entstehen die Farbblitze.</p>
+        </div></details>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <span class="tag">Aufgabe 3 · Wellengrößen</span>
+        <p style="margin:0">Licht der Vakuumwellenlänge λ₀ = 600 nm tritt in Glas (<span class="m">n</span> = 1,50) ein. Berechne Geschwindigkeit, Frequenz und Wellenlänge im Glas.</p>
+        <details><summary>Lösung</summary><div class="inner">
+          <p><span class="m">c</span><sub>Glas</sub> = <span class="m">c</span><sub>0</sub>/<span class="m">n</span> = 3,00·10⁸ m/s / 1,50 = <b>2,00·10⁸ m/s</b></p>
+          <p><span class="m">f</span> = <span class="m">c</span><sub>0</sub>/λ₀ = 3,00·10⁸ m/s / 600·10⁻⁹ m = <b>5,00·10¹⁴ Hz</b> (bleibt gleich!)</p>
+          <p style="margin:0">λ<sub>Glas</sub> = λ₀/<span class="m">n</span> = <b>400 nm</b>. Achtung: Die <i>Farbe</i> ändert sich trotzdem nicht – sie hängt an der Frequenz.</p>
+        </div></details>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <span class="tag">Aufgabe 4 · LK-Niveau</span>
+        <p style="margin:0">Ein Strahl fällt unter α = 45° auf eine planparallele Glasplatte (<span class="m">d</span> = 2,0 cm, <span class="m">n</span> = 1,50). Zeige, dass er die Platte parallel zur ursprünglichen Richtung verlässt, und berechne den seitlichen Versatz <span class="m">s</span>.</p>
+        <details><summary>Lösung</summary><div class="inner">
+          <p>Eintritt: sin β = sin 45°/1,50 = 0,471 ⇒ β = 28,1°. An der Unterseite trifft der Strahl unter β auf (Wechselwinkel), also gilt beim Austritt 1,50 · sin β = 1,00 · sin α′ ⇒ α′ = α = 45°: <b>parallel</b>.</p>
+          <p>Weg in der Platte: <span class="m">l</span> = <span class="m">d</span>/cos β. Der Versatz ist der Abstand der beiden parallelen Geraden:</p>
+          <div class="eq">s = <span class="frac"><span>d · sin(α − β)</span><span>cos β</span></span> = <span class="frac"><span>2,0 cm · sin 16,9°</span><span>cos 28,1°</span></span> ≈ 0,66 cm</div>
+        </div></details>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <span class="tag">Aufgabe 5 · Brewster</span>
+        <p style="margin:0">Unter welchem Winkel ist das an einer Wasseroberfläche (<span class="m">n</span> = 1,33) reflektierte Sonnenlicht vollständig polarisiert?</p>
+        <details><summary>Lösung</summary><div class="inner">
+          <p style="margin:0">tan α<sub>B</sub> = 1,33 ⇒ <b>α<sub>B</sub> ≈ 53,1°</b> zum Lot, also bei einer Sonnenhöhe von etwa 37° über dem Horizont. Das reflektierte Licht schwingt dann nur senkrecht zur Einfallsebene (horizontal) – ein vertikal ausgerichteter Polfilter blockt es.</p>
+        </div></details>
+      </div>
+    </div>
+
+    <div class="card reveal glow" id="quiz">
+      <span class="tag">Quiz</span>
+      <h3>Schnelltest <span id="score" style="margin-left:auto;font-size:1rem"></span></h3>
+      <div id="quizBody"></div>
+    </div>
+  </div>
+
+  <div class="sec-head reveal" style="margin-top:70px"><h2 style="font-size:1.8rem">Das Wichtigste auf einen Blick</h2></div>
+  <div class="grid g3">
+    <div class="card reveal"><span class="tag">Brechungsgesetz</span><div class="eq">n<sub>1</sub> sin α = n<sub>2</sub> sin β</div><p style="margin:0;font-size:.9rem;color:var(--muted)">Winkel zum Lot gemessen; alle Strahlen in einer Ebene.</p></div>
+    <div class="card reveal"><span class="tag">Brechungsindex</span><div class="eq">n = c<sub>0</sub>/c, &nbsp; λ = λ<sub>0</sub>/n</div><p style="margin:0;font-size:.9rem;color:var(--muted)">Frequenz bleibt konstant, Geschwindigkeit und Wellenlänge sinken.</p></div>
+    <div class="card reveal"><span class="tag">Totalreflexion</span><div class="eq">sin α<sub>g</sub> = n<sub>2</sub>/n<sub>1</sub></div><p style="margin:0;font-size:.9rem;color:var(--muted)">Nur beim Übergang dicht → dünn, für α &gt; α<sub>g</sub>.</p></div>
+    <div class="card reveal"><span class="tag">Brewster-Winkel</span><div class="eq">tan α<sub>B</sub> = n<sub>2</sub>/n<sub>1</sub></div><p style="margin:0;font-size:.9rem;color:var(--muted)">Reflektiertes Licht vollständig s-polarisiert; α<sub>B</sub> + β = 90°.</p></div>
+    <div class="card reveal"><span class="tag">Dispersion</span><div class="eq">n = n(λ), &nbsp; n<sub>violett</sub> &gt; n<sub>rot</sub></div><p style="margin:0;font-size:.9rem;color:var(--muted)">Grundlage für Prismenspektren und Regenbogen.</p></div>
+    <div class="card reveal"><span class="tag">Begründung</span><div class="eq">Huygens · Fermat</div><p style="margin:0;font-size:.9rem;color:var(--muted)">Elementarwellen mit verschiedenen Geschwindigkeiten bzw. Prinzip der kürzesten Laufzeit.</p></div>
+  </div>
+</section>
+
+<footer>
+  Das Brechungsgesetz · interaktiv erklärt für den Physik-Leistungskurs<br>
+  3D-Grafik mit three.js · Alle Simulationen berechnen die Physik live im Browser
+</footer>
+
+<!-- =============================================================
+     Teil 1: 2D-Simulationen, Diagramme, Quiz (ohne Bibliotheken)
+     ============================================================= -->
+<script>
+(function(){
+'use strict';
+const rad = d => d*Math.PI/180, deg = r => r*180/Math.PI;
+const fmt = (x,d=1) => (Math.round(x*10**d)/10**d).toFixed(d).replace('.',',');
+
+/* Fresnel-Gleichungen, Winkel in rad */
+function fresnel(n1,n2,a){
+  const s = n1/n2*Math.sin(a);
+  if(s>=1) return {R:1,Rs:1,Rp:1,T:0,tir:true,b:null};
+  const b = Math.asin(s), ca = Math.cos(a), cb = Math.cos(b);
+  const rs = (n1*ca-n2*cb)/(n1*ca+n2*cb), rp = (n2*ca-n1*cb)/(n2*ca+n1*cb);
+  const R = (rs*rs+rp*rp)/2;
+  return {R,Rs:rs*rs,Rp:rp*rp,T:1-R,tir:false,b};
+}
+
+/* HiDPI-Canvas */
+function fit(cv){
+  const r = cv.getBoundingClientRect(), dpr = Math.min(devicePixelRatio||1,2);
+  const w = Math.max(1,Math.round(r.width)), h = Math.max(1,Math.round(r.height));
+  if(cv.width!==w*dpr || cv.height!==h*dpr){ cv.width=w*dpr; cv.height=h*dpr; }
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx,W:w,H:h};
+}
+
+const MATS = [["Luft",1.00],["Wasser",1.33],["Ethanol",1.36],["Plexiglas",1.49],["Kronglas",1.52],["Flintglas",1.62],["Diamant",2.42]];
+
+/* ---------- Diagramm β(α) ---------- */
+function drawSnellPlot(n1,n2,alpha){
+  const cv = document.getElementById('snellPlot'); if(!cv) return;
+  const {ctx,W,H} = fit(cv);
+  ctx.clearRect(0,0,W,H);
+  const L=34,R=12,T=12,B=26, pw=W-L-R, ph=H-T-B;
+  const X = a => L + a/90*pw, Y = b => T + ph - b/90*ph;
+  ctx.font='11px JetBrains Mono, monospace'; ctx.fillStyle='#7d869c'; ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=1;
+  for(let g=0; g<=90; g+=30){
+    ctx.beginPath(); ctx.moveTo(X(g),T); ctx.lineTo(X(g),T+ph); ctx.moveTo(L,Y(g)); ctx.lineTo(L+pw,Y(g)); ctx.stroke();
+    ctx.textAlign='center'; ctx.fillText(g+'°',X(g),H-8);
+    ctx.textAlign='right'; ctx.fillText(g+'°',L-5,Y(g)+4);
+  }
+  ctx.fillStyle='#9aa3b8'; ctx.textAlign='left'; ctx.fillText('α →',L+pw-28,T+ph-6); ctx.fillText('β',L+4,T+11);
+  // Diagonale β = α
+  ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.beginPath(); ctx.moveTo(X(0),Y(0)); ctx.lineTo(X(90),Y(90)); ctx.stroke(); ctx.setLineDash([]);
+  const crit = n1>n2 ? deg(Math.asin(n2/n1)) : null;
+  if(crit!==null){
+    ctx.fillStyle='rgba(255,79,179,.12)'; ctx.fillRect(X(crit),T,X(90)-X(crit),ph);
+    ctx.fillStyle='#ff4fb3'; ctx.textAlign='center'; ctx.fillText('Totalreflexion',(X(crit)+X(90))/2,T+ph/2);
+  }
+  ctx.strokeStyle='#3dff7a'; ctx.lineWidth=2.2; ctx.shadowColor='#3dff7a'; ctx.shadowBlur=8; ctx.beginPath();
+  let first=true;
+  for(let a=0;a<=90;a+=0.25){
+    const s=n1/n2*Math.sin(rad(a)); if(s>1) break;
+    const b=deg(Math.asin(s)); if(first){ctx.moveTo(X(a),Y(b));first=false;} else ctx.lineTo(X(a),Y(b));
+  }
+  if(crit!==null) ctx.lineTo(X(crit),Y(90));
+  ctx.stroke(); ctx.shadowBlur=0;
+  const F = fresnel(n1,n2,rad(alpha));
+  if(!F.tir){
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X(alpha),Y(deg(F.b)),5,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(255,179,71,.6)'; ctx.setLineDash([2,3]); ctx.beginPath(); ctx.moveTo(X(alpha),T+ph); ctx.lineTo(X(alpha),Y(deg(F.b))); ctx.lineTo(L,Y(deg(F.b))); ctx.stroke(); ctx.setLineDash([]);
+  } else {
+    ctx.strokeStyle='#ff4fb3'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(X(alpha),T); ctx.lineTo(X(alpha),T+ph); ctx.stroke();
+  }
+}
+
+/* ---------- Fresnel-Diagramm ---------- */
+function drawFresnelPlot(n1,n2,alpha){
+  const cv = document.getElementById('fresnelPlot'); if(!cv) return;
+  const {ctx,W,H} = fit(cv);
+  ctx.clearRect(0,0,W,H);
+  const L=40,R=14,T=14,B=28, pw=W-L-R, ph=H-T-B;
+  const X=a=>L+a/90*pw, Y=r=>T+ph-r*ph;
+  ctx.font='11px JetBrains Mono, monospace'; ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.fillStyle='#7d869c';
+  for(let g=0;g<=90;g+=15){ctx.beginPath();ctx.moveTo(X(g),T);ctx.lineTo(X(g),T+ph);ctx.stroke();ctx.textAlign='center';ctx.fillText(g+'°',X(g),H-9);}
+  for(let r=0;r<=1.001;r+=.25){ctx.beginPath();ctx.moveTo(L,Y(r));ctx.lineTo(L+pw,Y(r));ctx.stroke();ctx.textAlign='right';ctx.fillText(Math.round(r*100)+'%',L-5,Y(r)+4);}
+  const curve=(key,col,w)=>{ctx.strokeStyle=col;ctx.lineWidth=w;ctx.beginPath();for(let a=0;a<=90;a+=.25){const F=fresnel(n1,n2,rad(Math.min(a,89.99)));const v=F[key];a===0?ctx.moveTo(X(a),Y(v)):ctx.lineTo(X(a),Y(v));}ctx.stroke();};
+  curve('Rs','#ff6fb8',2); curve('Rp','#37e2ff',2); curve('R','#ffffff',2.5);
+  const aB = deg(Math.atan(n2/n1));
+  let info = '';
+  if(Math.abs(n1-n2)>0.005){
+    ctx.fillStyle='#37e2ff'; ctx.beginPath(); ctx.arc(X(aB),Y(0),4.5,0,7); ctx.fill();
+    ctx.textAlign='center'; ctx.fillText('α_B',X(aB),Y(0)-10);
+    info += 'Brewster-Winkel α_B = '+fmt(aB)+'° (hier ist R_p = 0). ';
+  }
+  if(n1>n2){ const c=deg(Math.asin(n2/n1)); info+='Ab α_g = '+fmt(c)+'° wird alles reflektiert (Totalreflexion). '; }
+  const F=fresnel(n1,n2,rad(alpha));
+  info += 'Bei α = '+fmt(alpha)+'°: R_s = '+fmt(F.Rs*100)+' %, R_p = '+fmt(F.Rp*100)+' %.';
+  ctx.strokeStyle='#ffb347'; ctx.setLineDash([4,4]); ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(X(alpha),T); ctx.lineTo(X(alpha),T+ph); ctx.stroke(); ctx.setLineDash([]);
+  document.getElementById('fresnelInfo').textContent = info.replace(/_B/g,'B').replace(/_g/g,'g').replace(/_s/g,'s').replace(/_p/g,'p');
+}
+
+window.Optik = {rad,deg,fmt,fresnel,MATS,drawSnellPlot,drawFresnelPlot,fit};
+
+/* ============== Huygens-Simulation ============== */
+const hcv = document.getElementById('huyCanvas');
+const HS = {alpha:40,n1:1,n2:1.5,playing:true,tau:0,cons:true};
+const $ = id => document.getElementById(id);
+function bindRange(id,key,out,f){ const el=$(id); el.addEventListener('input',()=>{HS[key]=+el.value; $(out).textContent=f(+el.value);}); }
+bindRange('hAlpha','alpha','hAlphaV',v=>v+'°');
+bindRange('hN1','n1','hN1V',v=>fmt(v,2));
+bindRange('hN2','n2','hN2V',v=>fmt(v,2));
+$('hPlay').onclick=()=>{HS.playing=!HS.playing; $('hPlay').textContent=HS.playing?'❚❚ Pause':'▶ Abspielen';};
+$('hRestart').onclick=()=>{HS.tau=0;};
+$('hCons').onchange=e=>{HS.cons=e.target.checked;};
+
+function arrowText(ctx,txt,x,y,col){ctx.fillStyle=col;ctx.fillText(txt,x,y);}
+function huyDraw(){
+  const {ctx,W,H} = fit(hcv);
+  const sc = Math.max(.5,Math.min(W,1000)/1000);
+  const yb = H*0.46;
+  const a = rad(HS.alpha), n1=HS.n1, n2=HS.n2;
+  const s = n1/n2*Math.sin(a), tir = s>=1, b = tir?0:Math.asin(s);
+  const base = 190*sc, v1 = base/n1, v2 = base/n2, vout = tir?v1:v2;
+  const w = Math.min(W*0.2, H*0.26);
+  const AB = w/Math.cos(a);
+  const A = {x:W/2-AB/2-(tir?0:AB*0.08), y:yb}, B = {x:A.x+AB, y:yb};
+  const k1 = {x:Math.sin(a), y:Math.cos(a)};
+  const k2 = tir ? {x:Math.sin(a), y:-Math.cos(a)} : {x:Math.sin(b), y:Math.cos(b)};
+  const Dt = AB*Math.sin(a)/v1;
+  const t0 = -(yb*0.78)/(v1*Math.cos(a));
+  const freeze = HS.cons?3.4:0, after = 2.4;
+  let t = t0 + HS.tau;
+  if(t>Dt){ const over=t-Dt; if(over<freeze) t=Dt; else t=Dt+(over-freeze); if(over>freeze+after){ HS.tau=0; t=t0; } }
+
+  // Hintergrund
+  ctx.clearRect(0,0,W,H);
+  const g1=ctx.createLinearGradient(0,0,0,yb); g1.addColorStop(0,'#070914'); g1.addColorStop(1,'rgba(40,60,120,'+(0.05+0.1*(n1-1))+')');
+  ctx.fillStyle=g1; ctx.fillRect(0,0,W,yb);
+  const g2=ctx.createLinearGradient(0,yb,0,H); g2.addColorStop(0,'rgba(31,123,255,'+(0.1+0.14*(n2-1))+')'); g2.addColorStop(1,'rgba(31,123,255,.03)');
+  ctx.fillStyle=g2; ctx.fillRect(0,yb,W,H-yb);
+  ctx.strokeStyle='rgba(143,232,255,.8)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(0,yb); ctx.lineTo(W,yb); ctx.stroke();
+  ctx.font=(13*Math.max(sc,.8))+'px Inter, sans-serif'; ctx.fillStyle='#b9c2d8'; ctx.textAlign='left';
+  ctx.fillText('Medium 1:  n₁ = '+fmt(n1,2)+'   ·   c₁ = c₀/n₁',14,22);
+  ctx.fillText('Medium 2:  n₂ = '+fmt(n2,2)+'   ·   c₂ = c₀/n₂',14,yb+24);
+
+  const big=4000;
+  // Strahlenbündel
+  ctx.fillStyle='rgba(61,255,122,.06)';
+  ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.lineTo(B.x-k1.x*big,B.y-k1.y*big); ctx.lineTo(A.x-k1.x*big,A.y-k1.y*big); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.lineTo(B.x+k2.x*big,B.y+k2.y*big); ctx.lineTo(A.x+k2.x*big,A.y+k2.y*big); ctx.fill();
+  ctx.strokeStyle='rgba(61,255,122,.35)'; ctx.lineWidth=1;
+  for(const P of [A,B]){ ctx.beginPath(); ctx.moveTo(P.x-k1.x*big,P.y-k1.y*big); ctx.lineTo(P.x,P.y); ctx.lineTo(P.x+k2.x*big,P.y+k2.y*big); ctx.stroke(); }
+
+  // Lot bei A
+  ctx.setLineDash([6,5]); ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.beginPath(); ctx.moveTo(A.x,yb-120*sc-40); ctx.lineTo(A.x,yb+120*sc+40); ctx.stroke(); ctx.setLineDash([]);
+
+  const pos=(i,tt)=>{ const X=A.x+i*AB, ti=i*Dt;
+    if(tt<ti) return {x:X-k1.x*v1*(ti-tt), y:yb-k1.y*v1*(ti-tt)};
+    return {x:X+k2.x*vout*(tt-ti), y:yb+k2.y*vout*(tt-ti)}; };
+  const front=(tt)=>{ const is=[]; for(let j=0;j<=40;j++) is.push(j/40); const ik=tt/Dt; if(ik>0&&ik<1) is.push(ik); is.sort((p,q)=>p-q);
+    ctx.beginPath(); is.forEach((i,j)=>{const p=pos(i,tt); j?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}); ctx.stroke(); };
+
+  // Wellenzug (schwach)
+  const lam = 30*Math.max(sc,.7), Tp = lam/v1;
+  ctx.lineWidth=1.5;
+  for(let m=-9;m<=9;m++){ if(!m) continue; ctx.strokeStyle='rgba(61,255,122,'+(0.28-Math.abs(m)*0.02)+')'; front(t-m*Tp); }
+
+  // Elementarwellen
+  const N=8;
+  for(let j=0;j<=N;j++){
+    const i=j/N, ti=i*Dt; if(t<=ti) continue;
+    const X=A.x+i*AB;
+    const r2=v2*(t-ti);
+    ctx.strokeStyle= tir?'rgba(255,79,179,.55)':'rgba(55,226,255,.55)'; ctx.lineWidth=1.2;
+    if(tir) ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.arc(X,yb,r2,0,Math.PI); ctx.stroke(); ctx.setLineDash([]);
+    if(tir){ ctx.strokeStyle='rgba(55,226,255,.4)'; ctx.beginPath(); ctx.arc(X,yb,v1*(t-ti),Math.PI,2*Math.PI); ctx.stroke(); }
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X,yb,2.4,0,7); ctx.fill();
+  }
+
+  // Hauptwellenfront
+  ctx.strokeStyle='#3dff7a'; ctx.lineWidth=3.2; ctx.shadowColor='#3dff7a'; ctx.shadowBlur=14; front(t); ctx.shadowBlur=0;
+
+  // Konstruktion
+  ctx.font='italic '+(18*Math.max(sc,.85))+'px "STIX Two Text", Georgia, serif';
+  const lbl=(txt,x,y,col)=>{ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(txt,x,y);};
+  if(HS.cons && t>=Dt-1e-6){
+    const Ap={x:B.x-k1.x*v1*Dt, y:yb-k1.y*v1*Dt};
+    if(!tir){
+      const Bp={x:A.x+k2.x*v2*Dt, y:yb+k2.y*v2*Dt};
+      // Dreieck oben
+      ctx.fillStyle='rgba(255,179,71,.12)'; ctx.strokeStyle='#ffb347'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(Ap.x,Ap.y); ctx.lineTo(B.x,B.y); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle='rgba(55,226,255,.12)'; ctx.strokeStyle='#37e2ff';
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(Bp.x,Bp.y); ctx.lineTo(B.x,B.y); ctx.closePath(); ctx.fill(); ctx.stroke();
+      // rechte Winkel
+      const sq=(P,u,v,col)=>{const q=9;ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(P.x+u.x*q,P.y+u.y*q);ctx.lineTo(P.x+u.x*q+v.x*q,P.y+u.y*q+v.y*q);ctx.lineTo(P.x+v.x*q,P.y+v.y*q);ctx.stroke();};
+      const nrm=(p,q)=>{const dx=q.x-p.x,dy=q.y-p.y,l=Math.hypot(dx,dy);return {x:dx/l,y:dy/l};};
+      sq(Ap,nrm(Ap,A),nrm(Ap,B),'#ffb347'); sq(Bp,nrm(Bp,A),nrm(Bp,B),'#37e2ff');
+      // Winkelbögen
+      ctx.lineWidth=2;
+      const angA0=Math.atan2(Ap.y-A.y,Ap.x-A.x); // Richtung A->A'
+      ctx.strokeStyle='#ffb347'; ctx.beginPath(); ctx.arc(A.x,A.y,34,angA0,0); ctx.stroke();
+      const angB0=Math.atan2(Bp.y-B.y,Bp.x-B.x);
+      ctx.strokeStyle='#37e2ff'; ctx.beginPath(); ctx.arc(B.x,B.y,34,Math.PI,angB0,true); ctx.stroke();
+      const mA=angA0/2; lbl('α',A.x+50*Math.cos(mA),A.y+50*Math.sin(mA)+6,'#ffb347');
+      const mB=(Math.PI+angB0)/2; lbl('β',B.x+50*Math.cos(mB),B.y+50*Math.sin(mB)+6,'#37e2ff');
+      // Seiten
+      lbl('c₁·Δt',(Ap.x+B.x)/2+22,(Ap.y+B.y)/2-4,'#ffb347');
+      lbl('c₂·Δt',(A.x+Bp.x)/2-30,(A.y+Bp.y)/2+8,'#37e2ff');
+      lbl('A′',Ap.x-14,Ap.y-6,'#fff'); lbl('B′',Bp.x-6,Bp.y+22,'#fff');
+      // Formel-Kasten
+      const bx=W-Math.min(330,W*0.5)-12, by=H-86, bw=Math.min(330,W*0.5);
+      ctx.fillStyle='rgba(5,6,13,.8)'; ctx.strokeStyle='rgba(61,255,122,.4)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect?ctx.roundRect(bx,by,bw,72,12):ctx.rect(bx,by,bw,72); ctx.fill(); ctx.stroke();
+      ctx.font=(13*Math.max(sc,.8))+'px JetBrains Mono, monospace'; ctx.textAlign='left'; ctx.fillStyle='#e8ecf5';
+      ctx.fillText('sin α / sin β = '+fmt(Math.sin(a)/Math.sin(b),3),bx+14,by+28);
+      ctx.fillText('c₁ / c₂ = n₂ / n₁ = '+fmt(n2/n1,3),bx+14,by+52);
+    } else {
+      ctx.fillStyle='rgba(5,6,13,.85)'; ctx.fillRect(12,H-64,Math.min(W-24,520),50);
+      ctx.font=(13*Math.max(sc,.8))+'px Inter, sans-serif'; ctx.fillStyle='#ff4fb3'; ctx.textAlign='left';
+      ctx.fillText('c₂·Δt > AB: B liegt im Kreis – keine Tangente, keine gebrochene Welle.',22,H-43);
+      ctx.fillStyle='#b9c2d8'; ctx.fillText('→ Totalreflexion: Die Welle wird vollständig reflektiert.',22,H-23);
+    }
+    lbl('A',A.x-4,A.y-10,'#fff'); lbl('B',B.x+14,B.y-8,'#fff');
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(A.x,A.y,4,0,7); ctx.arc(B.x,B.y,4,0,7); ctx.fill();
+  }
+}
+
+/* ============== Fermat-Simulation ============== */
+const fcv=$('ferCanvas'), fgv=$('ferGraph');
+const FS={P:{x:.16,y:.2},Q:{x:.78,y:.84},x:.62,n1:1,n2:1.5,drag:null,anim:null};
+$('fN1').oninput=e=>{FS.n1=+e.target.value;$('fN1V').textContent=fmt(FS.n1,2);};
+$('fN2').oninput=e=>{FS.n2=+e.target.value;$('fN2V').textContent=fmt(FS.n2,2);};
+function ferGeom(){ const r=fcv.getBoundingClientRect(); const W=r.width,H=r.height,yb=H*.5;
+  const P={x:FS.P.x*W,y:FS.P.y*H},Q={x:FS.Q.x*W,y:FS.Q.y*H};
+  const Lf=x=>FS.n1*Math.hypot(x-P.x,yb-P.y)+FS.n2*Math.hypot(Q.x-x,Q.y-yb);
+  let lo=Math.min(P.x,Q.x)-W, hi=Math.max(P.x,Q.x)+W;
+  for(let k=0;k<90;k++){const m1=lo+(hi-lo)/3,m2=hi-(hi-lo)/3; if(Lf(m1)<Lf(m2)) hi=m2; else lo=m1;}
+  return {W,H,yb,P,Q,Lf,xmin:(lo+hi)/2}; }
+$('fOpt').onclick=()=>{ const g=ferGeom(); FS.anim={from:FS.x,to:Math.min(1,Math.max(0,g.xmin/g.W)),t:0}; };
+function ferPointer(e){ const r=fcv.getBoundingClientRect(); return {x:(e.clientX-r.left),y:(e.clientY-r.top),W:r.width,H:r.height}; }
+fcv.addEventListener('pointerdown',e=>{ const p=ferPointer(e); const g=ferGeom();
+  const cands=[['P',g.P],['Q',g.Q],['X',{x:FS.x*g.W,y:g.yb}]]; let best=null,bd=40;
+  for(const [k,c] of cands){const d=Math.hypot(c.x-p.x,c.y-p.y); if(d<bd){bd=d;best=k;}}
+  if(!best && Math.abs(p.y-g.yb)<30) best='X';
+  if(best){FS.drag=best; FS.anim=null; fcv.setPointerCapture(e.pointerId); ferMove(e);} });
+function ferMove(e){ if(!FS.drag) return; const p=ferPointer(e); const cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+  if(FS.drag==='X') FS.x=cl(p.x/p.W,0,1);
+  if(FS.drag==='P'){FS.P.x=cl(p.x/p.W,.03,.97); FS.P.y=cl(p.y/p.H,.05,.44);}
+  if(FS.drag==='Q'){FS.Q.x=cl(p.x/p.W,.03,.97); FS.Q.y=cl(p.y/p.H,.56,.95);} }
+fcv.addEventListener('pointermove',e=>{ferMove(e); if(!FS.drag){const p=ferPointer(e),g=ferGeom();
+  const near=[g.P,g.Q,{x:FS.x*g.W,y:g.yb}].some(c=>Math.hypot(c.x-p.x,c.y-p.y)<40)||Math.abs(p.y-g.yb)<30; fcv.style.cursor=near?'grab':'default';}});
+fcv.addEventListener('pointerup',()=>FS.drag=null); fcv.addEventListener('pointercancel',()=>FS.drag=null);
+
+function ferDraw(dt){
+  if(FS.anim){ FS.anim.t=Math.min(1,FS.anim.t+dt/1.1); const e=1-Math.pow(1-FS.anim.t,3); FS.x=FS.anim.from+(FS.anim.to-FS.anim.from)*e; if(FS.anim.t>=1) FS.anim=null; }
+  const {ctx,W,H}=fit(fcv); const g=ferGeom(); const {yb,P,Q,Lf,xmin}=g;
+  ctx.clearRect(0,0,W,H);
+  const s1=ctx.createLinearGradient(0,0,0,yb); s1.addColorStop(0,'#0b0c16'); s1.addColorStop(1,'rgba(255,190,90,'+(0.06+0.08*(FS.n1-1))+')');
+  ctx.fillStyle=s1; ctx.fillRect(0,0,W,yb);
+  const s2=ctx.createLinearGradient(0,yb,0,H); s2.addColorStop(0,'rgba(31,123,255,'+(0.12+0.12*(FS.n2-1))+')'); s2.addColorStop(1,'rgba(31,123,255,.03)');
+  ctx.fillStyle=s2; ctx.fillRect(0,yb,W,H-yb);
+  ctx.strokeStyle='rgba(143,232,255,.8)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(0,yb); ctx.lineTo(W,yb); ctx.stroke();
+  ctx.font='13px Inter, sans-serif'; ctx.fillStyle='#b9c2d8'; ctx.textAlign='left';
+  ctx.fillText('„Strand“ · n₁ = '+fmt(FS.n1,2)+'  (schneller)',14,22); ctx.fillText('„Wasser“ · n₂ = '+fmt(FS.n2,2)+'  (langsamer)',14,yb+24);
+  // gerade Linie
+  ctx.setLineDash([3,6]); ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(Q.x,Q.y); ctx.stroke();
+  // optimaler Weg
+  ctx.setLineDash([8,6]); ctx.strokeStyle='rgba(61,255,122,.55)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(xmin,yb); ctx.lineTo(Q.x,Q.y); ctx.stroke(); ctx.setLineDash([]);
+  const X={x:FS.x*W,y:yb};
+  const Lc=Lf(X.x), Lm=Lf(xmin), rel=(Lc/Lm-1)*100, isOpt=rel<0.05;
+  const col=isOpt?'#3dff7a':'#ffb347';
+  // Lot bei X
+  ctx.setLineDash([6,5]); ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X.x,yb-110); ctx.lineTo(X.x,yb+110); ctx.stroke(); ctx.setLineDash([]);
+  // aktueller Weg
+  ctx.strokeStyle=col; ctx.lineWidth=3.5; ctx.shadowColor=col; ctx.shadowBlur=14; ctx.beginPath(); ctx.moveTo(P.x,P.y); ctx.lineTo(X.x,X.y); ctx.lineTo(Q.x,Q.y); ctx.stroke(); ctx.shadowBlur=0;
+  // Winkel
+  const aA=Math.atan2(P.y-yb,P.x-X.x), aB=Math.atan2(Q.y-yb,Q.x-X.x);
+  ctx.lineWidth=2; ctx.strokeStyle='#ffb347'; ctx.beginPath(); ctx.arc(X.x,yb,42,Math.min(-Math.PI/2,aA),Math.max(-Math.PI/2,aA)); ctx.stroke();
+  ctx.strokeStyle='#37e2ff'; ctx.beginPath(); ctx.arc(X.x,yb,42,Math.min(Math.PI/2,aB),Math.max(Math.PI/2,aB)); ctx.stroke();
+  ctx.font='italic 19px "STIX Two Text", Georgia, serif'; ctx.textAlign='center';
+  const ma=(aA-Math.PI/2)/2, mb=(aB+Math.PI/2)/2;
+  ctx.fillStyle='#ffb347'; ctx.fillText('α',X.x+60*Math.cos(ma),yb+60*Math.sin(ma)+6);
+  ctx.fillStyle='#37e2ff'; ctx.fillText('β',X.x+60*Math.cos(mb),yb+60*Math.sin(mb)+6);
+  // Punkte
+  const dot=(p,c,t)=>{ctx.fillStyle=c;ctx.shadowColor=c;ctx.shadowBlur=18;ctx.beginPath();ctx.arc(p.x,p.y,9,0,7);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='600 14px Inter';ctx.fillText(t,p.x,p.y-16);};
+  dot(P,'#ff4fb3','P (Start)'); dot(Q,'#9b6bff','Q (Ziel)'); dot(X,col,'X');
+  if(isOpt){ctx.fillStyle='#3dff7a';ctx.font='600 14px Inter';ctx.fillText('✓ schnellster Weg',X.x,yb-18-10);}
+  const sa=Math.abs(X.x-P.x)/Math.hypot(X.x-P.x,yb-P.y), sb=Math.abs(Q.x-X.x)/Math.hypot(Q.x-X.x,Q.y-yb);
+  $('fT').textContent=fmt(Lc/100,3); $('fDelta').textContent=isOpt?'Minimum ✓':'+'+fmt(rel,2)+' %';
+  $('fS1').textContent=fmt(FS.n1*sa,3); $('fS2').textContent=fmt(FS.n2*sb,3);
+  $('fS1').style.color=$('fS2').style.color=isOpt?'#3dff7a':'#fff';
+  // Graph
+  const G=fit(fgv), c2=G.ctx; c2.clearRect(0,0,G.W,G.H);
+  let mn=1e9,mx=-1e9; const vals=[]; for(let i=0;i<=200;i++){const x=i/200*W, v=Lf(x); vals.push(v); mn=Math.min(mn,v); mx=Math.max(mx,v);}
+  const gy=v=>G.H-18-(v-mn)/(mx-mn||1)*(G.H-40);
+  c2.fillStyle='#7d869c'; c2.font='11px JetBrains Mono, monospace'; c2.textAlign='left'; c2.fillText('Laufzeit t(x)',10,16); c2.textAlign='right'; c2.fillText('Lage von X →',G.W-10,G.H-4);
+  c2.strokeStyle='#9b6bff'; c2.lineWidth=2; c2.beginPath(); vals.forEach((v,i)=>{const x=i/200*G.W; i?c2.lineTo(x,gy(v)):c2.moveTo(x,gy(v));}); c2.stroke();
+  c2.fillStyle='#3dff7a'; c2.beginPath(); c2.arc(xmin/W*G.W,gy(Lm),5,0,7); c2.fill();
+  c2.fillStyle=col; c2.beginPath(); c2.arc(FS.x*G.W,gy(Lc),6,0,7); c2.fill();
+  c2.strokeStyle=col; c2.setLineDash([3,4]); c2.beginPath(); c2.moveTo(FS.x*G.W,gy(Lc)); c2.lineTo(FS.x*G.W,G.H); c2.stroke(); c2.setLineDash([]);
+}
+
+/* ---------- Schleife für 2D-Szenen (nur wenn sichtbar) ---------- */
+const vis={huy:false,fer:false};
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.target===hcv) vis.huy=e.isIntersecting; if(e.target===fcv) vis.fer=e.isIntersecting; }),{rootMargin:'80px'});
+io.observe(hcv); io.observe(fcv);
+let last=performance.now();
+function loop2d(now){ const dt=Math.min(.05,(now-last)/1000); last=now;
+  if(vis.huy){ if(HS.playing) HS.tau+=dt; huyDraw(); }
+  if(vis.fer) ferDraw(dt);
+  requestAnimationFrame(loop2d); }
+requestAnimationFrame(loop2d);
+
+/* ---------- Quiz ---------- */
+const QUIZ=[
+  {q:'Licht geht von Wasser in Luft über (schräger Einfall). Der Strahl wird …',o:['zum Lot hin gebrochen','vom Lot weg gebrochen','gar nicht gebrochen'],r:1,e:'Luft ist optisch dünner (n kleiner). Aus n₁ sin α = n₂ sin β mit n₁ > n₂ folgt sin β > sin α, also β > α.'},
+  {q:'Welche Größe bleibt beim Übergang in ein anderes Medium unverändert?',o:['Wellenlänge','Ausbreitungsgeschwindigkeit','Frequenz'],r:2,e:'Die Frequenz wird von der Quelle vorgegeben und bleibt gleich. Geschwindigkeit und Wellenlänge sinken um den Faktor n.'},
+  {q:'Wie groß ist die Lichtgeschwindigkeit in Glas mit n = 1,5?',o:['4,5 · 10⁸ m/s','2,0 · 10⁸ m/s','3,0 · 10⁸ m/s'],r:1,e:'c = c₀/n = 3,0·10⁸ m/s / 1,5 = 2,0·10⁸ m/s.'},
+  {q:'Totalreflexion kann nur auftreten, wenn Licht …',o:['vom optisch dichteren ins dünnere Medium läuft','vom optisch dünneren ins dichtere Medium läuft','senkrecht auf die Grenzfläche trifft'],r:0,e:'Nur dann wird vom Lot weg gebrochen, und β kann 90° erreichen: sin α_g = n₂/n₁ < 1.'.replace('_g','g')},
+  {q:'Verdoppelt man den Einfallswinkel von 20° auf 40° (Luft → Glas), dann …',o:['verdoppelt sich auch β genau','verdoppelt sich sin α / sin β','bleibt sin α / sin β gleich, β verdoppelt sich aber nicht genau'],r:2,e:'Das Verhältnis der Sinuswerte ist konstant (= n₂/n₁), nicht das der Winkel. Für n = 1,5: β(20°) = 13,2°, β(40°) = 25,4° – nicht ganz das Doppelte.'},
+  {q:'Warum wird violettes Licht in einem Glasprisma stärker abgelenkt als rotes?',o:['Weil violettes Licht energiereicher ist und deshalb abgestoßen wird','Weil der Brechungsindex von Glas für kurze Wellenlängen größer ist','Weil rotes Licht im Glas schneller absorbiert wird'],r:1,e:'Normale Dispersion: n(400 nm) > n(700 nm). Größeres n bedeutet stärkere Brechung.'}
+];
+let score=0, answered=0;
+const qb=$('quizBody');
+QUIZ.forEach((item,qi)=>{
+  const d=document.createElement('div'); d.className='quiz-q';
+  d.innerHTML='<b>'+(qi+1)+'. '+item.q+'</b><div class="opts"></div><div class="explain"></div>';
+  const opts=d.querySelector('.opts'), ex=d.querySelector('.explain');
+  item.o.forEach((o,oi)=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=o;
+    b.onclick=()=>{ if(d.dataset.done) return; d.dataset.done=1; answered++;
+      if(oi===item.r){ b.classList.add('right'); score++; ex.innerHTML='✅ Richtig! '+item.e; }
+      else { b.classList.add('wrong'); opts.children[item.r].classList.add('right'); ex.innerHTML='❌ Leider nicht. '+item.e; }
+      ex.classList.add('show'); $('score').textContent=score+' / '+answered; };
+    opts.appendChild(b); });
+  qb.appendChild(d);
+});
+
+/* ---------- Reveal, Navigation, Fortschritt ---------- */
+const rio=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>rio.observe(el));
+const links=[...document.querySelectorAll('nav .links a')];
+addEventListener('scroll',()=>{
+  const h=document.documentElement; $('progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+  let cur=null; for(const a of links){ const s=document.querySelector(a.getAttribute('href')); if(s && s.getBoundingClientRect().top<innerHeight*.4) cur=a; }
+  links.forEach(a=>a.classList.toggle('active',a===cur));
+},{passive:true});
+
+drawFresnelPlot(1,1.52,45);
+drawSnellPlot(1,1.52,45);
+addEventListener('resize',()=>{ if(window.Optik.lastLab){const s=window.Optik.lastLab; drawSnellPlot(s.n1,s.n2,s.alpha); drawFresnelPlot(s.n1,s.n2,s.alpha);} else {drawSnellPlot(1,1.52,45);drawFresnelPlot(1,1.52,45);} });
+// Falls three.js nicht geladen werden kann
+setTimeout(()=>{ if(!window.__3dReady) document.body.classList.add('no3d'); },8000);
+})();
+</script>
+
+<!-- =============================================================
+     Teil 2: 3D-Szenen mit three.js
+     ============================================================= -->
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
+import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {CSS2DRenderer, CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
+
+const {rad,deg,fmt,fresnel,MATS,drawSnellPlot,drawFresnelPlot} = window.Optik;
+const V3 = THREE.Vector3;
+const UP = new V3(0,1,0), DOWN = new V3(0,-1,0), ZAX = new V3(0,0,1), O = new V3();
+const LASER = 0x3dff7a;
+const C_SIM = 3.4;               // "Lichtgeschwindigkeit" in der Simulation (Einheiten/s)
+const stages = window.__stages = [];
+
+/* ---------- Hilfsfunktionen ---------- */
+const beamGeo = new THREE.CylinderGeometry(1,1,1,16,1,true);
+function makeBeam(color, r=.045){
+  const g = new THREE.Group(), c = new THREE.Color(color);
+  const core = new THREE.Mesh(beamGeo,new THREE.MeshBasicMaterial({color:c.clone().lerp(new THREE.Color(0xffffff),.55),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+  const glow = new THREE.Mesh(beamGeo,new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.3,blending:THREE.AdditiveBlending,depthWrite:false}));
+  core.scale.set(r,1,r); glow.scale.set(r*3.4,1,r*3.4);
+  g.add(core,glow); g.userData={core,glow}; g.visible=false;
+  return g;
+}
+function beamColor(b,color){ const c=new THREE.Color(color); b.userData.glow.material.color.copy(c); b.userData.core.material.color.copy(c.clone().lerp(new THREE.Color(0xffffff),.45)); }
+const _d = new V3();
+function setBeam(b,a,e,I=1){
+  _d.subVectors(e,a); const L=_d.length();
+  if(L<1e-4 || I<.004){ b.visible=false; return; }
+  b.visible=true;
+  b.position.copy(a).addScaledVector(_d,.5);
+  b.quaternion.setFromUnitVectors(UP,_d.divideScalar(L));
+  const s=Math.sqrt(I), w=.35+.65*s;
+  b.scale.set(w,L,w);
+  b.userData.core.material.opacity=Math.min(1,.12+s);
+  b.userData.glow.material.opacity=.3*s;
+}
+function makeSector(color){
+  const g=new THREE.Group();
+  const line=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color,transparent:true,opacity:.95}));
+  const fill=new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.2,side:THREE.DoubleSide,depthWrite:false}));
+  g.add(line,fill); g.userData={line,fill}; return g;
+}
+function setSector(s,v1,v2,r){
+  const a1=Math.atan2(v1.y,v1.x); let da=Math.atan2(v2.y,v2.x)-a1;
+  while(da>Math.PI) da-=2*Math.PI; while(da<-Math.PI) da+=2*Math.PI;
+  s.visible=Math.abs(da)>.004; if(!s.visible) return;
+  const N=40, pts=[], tri=[];
+  for(let i=0;i<=N;i++){ const a=a1+da*i/N; pts.push(new V3(Math.cos(a)*r,Math.sin(a)*r,0)); }
+  for(let i=0;i<N;i++) tri.push(0,0,0, pts[i].x,pts[i].y,0, pts[i+1].x,pts[i+1].y,0);
+  const {line,fill}=s.userData;
+  line.geometry.dispose(); line.geometry=new THREE.BufferGeometry().setFromPoints(pts);
+  fill.geometry.dispose(); fill.geometry=new THREE.BufferGeometry(); fill.geometry.setAttribute('position',new THREE.Float32BufferAttribute(tri,3));
+}
+function bisector(v1,v2,r){ const b=v1.clone().add(v2); if(b.lengthSq()<1e-6) b.copy(v1); return b.normalize().multiplyScalar(r); }
+function label(html,cls=''){ const d=document.createElement('div'); d.className='lbl '+cls; d.innerHTML=html; return new CSS2DObject(d); }
+function mediumMesh(geo){
+  const g=new THREE.Group();
+  const m=new THREE.Mesh(geo,new THREE.MeshPhysicalMaterial({color:0x3aa0ff,transparent:true,opacity:.2,roughness:.08,metalness:0,clearcoat:.3,side:THREE.DoubleSide,depthWrite:false}));
+  const e=new THREE.LineSegments(new THREE.EdgesGeometry(geo),new THREE.LineBasicMaterial({color:0x8fe8ff,transparent:true,opacity:.45}));
+  g.add(m,e); g.userData={m,e}; return g;
+}
+function styleMedium(g,n){
+  g.visible = n>1.005;
+  const k=Math.min(1,(n-1)/1.4);
+  const c=new THREE.Color(0x1f7bff).lerp(new THREE.Color(0xc8f6ff),k);
+  g.userData.m.material.color.copy(c);
+  g.userData.m.material.opacity=.07+.13*Math.min(1,(n-1)/.8);
+  g.userData.e.material.color.copy(c);
+}
+function laserDevice(){
+  const g=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.CylinderGeometry(.17,.17,1.4,28),new THREE.MeshStandardMaterial({color:0x2a3040,metalness:.85,roughness:.28}));
+  body.position.y=-.72; g.add(body);
+  const ring=new THREE.Mesh(new THREE.CylinderGeometry(.185,.185,.12,28),new THREE.MeshStandardMaterial({color:LASER,emissive:LASER,emissiveIntensity:2}));
+  ring.position.y=-.12; g.add(ring);
+  const ring2=ring.clone(); ring2.position.y=-1.25; g.add(ring2);
+  return g;
+}
+function stars(scene,n=1400){
+  const p=new Float32Array(n*3);
+  for(let i=0;i<n;i++){ const r=40+Math.random()*50, t=Math.random()*Math.PI*2, u=Math.acos(2*Math.random()-1);
+    p[i*3]=r*Math.sin(u)*Math.cos(t); p[i*3+1]=r*Math.cos(u); p[i*3+2]=r*Math.sin(u)*Math.sin(t); }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(p,3));
+  const pts=new THREE.Points(g,new THREE.PointsMaterial({color:0x9fb4ff,size:.16,transparent:true,opacity:.75}));
+  scene.add(pts); return pts;
+}
+// vertikales Sichtfeld so wählen, dass die Szene auch im Hochformat ganz sichtbar bleibt
+function fovFor(asp,k){ return asp>=k ? 42 : Math.min(85,2*deg(Math.atan(Math.tan(rad(21))*k/asp))); }
+function wl2rgb(l){ let r=0,g=0,b=0;
+  if(l<440){r=-(l-440)/60;b=1;} else if(l<490){g=(l-440)/50;b=1;} else if(l<510){g=1;b=-(l-510)/20;}
+  else if(l<580){r=(l-510)/70;g=1;} else if(l<645){r=1;g=-(l-645)/65;} else r=1;
+  return new THREE.Color(r,g,b); }
+
+/* ---------- Basisklasse für eine 3D-Bühne ---------- */
+class Stage{
+  constructor(el,o={}){
+    this.el=el;
+    const R=this.renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+    R.setPixelRatio(Math.min(devicePixelRatio,2)); R.setClearColor(0x05060d,1);
+    R.domElement.style.position='absolute'; R.domElement.style.inset='0';
+    el.appendChild(R.domElement);
+    this.scene=new THREE.Scene(); this.scene.background=new THREE.Color(0x05060d); this.scene.fog=new THREE.FogExp2(0x05060d,.012);
+    this.camera=new THREE.PerspectiveCamera(o.fov||42,1,.1,300);
+    this.camera.position.set(...(o.cam||[0,1,14]));
+    this.controls=new OrbitControls(this.camera,R.domElement);
+    this.controls.enableDamping=true; this.controls.dampingFactor=.08;
+    this.controls.enablePan=false; this.controls.minDistance=5; this.controls.maxDistance=30;
+    this.controls.enableZoom=o.zoom!==false;
+    if(o.interactive===false){ this.controls.enabled=false; R.domElement.style.pointerEvents='none'; }
+    this.composer=new EffectComposer(R);
+    this.composer.addPass(new RenderPass(this.scene,this.camera));
+    const [s,r,t]=o.bloom||[.8,.25,.82];
+    this.bloom=new UnrealBloomPass(new THREE.Vector2(256,256),s,r,t);
+    this.composer.addPass(this.bloom); this.composer.addPass(new OutputPass());
+    if(o.labels){ const L=this.labels=new CSS2DRenderer(); Object.assign(L.domElement.style,{position:'absolute',top:0,left:0,pointerEvents:'none'}); el.appendChild(L.domElement); }
+    this.scene.add(new THREE.AmbientLight(0xffffff,.35));
+    const dl=new THREE.DirectionalLight(0xffffff,.9); dl.position.set(5,10,8); this.scene.add(dl);
+    this.visible=false; this.camGoal=null;
+    new IntersectionObserver(es=>{this.visible=es[0].isIntersecting;},{rootMargin:'120px'}).observe(el);
+    new ResizeObserver(()=>this.resize()).observe(el);
+    this.resize(); stages.push(this);
+  }
+  resize(){ const w=this.el.clientWidth,h=this.el.clientHeight; if(!w||!h) return;
+    this.renderer.setSize(w,h); this.composer.setSize(w,h); this.bloom.setSize(w,h);
+    this.camera.aspect=w/h; this.fitCamera?.(w/h); this.camera.updateProjectionMatrix(); this.labels?.setSize(w,h); }
+  flyTo(pos){ this.camGoal=new V3(...pos); }
+  update(){}
+  render(){
+    if(this.camGoal){ this.camera.position.lerp(this.camGoal,.07); if(this.camera.position.distanceTo(this.camGoal)<.03) this.camGoal=null; }
+    this.controls.update(); this.composer.render(); this.labels?.render(this.scene,this.camera); }
+}
+
+/* =========================================================
+   Brechungs-Szene (Hero + Labor)
+   ========================================================= */
+class RefractionScene extends Stage{
+  constructor(el,o={}){
+    super(el,{cam:o.hero?[5.5,2.6,12.5]:[0,.6,15.5],labels:!o.hero,bloom:o.hero?[1,.3,.8]:[.8,.25,.82],interactive:!o.hero,zoom:!o.hero});
+    this.hero=!!o.hero; this.alpha=45; this.n1=1; this.n2=1.52; this.name1='Luft'; this.name2='Kronglas';
+    this.showWaves=true; this.showRefl=true; this.showLabels=true;
+    const S=this.scene;
+    if(this.hero){ this.stars=stars(S); this.controls.autoRotate=true; this.controls.autoRotateSpeed=.5; this.controls.target.set(0,-.6,0); }
+    const grid=new THREE.GridHelper(60,60,0x1b2750,0x0e1530); grid.position.y=-5.02; S.add(grid);
+    const boxGeo=new THREE.BoxGeometry(14,5,7);
+    this.box2=mediumMesh(boxGeo); this.box2.position.y=-2.5; S.add(this.box2);
+    this.box1=mediumMesh(boxGeo); this.box1.position.y=2.5; S.add(this.box1);
+    const pl=new THREE.Mesh(new THREE.PlaneGeometry(14,7),new THREE.MeshBasicMaterial({color:0x7fe0ff,transparent:true,opacity:.06,side:THREE.DoubleSide,depthWrite:false}));
+    pl.rotation.x=-Math.PI/2; S.add(pl);
+    const rim=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(14,7)),new THREE.LineBasicMaterial({color:0x9ff0ff,transparent:true,opacity:.8}));
+    rim.rotation.x=-Math.PI/2; S.add(rim);
+    // Einfallslot
+    const ng=new THREE.BufferGeometry().setFromPoints([new V3(0,-5,0),new V3(0,5,0)]);
+    this.normal=new THREE.Line(ng,new THREE.LineDashedMaterial({color:0xffffff,dashSize:.25,gapSize:.18,transparent:true,opacity:.6}));
+    this.normal.computeLineDistances(); S.add(this.normal);
+    // Einfallsebene (dezent)
+    const ep=new THREE.Mesh(new THREE.PlaneGeometry(14,10),new THREE.MeshBasicMaterial({color:0x9b6bff,transparent:true,opacity:.025,side:THREE.DoubleSide,depthWrite:false}));
+    S.add(ep); this.plane=ep;
+    // Strahlen
+    this.bInc=makeBeam(LASER); this.bRefl=makeBeam(LASER); this.bRefr=makeBeam(LASER);
+    S.add(this.bInc,this.bRefl,this.bRefr);
+    this.spot=new THREE.Mesh(new THREE.SphereGeometry(.13,20,20),new THREE.MeshBasicMaterial({color:0xeaffef,transparent:true,blending:THREE.AdditiveBlending}));
+    S.add(this.spot);
+    this.plight=new THREE.PointLight(LASER,2.5,6,1.6); S.add(this.plight);
+    this.dev=laserDevice(); S.add(this.dev);
+    // Winkel
+    this.secA=makeSector(0xffb347); this.secR=makeSector(0xffd9a0); this.secB=makeSector(0x37e2ff);
+    S.add(this.secA,this.secR,this.secB);
+    // Wellenfronten
+    this.waves=[]; this.emit=0;
+    const wg=new THREE.CircleGeometry(.36,40);
+    for(let i=0;i<90;i++){ const m=new THREE.Mesh(wg,new THREE.MeshBasicMaterial({color:LASER,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+      m.visible=false; S.add(m); this.waves.push({m,on:false,age:0}); }
+    // Beschriftung
+    if(!this.hero){
+      this.lA=label('α','a'); this.lR=label('α′','a'); this.lB=label('β','b'); this.lLot=label('Einfallslot','small');
+      this.lM1=label('','small'); this.lM2=label('','small');
+      this.lLot.position.set(0,5.35,0); this.lM1.position.set(-4.6,.5,0); this.lM2.position.set(-4.6,-.6,0);
+      this.lblGroup=new THREE.Group(); this.lblGroup.add(this.lA,this.lR,this.lB,this.lLot,this.lM1,this.lM2); S.add(this.lblGroup);
+    }
+    this.recompute();
+  }
+  fitCamera(asp){ this.camera.fov = fovFor(asp,1.25);
+    if(this.hero){ const w=this.el.clientWidth,h=this.el.clientHeight; if(asp>1.1) this.camera.setViewOffset(w,h,-w*.2,0,w,h); else this.camera.clearViewOffset(); } }
+  set(p){ Object.assign(this,p); this.recompute(); }
+  recompute(){
+    const a=rad(this.alpha), n1=this.n1, n2=this.n2, F=fresnel(n1,n2,a);
+    const L=6.5;
+    const d=new V3(Math.sin(a),-Math.cos(a),0);
+    const S=d.clone().multiplyScalar(-L);
+    setBeam(this.bInc,S,O,1);
+    const r=new V3(Math.sin(a),Math.cos(a),0);
+    const Rv = (this.showRefl||F.tir) ? F.R : 0;
+    setBeam(this.bRefl,O,r.clone().multiplyScalar(L),Rv);
+    let o,L2,I2,v2;
+    if(!F.tir){
+      o=new V3(Math.sin(F.b),-Math.cos(F.b),0);
+      L2=Math.min(7,4.95/Math.max(.05,Math.cos(F.b)));
+      I2=this.showRefl?F.T:1; v2=C_SIM/n2;
+      setBeam(this.bRefr,O,o.clone().multiplyScalar(L2),I2);
+    } else { this.bRefr.visible=false; o=r; L2=L; I2=1; v2=C_SIM/n1; }
+    this.path={S,d,o,L1:L,L2,v1:C_SIM/n1,v2,I2};
+    this.dev.position.copy(S); this.dev.quaternion.setFromUnitVectors(UP,d);
+    const toLaser=S.clone().normalize();
+    setSector(this.secA,UP,toLaser,1.55);
+    setSector(this.secR,UP,r,1.15); this.secR.visible=this.secR.visible&&Rv>.002;
+    if(!F.tir) setSector(this.secB,DOWN,o,1.55); else this.secB.visible=false;
+    styleMedium(this.box1,n1); styleMedium(this.box2,n2);
+    if(this.lA){
+      this.lA.position.copy(bisector(UP,toLaser,2.05));
+      this.lR.position.copy(bisector(UP,r,1.6)); this.lR.visible=Rv>.002 && this.alpha>2;
+      this.lB.visible=!F.tir; if(!F.tir) this.lB.position.copy(bisector(DOWN,o,2.05));
+      this.lA.visible=this.alpha>1.5;
+      this.lM1.element.textContent='Medium 1 · '+this.name1+' · n₁ = '+fmt(n1,2);
+      this.lM2.element.textContent='Medium 2 · '+this.name2+' · n₂ = '+fmt(n2,2);
+      this.lblGroup.visible=this.showLabels;
+    }
+    this.state={alpha:this.alpha,n1,n2,F};
+    this.onChange?.(this.state);
+  }
+  update(dt,t){
+    if(this.hero){
+      this.alpha=46+32*Math.sin(t*.42);
+      this.n2=1.52; this.recompute();
+      this.stars.rotation.y+=dt*.01;
+    }
+    this.spot.scale.setScalar(1+.25*Math.sin(t*9));
+    const P=this.path, T=.16;
+    this.emit+=dt;
+    if(this.emit>T){ this.emit%=T; if(this.showWaves){ const w=this.waves.find(w=>!w.on); if(w){w.on=true;w.age=0;} } }
+    for(const w of this.waves){
+      if(!w.on || !this.showWaves){ w.m.visible=false; if(!this.showWaves) w.on=false; continue; }
+      w.age+=dt;
+      const s1=w.age*P.v1; let dir,I,fade;
+      if(s1<P.L1){ w.m.position.copy(P.S).addScaledVector(P.d,s1); dir=P.d; I=1; fade=Math.min(1,s1/.8); }
+      else { const s2=(w.age-P.L1/P.v1)*P.v2;
+        if(s2>P.L2){ w.on=false; w.m.visible=false; continue; }
+        w.m.position.copy(P.o).multiplyScalar(s2); dir=P.o; I=P.I2; fade=Math.min(1,(P.L2-s2)/1.2); }
+      w.m.visible=true; w.m.quaternion.setFromUnitVectors(ZAX,dir);
+      w.m.material.opacity=.3*Math.sqrt(I)*fade;
+    }
+  }
+}
+
+/* =========================================================
+   Glasfaser-Szene
+   ========================================================= */
+class FiberScene extends Stage{
+  constructor(el){
+    super(el,{cam:[0,3.2,16],labels:false,bloom:[.8,.25,.82]});
+    this.theta=60; this.nCore=1.5; this.nOut=1;
+    const S=this.scene;
+    const grid=new THREE.GridHelper(60,60,0x1b2750,0x0e1530); grid.position.y=-3; S.add(grid);
+    const fg=new THREE.CylinderGeometry(1,1,16,72,1,true);
+    this.fiber=new THREE.Mesh(fg,new THREE.MeshPhysicalMaterial({color:0x9fe8ff,transparent:true,opacity:.1,roughness:.1,clearcoat:.3,side:THREE.DoubleSide,depthWrite:false}));
+    this.fiber.rotation.z=Math.PI/2; S.add(this.fiber);
+    for(const x of [-8,8]){
+      const ring=new THREE.Mesh(new THREE.RingGeometry(.97,1.03,72),new THREE.MeshBasicMaterial({color:0x8fe8ff,side:THREE.DoubleSide,transparent:true,opacity:.8}));
+      ring.rotation.y=Math.PI/2; ring.position.x=x; S.add(ring);
+      const cap=new THREE.Mesh(new THREE.CircleGeometry(1,72),new THREE.MeshBasicMaterial({color:0x8fe8ff,side:THREE.DoubleSide,transparent:true,opacity:.05,depthWrite:false}));
+      cap.rotation.y=Math.PI/2; cap.position.x=x; S.add(cap);
+    }
+    const wl=new THREE.BufferGeometry().setFromPoints([new V3(-8,1,0),new V3(8,1,0),new V3(-8,-1,0),new V3(8,-1,0)]);
+    S.add(new THREE.LineSegments(wl,new THREE.LineBasicMaterial({color:0x8fe8ff,transparent:true,opacity:.35})));
+    this.outer=new THREE.Mesh(new THREE.CylinderGeometry(1.6,1.6,16,72,1,true),new THREE.MeshPhysicalMaterial({color:0x2f8fff,transparent:true,opacity:.1,side:THREE.DoubleSide,depthWrite:false}));
+    this.outer.rotation.z=Math.PI/2; S.add(this.outer);
+    this.beams=[]; for(let i=0;i<110;i++){ const b=makeBeam(LASER,.032); S.add(b); this.beams.push(b); }
+    this.pulses=[]; const pg=new THREE.SphereGeometry(.1,16,16);
+    for(let i=0;i<18;i++){ const m=new THREE.Mesh(pg,new THREE.MeshBasicMaterial({color:0xeaffef,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false})); m.visible=false; S.add(m); this.pulses.push({m,on:false,s:0}); }
+    this.emit=0;
+    this.dev=laserDevice(); this.dev.scale.setScalar(.8); S.add(this.dev);
+    this.recompute();
+  }
+  fitCamera(asp){ this.camera.fov = fovFor(asp,1.6); }
+  set(p){ Object.assign(this,p); this.recompute(); }
+  recompute(){
+    const th=rad(this.theta), n=this.nCore, no=this.nOut;
+    const crit = no<n ? Math.asin(no/n) : null;
+    const tir = crit!==null && th>=crit;
+    const segs=[], path=[];
+    let p={x:-8,y:0}, d={x:Math.sin(th),y:Math.cos(th)}, I=1, bounces=0, endI=0;
+    // einfallender Strahl an der Stirnfläche (Umgebung dort: Luft)
+    const sIn=n*Math.cos(th);
+    if(sIn<1){ const ph=Math.asin(sIn); const st={x:-8-Math.cos(ph)*3.2,y:-Math.sin(ph)*3.2};
+      segs.push([st,p,1]); this.dev.visible=true; this.dev.position.set(st.x,st.y,0); this.dev.quaternion.setFromUnitVectors(UP,new V3(Math.cos(ph),Math.sin(ph),0)); }
+    else { this.dev.visible=true; this.dev.position.set(-8,0,0); this.dev.quaternion.setFromUnitVectors(UP,new V3(d.x,d.y,0)); }
+    for(let k=0;k<100 && I>.015;k++){
+      const ty=((d.y>0?1:-1)-p.y)/d.y, tx=(8-p.x)/d.x;
+      if(tx<=ty){
+        const q={x:8,y:p.y+d.y*tx}; segs.push([p,q,I]); path.push([p,q,I]); endI=I;
+        const sx=n*Math.abs(d.y);
+        if(sx<1){ const ph=Math.asin(sx), Fe=fresnel(n,1,Math.asin(Math.abs(d.y)));
+          segs.push([q,{x:8+Math.cos(ph)*3.5,y:q.y+Math.sign(d.y)*Math.sin(ph)*3.5},I*Fe.T]); }
+        break;
+      }
+      const q={x:p.x+d.x*ty,y:p.y+d.y*ty}; segs.push([p,q,I]); path.push([p,q,I]); bounces++;
+      if(!tir){ const F=fresnel(n,no,th);
+        const len=2.4; segs.push([q,{x:q.x+Math.sin(F.b)*len,y:q.y+Math.sign(d.y)*Math.cos(F.b)*len},I*F.T]); I*=F.R; }
+      d={x:d.x,y:-d.y}; p=q;
+    }
+    this.beams.forEach((b,i)=>{ if(i<segs.length){ const [a,e,J]=segs[i]; setBeam(b,new V3(a.x,a.y,0),new V3(e.x,e.y,0),J);} else b.visible=false; });
+    let tot=0; this.path=path.map(([a,e,J])=>{ const l=Math.hypot(e.x-a.x,e.y-a.y); const o={a,e,J,l,s0:tot}; tot+=l; return o; }); this.pathLen=tot;
+    this.outer.visible = no>1.01;
+    this.outer.material.color.set(no>1.4?0x9fe8ff:0x2f8fff);
+    this.onChange?.({crit,tir,endI,bounces,n,no});
+  }
+  update(dt){
+    this.emit+=dt;
+    if(this.emit>.32){ this.emit=0; const p=this.pulses.find(p=>!p.on); if(p){p.on=true;p.s=0;} }
+    for(const p of this.pulses){
+      if(!p.on){p.m.visible=false;continue;}
+      p.s+=dt*7;
+      if(p.s>this.pathLen){p.on=false;p.m.visible=false;continue;}
+      const seg=this.path.find(g=>p.s<=g.s0+g.l); if(!seg){p.on=false;continue;}
+      const f=(p.s-seg.s0)/seg.l;
+      p.m.visible=true; p.m.position.set(seg.a.x+(seg.e.x-seg.a.x)*f,seg.a.y+(seg.e.y-seg.a.y)*f,0);
+      p.m.material.opacity=Math.min(1,Math.sqrt(seg.J)*1.2); p.m.scale.setScalar(.6+Math.sqrt(seg.J));
+    }
+  }
+}
+
+/* =========================================================
+   Prisma-Szene (Dispersion)
+   ========================================================= */
+function raySeg(p,d,a,b){ const ex=b.x-a.x, ey=b.y-a.y, den=d.x*ey-d.y*ex; if(Math.abs(den)<1e-9) return null;
+  const apx=a.x-p.x, apy=a.y-p.y, t=(apx*ey-apy*ex)/den, u=(apx*d.y-apy*d.x)/den;
+  return (u>=0&&u<=1&&t>1e-6)?t:null; }
+function trace2D(p,d,poly,nIn,screenX){
+  const segs=[]; let inside=false;
+  for(let k=0;k<8;k++){
+    let best=null,bi=-1;
+    for(let i=0;i<poly.length;i++){ const t=raySeg(p,d,poly[i],poly[(i+1)%poly.length]); if(t!==null&&(best===null||t<best)){best=t;bi=i;} }
+    if(best===null){ const far=d.x>.05?(screenX-p.x)/d.x:9; const q={x:p.x+d.x*far,y:p.y+d.y*far}; segs.push({a:p,b:q,inside,end:true,hitScreen:d.x>.05}); break; }
+    const q={x:p.x+d.x*best,y:p.y+d.y*best}; segs.push({a:p,b:q,inside});
+    const A=poly[bi],B=poly[(bi+1)%poly.length]; let nx=B.y-A.y, ny=-(B.x-A.x); const nl=Math.hypot(nx,ny); nx/=nl; ny/=nl;
+    if(nx*d.x+ny*d.y>0){nx=-nx;ny=-ny;}
+    const n1=inside?nIn:1, n2=inside?1:nIn, eta=n1/n2, ci=-(nx*d.x+ny*d.y), k2=1-eta*eta*(1-ci*ci);
+    if(k2<0) d={x:d.x+2*ci*nx,y:d.y+2*ci*ny};
+    else { const f=eta*ci-Math.sqrt(k2); d={x:eta*d.x+f*nx,y:eta*d.y+f*ny}; inside=!inside; }
+    p=q;
+  }
+  return {segs,dir:d};
+}
+class PrismScene extends Stage{
+  constructor(el){
+    super(el,{cam:[1.5,1.2,17],labels:false,bloom:[.75,.2,.85]});
+    this.controls.target.set(1.5,-.6,0);
+    this.eps=48; this.boost=4;
+    const S=this.scene;
+    const grid=new THREE.GridHelper(60,60,0x1b2750,0x0e1530); grid.position.y=-5.5; S.add(grid);
+    const s=4, h=s*Math.sqrt(3)/2;
+    this.poly=[{x:0,y:2*h/3},{x:-s/2,y:-h/3},{x:s/2,y:-h/3}];
+    const shape=new THREE.Shape(); shape.moveTo(this.poly[0].x,this.poly[0].y); shape.lineTo(this.poly[1].x,this.poly[1].y); shape.lineTo(this.poly[2].x,this.poly[2].y); shape.closePath();
+    const geo=new THREE.ExtrudeGeometry(shape,{depth:3,bevelEnabled:false}); geo.translate(0,0,-1.5);
+    S.add(new THREE.Mesh(geo,new THREE.MeshPhysicalMaterial({color:0xbfe9ff,transparent:true,opacity:.1,roughness:.1,clearcoat:.3,side:THREE.DoubleSide,depthWrite:false})));
+    S.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo),new THREE.LineBasicMaterial({color:0xcff6ff,transparent:true,opacity:.7})));
+    this.screenX=7;
+    const scr=new THREE.Mesh(new THREE.PlaneGeometry(7,9),new THREE.MeshStandardMaterial({color:0x121726,roughness:.95,side:THREE.DoubleSide}));
+    scr.rotation.y=-Math.PI/2; scr.position.set(this.screenX+.02,-1.2,0); S.add(scr);
+    this.white=makeBeam(0xffffff,.05); S.add(this.white);
+    this.dev=laserDevice(); this.dev.children[1].material=this.dev.children[1].material.clone(); this.dev.children[1].material.color.set(0xffffff); this.dev.children[1].material.emissive.set(0xffffff); S.add(this.dev);
+    this.WL=[]; for(let l=400;l<=700;l+=25) this.WL.push(l);
+    this.rays=this.WL.map(l=>{ const bs=[]; for(let i=0;i<7;i++){ const b=makeBeam(wl2rgb(l),.018); S.add(b); bs.push(b);} return bs; });
+    this.spots=this.WL.map(l=>{ const m=new THREE.Mesh(new THREE.CircleGeometry(.12,24),new THREE.MeshBasicMaterial({color:wl2rgb(l),transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+      m.rotation.y=-Math.PI/2; S.add(m); return m; });
+    this.recompute();
+  }
+  fitCamera(asp){ this.camera.fov = fovFor(asp,1.45); }
+  nOf(l){ const um=l/1000, nm=1.5046+.0042/(.55*.55); return nm+(1.5046+.0042/(um*um)-nm)*this.boost; }
+  set(p){ Object.assign(this,p); this.recompute(); }
+  recompute(){
+    const [T,BL]=[this.poly[0],this.poly[1]];
+    const M={x:(T.x+BL.x)/2,y:(T.y+BL.y)/2};
+    const nin={x:Math.cos(rad(-30)),y:Math.sin(rad(-30))};   // nach innen zeigende Normale der linken Fläche
+    const e=rad(this.eps), d={x:nin.x*Math.cos(e)-nin.y*Math.sin(e), y:nin.x*Math.sin(e)+nin.y*Math.cos(e)};
+    const S={x:M.x-d.x*9,y:M.y-d.y*9};
+    setBeam(this.white,new V3(S.x,S.y,0),new V3(M.x,M.y,0),1);
+    this.dev.position.set(S.x,S.y,0); this.dev.quaternion.setFromUnitVectors(UP,new V3(d.x,d.y,0));
+    const out={};
+    this.WL.forEach((l,i)=>{
+      const {segs,dir}=trace2D(S,d,this.poly,this.nOf(l),this.screenX);
+      const bs=this.rays[i];
+      bs.forEach((b,j)=>{ const sg=segs[j+1]; if(sg) setBeam(b,new V3(sg.a.x,sg.a.y,0),new V3(sg.b.x,sg.b.y,0),.35); else b.visible=false; });
+      const last=segs[segs.length-1];
+      const sp=this.spots[i]; sp.visible=!!(last.hitScreen && Math.abs(last.b.y+1.2)<4.5); if(sp.visible) sp.position.set(this.screenX-.01,last.b.y,0);
+      out[l]=deg(Math.acos(Math.max(-1,Math.min(1,d.x*dir.x+d.y*dir.y))));
+    });
+    this.onChange?.({nr:this.nOf(700),nv:this.nOf(400),dev:out[550],spread:out[400]-out[700]});
+  }
+}
+
+/* =========================================================
+   Aufbau & UI-Anbindung
+   ========================================================= */
+try{
+  const $=id=>document.getElementById(id);
+  const hero=new RefractionScene($('heroView'),{hero:true});
+  const lab=new RefractionScene($('labView'));
+
+  // --- Labor-UI ---
+  const selects=[$('m1'),$('m2')], ranges=[$('n1'),$('n2')];
+  selects.forEach(sel=>{ MATS.forEach(([name,n])=>{ const o=document.createElement('option'); o.value=n; o.textContent=name+' (n = '+fmt(n,2)+')'; sel.appendChild(o); });
+    const o=document.createElement('option'); o.value='custom'; o.textContent='Eigener Wert'; sel.appendChild(o); });
+  const nameOf=(sel)=>sel.value==='custom'?'eigenes Medium':sel.options[sel.selectedIndex].textContent.split(' (')[0];
+  function syncSelect(i){ const v=+ranges[i].value, m=MATS.find(([,n])=>Math.abs(n-v)<.001); selects[i].value=m?m[1]:'custom'; }
+  function applyLab(){
+    lab.set({alpha:+$('alpha').value,n1:+ranges[0].value,n2:+ranges[1].value,name1:nameOf(selects[0]),name2:nameOf(selects[1])});
+  }
+  selects.forEach((sel,i)=>sel.addEventListener('change',()=>{ if(sel.value!=='custom') ranges[i].value=sel.value; applyLab(); }));
+  ranges.forEach((r,i)=>r.addEventListener('input',()=>{ syncSelect(i); applyLab(); }));
+  $('alpha').addEventListener('input',applyLab);
+  $('tWaves').onchange=e=>lab.set({showWaves:e.target.checked});
+  $('tRefl').onchange=e=>lab.set({showRefl:e.target.checked});
+  $('tLabels').onchange=e=>lab.set({showLabels:e.target.checked});
+  $('bSwap').onclick=()=>{ const a=ranges[0].value; ranges[0].value=ranges[1].value; ranges[1].value=a; syncSelect(0); syncSelect(1); applyLab(); };
+  $('bTIR').onclick=()=>{ ranges[0].value=1.52; ranges[1].value=1.00; syncSelect(0); syncSelect(1); animAlpha(55); };
+  $('bBrew').onclick=()=>{ animAlpha(Math.round(deg(Math.atan(+ranges[1].value/+ranges[0].value))*2)/2); };
+  let alphaAnim=null;
+  function animAlpha(target){ const from=+$('alpha').value, t0=performance.now();
+    cancelAnimationFrame(alphaAnim);
+    const step=now=>{ const k=Math.min(1,(now-t0)/900), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; $('alpha').value=from+(target-from)*e; applyLab(); if(k<1) alphaAnim=requestAnimationFrame(step); };
+    alphaAnim=requestAnimationFrame(step); }
+  document.querySelectorAll('#labView .vp-buttons button').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#labView .vp-buttons button').forEach(x=>x.classList.toggle('on',x===b));
+    lab.controls.target.set(0,0,0);
+    lab.flyTo({side:[0,.6,15.5],persp:[8.5,4.5,11],top:[2,12.5,8.5]}[b.dataset.cam]); });
+
+  lab.onChange=({alpha,n1,n2,F})=>{
+    $('alphaVal').textContent=fmt(alpha)+'°';
+    $('n1Val').textContent='n₁ = '+fmt(n1,2); $('n2Val').textContent='n₂ = '+fmt(n2,2);
+    const eq=$('liveEq'), st=$('labStatus');
+    if(F.tir){
+      eq.innerHTML=fmt(n1,2)+' · sin '+fmt(alpha)+'° = '+fmt(n1*Math.sin(rad(alpha)),3)+' &gt; n₂ = '+fmt(n2,2)+'<br><span style="font-size:.85em;font-style:normal;font-family:Inter,sans-serif">sin β müsste &gt; 1 sein ⇒ keine Brechung</span>';
+      eq.classList.add('tir'); st.textContent='⚡ Totalreflexion!'; st.classList.add('tir'); $('roBeta').textContent='existiert nicht';
+    } else {
+      const b=deg(F.b);
+      eq.innerHTML=fmt(n1,2)+' · sin '+fmt(alpha)+'° = '+fmt(n2,2)+' · sin '+fmt(b)+'°<br><span style="font-size:.85em;font-style:normal;font-family:JetBrains Mono,monospace">'+fmt(n1*Math.sin(rad(alpha)),3)+' = '+fmt(n2*Math.sin(F.b),3)+'</span>';
+      eq.classList.remove('tir'); st.classList.remove('tir');
+      st.textContent = alpha<.5 ? 'Senkrechter Einfall – kein Knick' : Math.abs(n1-n2)<.005 ? 'Gleiche Medien – keine Brechung' : n1<n2 ? 'Brechung zum Lot hin' : 'Brechung vom Lot weg';
+      $('roBeta').textContent=fmt(b)+'°';
+    }
+    $('roCrit').textContent = n1>n2 ? fmt(deg(Math.asin(n2/n1)))+'°' : 'keiner (n₁ ≤ n₂)';
+    const kms=n=>Math.round(299792/n).toLocaleString('de-DE')+' km/s';
+    $('roV1').textContent=kms(n1); $('roV2').textContent=kms(n2);
+    $('roL1').textContent=Math.round(532/n1)+' nm'; $('roL2').textContent=Math.round(532/n2)+' nm';
+    $('roR').textContent=fmt(F.R*100)+' %'; $('roT').textContent=fmt(F.T*100)+' %';
+    $('mR').style.width=(F.R*100)+'%'; $('mT').style.width=(F.T*100)+'%';
+    window.Optik.lastLab={n1,n2,alpha};
+    drawSnellPlot(n1,n2,alpha); drawFresnelPlot(n1,n2,alpha);
+  };
+  selects[0].value='1'; selects[1].value='1.52';
+  applyLab();
+
+  // --- Glasfaser-UI ---
+  const fiber=new FiberScene($('fiberView'));
+  fiber.onChange=({crit,tir,endI,bounces,n,no})=>{
+    $('fbCrit').textContent=crit!==null?fmt(deg(crit))+'°':'keiner';
+    $('fbEnd').textContent=fmt(endI*100)+' %'; $('fbCount').textContent=bounces;
+    $('fbNA').textContent=n>no?fmt(Math.min(1,Math.sqrt(n*n-no*no)),2)+(n*n-no*no>=1?' (≥1)':''):'–';
+    const st=$('fiberStatus');
+    if(tir){ st.textContent='Totalreflexion ✓ – Licht bleibt gefangen'; st.classList.remove('tir'); }
+    else { st.textContent='θ < α_g – Licht tritt aus ✗'.replace('_g','g'); st.classList.add('tir'); }
+  };
+  const fbApply=()=>{ $('fbThV').textContent=fmt(+$('fbTh').value)+'°'; $('fbNV').textContent=fmt(+$('fbN').value,2);
+    fiber.set({theta:+$('fbTh').value,nCore:+$('fbN').value,nOut:+$('fbOut').value}); };
+  $('fbTh').oninput=fbApply; $('fbN').oninput=fbApply; $('fbOut').onchange=fbApply; fbApply();
+
+  // --- Prisma-UI ---
+  const prism=new PrismScene($('prismView'));
+  prism.onChange=({nr,nv,dev,spread})=>{ $('prNr').textContent=fmt(nr,4); $('prNv').textContent=fmt(nv,4);
+    $('prDev').textContent=isFinite(dev)?fmt(dev)+'°':'–'; $('prSpread').textContent=isFinite(spread)?fmt(spread,2)+'°':'–'; };
+  const prApply=()=>{ $('prEpsV').textContent=fmt(+$('prEps').value)+'°'; $('prBoostV').textContent='×'+String(+$('prBoost').value).replace('.',',');
+    prism.set({eps:+$('prEps').value,boost:+$('prBoost').value}); };
+  $('prEps').oninput=prApply; $('prBoost').oninput=prApply; prApply();
+
+  // --- Render-Schleife ---
+  const clock=new THREE.Clock();
+  (function loop(){ requestAnimationFrame(loop); const dt=Math.min(clock.getDelta(),.05), t=clock.elapsedTime;
+    for(const s of stages) if(s.visible){ s.update(dt,t); s.render(); } })();
+  window.__3dReady=true;
+}catch(err){ console.error(err); document.body.classList.add('no3d'); }
+</script>
+</body>
+</html>
