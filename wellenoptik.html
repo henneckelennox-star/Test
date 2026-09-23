@@ -2009,7 +2009,7 @@ if(VOICE.ok){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
 const SUBD={'₀':' null','₁':' eins','₂':' zwei','₃':' drei','₄':' vier','₅':' fünf','₆':' sechs','₇':' sieben','₈':' acht','₉':' neun','ₖ':' k','ₘ':' m'};
 const SUPD={'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁻':'minus '};
 function toSpeech(html){ const d=document.createElement('div'); d.innerHTML=html; let t=d.textContent;
-  const R=[[/(\d)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g,(m,a,b)=>a+' hoch '+b.split('').map(c=>SUPD[c]).join('')],[/cos²/g,'Kosinus Quadrat '],[/sin²/g,'Sinus Quadrat '],[/Na-D-Linien/g,'Natrium-D-Linien'],[/z\.\s?B\./g,'zum Beispiel'],[/\bca\./g,'circa'],[/bzw\./g,'beziehungsweise'],[/d\.\s?h\./g,'das heißt'],[/\bIR\b/g,'Infrarot'],[/\bUV\b/g,'U V'],
+  const R=[[/(\d)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g,(m,a,b)=>a+' hoch '+b.split('').map(c=>SUPD[c]).join('')],[/cos²/g,'Kosinus Quadrat '],[/sin²/g,'Sinus Quadrat '],[/Na-D-Linien/g,'Natrium-D-Linien'],[/IR-LED/g,'Infrarot-L-E-D'],[/\bLED\b/g,'L-E-D'],[/\bUKW\b/g,'U-K-W'],[/\bWLAN\b/g,'W-Lan'],[/\bCT\b/g,'C-T'],[/\bLC\b/g,'L-C'],[/z\.\s?B\./g,'zum Beispiel'],[/\bca\./g,'circa'],[/bzw\./g,'beziehungsweise'],[/d\.\s?h\./g,'das heißt'],[/\bIR\b/g,'Infrarot'],[/\bUV\b/g,'U V'],
     [/λ\s*\/\s*2/g,'Lambda halbe'],[/λ\s*\/\s*4/g,'Lambda Viertel'],[/T\s*\/\s*4/g,'T Viertel'],[/T\s*\/\s*2/g,'T halbe'],[/3T\s*\/\s*4/g,'drei Viertel T'],[/I₀\s*\/\s*2/g,'I null halbe'],[/I₀\s*\/\s*8/g,'I null Achtel'],[/I₀\s*\/\s*4/g,'I null Viertel'],
     [/m\/s/g,' Meter pro Sekunde'],[/(\d)\s?GHz/g,'$1 Gigahertz'],[/(\d)\s?MHz/g,'$1 Megahertz'],[/(\d)\s?THz/g,'$1 Terahertz'],[/(\d)\s?kHz/g,'$1 Kilohertz'],[/(\d)\s?Hz/g,'$1 Hertz'],
     [/(\d)\s?nm\b/g,'$1 Nanometer'],[/(\d)\s?µm\b/g,'$1 Mikrometer'],[/(\d)\s?mm\b/g,'$1 Millimeter'],[/(\d)\s?cm\b/g,'$1 Zentimeter'],[/(\d)\s?km\b/g,'$1 Kilometer'],[/(\d)\s?ms\b/g,'$1 Millisekunden'],[/(\d)\s?pm\b/g,'$1 Pikometer'],[/(\d)\s?m\b/g,'$1 Meter'],
@@ -2020,9 +2020,22 @@ function toSpeech(html){ const d=document.createElement('div'); d.innerHTML=html
     [/[₀₁₂₃₄₅₆₇₈₉ₖₘ]/g,c=>SUBD[c]],[/°/g,' Grad'],[/%/g,' Prozent'],[/≈/g,' ungefähr '],[/≥/g,' größer gleich '],[/≤/g,' kleiner gleich '],[/>/g,' größer als '],[/</g,' kleiner als '],
     [/⇒/g,', also '],[/→/g,' zu '],[/·/g,' mal '],[/×/g,' mal '],[/−/g,' minus '],[/=/g,' gleich '],[/\//g,' durch '],[/\+/g,' plus '],[/B′B/g,'B Strich B'],[/([A-Z])′/g,'$1 Strich'],[/[↕•]/g,''],[/’/g,"'"],[/[…]/g,'.'],[/\(\s*\+/g,'(plus'],[/\s+/g,' ']];
   R.forEach(([a,b])=>{ t=t.replace(a,b); }); return t.trim(); }
-function speakHTML(html){ VOICE.last=html; VOICE.token++; const tk=VOICE.token; if(!VOICE.ok) return; try{ speechSynthesis.cancel(); }catch(e){}
+const AUDIO_SET=new Set(/*AUDIO_LIST*/["1gj76dh", "1g94bm3", "amo753", "14eewyx", "1lkfq8s", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "mbu54a", "1vqheo1", "1cjee2b", "1xjo7up", "a36xxi", "1vhe6vc", "15dlg4q", "5act26", "10i5351", "jb92it", "vntkb2", "6hqm3t", "6aeril", "148f541", "1uzezt6", "a01a16", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "ioqzhw", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "6ak29a", "2yqtck", "5lsn4x", "1h3yx1h", "1lthblu", "1fv1xjd", "knbl96", "1oc2a3b", "1028dv5", "s8ysl", "lwddqj", "pj4u16", "1f21e9o", "1x8oxss", "5n103h", "pn3yqo", "spliuu", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "18cpxs1", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1faguan", "1fjdjjs", "azcaw4", "1a1em2u", "1ww0jhv", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "d41lxn", "1th6wv9", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "a1ez21", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "kst3y6", "1b9amx9", "1rlrmtk", "zw3jkm", "z0t9he", "8r8gyd", "6byoa9", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "1dzt9o8", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "1yz47hq", "eqac6j", "642cak", "56pvbz", "14okjsr", "9sshdr", "1vcy79y", "1v0jvw2", "dtz651", "q1tmm5", "1ipp5l6", "my39kp", "7d6ydp", "12uu9s5", "11yk0d9", "1ca46mg", "1j1kh5c", "16x4l3p", "1q9njyl", "1c9nkja", "galxaw", "3chumh", "kl0vya", "1t2t5wh", "1ufkekf", "10ls2qq", "13rrpum", "19yx3w9", "tlgsxv", "i38ob0", "16jo7ya", "15q1xfw", "nb7kol", "15g7p7z", "5iap91", "hwl2we", "1pgaded", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "zujp9e", "79vwkn", "1avfk9s", "apbc0x", "1pg8jw5", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "k9xrk4", "q1nwrv"]); const AUD=new Audio(); AUD.preload='auto';
+VOICE.useFile=true; try{ if(localStorage.getItem('wo-voice-name')&&localStorage.getItem('wo-voice-name')!=='__file') VOICE.useFile=false; }catch(e){}
+function hashStr(t){ let h=5381; for(let i=0;i<t.length;i++){ h=((h<<5)+h+t.charCodeAt(i))|0; } return (h>>>0).toString(36); }
+window.__hashStr=hashStr;
+function speakHTML(html){ VOICE.last=html; VOICE.token++; const tk=VOICE.token; try{ AUD.pause(); }catch(e){} try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){}
   if(!VOICE.on||!html){ VOICE.speaking=false; return; }
   const txt=toSpeech(html); if(!txt){ VOICE.speaking=false; return; }
+  const h=hashStr(txt);
+  if(VOICE.useFile&&AUDIO_SET.has(h)){ VOICE.speaking=true; const rate=Math.max(.75,Math.min(1.5,VID.speed||1)); VOICE.deadline=performance.now()+txt.length/10/rate*1000+8000;
+    const done=()=>{ if(tk===VOICE.token){ VOICE.speaking=false; VOICE.endAt=performance.now(); } };
+    AUD.onended=done; AUD.onerror=()=>{ if(tk===VOICE.token) synth(txt,tk); };
+    AUD.onloadedmetadata=()=>{ if(tk===VOICE.token&&isFinite(AUD.duration)) VOICE.deadline=performance.now()+AUD.duration/rate*1000+3000; };
+    AUD.src='audio/'+h+'.mp3'; AUD.playbackRate=rate; AUD.preservesPitch=true; AUD.webkitPreservesPitch=true;
+    const pr=AUD.play(); if(pr&&pr.catch) pr.catch(()=>{ if(tk===VOICE.token) synth(txt,tk); }); return; }
+  synth(txt,tk); }
+function synth(txt,tk){ if(!VOICE.ok){ VOICE.speaking=false; return; } try{ speechSynthesis.cancel(); }catch(e){}
   const parts=txt.match(/[^.!?]+[.!?]*/g)||[txt], rate=Math.max(.75,Math.min(1.5,.98*(VID.speed||1)));
   VOICE.speaking=true; VOICE.deadline=performance.now()+txt.length/13/rate*1000+5000;
   parts.forEach((p,i)=>{ const u=new SpeechSynthesisUtterance(p.trim()); u.lang='de-DE'; if(VOICE.voice) u.voice=VOICE.voice; u.rate=rate; u.pitch=1; u.volume=1;
@@ -2030,7 +2043,8 @@ function speakHTML(html){ VOICE.last=html; VOICE.token++; const tk=VOICE.token; 
     speechSynthesis.speak(u); }); }
 window.__toSpeech=toSpeech;
 const sent=t=>{ t=String(t).trim(); return /[.!?:]$/.test(t)?t+' ':t+'. '; };
-function stopSpeech(){ VOICE.token++; VOICE.speaking=false; try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){} }
+function stopSpeech(){ VOICE.token++; VOICE.speaking=false; try{ AUD.pause(); }catch(e){} try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){} }
+VOICE.setRate=r=>{ try{ AUD.playbackRate=r; }catch(e){} };
 VID.holding=()=>VOICE.ok&&VOICE.on&&((VOICE.speaking&&performance.now()<VOICE.deadline)||performance.now()-VOICE.endAt<650);
 
 function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0; T.fired=[]; const s=T.steps[T.i];
@@ -2292,23 +2306,24 @@ tour($('cvFib'),[
   // Stimme: Bedienung
   const vb=$('thVoice'), vs=$('thVoiceSel'), lvv=$('lvVoice');
   function voiceUI(){ vb.textContent=VOICE.on?'🔊 Stimme an':'🔇 Stimme aus'; vb.classList.toggle('off',!VOICE.on); lvv.checked=VOICE.on;
-    const info=$('lvVoiceInfo'); if(!VOICE.ok) info.textContent='Dein Browser unterstützt keine Sprachausgabe. Das Video läuft dann mit Untertiteln.';
+    const info=$('lvVoiceInfo'); if(VOICE.useFile&&AUDIO_SET.size) info.innerHTML='Stimme: <b>Thorsten</b>, eine neuronale deutsche Stimme. Sie ist fertig aufgenommen und klingt auf jedem Gerät gleich. Du kannst sie im Video bei „Stimme“ auch gegen eine Gerätestimme tauschen.'; else if(!VOICE.ok) info.textContent='Dein Browser unterstützt keine Sprachausgabe. Das Video läuft dann mit Untertiteln.';
     else if(VOICE.voice) info.innerHTML='Stimme: <b>'+VOICE.voice.name+'</b>. Am natürlichsten klingen „Natural“- oder „Online“-Stimmen (Edge), „Google Deutsch“ (Chrome) oder „Premium“-Stimmen (iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen).';
     else info.textContent='Keine deutsche Stimme gefunden. Es wird die Standardstimme deines Geräts verwendet.'; }
-  window.__fillVoices=list=>{ vs.innerHTML=''; list.forEach(v=>{ const o=document.createElement('option'); o.value=v.name; o.textContent=v.name.replace(/Microsoft |Google /,'').slice(0,34); vs.appendChild(o); }); vs.hidden=list.length<2; if(VOICE.voice) vs.value=VOICE.voice.name; voiceUI(); };
+  window.__fillVoices=list=>{ vs.innerHTML=''; if(AUDIO_SET.size){ const o=document.createElement('option'); o.value='__file'; o.textContent='Thorsten (neuronal, empfohlen)'; vs.appendChild(o); } list.forEach(v=>{ const o=document.createElement('option'); o.value=v.name; o.textContent=v.name.replace(/Microsoft |Google /,'').slice(0,34); vs.appendChild(o); }); vs.hidden=vs.options.length<2; vs.value=(VOICE.useFile&&AUDIO_SET.size)?'__file':(VOICE.voice?VOICE.voice.name:''); voiceUI(); };
   window.__fillVoices(germanVoices());
   function setVoiceOn(on){ VOICE.on=on; try{ localStorage.setItem('wo-voice',on?'1':'0'); }catch(e){} if(!on) stopSpeech(); else if(TH.on&&playing) speakHTML(VOICE.last); voiceUI(); }
   vb.onclick=()=>{ setVoiceOn(!VOICE.on); showCtrl(); };
   lvv.onchange=()=>setVoiceOn(lvv.checked);
-  vs.onchange=()=>{ const v=germanVoices().find(x=>x.name===vs.value); if(v){ VOICE.voice=v; try{ localStorage.setItem('wo-voice-name',v.name); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); } showCtrl(); };
+  vs.onchange=()=>{ if(vs.value==='__file'){ VOICE.useFile=true; try{ localStorage.setItem('wo-voice-name','__file'); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); voiceUI(); showCtrl(); return; } VOICE.useFile=false; const v=germanVoices().find(x=>x.name===vs.value); if(v){ VOICE.voice=v; try{ localStorage.setItem('wo-voice-name',v.name); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); } showCtrl(); };
   voiceUI();
+  window.__allNarration=()=>{ const out=[]; chapters.forEach((c,i)=>{ out.push('Kapitel '+(i+1)+'. '+(c.first?sent(c.title)+'Kurz gesagt: '+c.kurz:sent(c.sub))); c.T.steps.forEach(x=>out.push(x.cap)); }); out.push('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); return out.map(h=>{ const t=toSpeech(h); return {h:hashStr(t),t}; }); };
   $('lvStart').onclick=()=>open(0); $('lvPoster').onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); };
   $('lvCont').onclick=()=>open(load());
   [$('vStart'),$('vStart2')].forEach(b=>b&&(b.onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); }));
   $('thPlay').onclick=()=>{ if(finished){ open(0); finished=false; return; } VID.toggle(); };
   $('thNext').onclick=()=>{ if(idx<chapters.length-1) begin(idx+1); showCtrl(); };
   $('thPrev').onclick=()=>{ begin(phase==='play'&&chapters[idx].T.i>0?idx:idx-1); showCtrl(); };
-  const SP=[1,1.25,1.5,.75]; $('thSpeed').onclick=()=>{ VID.speed=SP[(SP.indexOf(VID.speed)+1)%SP.length]; $('thSpeed').textContent=String(VID.speed).replace('.',',')+'×'; if(TH.on&&playing&&VOICE.speaking) speakHTML(VOICE.last); showCtrl(); };
+  const SP=[1,1.25,1.5,.75]; $('thSpeed').onclick=()=>{ VID.speed=SP[(SP.indexOf(VID.speed)+1)%SP.length]; $('thSpeed').textContent=String(VID.speed).replace('.',',')+'×'; if(TH.on&&playing&&VOICE.speaking){ if(VOICE.useFile) VOICE.setRate(Math.max(.75,Math.min(1.5,VID.speed))); else speakHTML(VOICE.last); } showCtrl(); };
   $('thExit').onclick=()=>{ const q=finished; close(); if(q){ const z=$('quiz'); z&&z.scrollIntoView(); } };
   th.addEventListener('pointermove',showCtrl); th.addEventListener('pointerdown',showCtrl);
   addEventListener('keydown',e=>{ if(!TH.on) return; showCtrl();
