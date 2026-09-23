@@ -168,6 +168,26 @@ details .in{padding:0 14px 12px;color:#cfd5e4;font-size:.96rem}
 .tour-prog{height:3px;background:rgba(255,255,255,.06)}
 .tour-prog i{display:block;height:100%;width:0;background:var(--na)}
 .tour.paused .tour-prog i{background:var(--muted)}
+.btn-video{display:inline-flex;align-items:center;gap:10px;margin-top:22px;font-family:var(--body);font-size:1.02rem;font-weight:600;padding:13px 22px;border-radius:12px;border:none;background:var(--red);color:#fff;cursor:pointer;box-shadow:0 0 30px rgba(255,77,77,.45)}
+.btn-video:hover{filter:brightness(1.1)}
+.btn-video small{font-weight:400;opacity:.85;font-size:.85rem}
+.navplay{flex:none;font-family:var(--body);font-size:.82rem;font-weight:600;padding:5px 12px;border-radius:7px;border:1px solid var(--red);background:rgba(255,77,77,.15);color:#fff;cursor:pointer;margin-right:6px}
+#vplayer{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(10,14,26,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line2);padding-bottom:env(safe-area-inset-bottom,0px)}
+.vp-prog{height:4px;background:rgba(255,255,255,.08)}
+.vp-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--na));transition:width .3s}
+.vp-row{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:9px 16px}
+.vp-row .b{flex:none}
+.vp-main{min-width:48px;font-size:1rem!important;background:var(--red)!important;border-color:var(--red)!important}
+.vp-info{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.vp-info span{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--na)}
+.vp-info b{font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vpSel{flex:none;max-width:230px;font-family:var(--body);font-size:.84rem;background:var(--panel2);color:var(--text);border:1px solid var(--line2);border-radius:8px;padding:6px 8px}
+body.video{padding-bottom:70px}
+body.video .tour{display:block}
+.kurz.spot{box-shadow:0 0 0 2px var(--green),0 0 40px rgba(93,255,160,.35);transition:box-shadow .4s}
+.bench.spot{box-shadow:0 0 0 2px var(--na),0 0 50px rgba(255,201,60,.25)}
+.intro-badge{display:inline-block;margin-left:8px;font-family:var(--mono);font-size:.7rem;color:var(--green)}
+@media(max-width:700px){#vpSel,#vpSpeed{display:none}.vp-row{gap:6px;padding:8px 10px}}
 .kcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:10px}
 .kc{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;border:1px solid var(--line2);border-radius:9px;background:var(--panel);color:var(--text);text-decoration:none;font-size:.94rem}
 .kc:hover{border-color:var(--green)}
@@ -194,6 +214,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 <body>
 <nav class="nav" aria-label="Themen">
   <div class="nav-in">
+    <button class="navplay" id="vStart2" type="button">▶ Video</button>
     <span class="grp">Tag 1</span>
     <a href="#erzeugung">Erzeugung</a><a href="#em-text">EM-Welle</a><a href="#spektrum">Spektrum</a><a href="#reflexion">Reflexion</a><a href="#brechung">Brechung</a><a href="#wasser">Wasserwellen</a><a href="#total">Totalreflexion</a><a href="#interferenz">Interferenz</a><a href="#beugung">Beugung</a><a href="#einzelspalt">Einzelspalt</a><a href="#doppelspalt">Doppelspalt</a><a href="#kleinwinkel">Kleinwinkel</a>
     <span class="grp">Tag 2</span>
@@ -209,6 +230,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="eyebrow">Physik LK · Q3 · Elektromagnetische Wellen</div>
     <h1>Wellen&shy;optik <span>Q3</span></h1>
     <p>Dein komplettes Skript zum Anfassen: vom Schwingkreis über <span class="m">c</span> = λ·<span class="m">f</span>, Doppelspalt und Gitter bis zum Mach-Zehnder-Interferometer. Jede Simulation erklärt sich selbst: einfach hinscrollen und zuschauen. Die gelbe Leiste sagt dir Schritt für Schritt, was gerade passiert.</p>
+    <button class="btn-video" id="vStart" type="button">▶ Alles als Video abspielen <small id="vDur"></small></button>
   </div>
   <div class="em-ctrl">
     <div class="ctrl"><label>Vakuum-Wellenlänge λ₀ <b id="emLv">633 nm</b></label><input type="range" id="emL" min="380" max="780" step="1" value="633"></div>
@@ -222,7 +244,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </header>
 
 <main class="wrap">
-<section class="topic" id="klausur" style="padding-bottom:0"><div class="t-head"><h2 style="font-size:clamp(1.4rem,3vw,2rem)">Dein Klausur-Check Q3.1: direkt zum Thema</h2></div><p class="hint">Alle 19 Punkte von deinem Blatt. Tippe auf einen Punkt, und die Seite springt zur passenden Erklärung mit Animation.</p><div class="kcgrid"><a class="kc" href="#spektrum"><span>elektromagnetisches Spektrum und Anwendungen</span><i>→</i></a><a class="kc" href="#em-text"><span>c = λ·f und Zusammenhang Frequenz/Wellenlänge</span><i>→</i></a><a class="kc" href="#reflexion"><span>Reflexion (auch Herleitung)</span><i>→</i></a><a class="kc" href="#brechung"><span>Brechung (auch Herleitung)</span><i>→</i></a><a class="kc" href="#beugung"><span>Beugung (auch Herleitung)</span><i>→</i></a><a class="kc" href="#interferenz"><span>Interferenz/Überlagerung</span><i>→</i></a><a class="kc" href="#polarisation"><span>lineare Polarisation/Schwingungsebene</span><i>→</i></a><a class="kc" href="#total"><span>Totalreflexion/Glasfaser</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Doppelspalt: Wegdifferenz</span><i>→</i></a><a class="kc" href="#interferenz"><span>Maxima-Bedingung</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Herleitung der Lage der Maxima</span><i>→</i></a><a class="kc" href="#kleinwinkel"><span>Kleinwinkelnäherung</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Wellenlängenbestimmung</span><i>→</i></a><a class="kc" href="#gitter"><span>Beugungsgitter</span><i>→</i></a><a class="kc" href="#spektren"><span>polychromatisches/weißes Licht</span><i>→</i></a><a class="kc" href="#stehend"><span>stehende elektromagnetische Wellen</span><i>→</i></a><a class="kc" href="#einzelspalt"><span>Einzelspalt: Beugung und Interferenz</span><i>→</i></a><a class="kc" href="#einzelspalt-herleitung"><span>Einzelspalt: Maxima/Minima</span><i>→</i></a><a class="kc" href="#mz"><span>Interferometer</span><i>→</i></a></div></section>
+<section class="topic" id="klausur" style="padding-bottom:0"><div class="t-head"><h2 style="font-size:clamp(1.4rem,3vw,2rem)">Dein Klausur-Check Q3.1: direkt zum Thema</h2></div><p class="hint">Alle 19 Punkte von deinem Blatt. Tippe auf einen Punkt, und die Seite springt zur passenden Erklärung mit Animation. Oder lass dir <b>alles der Reihe nach wie ein Video</b> vorspielen: <button class="navplay" id="vStart3" type="button" style="vertical-align:middle">▶ Video starten</button></p><div class="kcgrid"><a class="kc" href="#spektrum"><span>elektromagnetisches Spektrum und Anwendungen</span><i>→</i></a><a class="kc" href="#em-text"><span>c = λ·f und Zusammenhang Frequenz/Wellenlänge</span><i>→</i></a><a class="kc" href="#reflexion"><span>Reflexion (auch Herleitung)</span><i>→</i></a><a class="kc" href="#brechung"><span>Brechung (auch Herleitung)</span><i>→</i></a><a class="kc" href="#beugung"><span>Beugung (auch Herleitung)</span><i>→</i></a><a class="kc" href="#interferenz"><span>Interferenz/Überlagerung</span><i>→</i></a><a class="kc" href="#polarisation"><span>lineare Polarisation/Schwingungsebene</span><i>→</i></a><a class="kc" href="#total"><span>Totalreflexion/Glasfaser</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Doppelspalt: Wegdifferenz</span><i>→</i></a><a class="kc" href="#interferenz"><span>Maxima-Bedingung</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Herleitung der Lage der Maxima</span><i>→</i></a><a class="kc" href="#kleinwinkel"><span>Kleinwinkelnäherung</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Wellenlängenbestimmung</span><i>→</i></a><a class="kc" href="#gitter"><span>Beugungsgitter</span><i>→</i></a><a class="kc" href="#spektren"><span>polychromatisches/weißes Licht</span><i>→</i></a><a class="kc" href="#stehend"><span>stehende elektromagnetische Wellen</span><i>→</i></a><a class="kc" href="#einzelspalt"><span>Einzelspalt: Beugung und Interferenz</span><i>→</i></a><a class="kc" href="#einzelspalt-herleitung"><span>Einzelspalt: Maxima/Minima</span><i>→</i></a><a class="kc" href="#mz"><span>Interferometer</span><i>→</i></a></div></section>
 
 <!-- ================================================= TAG 1 -->
 <div class="day"><div class="day-head"><span class="n">Nachmittag 1</span><h2>Brechung, Totalreflexion, Beugung und Doppelspalt</h2></div></div>
@@ -1000,6 +1022,18 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 </main>
+<div id="vplayer" hidden>
+  <div class="vp-prog"><i id="vpBar"></i></div>
+  <div class="vp-row">
+    <button class="b" id="vpPrev" type="button" aria-label="Vorheriges Kapitel">⏮</button>
+    <button class="b vp-main" id="vpPlay" type="button" aria-label="Pause">❚❚</button>
+    <button class="b" id="vpNext" type="button" aria-label="Nächstes Kapitel">⏭</button>
+    <div class="vp-info"><span id="vpCh">Kapitel 1</span><b id="vpTitle">–</b></div>
+    <select id="vpSel" aria-label="Kapitel wählen"></select>
+    <button class="b" id="vpSpeed" type="button" aria-label="Tempo">1×</button>
+    <button class="b" id="vpExit" type="button" aria-label="Video beenden">✕</button>
+  </div>
+</div>
 <footer><div class="wrap">Wellenoptik Q3 · interaktive Zusammenfassung von Skript und Lernzettel · Alle Simulationen rechnen live im Browser.</div></footer>
 
 <script>
@@ -1664,7 +1698,7 @@ sim($('cvLC'),(dt)=>{ const {ctx,W,H}=fit($('cvLC')); ctx.clearRect(0,0,W,H);
   for(let j=0;j<22;j++){ const p=at(LC.s+j*per/22); if(p.x===x1&&Math.abs(p.y-cy)<gap/2+8) continue; if(p.x===x2&&Math.abs(p.y-cyc)<coilH/2) continue;
     ctx.fillStyle='rgba(255,201,60,'+(0.25+0.75*ai)+')'; ctx.beginPath(); ctx.arc(p.x,p.y,3.6,0,7); ctx.fill(); }
   if(ai>.1){ const dir=i>0?1:-1; arrowHead(ctx,(x1+x2)/2,y1,dir>0?0:Math.PI,9,COL.na); arrowHead(ctx,(x1+x2)/2,y2,dir>0?Math.PI:0,9,COL.na); }
-  label(ctx,'Kondensator C',x1,cy+gap/2+46,COL.text,'600 12px "IBM Plex Sans", sans-serif'); label(ctx,'Spule L',x2+74,cyc+4,COL.text,'600 12px "IBM Plex Sans", sans-serif','left');
+  label(ctx,'Kondensator C',x1,cy+gap/2+46,COL.text,'600 12px "IBM Plex Sans", sans-serif'); if(narrow) label(ctx,'Spule L',x2,y2+18,COL.text,'600 12px "IBM Plex Sans", sans-serif'); else label(ctx,'Spule L',x2+74,cyc+4,COL.text,'600 12px "IBM Plex Sans", sans-serif','left');
   label(ctx,'Strom I',(x1+x2)/2,y1-10,COL.na,'600 12px "IBM Plex Sans", sans-serif');
   // Energie-Balken & Graph
   const gx=narrow?16:cw+10, gw=narrow?W-32:W-cw-26, gy=narrow?ch+8:30, gh=narrow?H-ch-16:H-60;
@@ -1861,7 +1895,7 @@ sim($('cvFib'),(dt,t)=>{ const {ctx,W,H}=fit($('cvFib')); ctx.clearRect(0,0,W,H)
 });
 
 /* ================= Erklär-Modus: Touren ================= */
-const tours=[];
+const tours=[]; const VID={on:false,cur:null,speed:1};
 function tour(anchor,steps){
   const bench=anchor.closest('.bench')||anchor;
   const bar=document.createElement('div'); bar.className='tour';
@@ -1869,8 +1903,9 @@ function tour(anchor,steps){
   const top=bench.querySelector('.bench-top'); if(top) top.after(bar); else bench.prepend(bar);
   const T={bench,steps,i:-1,t:0,run:true,vis:false,from:{},fired:[],cap:bar.querySelector('.tour-cap'),n:bar.querySelector('.tour-n'),prog:bar.querySelector('.tour-prog i'),btn:bar.querySelector('.tour-btn'),bar};
   const upd=()=>{ T.btn.textContent=T.run?'❚❚ Pause':'▶ Erklärung weiter'; bar.classList.toggle('paused',!T.run); };
-  T.btn.onclick=()=>{ T.run=!T.run; if(T.run) go(T,T.i<0?0:T.i); upd(); };
-  const stop=e=>{ if(e.isTrusted && !bar.contains(e.target) && (e.type!=='pointerdown'||e.target.closest('input,button,canvas'))){ T.run=false; upd(); } };
+  T.upd=upd;
+  T.btn.onclick=()=>{ if(VID.on&&VID.cur===T){ VID.toggle(); return; } T.run=!T.run; if(T.run) go(T,T.i<0?0:T.i); upd(); };
+  const stop=e=>{ if(e.isTrusted && !bar.contains(e.target) && (e.type!=='pointerdown'||e.target.closest('input,button,canvas'))){ T.run=false; upd(); if(VID.on&&VID.cur===T) VID.userPaused(); } };
   bench.addEventListener('input',stop,true); bench.addEventListener('pointerdown',stop,true);
   new IntersectionObserver(es=>{ T.vis=es[0].isIntersecting; },{threshold:.3}).observe(bench);
   upd(); tours.push(T); return T;
@@ -1882,14 +1917,15 @@ function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0;
   T.n.textContent=(T.i+1)+' / '+T.steps.length; }
 let tl=performance.now();
 (function tick(now){ const dt=Math.min(.25,(now-tl)/1000); tl=now;
-  for(const T of tours){ if(!T.vis||!T.run) continue; if(T.i<0){ go(T,0); continue; }
-    const s=T.steps[T.i], dur=s.dur||7, tw=s.tween||1.8; const prev=T.t; T.t+=dt;
+  if(VID.on) VID.tick(dt);
+  for(const T of tours){ const isCur=VID.on&&VID.cur===T; if(VID.on&&!isCur) continue; if((!T.vis&&!isCur)||!T.run) continue; if(T.i<0){ go(T,0); continue; }
+    const s=T.steps[T.i], dur=s.dur||7, tw=s.tween||1.8; const prev=T.t; T.t+=dt*(isCur?VID.speed:1);
     if(s.set && prev<tw){ const p=Math.min(1,T.t/tw), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
       for(const id in s.set){ const el=$(id); el.value=T.from[id]+(s.set[id]-T.from[id])*e; el.dispatchEvent(new Event('input')); } }
     if(s.each) s.each(Math.min(1,T.t/dur));
     (s.at||[]).forEach(([tm,fn],j)=>{ if(!T.fired[j]&&T.t>=tm){ T.fired[j]=1; fn(); } });
     T.prog.style.width=Math.min(100,T.t/dur*100)+'%';
-    if(T.t>=dur) go(T,T.i+1); }
+    if(T.t>=dur){ if(isCur&&T.i===T.steps.length-1){ VID.ended(); continue; } go(T,T.i+1); } }
   requestAnimationFrame(tick); })(performance.now());
 
 tour($('emL').closest('.em-ctrl'),[
@@ -2052,6 +2088,62 @@ tour($('cvFib'),[
  {set:{fbT:80},dur:8,cap:'Licht trifft unter θ = 80° auf die Grenze Kern–Mantel. 80° &gt; 69° (Grenzwinkel), also <b>Totalreflexion</b> bei jedem Aufprall. 100 % kommen am Ende an.'},
  {set:{fbT:60},tween:3,dur:9,cap:'Bei θ = 60° (&lt; 69°) wird an jeder Stelle nur ein Teil reflektiert, der Rest tritt in den Mantel aus. Nach wenigen Reflexionen ist fast nichts mehr übrig.'},
  {set:{fbT:75},tween:3,dur:8,cap:'Darum koppelt man Licht möglichst <b>flach</b> ein. Dann bleibt es über Kilometer gefangen: Internet, Telefon, Endoskop.'}]);
+
+/* ================= Video-Modus: alle Erklärungen der Reihe nach ================= */
+(function(){
+  const ORDER=['cvLC','cvDip','emL','cvEMS','cvRefH','cvRefF','cvBrH','cvBrF','cvWater','cvRain','cvFib','cvInt','cvBeug','cvSingle','cvESH','cvDouble','cvKW','cvGrat','cvSpecG','cvRes','cvStand','cvMZ','cvMi','cvPol','cvBrew','cvCmp'];
+  const chapters=[]; let lastSec=null;
+  ORDER.forEach(id=>{ const el=$(id); if(!el) return; const T=tours.find(t=>t.bench.contains(el)); if(!T) return;
+    const sec=id==='emL'?$('em-text'):T.bench.closest('section.topic'); const h2=sec?sec.querySelector('h2').textContent:'';
+    const sub=(T.bench.querySelector('.bench-top span')||{}).textContent||'';
+    const first=sec!==lastSec; lastSec=sec;
+    const dur=T.steps.reduce((a,s)=>a+(s.dur||7),0)+(first?7:2);
+    chapters.push({T,sec,title:h2,sub,first,dur,num:(sec&&sec.querySelector('.t-num'))?sec.querySelector('.t-num').textContent:''}); });
+  const total=chapters.reduce((a,c)=>a+c.dur,0);
+  $('vDur').textContent='· ca. '+Math.round(total/60)+' min · '+chapters.length+' Kapitel';
+  const sel=$('vpSel'); chapters.forEach((c,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=(i+1)+'. '+(c.first?c.title:c.title+' · '+c.sub); sel.appendChild(o); });
+  let idx=0, phase='intro', pt=0, playing=false, lock=null, before=[];
+  const load=()=>{ try{ return +localStorage.getItem('wo-video')||0; }catch(e){ return 0; } };
+  const save=()=>{ try{ localStorage.setItem('wo-video',String(idx)); }catch(e){} };
+  const scrollTo=(el,off)=>{ const y=el.getBoundingClientRect().top+scrollY-(off||70); scrollTo0(y); };
+  const scrollTo0=y=>window.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'});
+  function clearSpot(){ document.querySelectorAll('.spot').forEach(e=>e.classList.remove('spot')); }
+  function ui(){ const c=chapters[idx]; $('vpCh').textContent='Kapitel '+(idx+1)+' / '+chapters.length+(phase==='intro'?' · Einführung':''); $('vpTitle').textContent=c.first?c.title:c.title+' · '+c.sub;
+    sel.value=idx; $('vpPlay').textContent=playing?'❚❚':'▶'; $('vpPlay').setAttribute('aria-label',playing?'Pause':'Abspielen');
+    const done=chapters.slice(0,idx).reduce((a,c)=>a+c.dur,0); let cur=0; const T=c.T;
+    if(phase==='intro') cur=pt; else { cur=(c.first?7:2)+T.steps.slice(0,Math.max(0,T.i)).reduce((a,s)=>a+(s.dur||7),0)+Math.max(0,T.t); }
+    $('vpBar').style.width=Math.min(100,(done+cur)/total*100)+'%'; }
+  function begin(i){ const old=chapters[idx]; if(old){ old.T.run=false; old.T.upd(); }
+    idx=Math.max(0,Math.min(chapters.length-1,i)); save(); const c=chapters[idx]; clearSpot();
+    c.T.run=false; c.T.i=-1; c.T.t=0; c.T.upd(); c.T.cap.innerHTML='Gleich geht’s los … erst die <b>„Kurz gesagt“-Karte</b> lesen.'; c.T.btn.textContent='❚❚ Pause'; c.T.n.textContent=''; c.T.prog.style.width='0%';
+    phase='intro'; pt=0;
+    if(c.first){ const k=c.sec&&c.sec.querySelector('.kurz'); if(k){ k.classList.add('spot'); } scrollTo(c.sec,64); }
+    else scrollTo(c.T.bench,64);
+    ui(); }
+  function startTour(){ const c=chapters[idx]; phase='play'; clearSpot(); c.T.bench.classList.add('spot'); if(c.first) scrollTo(c.T.bench,64); c.T.run=true; go(c.T,0); c.T.upd(); ui(); }
+  VID.tick=dt=>{ if(!playing) return; if(phase==='intro'){ pt+=dt*VID.speed; if(pt>=(chapters[idx].first?7:2)) startTour(); } ui(); };
+  VID.ended=()=>{ if(idx<chapters.length-1){ begin(idx+1); } else finish(); };
+  VID.userPaused=()=>{ playing=false; ui(); };
+  VID.toggle=()=>{ playing=!playing; const T=chapters[idx].T; if(phase==='play'){ T.run=playing; T.upd(); } if(playing) wake(); ui(); };
+  async function wake(){ try{ if(navigator.wakeLock&&!lock) lock=await navigator.wakeLock.request('screen'); }catch(e){} }
+  function start(){ const from=load(); VID.on=true; before=tours.map(t=>t.run); tours.forEach(t=>{ t.run=false; t.upd(); });
+    document.body.classList.add('video'); $('vplayer').hidden=false; playing=true; VID.cur=null;
+    Object.defineProperty(VID,'cur',{get:()=>chapters[idx]&&chapters[idx].T,configurable:true});
+    begin(from>0&&from<chapters.length?from:0); wake(); }
+  function stop(){ VID.on=false; playing=false; clearSpot(); document.body.classList.remove('video'); $('vplayer').hidden=true;
+    tours.forEach((t,i)=>{ t.run=before[i]!==false; t.upd(); }); try{ lock&&lock.release(); }catch(e){} lock=null; }
+  function finish(){ try{ localStorage.setItem('wo-video','0'); }catch(e){} stop(); const q=$('quiz'); if(q) scrollTo(q,64); $('qScore').textContent='Video fertig 🎉 · jetzt das Quiz!'; }
+  [$('vStart'),$('vStart2'),$('vStart3')].forEach(b=>b&&(b.onclick=()=>{ if(VID.on) VID.toggle(); else start(); }));
+  $('vpPlay').onclick=()=>VID.toggle();
+  $('vpNext').onclick=()=>{ if(idx<chapters.length-1){ begin(idx+1); if(!playing) VID.toggle(); } };
+  $('vpPrev').onclick=()=>{ begin(phase==='play'&&chapters[idx].T.i>0?idx:idx-1); if(!playing) VID.toggle(); };
+  sel.onchange=()=>{ begin(+sel.value); if(!playing) VID.toggle(); };
+  const SP=[1,1.25,1.5,.75]; $('vpSpeed').onclick=()=>{ VID.speed=SP[(SP.indexOf(VID.speed)+1)%SP.length]; $('vpSpeed').textContent=String(VID.speed).replace('.',',')+'×'; };
+  $('vpExit').onclick=stop;
+  addEventListener('keydown',e=>{ if(!VID.on||/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    if(e.key===' '){ e.preventDefault(); VID.toggle(); } else if(e.key==='ArrowRight') $('vpNext').click(); else if(e.key==='ArrowLeft') $('vpPrev').click(); else if(e.key==='Escape') stop(); });
+  const saved=load(); if(saved>0&&saved<chapters.length) $('vStart').firstChild.textContent='▶ Video weiter ansehen (Kapitel '+(saved+1)+') ';
+})();
 
 setTimeout(()=>{ if(!window.__em3d) document.body.classList.add('no3d'); },9000);
 })();
