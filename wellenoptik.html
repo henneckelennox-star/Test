@@ -240,6 +240,11 @@ body.video .tour{display:block}
 .th-ctrl{display:flex;justify-content:center;gap:8px;padding:6px 16px 14px;transition:opacity .4s}
 .th-ctrl.hide{opacity:0}
 .th-main{min-width:56px;background:var(--red)!important;border-color:var(--red)!important}
+.lv-voice{display:flex;gap:10px;align-items:flex-start;font-size:.97rem;color:#cfd5e4;margin:6px 0 4px;cursor:pointer}
+.lv-voice input{accent-color:var(--red);margin-top:5px;width:18px;height:18px;flex:none}
+#thVoiceSel{font-family:var(--body);font-size:.82rem;background:var(--panel2);color:var(--text);border:1px solid var(--line2);border-radius:8px;padding:6px 8px;max-width:210px}
+#thVoice.off{opacity:.55}
+@media(max-width:700px){#thVoiceSel{display:none}}
 .kcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:10px}
 .kc{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;border:1px solid var(--line2);border-radius:9px;background:var(--panel);color:var(--text);text-decoration:none;font-size:.94rem}
 .kc:hover{border-color:var(--green)}
@@ -305,9 +310,11 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <span class="lv-ps" id="lvMeta">–</span>
     </button>
     <div class="lv-side">
-      <div class="eyebrow">Neu · zurücklehnen und zuschauen</div>
+      <div class="eyebrow">Neu · zurücklehnen, zuschauen, zuhören</div>
       <h2>Das Lernvideo</h2>
       <p>Alle Themen laufen <b>im Vollbild</b> nacheinander ab, in einer Reihenfolge, die aufeinander aufbaut. Jedes Kapitel beginnt mit einer Titelkarte und der Kernaussage. Dann läuft die Animation, und die Erklärung erscheint als <b>Untertitel</b>. Du musst nichts tun, und Antippen unterbricht nichts.</p>
+      <label class="lv-voice" for="lvVoice"><input type="checkbox" id="lvVoice" checked> 🔊 <b>Erklärstimme</b> liest alles vor. Jede Animation wartet, bis der Satz fertig ist.</label>
+      <p class="hint" id="lvVoiceInfo">Stimme: wird gesucht …</p>
       <div class="btns"><button class="btn-video" id="lvStart" type="button" style="margin-top:0">▶ Von vorn starten</button><button class="b" id="lvCont" type="button" hidden>Weiter bei Kapitel 1</button></div>
     </div>
   </div>
@@ -1107,6 +1114,8 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <button class="b th-main" id="thPlay" type="button" aria-label="Pause">❚❚</button>
     <button class="b" id="thNext" type="button" aria-label="Nächstes Kapitel">⏭</button>
     <button class="b" id="thSpeed" type="button" aria-label="Tempo">1×</button>
+    <button class="b" id="thVoice" type="button" aria-label="Erklärstimme ein oder aus">🔊 Stimme</button>
+    <select id="thVoiceSel" aria-label="Stimme wählen"></select>
     <button class="b" id="thExit" type="button" aria-label="Lernvideo beenden">✕ Beenden</button>
   </div>
 </div>
@@ -1986,7 +1995,46 @@ function tour(anchor,steps){
   new IntersectionObserver(es=>{ T.vis=es[0].isIntersecting; },{threshold:.3}).observe(bench);
   upd(); tours.push(T); return T;
 }
+
+/* ================= Erklärstimme (Sprachausgabe des Geräts) ================= */
+const VOICE=window.__VOICE={on:true,voice:null,speaking:false,endAt:0,deadline:0,token:0,last:'',ok:'speechSynthesis' in window};
+try{ const v=localStorage.getItem('wo-voice'); if(v==='0') VOICE.on=false; }catch(e){}
+function voiceScore(v){ if(!/^de/i.test(v.lang)) return -1; let sc=100; const n=v.name;
+  if(/natural|neural/i.test(n)) sc+=60; if(/online/i.test(n)) sc+=30; if(/premium|enhanced|verbessert/i.test(n)) sc+=45; if(/google/i.test(n)) sc+=25; if(/microsoft/i.test(n)) sc+=8;
+  if(/katja|seraphina|amala|anna|petra|helena|vicki|marlene|conrad|florian|killian/i.test(n)) sc+=6; if(/compact|eloquence|espeak/i.test(n)) sc-=40; if(/de-DE/i.test(v.lang)) sc+=5; return sc; }
+function germanVoices(){ if(!VOICE.ok) return []; return speechSynthesis.getVoices().filter(v=>voiceScore(v)>=0).sort((a,b)=>voiceScore(b)-voiceScore(a)); }
+function pickVoice(){ const list=germanVoices(); let saved=null; try{ saved=localStorage.getItem('wo-voice-name'); }catch(e){}
+  VOICE.voice=list.find(v=>v.name===saved)||list[0]||null; if(window.__fillVoices) window.__fillVoices(list); }
+if(VOICE.ok){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+const SUBD={'₀':' null','₁':' eins','₂':' zwei','₃':' drei','₄':' vier','₅':' fünf','₆':' sechs','₇':' sieben','₈':' acht','₉':' neun','ₖ':' k','ₘ':' m'};
+const SUPD={'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁻':'minus '};
+function toSpeech(html){ const d=document.createElement('div'); d.innerHTML=html; let t=d.textContent;
+  const R=[[/(\d)([⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)/g,(m,a,b)=>a+' hoch '+b.split('').map(c=>SUPD[c]).join('')],[/cos²/g,'Kosinus Quadrat '],[/sin²/g,'Sinus Quadrat '],[/Na-D-Linien/g,'Natrium-D-Linien'],[/z\.\s?B\./g,'zum Beispiel'],[/\bca\./g,'circa'],[/bzw\./g,'beziehungsweise'],[/d\.\s?h\./g,'das heißt'],[/\bIR\b/g,'Infrarot'],[/\bUV\b/g,'U V'],
+    [/λ\s*\/\s*2/g,'Lambda halbe'],[/λ\s*\/\s*4/g,'Lambda Viertel'],[/T\s*\/\s*4/g,'T Viertel'],[/T\s*\/\s*2/g,'T halbe'],[/3T\s*\/\s*4/g,'drei Viertel T'],[/I₀\s*\/\s*2/g,'I null halbe'],[/I₀\s*\/\s*8/g,'I null Achtel'],[/I₀\s*\/\s*4/g,'I null Viertel'],
+    [/m\/s/g,' Meter pro Sekunde'],[/(\d)\s?GHz/g,'$1 Gigahertz'],[/(\d)\s?MHz/g,'$1 Megahertz'],[/(\d)\s?THz/g,'$1 Terahertz'],[/(\d)\s?kHz/g,'$1 Kilohertz'],[/(\d)\s?Hz/g,'$1 Hertz'],
+    [/(\d)\s?nm\b/g,'$1 Nanometer'],[/(\d)\s?µm\b/g,'$1 Mikrometer'],[/(\d)\s?mm\b/g,'$1 Millimeter'],[/(\d)\s?cm\b/g,'$1 Zentimeter'],[/(\d)\s?km\b/g,'$1 Kilometer'],[/(\d)\s?ms\b/g,'$1 Millisekunden'],[/(\d)\s?pm\b/g,'$1 Pikometer'],[/(\d)\s?m\b/g,'$1 Meter'],
+    [/(\d)\s?µF/g,'$1 Mikrofarad'],[/(\d)\s?mH/g,'$1 Millihenry'],
+    [/arcsin/g,'Arcussinus '],[/arctan/g,'Arcustangens '],[/\bsin\b/g,'Sinus'],[/\bcos\b/g,'Kosinus'],[/\btan\b/g,'Tangens'],
+    [/√/g,' Wurzel aus '],[/½/g,' ein halb'],[/([^\d\s])²/g,'$1 Quadrat '],
+    [/ΔΦ|Δφ/g,'Delta Phi'],[/Δλ/g,'Delta Lambda'],[/Δ\s?([std])/g,'Delta $1'],[/Δ/g,'Delta '],[/λ/g,' Lambda '],[/α/g,' Alpha '],[/β/g,' Beta '],[/θ/g,' Theta '],[/[φΦ]/g,' Phi '],[/π/g,' Pi '],[/γ/g,' Gamma '],[/δ/g,' Delta '],
+    [/[₀₁₂₃₄₅₆₇₈₉ₖₘ]/g,c=>SUBD[c]],[/°/g,' Grad'],[/%/g,' Prozent'],[/≈/g,' ungefähr '],[/≥/g,' größer gleich '],[/≤/g,' kleiner gleich '],[/>/g,' größer als '],[/</g,' kleiner als '],
+    [/⇒/g,', also '],[/→/g,' zu '],[/·/g,' mal '],[/×/g,' mal '],[/−/g,' minus '],[/=/g,' gleich '],[/\//g,' durch '],[/\+/g,' plus '],[/B′B/g,'B Strich B'],[/([A-Z])′/g,'$1 Strich'],[/[↕•]/g,''],[/’/g,"'"],[/[…]/g,'.'],[/\(\s*\+/g,'(plus'],[/\s+/g,' ']];
+  R.forEach(([a,b])=>{ t=t.replace(a,b); }); return t.trim(); }
+function speakHTML(html){ VOICE.last=html; VOICE.token++; const tk=VOICE.token; if(!VOICE.ok) return; try{ speechSynthesis.cancel(); }catch(e){}
+  if(!VOICE.on||!html){ VOICE.speaking=false; return; }
+  const txt=toSpeech(html); if(!txt){ VOICE.speaking=false; return; }
+  const parts=txt.match(/[^.!?]+[.!?]*/g)||[txt], rate=Math.max(.75,Math.min(1.5,.98*(VID.speed||1)));
+  VOICE.speaking=true; VOICE.deadline=performance.now()+txt.length/13/rate*1000+5000;
+  parts.forEach((p,i)=>{ const u=new SpeechSynthesisUtterance(p.trim()); u.lang='de-DE'; if(VOICE.voice) u.voice=VOICE.voice; u.rate=rate; u.pitch=1; u.volume=1;
+    if(i===parts.length-1){ u.onend=u.onerror=()=>{ if(tk===VOICE.token){ VOICE.speaking=false; VOICE.endAt=performance.now(); } }; }
+    speechSynthesis.speak(u); }); }
+window.__toSpeech=toSpeech;
+const sent=t=>{ t=String(t).trim(); return /[.!?:]$/.test(t)?t+' ':t+'. '; };
+function stopSpeech(){ VOICE.token++; VOICE.speaking=false; try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){} }
+VID.holding=()=>VOICE.ok&&VOICE.on&&((VOICE.speaking&&performance.now()<VOICE.deadline)||performance.now()-VOICE.endAt<650);
+
 function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0; T.fired=[]; const s=T.steps[T.i];
+  if(VID.on&&VID.cur===T) speakHTML(s.cap);
   T.from={}; for(const id in (s.set||{})) T.from[id]=+$(id).value;
   if(s.start) s.start();
   T.cap.classList.add('fade'); setTimeout(()=>{ T.cap.innerHTML=s.cap; T.cap.classList.remove('fade'); },200);
@@ -2001,7 +2049,7 @@ let tl=performance.now();
     if(s.each) s.each(Math.min(1,T.t/dur));
     (s.at||[]).forEach(([tm,fn],j)=>{ if(!T.fired[j]&&T.t>=tm){ T.fired[j]=1; fn(); } });
     T.prog.style.width=Math.min(100,T.t/dur*100)+'%';
-    if(T.t>=dur){ if(isCur&&T.i===T.steps.length-1){ VID.ended(); continue; } go(T,T.i+1); } }
+    if(T.t>=dur){ if(isCur&&VID.holding()){ T.t=dur; continue; } if(isCur&&T.i===T.steps.length-1){ VID.ended(); continue; } go(T,T.i+1); } }
   requestAnimationFrame(tick); })(performance.now());
 
 tour($('emL').closest('.em-ctrl'),[
@@ -2217,16 +2265,17 @@ tour($('cvFib'),[
     phase='intro'; pt=0;
     $('thEye').textContent='Kapitel '+(idx+1)+' von '+chapters.length+' · Nachmittag '+c.day+(c.num?' · Thema '+c.num:'');
     $('thTitle').textContent=c.first?c.title:c.sub; $('thKurz').innerHTML=c.first?c.kurz:'';
+    speakHTML('Kapitel '+(idx+1)+'. '+(c.first?sent(c.title)+'Kurz gesagt: '+c.kurz:sent(c.sub)));
     card.classList.add('show'); $('thCh').textContent=(idx+1)+' · '+c.title; setSub(c.first?'':'<span style="color:var(--muted)">'+c.title+'</span>'); dots(); ui(); }
   function play(){ const c=chapters[idx]; phase='play'; card.classList.remove('show'); c.T.run=playing; go(c.T,0); dots(); }
   VID.tick=dt=>{ if(!TH.on) return; const c=chapters[idx];
-    if(playing&&phase==='intro'){ pt+=dt*VID.speed; const L=c.first?INTRO_LONG:INTRO_SHORT; $('thCount').style.width=Math.min(100,pt/L*100)+'%'; if(pt>=L) play(); }
+    if(playing&&phase==='intro'){ pt+=dt*VID.speed; const L=c.first?INTRO_LONG:INTRO_SHORT; $('thCount').style.width=Math.min(100,pt/L*100)+'%'; if(pt>=L&&!VID.holding()) play(); }
     if(phase==='play'){ setSub(c.T.cap.innerHTML); dots(); }
     const done=chapters.slice(0,idx).reduce((a,x)=>a+x.dur,0)+progress()*c.dur; $('thTime').textContent=fmtT(done)+' / '+fmtT(total);
     segUI(); if(performance.now()>hideT&&playing) $('thCtrl').classList.add('hide'); };
   VID.ended=()=>{ if(idx<chapters.length-1) begin(idx+1); else finish(); };
   VID.userPaused=()=>{};
-  VID.toggle=()=>{ playing=!playing; const T=chapters[idx].T; if(phase==='play'){ T.run=playing; } ui(); showCtrl(); if(playing) wake(); };
+  VID.toggle=()=>{ playing=!playing; const T=chapters[idx].T; if(phase==='play'){ T.run=playing; } if(!playing) stopSpeech(); else if(phase==='intro'||phase==='play') speakHTML(VOICE.last); ui(); showCtrl(); if(playing) wake(); };
   function ui(){ $('thPlay').textContent=playing?'❚❚':'▶'; $('thPlay').setAttribute('aria-label',playing?'Pause':'Abspielen'); }
   function showCtrl(){ $('thCtrl').classList.remove('hide'); hideT=performance.now()+3000; }
   async function wake(){ try{ if(navigator.wakeLock&&!lock) lock=await navigator.wakeLock.request('screen'); }catch(e){} }
@@ -2234,18 +2283,32 @@ tour($('cvFib'),[
     tours.forEach(t=>{ t._r=t.run; t.run=false; }); th.hidden=false; document.body.style.overflow='hidden'; playing=true;
     try{ th.requestFullscreen&&th.requestFullscreen().catch(()=>{}); }catch(e){}
     begin(i); showCtrl(); wake(); }
-  function close(){ const c=chapters[idx]; if(c) c.T.run=false; unmount(); TH.on=false; VID.on=false; th.hidden=true; document.body.style.overflow=''; playing=false;
+  function close(){ stopSpeech(); const c=chapters[idx]; if(c) c.T.run=false; unmount(); TH.on=false; VID.on=false; th.hidden=true; document.body.style.overflow=''; playing=false;
     tours.forEach(t=>{ t.run=t._r!==false; t.upd&&t.upd(); }); try{ document.fullscreenElement&&document.exitFullscreen(); }catch(e){} try{ lock&&lock.release(); }catch(e){} lock=null; refreshCont(); }
-  function finish(){ save(0); finished=true; unmount(); phase='end'; card.classList.add('show');
+  function finish(){ save(0); finished=true; speakHTML('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); unmount(); phase='end'; card.classList.add('show');
     $('thEye').textContent='Geschafft 🎉'; $('thTitle').textContent='Du hast alle '+chapters.length+' Kapitel gesehen'; $('thKurz').innerHTML='Jetzt festigen: Mach das <b>Quiz</b> und hake die <b>Checkliste</b> ab. Beenden bringt dich zurück zur Seite.';
     $('thCount').style.width='100%'; setSub(''); playing=false; ui(); showCtrl(); }
+
+  // Stimme: Bedienung
+  const vb=$('thVoice'), vs=$('thVoiceSel'), lvv=$('lvVoice');
+  function voiceUI(){ vb.textContent=VOICE.on?'🔊 Stimme an':'🔇 Stimme aus'; vb.classList.toggle('off',!VOICE.on); lvv.checked=VOICE.on;
+    const info=$('lvVoiceInfo'); if(!VOICE.ok) info.textContent='Dein Browser unterstützt keine Sprachausgabe. Das Video läuft dann mit Untertiteln.';
+    else if(VOICE.voice) info.innerHTML='Stimme: <b>'+VOICE.voice.name+'</b>. Am natürlichsten klingen „Natural“- oder „Online“-Stimmen (Edge), „Google Deutsch“ (Chrome) oder „Premium“-Stimmen (iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen).';
+    else info.textContent='Keine deutsche Stimme gefunden. Es wird die Standardstimme deines Geräts verwendet.'; }
+  window.__fillVoices=list=>{ vs.innerHTML=''; list.forEach(v=>{ const o=document.createElement('option'); o.value=v.name; o.textContent=v.name.replace(/Microsoft |Google /,'').slice(0,34); vs.appendChild(o); }); vs.hidden=list.length<2; if(VOICE.voice) vs.value=VOICE.voice.name; voiceUI(); };
+  window.__fillVoices(germanVoices());
+  function setVoiceOn(on){ VOICE.on=on; try{ localStorage.setItem('wo-voice',on?'1':'0'); }catch(e){} if(!on) stopSpeech(); else if(TH.on&&playing) speakHTML(VOICE.last); voiceUI(); }
+  vb.onclick=()=>{ setVoiceOn(!VOICE.on); showCtrl(); };
+  lvv.onchange=()=>setVoiceOn(lvv.checked);
+  vs.onchange=()=>{ const v=germanVoices().find(x=>x.name===vs.value); if(v){ VOICE.voice=v; try{ localStorage.setItem('wo-voice-name',v.name); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); } showCtrl(); };
+  voiceUI();
   $('lvStart').onclick=()=>open(0); $('lvPoster').onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); };
   $('lvCont').onclick=()=>open(load());
   [$('vStart'),$('vStart2')].forEach(b=>b&&(b.onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); }));
   $('thPlay').onclick=()=>{ if(finished){ open(0); finished=false; return; } VID.toggle(); };
   $('thNext').onclick=()=>{ if(idx<chapters.length-1) begin(idx+1); showCtrl(); };
   $('thPrev').onclick=()=>{ begin(phase==='play'&&chapters[idx].T.i>0?idx:idx-1); showCtrl(); };
-  const SP=[1,1.25,1.5,.75]; $('thSpeed').onclick=()=>{ VID.speed=SP[(SP.indexOf(VID.speed)+1)%SP.length]; $('thSpeed').textContent=String(VID.speed).replace('.',',')+'×'; showCtrl(); };
+  const SP=[1,1.25,1.5,.75]; $('thSpeed').onclick=()=>{ VID.speed=SP[(SP.indexOf(VID.speed)+1)%SP.length]; $('thSpeed').textContent=String(VID.speed).replace('.',',')+'×'; if(TH.on&&playing&&VOICE.speaking) speakHTML(VOICE.last); showCtrl(); };
   $('thExit').onclick=()=>{ const q=finished; close(); if(q){ const z=$('quiz'); z&&z.scrollIntoView(); } };
   th.addEventListener('pointermove',showCtrl); th.addEventListener('pointerdown',showCtrl);
   addEventListener('keydown',e=>{ if(!TH.on) return; showCtrl();
