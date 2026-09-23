@@ -159,6 +159,25 @@ details .in{padding:0 14px 12px;color:#cfd5e4;font-size:.96rem}
 .ex.s{display:block}
 .link-card{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;border:1px solid rgba(255,77,77,.4);background:linear-gradient(90deg,rgba(255,77,77,.1),transparent);border-radius:12px;padding:14px 18px;margin-top:18px}
 .link-card a{font-weight:600;text-decoration:none}
+.tour{background:linear-gradient(90deg,rgba(255,201,60,.13),rgba(255,201,60,.03));border-bottom:1px solid var(--line)}
+.tour-row{display:flex;gap:12px;align-items:flex-start;padding:11px 14px}
+.tour-n{font-family:var(--mono);color:var(--na);font-size:.76rem;padding-top:4px;flex:none;font-variant-numeric:tabular-nums}
+.tour-cap{margin:0;flex:1;font-size:1rem;line-height:1.5;color:#fff;min-height:3em;transition:opacity .35s}
+.tour-cap.fade{opacity:0}
+.tour-btn{flex:none;font-size:.78rem!important;padding:5px 10px!important}
+.tour-prog{height:3px;background:rgba(255,255,255,.06)}
+.tour-prog i{display:block;height:100%;width:0;background:var(--na)}
+.tour.paused .tour-prog i{background:var(--muted)}
+@media(max-width:600px){.tour-row{flex-wrap:wrap;justify-content:space-between}.tour-cap{flex-basis:100%;order:3;min-height:4.5em}}
+.em-ctrl .tour{margin:-14px -16px 12px;border-radius:12px 12px 0 0}
+.em-ctrl .tour-cap{font-size:.9rem;min-height:4.5em}
+.self{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 14px 0;border-top:1px solid var(--line)}
+.self+.ctrls{border-top:none}
+.cmpw{overflow-x:auto;margin-top:18px;border:1px solid var(--line);border-radius:12px}
+table.cmp{width:100%;border-collapse:collapse;min-width:640px;font-size:.95rem}
+table.cmp th,table.cmp td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.cmp th{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--panel)}
+table.cmp td:first-child{font-weight:600;color:#fff;white-space:nowrap}
 footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;color:var(--muted);font-size:.85rem}
 </style>
 
@@ -171,7 +190,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <span class="grp">Tag 2</span>
     <a href="#gitter">Gitter</a><a href="#spektren">Spektren</a><a href="#aufloesung">Auflösung</a><a href="#stehend">Stehende Wellen</a>
     <span class="grp">Tag 3</span>
-    <a href="#mz">Mach-Zehnder</a><a href="#formeln">Formeln</a><a href="#check">Checkliste</a><a href="#quiz">Quiz</a>
+    <a href="#mz">Mach-Zehnder</a><a href="#michelson">Michelson</a><a href="#polarisation">Polarisation</a><a href="#vergleich">Spalt-Vergleich</a><a href="#formeln">Formeln</a><a href="#check">Checkliste</a><a href="#quiz">Quiz</a>
   </div>
 </nav>
 
@@ -180,7 +199,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   <div class="hero-txt">
     <div class="eyebrow">Physik LK · Q3 · Elektromagnetische Wellen</div>
     <h1>Wellen&shy;optik <span>Q3</span></h1>
-    <p>Dein komplettes Skript zum Anfassen: von <span class="m">c</span> = λ·<span class="m">f</span> über Doppelspalt und Gitter bis zum Mach-Zehnder-Interferometer. Jede Formel mit einer Simulation, die du selbst bedienst.</p>
+    <p>Dein komplettes Skript zum Anfassen: von <span class="m">c</span> = λ·<span class="m">f</span> über Doppelspalt und Gitter bis zum Mach-Zehnder-Interferometer. Jede Simulation erklärt sich selbst: einfach hinscrollen und zuschauen. Die gelbe Leiste sagt dir Schritt für Schritt, was gerade passiert.</p>
   </div>
   <div class="em-ctrl">
     <div class="ctrl"><label>Vakuum-Wellenlänge λ₀ <b id="emLv">633 nm</b></label><input type="range" id="emL" min="380" max="780" step="1" value="633"></div>
@@ -233,6 +252,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <div class="bench">
         <div class="bench-top"><span>Huygens · Reflexion am Spiegel</span><span class="live">● live</span></div>
         <canvas id="cvRefH" class="cv-md"></canvas>
+        <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
         <div class="ctrls">
           <div class="ctrl"><label>Einfallswinkel α <b id="refAv">40°</b></label><input type="range" id="refA" min="10" max="75" value="40"></div>
           <div class="btns"><button class="b" id="refP">❚❚ Pause</button><button class="b" id="refR">↺ Neustart</button></div>
@@ -280,6 +300,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
         <div class="bench-top"><span>Fermat · schnellster Weg P → F → Q</span><span>F, P, Q ziehen</span></div>
         <canvas id="cvBrF" class="cv-md"></canvas>
         <canvas id="cvBrG" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+        <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
         <div class="ctrls">
           <div class="ctrl"><label>c₁ oben <b id="brC1v">3,00·10⁸ m/s</b></label><input type="range" id="brC1" min="1" max="3" step="0.01" value="3"></div>
           <div class="ctrl"><label>c₂ unten <b id="brC2v">2,01·10⁸ m/s</b></label><input type="range" id="brC2" min="1" max="3" step="0.01" value="2.01"></div>
@@ -290,6 +311,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <div class="bench" style="margin-top:18px">
         <div class="bench-top"><span>Huygens · Elementarwellen an der Grenzfläche</span><span class="live">● live</span></div>
         <canvas id="cvBrH" class="cv-lg"></canvas>
+        <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
         <div class="ctrls">
           <div class="ctrl"><label>α <b id="bhAv">40°</b></label><input type="range" id="bhA" min="10" max="75" value="40"></div>
           <div class="ctrl"><label>n₁ <b id="bhN1v">1,00</b></label><input type="range" id="bhN1" min="1" max="2.4" step="0.01" value="1"></div>
@@ -307,6 +329,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Wellenwanne · Draufsicht</span><span class="live">● live</span></div>
       <canvas id="cvWater" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Einfallswinkel <b id="wAv">35°</b></label><input type="range" id="wA" min="0" max="65" value="35"></div>
         <div class="ctrl"><label>c im flachen Wasser / c im tiefen <b id="wCv">0,55</b></label><input type="range" id="wC" min="0.35" max="1" step="0.01" value="0.55"></div>
@@ -340,6 +363,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Regensensor · Schnitt durch die Scheibe</span><span class="live">● live</span></div>
       <canvas id="cvRain" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Winkel θ an der Außenseite <b id="rnTv">50°</b></label><input type="range" id="rnT" min="30" max="75" step="0.5" value="50"></div>
         <div class="btns"><button class="b" id="rnRain">🌧 Regen an</button><button class="b" id="rnWipe">Wischen</button></div>
@@ -359,6 +383,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Überlagerung zweier Wellen</span><span class="live">● live</span></div>
       <canvas id="cvInt" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Gangunterschied Δs <b id="inSv">0,00 λ</b></label><input type="range" id="inS" min="0" max="2" step="0.01" value="0"></div>
         <div class="btns"><button class="b" data-ds="0">Δs = 0</button><button class="b" data-ds="0.5">Δs = λ/2</button><button class="b" data-ds="1">Δs = λ</button><button class="b" data-ds="1.5">Δs = 3λ/2</button></div>
@@ -388,6 +413,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Intensität hinter dem Einzelspalt</span><span>Winkel α</span></div>
       <canvas id="cvSingle" class="cv-md"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Spaltbreite b <b id="sbBv">4,0 µm</b></label><input type="range" id="sbB" min="1" max="20" step="0.1" value="4"></div>
         <div class="ctrl"><label>Wellenlänge λ <b id="sbLv">633 nm</b></label><input type="range" id="sbL" min="400" max="700" value="633"></div>
@@ -404,6 +430,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <div class="bench-top"><span>Wellenwanne · zwei kohärente Quellen S₁, S₂ (nicht maßstäblich)</span><span>Punkt A auf dem Schirm ziehen</span></div>
       <canvas id="cvDouble" class="cv-lg"></canvas>
       <canvas id="cvDScreen" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Spaltabstand d <b id="dsDv">0,40 mm</b></label><input type="range" id="dsD" min="0.1" max="1" step="0.01" value="0.4"></div>
         <div class="ctrl"><label>Wellenlänge λ <b id="dsLv">633 nm</b></label><input type="range" id="dsL" min="400" max="700" value="633"></div>
@@ -489,6 +516,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Intensität hinter N Spalten</span><span>Winkel α</span></div>
       <canvas id="cvGrat" class="cv-md"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Anzahl Spalte N <b id="grNv">2</b></label><input type="range" id="grN" min="2" max="40" value="2"></div>
         <div class="ctrl"><label>Gitterkonstante g <b id="grGv">300 /mm</b></label><input type="range" id="grG" min="100" max="1000" step="10" value="300"></div>
@@ -533,6 +561,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Weißes Licht am Gitter · Schirm als Halbkreis (−90° … 90°)</span></div>
       <canvas id="cvSpecG" class="cv-md"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Gitterkonstante g <b id="spGv">300 /mm</b></label><input type="range" id="spG" min="100" max="900" step="10" value="300"></div>
         <div class="btns"><button class="b on" id="spOv">Überlappung markieren</button></div>
@@ -547,6 +576,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Zoom auf die Natrium-D-Linien (589,0 nm und 589,6 nm)</span></div>
       <canvas id="cvRes" class="cv-md"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>beleuchtete Spalte N <b id="rsNv">200</b></label><input type="range" id="rsN" min="0" max="100" value="55"></div>
         <div class="ctrl"><label>Ordnung n <b id="rsKv">1</b></label><input type="range" id="rsK" min="1" max="3" value="1"></div>
@@ -579,6 +609,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="bench">
       <div class="bench-top"><span>Resonator der Länge l = 16 cm</span><span class="live">● live</span></div>
       <canvas id="cvStand" class="cv-md"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Schwingungsmode m <b id="stMv">3</b></label><input type="range" id="stM" min="1" max="10" value="3"></div>
         <div class="btns"><button class="b on" id="stSep">Einzelwellen zeigen</button></div>
@@ -589,7 +620,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 <!-- ================================================= TAG 3 -->
-<div class="day"><div class="day-head"><span class="n">Nachmittag 3</span><h2>Mach-Zehnder-Interferometer und Gesamtwiederholung</h2></div></div>
+<div class="day"><div class="day-head"><span class="n">Nachmittag 3</span><h2>Mach-Zehnder, Michelson, Polarisation und Gesamtwiederholung</h2></div></div>
 
 <section class="topic" id="mz">
   <div class="t-head"><span class="t-num">3.1</span><h2>Das Mach-Zehnder-Interferometer</h2></div>
@@ -598,6 +629,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <div class="bench-top"><span>Aufbau wie auf Folie 8 · Ports 1–4</span><span class="live">● live</span></div>
       <canvas id="cvMZ" class="cv-lg"></canvas>
       <canvas id="cvMZt" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
       <div class="ctrls">
         <div class="ctrl"><label>Phasenverschiebung ΔΦ durch das Element <b id="mzPv">0,00 π</b></label><input type="range" id="mzP" min="0" max="4" step="0.01" value="0"></div>
         <div class="btns"><button class="b" id="mzGas">Gas einlassen (Küvette L = 5,0 cm)</button><button class="b" id="mzVac">Abpumpen</button></div>
@@ -638,8 +670,106 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   </div>
 </section>
 
+
+<section class="topic" id="michelson">
+  <div class="t-head"><span class="t-num">3.2</span><h2>Das Michelson-Interferometer</h2></div>
+  <div class="t-body full">
+    <div class="bench">
+      <div class="bench-top"><span>Laser · Strahlteiler · Spiegel M₁ und M₂ · Schirm</span><span class="live">● live</span></div>
+      <canvas id="cvMi" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+      <div class="ctrls"><div class="ctrl"><label>Verschiebung des Spiegels M₂ um Δd <b id="miDv">0 nm</b></label><input type="range" id="miD" min="0" max="2000" step="1" value="0"></div></div>
+      <div class="outs"><div class="o"><span>Gangunterschied Δs = 2·Δd</span><b id="miS">–</b></div><div class="o"><span>durchgelaufene Ringe k</span><b id="miK">0</b></div><div class="o"><span>λ = 2·Δd / k</span><b id="miL">–</b></div></div>
+    </div>
+  </div>
+  <div class="t-body" style="margin-top:30px">
+    <div class="txt">
+      <h3>Aufbau und Funktion</h3>
+      <ol class="st">
+        <li>Ein Laserstrahl trifft auf einen <b>Strahlteiler</b> (halbdurchlässiger Spiegel). Die Hälfte läuft zum <b>festen Spiegel M₁</b>, die andere Hälfte zum <b>beweglichen Spiegel M₂</b>.</li>
+        <li>Beide Teilstrahlen werden reflektiert, laufen <b>denselben Weg zurück</b> und werden am Strahlteiler wieder vereinigt. Auf dem Schirm überlagern sie sich.</li>
+        <li>Weil der Strahl leicht aufgeweitet ist, laufen verschiedene Teile unter leicht verschiedenen Winkeln. Deshalb sieht man <b>konzentrische Ringe</b> statt eines einzelnen Flecks.</li>
+        <li>Verschiebt man M₂ um Δ<span class="m">d</span>, wird der Weg <b>doppelt</b> so viel länger, denn das Licht läuft hin <i>und</i> zurück.</li>
+      </ol>
+      <div class="key"><span class="lbl">Gangunterschied</span><div class="eq big">Δs = 2 · Δd</div></div>
+      <div class="key"><span class="lbl">Wellenlänge aus gezählten Ringen</span><div class="eq big">2 · Δd = k · λ &nbsp;⇒&nbsp; λ = <span class="frac"><span>2 · Δd</span><span>k</span></span></div><div class="hint">Pro λ/2 Spiegelweg läuft genau ein Ring durch die Mitte.</div></div>
+    </div>
+    <div class="txt">
+      <h3>Unterschied zum Mach-Zehnder</h3>
+      <p>Beim Mach-Zehnder laufen die Teilstrahlen auf <b>getrennten Wegen</b> zu einem <b>zweiten</b> Strahlteiler. Beim Michelson laufen sie <b>zurück</b> zum <b>selben</b> Strahlteiler, deshalb der Faktor 2. Mit einer Gasküvette der Länge <span class="m">L</span> in einem Arm gilt entsprechend Δs = 2<span class="m">L</span>(<span class="m">n</span> − 1).</p>
+      <h3>Anwendungen</h3>
+      <p>Längenmessung auf Bruchteile einer Wellenlänge. Das historische <b>Michelson-Morley-Experiment</b> (1887) fand keinen „Äther“. Die Gravitationswellen-Detektoren <b>LIGO</b> sind Michelson-Interferometer mit 4 km langen Armen.</p>
+      <div class="task">
+        <span class="tg">Aufgabe</span>
+        <p>Der Spiegel M₂ wird um 15,8 µm verschoben. Dabei zählt man 50 Ringe, die durch die Mitte laufen. Bestimme λ.</p>
+        <details><summary>Lösung</summary><div class="in">λ = 2·Δ<span class="m">d</span>/<span class="m">k</span> = 2 · 15,8·10⁻⁶ m / 50 = <b>6,32·10⁻⁷ m = 632 nm</b>. Das ist ein Helium-Neon-Laser.</div></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="polarisation">
+  <div class="t-head"><span class="t-num">3.3</span><h2>Polarisation</h2></div>
+  <div class="t-body full">
+    <div class="bench">
+      <div class="bench-top"><span>Unpolarisiertes Licht · Polarisator · Analysator</span><span class="live">● live</span></div>
+      <canvas id="cvPol" class="cv-lg"></canvas>
+      <canvas id="cvPolG" class="cv-xs" style="border-top:1px solid var(--line)"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+      <div class="ctrls">
+        <div class="ctrl"><label>Winkel θ des Analysators <b id="polAv">0°</b></label><input type="range" id="polA" min="0" max="180" step="1" value="0"></div>
+        <div class="btns"><button class="b" id="polMid" type="button">Mittleres Filter (45°) einsetzen</button></div>
+      </div>
+      <div class="outs"><div class="o"><span>nach Polarisator</span><b>I₀/2 = 50 %</b></div><div class="o"><span>am Ende</span><b id="polI">–</b></div></div>
+    </div>
+  </div>
+  <div class="t-body" style="margin-top:30px">
+    <div class="txt">
+      <p>Bei <b>unpolarisiertem</b> Licht (Sonne, Glühlampe) schwingt das E-Feld quer zur Laufrichtung, aber in ständig wechselnden Richtungen. Ein <b>Polarisationsfilter</b> lässt nur die Schwingung parallel zu seiner Durchlassrichtung durch. Dahinter ist das Licht <b>linear polarisiert</b>, und die Intensität ist halbiert.</p>
+      <div class="key"><span class="lbl">erstes Filter</span><div class="eq">I₁ = I₀ / 2</div></div>
+      <p>Ein zweites Filter (<b>Analysator</b>), um θ gedreht, lässt nur die Komponente <span class="m">E</span>·cos θ durch. Die Intensität ist proportional zu <span class="m">E</span>²:</p>
+      <div class="key"><span class="lbl">Gesetz von Malus</span><div class="eq big">I = I₁ · cos²θ</div><div class="hint">θ = 90°: gekreuzte Filter, dunkel. Mit einem 45°-Filter dazwischen kommt wieder I₀/8 durch.</div></div>
+      <div class="warn"><b>Wichtig für die Klausur:</b> Nur <b>Transversalwellen</b> lassen sich polarisieren (Schall als Longitudinalwelle nicht). Dass Licht polarisierbar ist, beweist also: Licht ist eine Transversalwelle.</div>
+    </div>
+    <div>
+      <div class="bench">
+        <div class="bench-top"><span>Polarisation durch Reflexion · Luft → Wasser</span><span class="live">● live</span></div>
+        <canvas id="cvBrew" class="cv-md"></canvas>
+        <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+        <div class="ctrls"><div class="ctrl"><label>Einfallswinkel α <b id="bwAv">20°</b></label><input type="range" id="bwA" min="5" max="85" step="0.1" value="20"></div></div>
+        <div class="outs"><div class="o"><span>R<sub>s</sub> (• senkrecht)</span><b id="bwRs">–</b></div><div class="o"><span>R<sub>p</sub> (↕ parallel)</span><b id="bwRp">–</b></div><div class="o"><span>Brewster-Winkel</span><b>53,1°</b></div></div>
+      </div>
+      <div class="key"><span class="lbl">Brewster-Winkel</span><div class="eq">tan α<sub>B</sub> = <span class="frac"><span>n<sub>2</sub></span><span>n<sub>1</sub></span></span> &nbsp;·&nbsp; α<sub>B</sub> + β = 90°</div><div class="hint">Anwendungen: Polbrillen gegen Spiegelungen, Polfilter beim Fotografieren, LCD-Bildschirme, 3D-Kino.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="topic" id="vergleich">
+  <div class="t-head"><span class="t-num">3.4</span><h2>Einzelspalt, Doppelspalt und Gitter im Vergleich</h2></div>
+  <div class="t-body full">
+    <div class="bench">
+      <div class="bench-top"><span>Gleiches Licht, gleiche Spaltbreite · nur die Anzahl der Spalte ändert sich</span><span class="live">● live</span></div>
+      <canvas id="cvCmp" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+      <div class="ctrls">
+        <div class="ctrl"><label>Anzahl Spalte N <b id="cmNv">1</b></label><input type="range" id="cmN" min="1" max="30" step="1" value="1"></div>
+        <div class="ctrl"><label>Wellenlänge λ <b id="cmLv">633 nm</b></label><input type="range" id="cmL" min="420" max="700" value="633"></div>
+      </div>
+    </div>
+  </div>
+  <div class="cmpw">
+    <table class="cmp">
+      <tr><th>Anordnung</th><th>Schirmbild</th><th>Formel</th><th>beschreibt</th><th>Merkmal</th></tr>
+      <tr><td>Einzelspalt</td><td>breites Hauptmaximum, schwache Nebenmaxima</td><td class="m">b · sin α = k · λ</td><td><b>Minima</b> (dunkel)</td><td>schmaler Spalt → breiteres Bild</td></tr>
+      <tr><td>Doppelspalt</td><td>viele gleich breite Streifen im Einzelspalt-Bild</td><td class="m">d · sin α = k · λ, &nbsp;λ = d·aₖ/(k·e)</td><td><b>Maxima</b> (hell)</td><td>kleine Winkel: sin α ≈ tan α</td></tr>
+      <tr><td>Gitter</td><td>wenige, sehr scharfe, helle Linien</td><td class="m">d · sin α = k · λ, &nbsp;tan α = a/e</td><td><b>Maxima</b> (hell)</td><td>große Winkel, keine Näherung! A = nN</td></tr>
+    </table>
+  </div>
+  <p class="hint" style="margin-top:12px">Merke: Beim <b>Einzelspalt</b> zählt man die <b>dunklen</b> Stellen, bei <b>Doppelspalt und Gitter</b> die <b>hellen</b>. Gleiche Form, andere Bedeutung. <span class="m">b</span> = Spaltbreite, <span class="m">d</span> = Abstand der Spalte.</p>
+</section>
+
 <section class="topic" id="formeln">
-  <div class="t-head"><span class="t-num">3.2</span><h2>Formelsammlung zum Auswendiglernen</h2></div>
+  <div class="t-head"><span class="t-num">3.5</span><h2>Formelsammlung zum Auswendiglernen</h2></div>
   <div class="fgrid">
     <div class="fc"><span>Elektromagnetische Welle</span><div class="eq">c = λ f</div></div>
     <div class="fc"><span>Medium</span><div class="eq">v = c / n</div></div>
@@ -660,18 +790,22 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="fc"><span>Grundschwingung</span><div class="eq">λ = 2l</div></div>
     <div class="fc"><span>Mach-Zehnder</span><div class="eq">(I₄−I₃)/(I₄+I₃) = cos ΔΦ</div></div>
     <div class="fc"><span>Gas im Interferometer</span><div class="eq">n<sub>Gas</sub> = 1 + λ<sub>V</sub> k / L</div></div>
+    <div class="fc"><span>Michelson</span><div class="eq">Δs = 2Δd · λ = 2Δd / k</div></div>
+    <div class="fc"><span>Gesetz von Malus</span><div class="eq">I = I₁ cos²θ</div></div>
+    <div class="fc"><span>unpolarisiert → Polfilter</span><div class="eq">I₁ = I₀ / 2</div></div>
+    <div class="fc"><span>Brewster-Winkel</span><div class="eq">tan α<sub>B</sub> = n₂ / n₁</div></div>
   </div>
   <p class="hint" style="margin-top:14px">Nicht nur auswendig lernen: Erkenne zuerst die physikalische Situation (Spalt? Gitter? Grenzfläche? zwei Wege?) und wähle dann die passende Bedingung.</p>
 </section>
 
 <section class="topic" id="check">
-  <div class="t-head"><span class="t-num">3.3</span><h2>Prüfungs-Checkliste</h2></div>
+  <div class="t-head"><span class="t-num">3.6</span><h2>Prüfungs-Checkliste</h2></div>
   <p class="hint">Deine Haken werden in diesem Browser gespeichert.</p>
   <div class="check" id="checkList"></div>
 </section>
 
 <section class="topic" id="quiz">
-  <div class="t-head"><span class="t-num">3.4</span><h2>Schnelltest über alles</h2><span class="mono" id="qScore" style="margin-left:auto;color:var(--green)"></span></div>
+  <div class="t-head"><span class="t-num">3.7</span><h2>Schnelltest über alles</h2><span class="mono" id="qScore" style="margin-left:auto;color:var(--green)"></span></div>
   <div id="quizBody" class="txt" style="max-width:none"></div>
 </section>
 
@@ -956,7 +1090,8 @@ sim($('cvSingle'),()=>{ const {ctx,W,H}=fit($('cvSingle')); ctx.clearRect(0,0,W,
 /* ---------- 1.8 Doppelspalt ---------- */
 const DS={d:.4,l:633,e:2,mode:'wave',Ay:.3,drag:false}; const dOff=document.createElement('canvas'); let dImg=null;
 bind('dsD','dsDv',v=>fmt(v,2)+' mm',v=>DS.d=v); bind('dsL','dsLv',v=>v+' nm',v=>DS.l=v); bind('dsE','dsEv',v=>fmt(v,2)+' m',v=>DS.e=v);
-$('dsMode').onclick=()=>{ DS.mode=DS.mode==='wave'?'int':'wave'; $('dsMode').textContent='Anzeige: '+(DS.mode==='wave'?'Momentbild':'Intensität (zeitgemittelt)'); };
+function setDsMode(m){ DS.mode=m; $('dsMode').textContent='Anzeige: '+(m==='wave'?'Momentbild':'Intensität (zeitgemittelt)'); }
+$('dsMode').onclick=()=>setDsMode(DS.mode==='wave'?'int':'wave');
 const dcv=$('cvDouble');
 const dGeo=()=>{ const r=dcv.getBoundingClientRect(),W=r.width,H=r.height; const bx=W*.2, sx=W-26, dpx=24+DS.d*110, lpx=10+(DS.l-400)/300*12; return {W,H,bx,sx,dpx,lpx,cy:H/2}; };
 dcv.addEventListener('pointerdown',e=>{ const p=pointer(dcv,e),g=dGeo(); if(Math.abs(p.x-g.sx)<40){DS.drag=true;dcv.setPointerCapture(e.pointerId);DS.Ay=Math.max(.03,Math.min(.97,p.y/g.H));} });
@@ -1134,7 +1269,7 @@ sim($('cvMZ'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMZ')); ctx.clearRect(0,0,W,H);
 /* ---------- Checkliste ---------- */
 const CHECK=[['Nachmittag 1',['Brechung erklären und Snellius anwenden','Huygens-Prinzip erklären','Geschwindigkeit im Medium bestimmen','Totalreflexion und Grenzwinkel berechnen','Interferenzbedingungen unterscheiden','Phasendifferenz berechnen','Doppelspaltformel herleiten und anwenden']],
  ['Nachmittag 2',['Gittergleichung anwenden','Beugungswinkel aus der Geometrie bestimmen','Wellenlänge bestimmen','höchste Ordnung bestimmen','Spektren und Überlappung erklären','Auflösungsvermögen berechnen','Natrium-D-Linien einordnen','stehende Wellen mit Knoten, Bäuchen und λ/2 verstehen']],
- ['Nachmittag 3',['Mach-Zehnder-Aufbau zeichnen und erklären','Gangdifferenz und Phasendifferenz verbinden','konstruktive/destruktive Interferenz am Ausgang erklären','Intensitätsgleichung anwenden','Brechungsindex eines Gases aus Interferenzverschiebungen bestimmen','alle Formeln ohne Vorlage zuordnen']]];
+ ['Nachmittag 3',['Michelson-Aufbau erklären und λ = 2Δd/k anwenden','Polarisation erklären: nur Transversalwellen','Gesetz von Malus anwenden','Brewster-Winkel berechnen','Einzelspalt, Doppelspalt und Gitter unterscheiden','Mach-Zehnder-Aufbau zeichnen und erklären','Gangdifferenz und Phasendifferenz verbinden','konstruktive/destruktive Interferenz am Ausgang erklären','Intensitätsgleichung anwenden','Brechungsindex eines Gases aus Interferenzverschiebungen bestimmen','alle Formeln ohne Vorlage zuordnen']]];
 let saved={}; try{ saved=JSON.parse(localStorage.getItem('wo-check')||'{}'); }catch(e){}
 const cl=$('checkList');
 CHECK.forEach(([h,items],gi)=>{ const hh=document.createElement('h3'); hh.textContent=h; cl.appendChild(hh);
@@ -1154,6 +1289,11 @@ const QZ=[
  ['Kann ein Gitter mit N = 500 in der 2. Ordnung die Na-D-Linien trennen?',['Ja, A = 1000 > 982','Nein, A = 500','Nur mit Doppelspalt'],0,'A = nN = 2·500 = 1000 ≥ λ/Δλ ≈ 982.'],
  ['Der Abstand zweier benachbarter Knoten einer stehenden Welle ist …',['λ','λ/2','λ/4'],1,'Knoten folgen alle halben Wellenlängen; Knoten zu Bauch sind λ/4.'],
  ['Am Mach-Zehnder ist ΔΦ = π. Dann ist …',['Port 4 hell, Port 3 dunkel','Port 4 dunkel, Port 3 hell','beide halb hell'],1,'I₄ = I₁cos²(π/2) = 0 und I₃ = I₁sin²(π/2) = I₁.'],
+ ['Michelson: Spiegel M₂ wird um λ/2 verschoben. Wie viele Ringe laufen durch?',['einer','zwei','ein halber'],0,'Δs = 2·Δd = λ – genau ein Ring.'],
+ ['Unpolarisiertes Licht durch zwei Polfilter mit θ = 60°. Welcher Anteil von I₀ kommt durch?',['50 %','25 %','12,5 %'],2,'I₁ = I₀/2, dann I = I₁·cos²60° = I₀/2 · 1/4 = I₀/8 = 12,5 %.'],
+ ['Was beweist die Polarisierbarkeit von Licht?',['Licht ist eine Longitudinalwelle','Licht ist eine Transversalwelle','Licht besteht aus Teilchen'],1,'Nur Transversalwellen haben eine Schwingungsrichtung quer zur Laufrichtung, die man auswählen kann.'],
+ ['Brewster-Winkel für Glas (n = 1,5)?',['41,8°','56,3°','33,7°'],1,'tan α_B = 1,5 ⇒ α_B = 56,3°.'.replace(/_B/g,'B')],
+ ['Beim Einzelspalt beschreibt b·sin α = k·λ …',['die Maxima','die Minima','die Ordnung des Gitters'],1,'Beim Einzelspalt sind es die dunklen Stellen – anders als bei Doppelspalt und Gitter.'],
  ['Küvette L = 5 cm, λ = 633 nm, 23 Wechsel gezählt. n_Gas ≈ …'.replace('n_Gas','n(Gas)'),['1,000 29','1,029','1,29'],0,'n = 1 + λk/L = 1 + 633·10⁻⁹·23/0,05 = 1,000 291.']
 ];
 let sc=0,an=0; const qb=$('quizBody');
@@ -1163,6 +1303,276 @@ QZ.forEach(([q,o,r,e],i)=>{ const d=document.createElement('div'); d.className='
     if(j===r){b.classList.add('r');sc++;ex.textContent='✓ Richtig. '+e;} else {b.classList.add('w');os.children[r].classList.add('r');ex.textContent='✗ Nicht ganz. '+e;}
     ex.classList.add('s'); $('qScore').textContent=sc+' / '+an+' richtig'; }; os.appendChild(b); });
   qb.appendChild(d); });
+
+
+/* ---------- 3.2 Michelson ---------- */
+const miOff=document.createElement('canvas'); let miImg=null;
+bind('miD','miDv',v=>Math.round(v)+' nm');
+function glowBeam(ctx,a,b,I,t,col){ ctx.strokeStyle='rgba(255,77,77,'+(0.12+0.88*I)+')'; ctx.lineWidth=2+3.5*I; ctx.shadowColor=col||COL.red; ctx.shadowBlur=16*I; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.shadowBlur=0;
+  if(I>.03){ ctx.strokeStyle='rgba(255,230,230,'+(.65*I)+')'; ctx.lineWidth=1.3; ctx.setLineDash([6,18]); ctx.lineDashOffset=-(t*90)%24; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.setLineDash([]); } }
+sim($('cvMi'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMi')); ctx.clearRect(0,0,W,H);
+  const dd=+$('miD').value, lam=633, narrow=W<640, sw=narrow?W:W*.64, sh=narrow?H*.62:H;
+  const s=Math.min(sw/640,sh/420), ox=(sw-620*s)/2, oy=(sh-400*s)/2, P=(x,y)=>({x:ox+x*s,y:oy+y*s});
+  const shift=dd/2000*46, Ic=Math.pow(Math.cos(2*Math.PI*dd/lam),2);
+  const L0=P(70,200), BS=P(300,200), M1=P(300,40), M2=P(520+shift,200), SC=P(300,372);
+  const off=(a,b,o)=>{ const dx=b.x-a.x, dy=b.y-a.y, l=Math.hypot(dx,dy), nx=-dy/l*o, ny=dx/l*o; return [{x:a.x+nx,y:a.y+ny},{x:b.x+nx,y:b.y+ny}]; };
+  glowBeam(ctx,L0,BS,1,t);
+  let [a1,b1]=off(BS,M1,-3); glowBeam(ctx,a1,b1,.5,t); [a1,b1]=off(M1,BS,-3); glowBeam(ctx,a1,b1,.5,t);
+  [a1,b1]=off(BS,M2,-3); glowBeam(ctx,a1,b1,.5,t); [a1,b1]=off(M2,BS,-3); glowBeam(ctx,a1,b1,.5,t);
+  glowBeam(ctx,BS,SC,.08+.9*Ic,t);
+  ctx.fillStyle='#1d2436'; ctx.strokeStyle='#8e98b0'; ctx.lineWidth=1.2; ctx.fillRect(P(10,0).x,P(0,182).y,60*s,36*s); ctx.strokeRect(P(10,0).x,P(0,182).y,60*s,36*s);
+  label(ctx,'Laser',P(40,0).x,P(0,236).y,COL.text,'12px "IBM Plex Sans", sans-serif');
+  ctx.save(); ctx.translate(BS.x,BS.y); ctx.rotate(-Math.PI/4); ctx.strokeStyle='#e6ebf5'; ctx.lineWidth=2; ctx.setLineDash([6,4]); ctx.beginPath(); ctx.moveTo(-36*s,0); ctx.lineTo(36*s,0); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle='rgba(180,220,255,.18)'; ctx.fillRect(-36*s,-5*s,72*s,10*s); ctx.restore();
+  ctx.fillStyle='#cfd6e6'; ctx.fillRect(M1.x-44*s,M1.y-10*s,88*s,8*s); ctx.fillStyle='#5b6478'; ctx.fillRect(M1.x-44*s,M1.y-16*s,88*s,6*s);
+  ctx.fillStyle='#cfd6e6'; ctx.fillRect(M2.x+2*s,M2.y-44*s,8*s,88*s); ctx.fillStyle='#5b6478'; ctx.fillRect(M2.x+10*s,M2.y-44*s,6*s,88*s);
+  ctx.strokeStyle=COL.na; ctx.lineWidth=1.5; const ay=M2.y+58*s; ctx.beginPath(); ctx.moveTo(P(520,0).x+6*s,ay); ctx.lineTo(M2.x+6*s,ay); ctx.stroke();
+  ctx.setLineDash([3,3]); ctx.strokeStyle='rgba(255,201,60,.5)'; ctx.beginPath(); ctx.moveTo(P(520,0).x+6*s,M2.y-44*s); ctx.lineTo(P(520,0).x+6*s,ay+4); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx,narrow?'Δd':'Δd (stark vergrößert)',P(540,0).x,ay+18,COL.na,'11px "IBM Plex Mono", monospace');
+  ctx.fillStyle='rgba(255,77,77,'+(0.12+0.85*Ic)+')'; ctx.shadowColor=COL.red; ctx.shadowBlur=26*Ic; ctx.fillRect(SC.x-50*s,SC.y,100*s,7*s); ctx.shadowBlur=0;
+  label(ctx,'Strahlteiler',BS.x+44*s,BS.y+34*s,COL.muted,'11px "IBM Plex Sans", sans-serif','left'); label(ctx,'M₁ (fest)',M1.x+54*s,M1.y-2*s,COL.text,'12px "IBM Plex Sans", sans-serif','left');
+  label(ctx,'M₂ (beweglich)',M2.x,M2.y-54*s,COL.text,'12px "IBM Plex Sans", sans-serif'); label(ctx,'Schirm',SC.x+58*s,SC.y+8*s,COL.text,'12px "IBM Plex Sans", sans-serif','left');
+  // Ringe
+  const cx=narrow?W/2:sw+(W-sw)/2, cy=narrow?sh+(H-sh)/2:H/2, R=narrow?Math.min((H-sh)/2-10,W/2-16):Math.min((W-sw)/2-18,H/2-34);
+  const G=120; if(miOff.width!==G){ miOff.width=miOff.height=G; miImg=miOff.getContext('2d').createImageData(G,G); }
+  const d=miImg.data, D=30+dd/lam;
+  for(let j=0;j<G;j++) for(let i=0;i<G;i++){ const x=(i-G/2+.5)/(G/2), y=(j-G/2+.5)/(G/2), r=Math.hypot(x,y), q=(j*G+i)*4; if(r>1){d[q+3]=0;continue;}
+    const I=Math.pow(Math.cos(2*Math.PI*D*Math.cos(r*.34)),2); d[q]=20+235*I; d[q+1]=12+60*I; d[q+2]=20+60*I; d[q+3]=255; }
+  miOff.getContext('2d').putImageData(miImg,0,0);
+  ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.clip(); ctx.imageSmoothingEnabled=true; ctx.drawImage(miOff,cx-R,cy-R,2*R,2*R); ctx.restore();
+  ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.stroke();
+  label(ctx,'Schirmbild',cx,cy-R-10,COL.muted,'12px "IBM Plex Sans", sans-serif');
+  const k=Math.floor(2*dd/lam+1e-6);
+  $('miS').textContent=Math.round(2*dd)+' nm = '+fmt(2*dd/lam,2)+' λ'; $('miK').textContent=k; $('miL').textContent=k>0?fmt(2*dd/k,0)+' nm':'–';
+});
+
+/* ---------- 3.3 Polarisation ---------- */
+const PO={mid:false};
+bind('polA','polAv',v=>Math.round(v)+'°');
+function setMid(on){ PO.mid=on; $('polMid').classList.toggle('on',on); $('polMid').textContent=on?'Mittleres Filter entfernen':'Mittleres Filter (45°) einsetzen'; }
+$('polMid').onclick=()=>setMid(!PO.mid);
+const hash=n=>{ const x=Math.sin(n*12.9898)*43758.5453; return x-Math.floor(x); };
+sim($('cvPol'),(dt,t)=>{ const {ctx,W,H}=fit($('cvPol')); ctx.clearRect(0,0,W,H);
+  const th=rad(+$('polA').value), cy=H*.5, R=Math.min(H*.26,W*.09,72), x0=14, x1=W-54;
+  const ez={x:.55,y:.34}, pv=(a,A)=>({x:Math.sin(a)*ez.x*A,y:(-Math.cos(a)+Math.sin(a)*ez.y)*A});
+  const f1=x0+(x1-x0)*.26, fm=x0+(x1-x0)*.5, f2=x0+(x1-x0)*.74, mid=PO.mid;
+  const I1=.5, Im=mid?.25:.5, am=mid?Math.PI/4:0, I2=Im*Math.pow(Math.cos(th-am),2);
+  const plate=(xc,a,name,sub)=>{ const q=(u,w)=>({x:xc+w*ez.x*R*1.5,y:cy-u*R*1.5+w*ez.y*R*1.5});
+    const c=[q(1,-1),q(1,1),q(-1,1),q(-1,-1)];
+    ctx.save(); ctx.beginPath(); c.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)); ctx.closePath(); ctx.fillStyle='rgba(169,139,255,.13)'; ctx.fill(); ctx.strokeStyle=COL.violet; ctx.lineWidth=1.5; ctx.stroke(); ctx.clip();
+    ctx.strokeStyle='rgba(200,185,255,.55)'; ctx.lineWidth=1.2;
+    for(let j=-5;j<=5;j++){ const o=j/5.5, u0=-Math.sin(a)*o, w0=Math.cos(a)*o, p1=q(u0+Math.cos(a)*1.6,w0+Math.sin(a)*1.6), p2=q(u0-Math.cos(a)*1.6,w0-Math.sin(a)*1.6); ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke(); }
+    ctx.restore(); label(ctx,name,xc,cy+R*2.25,COL.text,'600 12px "IBM Plex Sans", sans-serif'); label(ctx,sub,xc,cy+R*2.25+16,COL.muted,'11px "IBM Plex Mono", monospace'); };
+  const k=2*Math.PI/Math.max(70,W/8), om=2*Math.PI*.7*t;
+  ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,cy); ctx.lineTo(x1+20,cy); ctx.stroke();
+  const arrows=(xa,xb,fn)=>{ for(let x=xa;x<xb;x+=8){ const [a,A,col]=fn(x), E=Math.cos(k*x-om)*A, v=pv(a,E*R);
+    ctx.strokeStyle=col; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(x,cy); ctx.lineTo(x+v.x,cy+v.y); ctx.stroke(); } };
+  arrows(x0,f1,x=>[hash(Math.floor(x/8)*7.1+Math.floor(t*5))*Math.PI,1,'rgba(230,235,245,.75)']);
+  plate(f1,0,'Polarisator','0°');
+  arrows(f1,mid?fm:f2,()=>[0,Math.sqrt(I1),'rgba(255,77,77,.95)']);
+  if(mid){ plate(fm,Math.PI/4,'Mittleres Filter','45°'); arrows(fm,f2,()=>[Math.PI/4,Math.sqrt(Im),'rgba(255,120,120,.95)']); }
+  plate(f2,th,'Analysator','θ = '+Math.round(deg(th))+'°');
+  arrows(f2,x1,()=>[th,Math.sqrt(I2),'rgba(255,160,160,.95)']);
+  ctx.fillStyle='rgba(255,77,77,'+(0.08+1.6*I2)+')'; ctx.shadowColor=COL.red; ctx.shadowBlur=40*I2; ctx.fillRect(x1+8,cy-R*1.2,18,R*2.4); ctx.shadowBlur=0; ctx.strokeStyle='#8e98b0'; ctx.strokeRect(x1+8,cy-R*1.2,18,R*2.4);
+  const lab=(x,t)=>label(ctx,t,x,cy-R*1.95,'#fff','600 13px "IBM Plex Mono", monospace');
+  lab((x0+f1)/2,W<600?'I₀':'I₀ · unpolarisiert'); lab(((mid?fm:f2)+f1)/2,'I₀/2'); if(mid) lab((fm+f2)/2,'I₀/4'); lab(Math.min((f2+x1)/2,x1-20),Math.round(I2*1000)/10+' %');
+  $('polI').textContent=fmt(I2*100,1)+' %'+(mid?' (mit 45°-Filter)':'');
+  const Gc=fit($('cvPolG')), c=Gc.ctx; c.clearRect(0,0,Gc.W,Gc.H); const L=36,Rr=12,T=14,B=18,pw=Gc.W-L-Rr,ph=Gc.H-T-B;
+  const X=a=>L+a/180*pw, Y=v=>T+ph-v/.5*ph;
+  c.font='11px "IBM Plex Mono", monospace'; c.fillStyle=COL.muted; c.textAlign='center'; for(const a of [0,45,90,135,180]) c.fillText(a+'°',X(a),Gc.H-4);
+  c.textAlign='left'; c.fillText(mid?'I(θ) = I₀/4 · cos²(θ − 45°)':'I(θ) = I₀/2 · cos²θ  (Malus)',L+4,12);
+  c.strokeStyle=COL.red; c.lineWidth=2; c.beginPath(); for(let a=0;a<=180;a++){ const v=Im*Math.pow(Math.cos(rad(a)-am),2); a?c.lineTo(X(a),Y(v)):c.moveTo(X(a),Y(v)); } c.stroke();
+  c.fillStyle='#fff'; c.beginPath(); c.arc(X(deg(th)),Y(I2),5,0,7); c.fill();
+});
+bind('bwA','bwAv',v=>fmt(v)+'°');
+sim($('cvBrew'),()=>{ const {ctx,W,H}=fit($('cvBrew')); ctx.clearRect(0,0,W,H);
+  const a=rad(+$('bwA').value), n2=1.33, b=Math.asin(Math.sin(a)/n2), ca=Math.cos(a), cb=Math.cos(b);
+  const rs=(ca-n2*cb)/(ca+n2*cb), rp=(n2*ca-cb)/(n2*ca+cb);
+  const yb=H*.5, O={x:W/2,y:yb}, L=Math.min(W*.44,H*.46);
+  ctx.fillStyle='rgba(70,140,255,.16)'; ctx.fillRect(0,yb,W,H-yb); ctx.strokeStyle='rgba(143,232,255,.7)'; ctx.beginPath(); ctx.moveTo(0,yb); ctx.lineTo(W,yb); ctx.stroke();
+  ctx.setLineDash([5,5]); ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.beginPath(); ctx.moveTo(O.x,yb-L); ctx.lineTo(O.x,yb+L); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx,'Luft',12,20,COL.muted,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'Wasser n = 1,33',12,yb+20,COL.muted,'12px "IBM Plex Sans", sans-serif','left');
+  const S={x:O.x-L*Math.sin(a),y:yb-L*Math.cos(a)}, Rf={x:O.x+L*Math.sin(a),y:yb-L*Math.cos(a)}, Tr={x:O.x+L*Math.sin(b),y:yb+L*Math.cos(b)};
+  const ray=(p,q,I)=>{ ctx.strokeStyle='rgba(255,77,77,'+(0.3+0.7*I)+')'; ctx.lineWidth=2.5; ctx.shadowColor=COL.red; ctx.shadowBlur=8; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); ctx.shadowBlur=0; };
+  const Rs=rs*rs, Rp=rp*rp; ray(S,O,1); ray(O,Rf,Math.min(1,(Rs+Rp)*3)); ray(O,Tr,.9);
+  const sym=(p,q,sp,ss)=>{ const dx=q.x-p.x, dy=q.y-p.y, l=Math.hypot(dx,dy), ux=dx/l, uy=dy/l, nx=-uy, ny=ux;
+    for(const f of [.3,.55,.8]){ const c={x:p.x+dx*f,y:p.y+dy*f};
+      if(sp>.02){ const h=13*sp; ctx.strokeStyle=COL.cyan; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(c.x-nx*h,c.y-ny*h); ctx.lineTo(c.x+nx*h,c.y+ny*h); ctx.stroke();
+        for(const sg of [-1,1]){ const e={x:c.x+sg*nx*h,y:c.y+sg*ny*h}; ctx.beginPath(); ctx.moveTo(e.x,e.y); ctx.lineTo(e.x-sg*nx*5+ux*4,e.y-sg*ny*5+uy*4); ctx.moveTo(e.x,e.y); ctx.lineTo(e.x-sg*nx*5-ux*4,e.y-sg*ny*5-uy*4); ctx.stroke(); } }
+      if(ss>.02){ ctx.fillStyle=COL.na; ctx.beginPath(); ctx.arc(c.x+ux*9,c.y+uy*9,1.5+3.5*ss,0,7); ctx.fill(); } } };
+  sym(S,O,1,1); sym(O,Rf,Math.min(1,Math.abs(rp)*3.5),Math.min(1,Math.abs(rs)*3.5)); sym(O,Tr,1,1);
+  if(Math.abs(deg(a+b)-90)<1.2){ const u1={x:(Rf.x-O.x)/L,y:(Rf.y-O.y)/L}, u2={x:(Tr.x-O.x)/L,y:(Tr.y-O.y)/L}, q=22;
+    ctx.strokeStyle=COL.green; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(O.x+u1.x*q,O.y+u1.y*q); ctx.lineTo(O.x+(u1.x+u2.x)*q,O.y+(u1.y+u2.y)*q); ctx.lineTo(O.x+u2.x*q,O.y+u2.y*q); ctx.stroke();
+    label(ctx,'90°  ·  Brewster-Winkel',O.x+44,yb+26,COL.green,'600 12px "IBM Plex Mono", monospace','left'); }
+  label(ctx,'↕ p (in der Ebene)',W-12,20,COL.cyan,'12px "IBM Plex Sans", sans-serif','right'); label(ctx,'• s (senkrecht)',W-12,38,COL.na,'12px "IBM Plex Sans", sans-serif','right');
+  $('bwRs').textContent=fmt(Rs*100,1)+' %'; $('bwRp').textContent=fmt(Rp*100,2)+' %';
+});
+
+/* ---------- 3.4 Vergleich ---------- */
+bind('cmN','cmNv',v=>v===1?'1 · Einzelspalt':v===2?'2 · Doppelspalt':v>=10?v+' · Gitter':String(v));
+bind('cmL','cmLv',v=>v+' nm');
+function cmI(a,N,l){ const s=Math.sin(a), be=Math.PI*1200*s/l, env=Math.abs(be)<1e-9?1:Math.pow(Math.sin(be)/be,2); if(N===1) return env;
+  const x=Math.PI*4200*s/l, sn=Math.sin(x), g=Math.abs(sn)<1e-9?1:Math.pow(Math.sin(N*x)/(N*sn),2); return env*g; }
+sim($('cvCmp'),()=>{ const {ctx,W,H}=fit($('cvCmp')); ctx.clearRect(0,0,W,H);
+  const N=+$('cmN').value, l=+$('cmL').value, L=38,R=14,T=20, ph=H*.44, amax=60, pw=W-L-R, X=a=>L+(a+amax)/(2*amax)*pw, Y=v=>T+ph-v*ph;
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.strokeStyle=COL.grid; ctx.textAlign='center';
+  for(let a=-60;a<=60;a+=20){ ctx.beginPath(); ctx.moveTo(X(a),T); ctx.lineTo(X(a),T+ph); ctx.stroke(); ctx.fillText(a+'°',X(a),T+ph+14); }
+  if(N>1){ ctx.setLineDash([5,4]); ctx.strokeStyle='rgba(255,255,255,.4)'; ctx.lineWidth=1.4; ctx.beginPath(); for(let i=0;i<=pw;i++){ const a=rad(-amax+i/pw*2*amax); i?ctx.lineTo(L+i,Y(cmI(a,1,l))):ctx.moveTo(L+i,Y(cmI(a,1,l))); } ctx.stroke(); ctx.setLineDash([]);
+    label(ctx,'gestrichelt: Einzelspalt-Hülle',W-R,T+2,COL.muted,'11px "IBM Plex Sans", sans-serif','right'); }
+  const col=wlc(l); ctx.strokeStyle=col; ctx.lineWidth=2.4; ctx.shadowColor=col; ctx.shadowBlur=10; ctx.beginPath();
+  const st=pw*4; for(let i=0;i<=st;i++){ const a=rad(-amax+i/st*2*amax), x=L+i/st*pw; i?ctx.lineTo(x,Y(cmI(a,N,l))):ctx.moveTo(x,Y(cmI(a,N,l))); } ctx.stroke(); ctx.shadowBlur=0;
+  label(ctx,N===1?'Einzelspalt':N===2?'Doppelspalt':N>=10?'Gitter mit '+N+' Spalten':N+' Spalte',L+4,T+2,'#fff','600 13px "IBM Plex Sans", sans-serif','left');
+  const rows=[[1,'Einzelspalt'],[2,'Doppelspalt'],[20,'Gitter']], y0=T+ph+30, rh=(H-y0-8)/3;
+  rows.forEach(([n,name],ri)=>{ const y=y0+ri*rh, act=(n===1&&N===1)||(n===2&&N===2)||(n===20&&N>=10);
+    for(let i=0;i<pw;i++){ let m=0; for(let q=0;q<4;q++){ m=Math.max(m,cmI(rad(-amax+(i+q/4)/pw*2*amax),n,l)); } ctx.fillStyle=wlc(l,Math.min(1,Math.sqrt(m)*1.1)); ctx.fillRect(L+i,y,1.2,rh-8); }
+    ctx.strokeStyle=act?COL.na:'rgba(255,255,255,.15)'; ctx.lineWidth=act?2:1; ctx.strokeRect(L-.5,y-.5,pw+1,rh-7);
+    ctx.fillStyle='rgba(7,10,18,.8)'; ctx.fillRect(L+4,y+4,96,18); label(ctx,name,L+10,y+17,act?COL.na:COL.text,'600 12px "IBM Plex Sans", sans-serif','left'); });
+});
+
+/* ================= Erklär-Modus: Touren ================= */
+const tours=[];
+function tour(anchor,steps){
+  const bench=anchor.closest('.bench')||anchor;
+  const bar=document.createElement('div'); bar.className='tour';
+  bar.innerHTML='<div class="tour-row"><span class="tour-n"></span><p class="tour-cap"></p><button class="b tour-btn" type="button"></button></div><div class="tour-prog"><i></i></div>';
+  const top=bench.querySelector('.bench-top'); if(top) top.after(bar); else bench.prepend(bar);
+  const T={bench,steps,i:-1,t:0,run:true,vis:false,from:{},fired:[],cap:bar.querySelector('.tour-cap'),n:bar.querySelector('.tour-n'),prog:bar.querySelector('.tour-prog i'),btn:bar.querySelector('.tour-btn'),bar};
+  const upd=()=>{ T.btn.textContent=T.run?'❚❚ Pause':'▶ Erklärung weiter'; bar.classList.toggle('paused',!T.run); };
+  T.btn.onclick=()=>{ T.run=!T.run; if(T.run) go(T,T.i<0?0:T.i); upd(); };
+  const stop=e=>{ if(e.isTrusted && !bar.contains(e.target) && (e.type!=='pointerdown'||e.target.closest('input,button,canvas'))){ T.run=false; upd(); } };
+  bench.addEventListener('input',stop,true); bench.addEventListener('pointerdown',stop,true);
+  new IntersectionObserver(es=>{ T.vis=es[0].isIntersecting; },{threshold:.3}).observe(bench);
+  upd(); tours.push(T); return T;
+}
+function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0; T.fired=[]; const s=T.steps[T.i];
+  T.from={}; for(const id in (s.set||{})) T.from[id]=+$(id).value;
+  if(s.start) s.start();
+  T.cap.classList.add('fade'); setTimeout(()=>{ T.cap.innerHTML=s.cap; T.cap.classList.remove('fade'); },200);
+  T.n.textContent=(T.i+1)+' / '+T.steps.length; }
+let tl=performance.now();
+(function tick(now){ const dt=Math.min(.05,(now-tl)/1000); tl=now;
+  for(const T of tours){ if(!T.vis||!T.run) continue; if(T.i<0){ go(T,0); continue; }
+    const s=T.steps[T.i], dur=s.dur||7, tw=s.tween||1.8; const prev=T.t; T.t+=dt;
+    if(s.set && prev<tw){ const p=Math.min(1,T.t/tw), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      for(const id in s.set){ const el=$(id); el.value=T.from[id]+(s.set[id]-T.from[id])*e; el.dispatchEvent(new Event('input')); } }
+    if(s.each) s.each(Math.min(1,T.t/dur));
+    (s.at||[]).forEach(([tm,fn],j)=>{ if(!T.fired[j]&&T.t>=tm){ T.fired[j]=1; fn(); } });
+    T.prog.style.width=Math.min(100,T.t/dur*100)+'%';
+    if(T.t>=dur) go(T,T.i+1); }
+  requestAnimationFrame(tick); })(performance.now());
+
+tour($('emL').closest('.em-ctrl'),[
+ {set:{emL:633,emN:1.5},dur:7,cap:'Das ist Licht: Das <b>E-Feld</b> (farbig) und das <b>B-Feld</b> (blau) schwingen senkrecht zueinander und senkrecht zur Laufrichtung.'},
+ {set:{emL:430},dur:6,cap:'Kürzere Wellenlänge → höhere Frequenz: Aus Rot wird Violett. <span class="m">c</span> = λ·<span class="m">f</span> bleibt gleich.'},
+ {set:{emL:720},dur:6,cap:'Längere Wellenlänge → niedrigere Frequenz → tiefrot.'},
+ {set:{emN:2},dur:7,cap:'Im Glasblock wird die Welle langsamer (<span class="m">v</span> = <span class="m">c</span>/<span class="m">n</span>). Die Wellenlänge schrumpft, die Frequenz bleibt gleich.'},
+ {set:{emN:1,emL:633},dur:5,cap:'Ohne Glas (<span class="m">n</span> = 1) läuft die Welle überall gleich schnell.'}]);
+tour($('cvRefH'),[
+ {set:{refA:35},start:()=>RH.tau=0,dur:6,cap:'Die Wellenfront (rot) trifft schräg auf den Spiegel, zuerst bei A. Dort startet sofort eine Elementarwelle (blau).'},
+ {dur:6,cap:'Während der rechte Rand noch die Strecke <span class="m">c</span>·Δ<span class="m">t</span> bis B läuft, wächst die Elementarwelle um A auf denselben Radius.'},
+ {dur:7,cap:'Die neue Wellenfront ist die Tangente an alle Elementarwellen. Die beiden Dreiecke sind kongruent, also gilt <b>α = β</b>.'},
+ {set:{refA:60},start:()=>RH.tau=0,dur:12,cap:'Bei flacherem Einfall genauso: Einfallswinkel = Reflexionswinkel, beide immer zum Lot gemessen.'}]);
+tour($('cvRefF'),[
+ {start:()=>RF.anim={from:RF.x,to:.08,t:0},dur:6,cap:'Welchen Weg nimmt das Licht von A über den Spiegel nach B? Dieser Umweg dauert lange (siehe Kurve unten).'},
+ {start:()=>RF.anim={from:RF.x,to:.92,t:0},dur:5,cap:'Auch auf der anderen Seite ist der Weg zu lang.'},
+ {start:()=>RF.optimize(),dur:8,cap:'Das Minimum der Laufzeit (grün) liegt genau dort, wo <b>α = β</b> gilt. Trick: Der Weg zum Spiegelbild B′ ist dann eine gerade Linie.'}]);
+tour($('cvBrF'),[
+ {set:{brC2:2.01},start:()=>BF.anim={from:BF.x,to:.47,t:0},dur:7,cap:'Die gerade Linie von P nach Q ist der <i>kürzeste</i> Weg, aber nicht der <i>schnellste</i>, denn unten ist das Licht langsamer (<span class="m">c</span>₂ &lt; <span class="m">c</span>₁).'},
+ {start:()=>BF.optimize(),dur:7,cap:'Schneller ist es, mehr Strecke oben im schnellen Medium zurückzulegen. Das Minimum von <span class="m">t</span>(<span class="m">x</span>) liefert den Knickpunkt F.'},
+ {dur:6,cap:'Genau im Minimum gilt sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂. Das ist das Brechungsgesetz! Vergleich die beiden Werte unten.'},
+ {set:{brC2:1.2},at:[[2,()=>BF.optimize()]],dur:8,cap:'Ist das untere Medium noch langsamer, lohnt sich der Umweg noch mehr: stärkerer Knick.'},
+ {set:{brC2:2.01},at:[[2,()=>BF.optimize()]],dur:5,cap:'Zurück zu Luft → Plexiglas.'}]);
+tour($('cvBrH'),[
+ {set:{bhA:40,bhN1:1,bhN2:1.49},start:()=>BH.tau=0,dur:7,cap:'Luft → Plexiglas: Die Elementarwellen im Glas wachsen langsamer (Radius <span class="m">c</span>₂·Δ<span class="m">t</span>).'},
+ {dur:6,cap:'Die Tangente B′B ist deshalb gekippt: Die Welle wird <b>zum Lot hin</b> gebrochen, und sin α / sin β = <span class="m">c</span>₁/<span class="m">c</span>₂.'},
+ {set:{bhN2:2.4},start:()=>BH.tau=0,dur:12,cap:'Diamant (<span class="m">n</span> = 2,4): Das Licht ist noch langsamer und wird noch stärker gebrochen.'},
+ {set:{bhN1:1.5,bhN2:1,bhA:60},start:()=>BH.tau=0,dur:13,cap:'Umgekehrt, Glas → Luft bei großem Winkel: Die Elementarwellen werden größer als AB. Es gibt keine Tangente mehr, also <b>Totalreflexion</b>.'},
+ {set:{bhN1:1,bhN2:1.49,bhA:40},dur:2.5,cap:'Zurück zum Anfang …'}]);
+tour($('cvWater'),[
+ {set:{wA:0,wC:.55},dur:7,cap:'Senkrechter Einfall: Im flachen Wasser ist die Welle langsamer, die Berge rücken zusammen (λ kleiner). Die Richtung bleibt gleich.'},
+ {set:{wA:40},dur:7,cap:'Schräger Einfall: Die Wellenfronten knicken an der Grenze ab, <b>zum Lot hin</b>.'},
+ {set:{wC:.4},dur:7,cap:'Noch flacheres Wasser: noch langsamer, noch kürzere Wellenlänge, stärkerer Knick.'},
+ {set:{wC:1},dur:7,cap:'Gleiche Tiefe (<span class="m">c</span>₂ = <span class="m">c</span>₁): kein Knick. In allen Fällen gilt: Die <b>Frequenz bleibt gleich</b>, die Berge hängen an der Grenze lückenlos zusammen.'},
+ {set:{wC:.55,wA:35},dur:3,cap:'Nochmal von vorn …'}]);
+tour($('cvRain'),[
+ {set:{rnT:50},start:()=>{ if(RN.rain) $('rnRain').click(); RN.drops=[]; },dur:8,cap:'Trockene Scheibe: Das LED-Licht trifft außen unter 50° auf die Grenze Glas–Luft. 50° &gt; 41,1° (Grenzwinkel), also <b>Totalreflexion</b>. Das volle Signal kommt am Empfänger an.'},
+ {start:()=>{ if(!RN.rain) $('rnRain').click(); },dur:11,cap:'Es regnet: Wo ein Tropfen sitzt, grenzt Glas an Wasser, und der Grenzwinkel steigt auf 61°. 50° &lt; 61°, also tritt Licht in den Tropfen aus. Das Signal sinkt, und der Wischer springt an!'},
+ {set:{rnT:66},dur:9,cap:'Bei θ = 66° (&gt; 61°) würde auch unter Tropfen total reflektiert, und der Sensor bemerkt keinen Regen. Deshalb muss θ zwischen 41° und 61° liegen.'},
+ {set:{rnT:50},start:()=>{ if(RN.rain) $('rnRain').click(); RN.wipe=0; },dur:4,cap:'Regen vorbei, der Wischer macht die Scheibe frei.'}]);
+tour($('cvInt'),[
+ {set:{inS:0},dur:6,cap:'Δ<span class="m">s</span> = 0: Berg trifft Berg, die Amplitude verdoppelt sich. <b>Konstruktive Interferenz</b> (Maximum).'},
+ {set:{inS:.25},dur:5,cap:'Δ<span class="m">s</span> = λ/4 (Δφ = π/2): Die Wellen verstärken sich nur teilweise.'},
+ {set:{inS:.5},dur:6,cap:'Δ<span class="m">s</span> = λ/2, also Δφ = π: Berg trifft Tal, die Wellen löschen sich aus. <b>Destruktive Interferenz</b> (Minimum).'},
+ {set:{inS:1},dur:6,cap:'Δ<span class="m">s</span> = λ, also Δφ = 2π: wieder Berg auf Berg, ein Maximum. Allgemein: Δ<span class="m">s</span> = <span class="m">k</span>·λ.'},
+ {set:{inS:1.5},dur:6,cap:'Δ<span class="m">s</span> = 3λ/2: wieder ein Minimum. Allgemein: Δ<span class="m">s</span> = (<span class="m">k</span> + ½)·λ.'}]);
+tour($('cvSingle'),[
+ {set:{sbB:10,sbL:633},dur:6,cap:'Breiter Spalt (10 µm): schmales, helles Hauptmaximum.'},
+ {set:{sbB:2.5},dur:7,cap:'Schmaler Spalt (2,5 µm): Das Bild wird <b>breiter</b>! Die Minima (pink) liegen bei <span class="m">b</span>·sin α = <span class="m">k</span>·λ.'},
+ {set:{sbL:430},dur:6,cap:'Blaues Licht (kleineres λ): Die Minima rücken nach innen.'},
+ {set:{sbL:690},dur:6,cap:'Rotes Licht (größeres λ): Das Bild wird breiter.'},
+ {set:{sbB:4,sbL:633},dur:4,cap:'Merke: Beim Einzelspalt beschreibt die Formel die <b>dunklen</b> Stellen.'}]);
+tour($('cvDouble'),[
+ {set:{dsD:.4,dsL:633,dsE:2},start:()=>setDsMode('wave'),each:()=>DS.Ay=.5,dur:7,cap:'Von links kommt eine ebene Welle. An S₁ und S₂ entstehen zwei kohärente Kreiswellen, die sich überlagern.'},
+ {each:p=>DS.Ay=.5-.44*p,dur:10,cap:'Punkt A wandert über den Schirm. Mal ist der Gangunterschied Δ<span class="m">s</span> = <span class="m">k</span>·λ (grün, hell), mal (<span class="m">k</span> + ½)·λ (pink, dunkel).'},
+ {start:()=>setDsMode('int'),dur:8,cap:'Zeitlich gemittelt sieht man die Intensität: helle Bänder entlang von Hyperbeln. Das ergibt das Streifenmuster auf dem Schirm (unten, echter Maßstab).'},
+ {set:{dsD:.9},dur:7,cap:'Größerer Spaltabstand <span class="m">d</span>: Die Streifen rücken zusammen (<span class="m">a</span> = <span class="m">k</span>λ<span class="m">e</span>/<span class="m">d</span>).'},
+ {set:{dsD:.4,dsL:430},dur:7,cap:'Blaues Licht (kleineres λ): engere Streifen.'},
+ {set:{dsL:633,dsE:3.5},dur:7,cap:'Größerer Schirmabstand <span class="m">e</span>: Die Streifen liegen weiter auseinander. Umgestellt: λ = <span class="m">d</span>·<span class="m">a</span>ₖ/(<span class="m">k</span>·<span class="m">e</span>).'},
+ {set:{dsE:2},start:()=>setDsMode('wave'),dur:3,cap:'Nochmal von vorn …'}]);
+tour($('cvGrat'),[
+ {set:{grN:2,grG:300,grL:633},dur:6,cap:'Doppelspalt (<span class="m">N</span> = 2): breite, weiche Maxima.'},
+ {set:{grN:5},dur:6,cap:'5 Spalte: Die Hauptmaxima bleiben an derselben Stelle, werden aber schmaler. Dazwischen entstehen kleine Nebenmaxima.'},
+ {set:{grN:40},tween:3,dur:7,cap:'40 Spalte: scharfe, helle Linien, das ist ein <b>Gitter</b>. Die Lage folgt weiterhin aus <span class="m">d</span>·sin α = <span class="m">k</span>·λ.'},
+ {set:{grG:800},dur:7,cap:'Mehr Linien pro mm heißt kleineres <span class="m">d</span>: größere Winkel und weniger Ordnungen (<span class="m">k</span> ≤ <span class="m">d</span>/λ).'},
+ {set:{grL:430},dur:6,cap:'Blaues Licht wird weniger stark gebeugt als rotes.'},
+ {set:{grG:300,grL:633,grN:2},dur:3,cap:'Nochmal von vorn …'}]);
+tour($('cvSpecG'),[
+ {set:{spG:150},dur:7,cap:'Weißes Licht am groben Gitter: Jede Ordnung ist ein kleiner Regenbogen, innen violett, außen rot.'},
+ {set:{spG:400},dur:7,cap:'Feineres Gitter: Die Spektren werden breiter und rücken nach außen.'},
+ {set:{spG:300},dur:8,cap:'Gelb markiert: Die 2. und 3. Ordnung <b>überlappen</b> (2·750 nm &gt; 3·400 nm). Die 1. und 2. Ordnung nicht (750 nm &lt; 800 nm).'},
+ {set:{spG:800},dur:7,cap:'Sehr feines Gitter: Nur noch die 1. Ordnung passt auf den Schirm, weil sin α ≤ 1 sein muss.'}]);
+tour($('cvRes'),[
+ {set:{rsN:30,rsK:1},dur:7,cap:'Wenige Spalte (<span class="m">N</span> ≈ 18): Die beiden Na-Linien verschmelzen zu einem Buckel.'},
+ {set:{rsN:75},dur:7,cap:'Rund 480 Spalte in 1. Ordnung: <span class="m">A</span> = 480 &lt; 982, noch nicht getrennt.'},
+ {set:{rsK:2},dur:7,cap:'Dasselbe Gitter in der 2. Ordnung: <span class="m">A</span> = 2·480 = 960. Fast!'},
+ {set:{rsN:77},dur:7,cap:'Etwas mehr Spalte: <span class="m">A</span> ≥ 982, und plötzlich sind zwei getrennte Linien zu sehen.'},
+ {set:{rsK:1,rsN:88},dur:7,cap:'Oder in 1. Ordnung mit rund 1200 Spalten. Ein Doppelspalt (<span class="m">A</span> = 2<span class="m">n</span>) schafft das nie.'}]);
+tour($('cvStand'),[
+ {set:{stM:1},dur:7,cap:'Grundschwingung: <span class="m">l</span> = λ/2, also λ = 2<span class="m">l</span> = 32 cm. An den Metallwänden sind Knoten.'},
+ {set:{stM:2},dur:6,cap:'2. Mode: zwei halbe Wellenlängen passen hinein, λ = <span class="m">l</span>.'},
+ {set:{stM:5},dur:7,cap:'Die hinlaufende (rot) und die reflektierte Welle (blau) ergeben zusammen die stehende Welle (weiß). Die Knoten bleiben immer in Ruhe.'},
+ {set:{stM:10},dur:7,cap:'<span class="m">m</span> = 10: λ = 3,2 cm, also <span class="m">f</span> = 9,4 GHz, eine typische Schul-Mikrowelle. Der Knotenabstand λ/2 = 1,6 cm ist messbar.'}]);
+tour($('cvMZ'),[
+ {set:{mzP:0},start:()=>$('mzVac').click(),dur:8,cap:'Der Strahlteiler teilt das Licht auf zwei Wege. Bei gleich langen Wegen kommen die Teile an Port 4 gleichphasig an (hell), Port 3 bleibt dunkel.'},
+ {set:{mzP:1},tween:3,dur:8,cap:'Das Element verschiebt die Phase um ΔΦ = π. Jetzt ist Port 4 dunkel und Port 3 hell. Die Energie wandert nur: I₃ + I₄ = I₁.'},
+ {set:{mzP:2},tween:3,dur:6,cap:'ΔΦ = 2π: wie am Anfang. Allgemein: I₄ = I₁·cos²(ΔΦ/2).'},
+ {set:{mzP:0},start:()=>$('mzGas').click(),dur:11,cap:'Gas strömt in die Küvette: <span class="m">n</span> steigt, und der optische Weg wird länger. Jeder Hell-Dunkel-Wechsel an Port 4 bedeutet eine Wellenlänge mehr. Schau auf den Zähler!'},
+ {dur:6,cap:'Aus <span class="m">k</span> Wechseln folgt <span class="m">n</span>(Gas) = 1 + λ·<span class="m">k</span>/<span class="m">L</span> ≈ 1,00029 für Luft.'}]);
+tour($('cvMi'),[
+ {set:{miD:0},dur:7,cap:'Der Strahlteiler schickt das Laserlicht in zwei Arme: zum festen Spiegel M₁ (oben) und zum beweglichen Spiegel M₂ (rechts).'},
+ {dur:7,cap:'Beide Teilstrahlen laufen zurück und werden am Strahlteiler wieder vereinigt. Auf dem Schirm interferieren sie, und es entstehen Ringe.'},
+ {set:{miD:158},tween:3,dur:6,cap:'M₂ wird um λ/4 = 158 nm verschoben. Der Weg ändert sich um das <b>Doppelte</b>, Δ<span class="m">s</span> = 2·Δ<span class="m">d</span> = λ/2, und die Mitte wird dunkel!'},
+ {set:{miD:316},tween:3,dur:6,cap:'Nochmal λ/4 weiter: Δ<span class="m">s</span> = λ, die Mitte ist wieder hell. Ein Ring ist „herausgequollen“: <span class="m">k</span> = 1.'},
+ {set:{miD:1582},tween:12,dur:15,cap:'Weiter schieben und Ringe zählen: Pro λ/2 Spiegelweg läuft genau ein Ring durch. Also λ = 2·Δ<span class="m">d</span>/<span class="m">k</span>.'},
+ {dur:6,cap:'Hier: Δ<span class="m">d</span> = 1582 nm und <span class="m">k</span> = 5, also λ = 2·1582 nm / 5 ≈ 633 nm. Das ist ein Helium-Neon-Laser!'},
+ {set:{miD:0},tween:3,dur:4,cap:'Zurück in die Ausgangsstellung …'}]);
+tour($('cvPol'),[
+ {set:{polA:0},start:()=>setMid(false),dur:7,cap:'Links: <b>unpolarisiertes</b> Licht. Das E-Feld schwingt quer zur Laufrichtung, aber in ständig wechselnden Richtungen.'},
+ {dur:7,cap:'Der Polarisator lässt nur die Schwingung parallel zu seiner Durchlassrichtung durch. Dahinter ist das Licht <b>linear polarisiert</b>, mit der Intensität I₀/2.'},
+ {set:{polA:60},tween:6,dur:9,cap:'Der Analysator wird gedreht: Durch kommt nur die Komponente <span class="m">E</span>·cos θ. Die Intensität ist <b>I = I₁·cos²θ</b> (Gesetz von Malus).'},
+ {set:{polA:90},tween:3,dur:7,cap:'θ = 90°: gekreuzte Polfilter. Kein Licht kommt durch.'},
+ {start:()=>setMid(true),dur:10,cap:'Überraschung: Ein drittes Filter bei 45° dazwischen, und es wird wieder hell! I = I₀/2 · cos²45° · cos²45° = I₀/8.'},
+ {set:{polA:0},start:()=>setMid(false),tween:3,dur:7,cap:'Nur <b>Transversalwellen</b> lassen sich polarisieren. Dass Licht polarisierbar ist, beweist also: Licht ist eine Transversalwelle.'}]);
+tour($('cvBrew'),[
+ {set:{bwA:20},dur:7,cap:'Licht fällt auf Wasser. Die blauen Pfeile ↕ sind die Schwingung in der Einfallsebene (p), die gelben Punkte • die Schwingung senkrecht dazu (s).'},
+ {set:{bwA:53.1},tween:6,dur:11,cap:'Beim <b>Brewster-Winkel</b> α<sub>B</sub> = 53,1° verschwinden die p-Pfeile im reflektierten Strahl: Er ist vollständig s-polarisiert. Reflektierter und gebrochener Strahl stehen senkrecht aufeinander.'},
+ {set:{bwA:80},tween:5,dur:7,cap:'Bei flacherem Einfall wird wieder beides reflektiert. tan α<sub>B</sub> = <span class="m">n</span>₂/<span class="m">n</span>₁, darum helfen Polbrillen gegen Spiegelungen auf Wasser.'}]);
+tour($('cvCmp'),[
+ {set:{cmN:1,cmL:633},dur:8,cap:'<b>Einzelspalt</b>: ein breites helles Hauptmaximum mit schwachen Nebenmaxima. Dunkel ist es bei <span class="m">b</span>·sin α = <span class="m">k</span>·λ.'},
+ {set:{cmN:2},tween:1,dur:8,cap:'<b>Doppelspalt</b>: Innerhalb des Einzelspalt-Bildes (gestrichelt) entstehen Streifen. Hell ist es bei <span class="m">d</span>·sin α = <span class="m">k</span>·λ.'},
+ {set:{cmN:5},tween:1,dur:7,cap:'5 Spalte: gleiche Lage der Maxima, aber schmaler, dazwischen fast dunkel.'},
+ {set:{cmN:30},tween:4,dur:8,cap:'<b>Gitter</b>: sehr scharfe, helle Linien, ideal zum Messen von λ. Die Helligkeit wächst mit <span class="m">N</span>².'},
+ {set:{cmL:430},dur:7,cap:'Blaues Licht: Alles rückt nach innen (kleineres λ). Rotes Licht liegt außen, so entstehen Spektren.'},
+ {set:{cmL:633,cmN:1},tween:2,dur:6,cap:'Merke: Einzelspalt → Formel für die <b>Minima</b>. Doppelspalt und Gitter → Formel für die <b>Maxima</b>.'}]);
 
 setTimeout(()=>{ if(!window.__em3d) document.body.classList.add('no3d'); },9000);
 })();
