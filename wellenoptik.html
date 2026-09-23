@@ -168,6 +168,10 @@ details .in{padding:0 14px 12px;color:#cfd5e4;font-size:.96rem}
 .tour-prog{height:3px;background:rgba(255,255,255,.06)}
 .tour-prog i{display:block;height:100%;width:0;background:var(--na)}
 .tour.paused .tour-prog i{background:var(--muted)}
+.kcgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:10px}
+.kc{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 14px;border:1px solid var(--line2);border-radius:9px;background:var(--panel);color:var(--text);text-decoration:none;font-size:.94rem}
+.kc:hover{border-color:var(--green)}
+.kc i{color:var(--green);font-style:normal;flex:none}
 .kurz{display:flex;gap:14px;align-items:flex-start;border:1px solid rgba(93,255,160,.35);background:linear-gradient(90deg,rgba(93,255,160,.11),rgba(93,255,160,.02));border-radius:12px;padding:14px 18px;margin:0 0 22px;max-width:980px}
 .kurz .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);flex:none;padding-top:5px}
 .kurz p{margin:0;font-size:1.1rem;line-height:1.5;color:#fff}
@@ -191,7 +195,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 <nav class="nav" aria-label="Themen">
   <div class="nav-in">
     <span class="grp">Tag 1</span>
-    <a href="#erzeugung">Erzeugung</a><a href="#em-text">EM-Welle</a><a href="#reflexion">Reflexion</a><a href="#brechung">Brechung</a><a href="#wasser">Wasserwellen</a><a href="#total">Totalreflexion</a><a href="#interferenz">Interferenz</a><a href="#einzelspalt">Einzelspalt</a><a href="#doppelspalt">Doppelspalt</a>
+    <a href="#erzeugung">Erzeugung</a><a href="#em-text">EM-Welle</a><a href="#spektrum">Spektrum</a><a href="#reflexion">Reflexion</a><a href="#brechung">Brechung</a><a href="#wasser">Wasserwellen</a><a href="#total">Totalreflexion</a><a href="#interferenz">Interferenz</a><a href="#beugung">Beugung</a><a href="#einzelspalt">Einzelspalt</a><a href="#doppelspalt">Doppelspalt</a><a href="#kleinwinkel">Kleinwinkel</a>
     <span class="grp">Tag 2</span>
     <a href="#gitter">Gitter</a><a href="#spektren">Spektren</a><a href="#aufloesung">Auflösung</a><a href="#stehend">Stehende Wellen</a>
     <span class="grp">Tag 3</span>
@@ -218,12 +222,13 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </header>
 
 <main class="wrap">
+<section class="topic" id="klausur" style="padding-bottom:0"><div class="t-head"><h2 style="font-size:clamp(1.4rem,3vw,2rem)">Dein Klausur-Check Q3.1: direkt zum Thema</h2></div><p class="hint">Alle 19 Punkte von deinem Blatt. Tippe auf einen Punkt, und die Seite springt zur passenden Erklärung mit Animation.</p><div class="kcgrid"><a class="kc" href="#spektrum"><span>elektromagnetisches Spektrum und Anwendungen</span><i>→</i></a><a class="kc" href="#em-text"><span>c = λ·f und Zusammenhang Frequenz/Wellenlänge</span><i>→</i></a><a class="kc" href="#reflexion"><span>Reflexion (auch Herleitung)</span><i>→</i></a><a class="kc" href="#brechung"><span>Brechung (auch Herleitung)</span><i>→</i></a><a class="kc" href="#beugung"><span>Beugung (auch Herleitung)</span><i>→</i></a><a class="kc" href="#interferenz"><span>Interferenz/Überlagerung</span><i>→</i></a><a class="kc" href="#polarisation"><span>lineare Polarisation/Schwingungsebene</span><i>→</i></a><a class="kc" href="#total"><span>Totalreflexion/Glasfaser</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Doppelspalt: Wegdifferenz</span><i>→</i></a><a class="kc" href="#interferenz"><span>Maxima-Bedingung</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Herleitung der Lage der Maxima</span><i>→</i></a><a class="kc" href="#kleinwinkel"><span>Kleinwinkelnäherung</span><i>→</i></a><a class="kc" href="#doppelspalt"><span>Wellenlängenbestimmung</span><i>→</i></a><a class="kc" href="#gitter"><span>Beugungsgitter</span><i>→</i></a><a class="kc" href="#spektren"><span>polychromatisches/weißes Licht</span><i>→</i></a><a class="kc" href="#stehend"><span>stehende elektromagnetische Wellen</span><i>→</i></a><a class="kc" href="#einzelspalt"><span>Einzelspalt: Beugung und Interferenz</span><i>→</i></a><a class="kc" href="#einzelspalt-herleitung"><span>Einzelspalt: Maxima/Minima</span><i>→</i></a><a class="kc" href="#mz"><span>Interferometer</span><i>→</i></a></div></section>
 
 <!-- ================================================= TAG 1 -->
 <div class="day"><div class="day-head"><span class="n">Nachmittag 1</span><h2>Brechung, Totalreflexion, Beugung und Doppelspalt</h2></div></div>
 
 <section class="topic" id="erzeugung">
-  <div class="t-head"><span class="t-num">1.0</span><h2>Wie entstehen elektromagnetische Wellen?</h2></div>
+  <div class="t-head"><span class="t-num">1.1</span><h2>Wie entstehen elektromagnetische Wellen?</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Ein Schwingkreis ist eine <b>elektrische Schaukel</b>: Die Energie pendelt zwischen Kondensator (E-Feld) und Spule (B-Feld). Biegt man ihn zu einem geraden Stab auf, lösen sich die Felder ab. Das ist eine elektromagnetische Welle.</p></div>
   <div class="t-body full">
     <div class="bench">
@@ -282,7 +287,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 <section class="topic" id="em-text">
-  <div class="t-head"><span class="t-num">1.1</span><h2>Die elektromagnetische Welle</h2></div>
+  <div class="t-head"><span class="t-num">1.2</span><h2>Die elektromagnetische Welle</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Licht ist eine Welle aus elektrischem und magnetischem Feld: <b>c = λ·f</b>. <i>Wie eine Marschkapelle, die in Schlamm gerät: Der Takt (f) bleibt, die Schritte (λ) werden kürzer, alle werden langsamer.</i></p></div>
   <div class="t-body">
     <div class="txt">
@@ -310,8 +315,30 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   </div>
 </section>
 
+<section class="topic" id="spektrum">
+  <div class="t-head"><span class="t-num">1.3</span><h2>Das elektromagnetische Spektrum</h2></div>
+  <div class="kurz"><span class="k">Kurz gesagt</span><p>Radio, WLAN, Wärme, Licht, UV und Röntgen sind <b>alles dieselbe Sorte Welle</b> und alle gleich schnell (<span class="m">c</span>). Sie unterscheiden sich nur in λ bzw. <span class="m">f</span>. Sichtbares Licht ist nur ein <b>winziger Ausschnitt</b>.</p></div>
+  <div class="t-body full"><div class="bench">
+    <div class="bench-top"><span>Von Radiowellen bis Gammastrahlung · logarithmische Skala</span><span class="live">● live</span></div>
+    <canvas id="cvEMS" class="cv-lg"></canvas>
+    <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+    <div class="ctrls"><div class="ctrl"><label>Wellenlänge λ <b id="emsPv">–</b></label><input type="range" id="emsP" min="-4" max="13" step="0.01" value="2"></div></div>
+  </div></div>
+  <div class="cmpw"><table class="cmp">
+    <tr><th>Bereich</th><th>Wellenlänge λ</th><th>Frequenz f</th><th>so groß wie …</th><th>Anwendungen</th></tr>
+    <tr><td>Radiowellen</td><td>&gt; 1 m (bis km)</td><td>&lt; 300 MHz</td><td>Haus bis Fußballfeld</td><td>Rundfunk (UKW ≈ 100 MHz), Funk, Fernsehen</td></tr>
+    <tr><td>Mikrowellen</td><td>1 mm – 1 m</td><td>300 MHz – 300 GHz</td><td>Münze bis Hand</td><td>Handy, WLAN (12,5 cm), Mikrowellenherd, Radar</td></tr>
+    <tr><td>Infrarot</td><td>780 nm – 1 mm</td><td>300 GHz – 385 THz</td><td>Nadelspitze</td><td>Wärmestrahlung, Wärmebildkamera, Fernbedienung, Glasfaser (1550 nm)</td></tr>
+    <tr><td>Sichtbares Licht</td><td>380 – 780 nm</td><td>385 – 790 THz</td><td>Bakterium</td><td>Sehen, Laser, Fotosynthese</td></tr>
+    <tr><td>Ultraviolett</td><td>10 – 380 nm</td><td>≈ 10¹⁵ – 3·10¹⁶ Hz</td><td>Virus</td><td>Sonnenbrand, Vitamin D, Desinfektion, Geldschein-Prüfung</td></tr>
+    <tr><td>Röntgen</td><td>10 pm – 10 nm</td><td>3·10¹⁶ – 3·10¹⁹ Hz</td><td>Atom</td><td>Röntgenbild, CT, Kristallstruktur</td></tr>
+    <tr><td>Gamma</td><td>&lt; 10 pm</td><td>&gt; 3·10¹⁹ Hz</td><td>Atomkern</td><td>Radioaktivität, Strahlentherapie, Sterilisation</td></tr>
+  </table></div>
+  <p class="hint" style="margin-top:12px">Merke: <b>kleines λ = große f = viel Energie</b> (<span class="m">E</span> = <span class="m">h</span>·<span class="m">f</span>). Deshalb sind UV, Röntgen und Gamma gefährlich, Radiowellen nicht.</p>
+</section>
+
 <section class="topic" id="reflexion">
-  <div class="t-head"><span class="t-num">1.2</span><h2>Reflexion</h2></div>
+  <div class="t-head"><span class="t-num">1.4</span><h2>Reflexion</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p><b>Einfallswinkel = Reflexionswinkel</b>, beide immer zum Lot gemessen. <i>Wie ein Ball, der von der Bande abprallt.</i></p></div>
   <div class="t-body flip">
     <div>
@@ -346,7 +373,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 <section class="topic" id="brechung">
-  <div class="t-head"><span class="t-num">1.3</span><h2>Brechung und das Brechungsgesetz</h2></div>
+  <div class="t-head"><span class="t-num">1.5</span><h2>Brechung und das Brechungsgesetz</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Wird Licht langsamer, knickt es <b>zum Lot hin</b>. <i>Wie ein Auto, das schräg von der Straße auf Sand fährt: Das Rad, das zuerst im Sand ist, bremst zuerst, und das Auto dreht sich.</i></p></div>
   <div class="t-body">
     <div class="txt">
@@ -391,7 +418,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 <section class="topic" id="wasser">
-  <div class="t-head"><span class="t-num">1.4</span><h2>Wasserwellen als Anschauung</h2></div>
+  <div class="t-head"><span class="t-num">1.6</span><h2>Wasserwellen als Anschauung</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Im flachen Wasser werden Wellen <b>langsamer und dichter</b> und drehen sich dabei zum Strand hin. Die Frequenz bleibt gleich.</p></div>
   <div class="t-body flip">
     <div class="bench">
@@ -418,7 +445,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 <section class="topic" id="total">
-  <div class="t-head"><span class="t-num">1.5</span><h2>Totalreflexion und der Regensensor</h2></div>
+  <div class="t-head"><span class="t-num">1.7</span><h2>Totalreflexion und der Regensensor</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Trifft Licht von innen <b>zu flach</b> auf die Glasoberfläche, kommt es nicht heraus und wird zu 100 % zurückgespiegelt. Ein Regentropfen „öffnet“ die Tür, und das Licht entkommt.</p></div>
   <div class="t-body">
     <div class="txt">
@@ -444,10 +471,26 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       </div>
     </div>
   </div>
+  <div class="t-body" style="margin-top:28px">
+    <div class="bench">
+      <div class="bench-top"><span>Glasfaser · Kern (n = 1,50) im Mantel (n = 1,40)</span><span class="live">● live</span></div>
+      <canvas id="cvFib" class="cv-md"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+      <div class="ctrls"><div class="ctrl"><label>Winkel θ an der Kern-Mantel-Grenze <b id="fbTv">–</b></label><input type="range" id="fbT" min="40" max="88" step="0.5" value="80"></div></div>
+      <div class="outs"><div class="o"><span>Grenzwinkel α<sub>G</sub></span><b>69,0°</b></div><div class="o" id="fbBox"><span>Licht am Ende</span><b id="fbE">–</b></div></div>
+    </div>
+    <div class="txt">
+      <h3>Glasfaser: Licht im Käfig</h3>
+      <p>Eine Glasfaser hat einen <b>Kern</b> mit höherem Brechungsindex und einen <b>Mantel</b> mit etwas kleinerem. Trifft das Licht flach genug (θ &gt; α<sub>G</sub>) auf die Grenze, wird es <b>jedes Mal total reflektiert</b>. So bleibt es auch in gebogenen Fasern über viele Kilometer gefangen.</p>
+      <div class="key"><span class="lbl">Grenzwinkel Kern → Mantel</span><div class="eq">sin α<sub>G</sub> = <span class="frac"><span>n<sub>Mantel</sub></span><span>n<sub>Kern</sub></span></span> = <span class="frac"><span>1,40</span><span>1,50</span></span> ⇒ α<sub>G</sub> = 69,0°</div></div>
+      <p><b>Anwendungen:</b> Internet und Telefon (Lichtpulse als Daten), Endoskope in der Medizin, Lichtleiter in Deko-Lampen.</p>
+      <p class="hint">Warum ein Mantel? Er schützt die Oberfläche. Ohne Mantel würden Kratzer, Fett oder Wassertropfen die Totalreflexion stören, wie beim Regensensor.</p>
+    </div>
+  </div>
 </section>
 
 <section class="topic" id="interferenz">
-  <div class="t-head"><span class="t-num">1.6</span><h2>Beugung und Interferenz</h2></div>
+  <div class="t-head"><span class="t-num">1.8</span><h2>Beugung und Interferenz</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Zwei Wellen addieren sich: <b>Berg + Berg = großer Berg (hell)</b>, <b>Berg + Tal = nichts (dunkel)</b>. Entscheidend ist, wie viel weiter die eine Welle läuft: der Gangunterschied Δs.</p></div>
   <div class="t-body flip">
     <div class="bench">
@@ -471,14 +514,38 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   </div>
 </section>
 
+<section class="topic" id="beugung">
+  <div class="t-head"><span class="t-num">1.9</span><h2>Beugung</h2></div>
+  <div class="kurz"><span class="k">Kurz gesagt</span><p>Hinter einer Öffnung läuft eine Welle auch <b>um die Ecke</b> in den Schatten. Das passiert merklich, wenn die Öffnung <b>etwa so groß wie λ</b> ist. <i>Darum hörst du Musik um die Hausecke (λ ≈ 1 m), siehst aber nicht um sie herum (λ ≈ 0,5 µm).</i></p></div>
+  <div class="t-body flip">
+    <div class="bench">
+      <div class="bench-top"><span>Ebene Welle trifft auf einen Spalt · Draufsicht</span><span class="live">● live</span></div>
+      <canvas id="cvBeug" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+      <div class="ctrls"><div class="ctrl"><label>Spaltbreite b <b id="bgBv">–</b></label><input type="range" id="bgB" min="0.6" max="8" step="0.1" value="6"></div></div>
+    </div>
+    <div class="txt">
+      <h3>Herleitung mit dem Huygens-Prinzip</h3>
+      <ol class="st">
+        <li>Die ebene Welle erreicht den Spalt. <b>Jeder Punkt in der Öffnung</b> wird zum Ausgangspunkt einer Elementarwelle (weiße Punkte).</li>
+        <li><b>Breiter Spalt:</b> Viele Elementarwellen überlagern sich zu einer fast ebenen Front. Das Licht läuft fast geradeaus weiter, und nur an den Rändern wird es etwas gebeugt.</li>
+        <li><b>Schmaler Spalt (b ≈ λ):</b> Es gibt praktisch nur noch <b>eine</b> Elementarwelle. Hinter dem Spalt entsteht eine Kreiswelle, und die Welle läuft weit in den geometrischen Schattenraum.</li>
+        <li>Weil sich die Elementarwellen überlagern, gibt es in bestimmten Richtungen Verstärkung und Auslöschung: das <b>Beugungsbild</b> mit hellen und dunklen Streifen (nächstes Thema).</li>
+      </ol>
+      <div class="warn">Beugung ist ein <b>Wellen-Beweis</b>: Teilchen würden geradlinig weiterfliegen und einen scharfen Schatten werfen.</div>
+    </div>
+  </div>
+</section>
+
 <section class="topic" id="einzelspalt">
-  <div class="t-head"><span class="t-num">1.7</span><h2>Der Einzelspalt</h2></div>
+  <div class="t-head"><span class="t-num">1.10</span><h2>Der Einzelspalt</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Hinter einem engen Spalt biegt sich Licht in den Schatten. <b>Je enger der Spalt, desto breiter das Bild.</b> Die Formel zählt die <b>dunklen</b> Stellen.</p></div>
   <div class="t-body">
     <div class="txt">
       <p>Schickt man monochromatisches Licht durch einen einzigen schmalen Spalt der Breite <span class="m">b</span>, entsteht kein scharfer Streifen, sondern ein breites <b>Beugungsbild</b>: ein helles Hauptmaximum mit schwächeren Nebenmaxima.</p>
       <p>Warum dunkle Stellen? Man teilt den Spalt gedanklich in zwei Hälften. Beträgt der Gangunterschied zwischen Rand und Mitte λ/2, löschen sich die Elementarwellen paarweise aus.</p>
-      <div class="key"><span class="lbl">Minima am Einzelspalt</span><div class="eq">b · sin α<sub>k</sub> = k · λ &nbsp;&nbsp;(k = 1, 2, …)</div></div>
+      <div class="key"><span class="lbl">Minima am Einzelspalt (dunkel)</span><div class="eq">b · sin α<sub>k</sub> = k · λ &nbsp;&nbsp;(k = 1, 2, …)</div></div>
+      <div class="key"><span class="lbl">Maxima am Einzelspalt (hell)</span><div class="eq">Hauptmaximum: α = 0 &nbsp;·&nbsp; Nebenmaxima: b · sin α<sub>k</sub> ≈ (k + ½) · λ</div><div class="hint">Genau umgekehrt wie beim Doppelspalt! Die Herleitung siehst du in der Animation unten.</div></div>
       <p><b>Je schmaler der Spalt, desto breiter das Bild.</b> Das ist typisch für Beugung und einer der Beweise, dass Licht eine Welle ist.</p>
     </div>
     <div class="bench">
@@ -492,10 +559,18 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
       <div class="outs"><div class="o"><span>1. Minimum bei</span><b id="sbM">–</b></div><div class="o"><span>Breite Hauptmax.</span><b id="sbW">–</b></div></div>
     </div>
   </div>
+  <div class="t-body full" style="margin-top:28px" id="einzelspalt-herleitung">
+    <div class="bench">
+      <div class="bench-top"><span>Herleitung: Warum wird es dunkel? · Spalt in Zonen teilen</span><span class="live">● live</span></div>
+      <canvas id="cvESH" class="cv-lg"></canvas>
+      <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+      <div class="ctrls"><div class="btns"><button class="b" type="button" data-es="0">Hauptmaximum</button><button class="b" type="button" data-es="1">1. Minimum</button><button class="b" type="button" data-es="1.5">1. Nebenmaximum</button><button class="b" type="button" data-es="2">2. Minimum</button><button class="b" type="button" data-es="2.5">2. Nebenmaximum</button></div></div>
+    </div>
+  </div>
 </section>
 
 <section class="topic" id="doppelspalt">
-  <div class="t-head"><span class="t-num">1.8</span><h2>Der Doppelspalt</h2></div>
+  <div class="t-head"><span class="t-num">1.11</span><h2>Der Doppelspalt</h2></div>
   <div class="kurz"><span class="k">Kurz gesagt</span><p>Zwei Spalte erzeugen zwei Wellen, die sich überlagern: <b>helle und dunkle Streifen</b>. Aus dem Streifenabstand rechnet man λ aus.</p></div>
   <div class="t-body full">
     <div class="bench">
@@ -580,6 +655,36 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 </section>
 
 <!-- ================================================= TAG 2 -->
+<section class="topic" id="kleinwinkel">
+  <div class="t-head"><span class="t-num">1.12</span><h2>Die Kleinwinkelnäherung</h2></div>
+  <div class="kurz"><span class="k">Kurz gesagt</span><p>Bei <b>kleinen Winkeln</b> sind sin α, tan α und α (im Bogenmaß) fast gleich groß. Deshalb darf man beim Doppelspalt sin α ≈ tan α = <span class="m">a</span>/<span class="m">e</span> setzen. <b>Beim Gitter nicht</b>, dort sind die Winkel zu groß!</p></div>
+  <div class="t-body full"><div class="bench">
+    <div class="bench-top"><span>sin α, tan α und α (Bogenmaß) im Vergleich</span><span class="live">● live</span></div>
+    <canvas id="cvKW" class="cv-md"></canvas>
+    <div class="self">Selbst ausprobieren · pausiert die Erklärung</div>
+    <div class="ctrls"><div class="ctrl"><label>Winkel α <b id="kwAv">–</b></label><input type="range" id="kwA" min="0.5" max="45" step="0.1" value="5"></div></div>
+    <div class="outs"><div class="o"><span>sin α</span><b id="kwS">–</b></div><div class="o"><span>tan α</span><b id="kwT">–</b></div><div class="o"><span>α im Bogenmaß</span><b id="kwR">–</b></div><div class="o" id="kwBox"><span>Abweichung tan zu sin</span><b id="kwE">–</b></div></div>
+  </div></div>
+  <div class="t-body" style="margin-top:26px">
+    <div class="txt">
+      <h3>Warum braucht man das?</h3>
+      <p>Aus der Geometrie kennt man den Schirmabstand <span class="m">e</span> und den Abstand <span class="m">a</span> des Maximums. Das liefert <b>tan α</b> = <span class="m">a</span>/<span class="m">e</span>. Die Interferenzbedingung <span class="m">d</span>·sin α = <span class="m">k</span>λ braucht aber <b>sin α</b>.</p>
+      <p>Ist <span class="m">a</span> ≪ <span class="m">e</span> (kleiner Winkel), ist die Hypotenuse √(<span class="m">e</span>² + <span class="m">a</span>²) fast genauso lang wie <span class="m">e</span>. Dann gilt:</p>
+      <div class="key"><span class="lbl">Kleinwinkelnäherung</span><div class="eq big">sin α ≈ tan α ≈ α = <span class="frac"><span>a</span><span>e</span></span></div></div>
+      <div class="key"><span class="lbl">Ergebnis Doppelspalt</span><div class="eq">d · <span class="frac"><span>a<sub>k</sub></span><span>e</span></span> = k · λ &nbsp;⇒&nbsp; λ = <span class="frac"><span>d · a<sub>k</sub></span><span>k · e</span></span></div></div>
+    </div>
+    <div class="txt">
+      <h3>Wann darf ich nähern?</h3>
+      <ul style="color:#cfd5e4">
+        <li><b>Doppelspalt, Einzelspalt:</b> Die Streifen liegen meist nur wenige cm neben der Mitte, bei <span class="m">e</span> von einigen Metern. Das sind Winkel unter 5°, der Fehler liegt unter 0,5 %. ✔</li>
+        <li><b>Gitter:</b> Die Winkel sind oft 15° bis 60°. Die Näherung ist <b>verboten</b>. Erst α = arctan(<span class="m">a</span>/<span class="m">e</span>), dann sin α ausrechnen! ✘</li>
+        <li>Faustregel: Bis etwa <b>10°</b> ist der Fehler etwa 1 %, also meist in Ordnung.</li>
+      </ul>
+      <p class="hint">Die Näherung α ≈ sin α gilt nur im <b>Bogenmaß</b> (rad), nicht in Grad!</p>
+    </div>
+  </div>
+</section>
+
 <div class="day"><div class="day-head"><span class="n">Nachmittag 2</span><h2>Gitter, Spektren, Auflösungsvermögen und stehende Wellen</h2></div></div>
 
 <section class="topic" id="gitter">
@@ -804,7 +909,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   </div>
   <div class="t-body" style="margin-top:30px">
     <div class="txt">
-      <p>Bei <b>unpolarisiertem</b> Licht (Sonne, Glühlampe) schwingt das E-Feld quer zur Laufrichtung, aber in ständig wechselnden Richtungen. Ein <b>Polarisationsfilter</b> lässt nur die Schwingung parallel zu seiner Durchlassrichtung durch. Dahinter ist das Licht <b>linear polarisiert</b>, und die Intensität ist halbiert.</p>
+      <p>Bei <b>unpolarisiertem</b> Licht (Sonne, Glühlampe) schwingt das E-Feld quer zur Laufrichtung, aber in ständig wechselnden Richtungen. Ein <b>Polarisationsfilter</b> lässt nur die Schwingung parallel zu seiner Durchlassrichtung durch. Dahinter ist das Licht <b>linear polarisiert</b>: Das E-Feld schwingt nur noch in <b>einer</b> Ebene, der <b>Schwingungsebene</b> (Polarisationsebene). Die Intensität ist halbiert.</p>
       <div class="key"><span class="lbl">erstes Filter</span><div class="eq">I₁ = I₀ / 2</div></div>
       <p>Ein zweites Filter (<b>Analysator</b>), um θ gedreht, lässt nur die Komponente <span class="m">E</span>·cos θ durch. Die Intensität ist proportional zu <span class="m">E</span>²:</p>
       <div class="key"><span class="lbl">Gesetz von Malus</span><div class="eq big">I = I₁ · cos²θ</div><div class="hint">θ = 90°: gekreuzte Filter, dunkel. Mit einem 45°-Filter dazwischen kommt wieder I₀/8 durch.</div></div>
@@ -862,6 +967,9 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="fc"><span>Interferenz-Minimum</span><div class="eq">Δs = (k + ½) λ</div></div>
     <div class="fc"><span>Phasendifferenz</span><div class="eq">Δφ = 2π Δs / λ</div></div>
     <div class="fc"><span>Einzelspalt-Minima</span><div class="eq">b sin α = k λ</div></div>
+    <div class="fc"><span>Einzelspalt-Nebenmaxima</span><div class="eq">b sin α ≈ (k + ½) λ</div></div>
+    <div class="fc"><span>Kleinwinkelnäherung</span><div class="eq">sin α ≈ tan α = a/e</div></div>
+    <div class="fc"><span>Energie</span><div class="eq">E = h · f</div></div>
     <div class="fc"><span>Doppelspalt</span><div class="eq">λ = d a<sub>k</sub> / (k e)</div></div>
     <div class="fc"><span>Gitter</span><div class="eq">d sin α = k λ</div></div>
     <div class="fc"><span>Geometrie</span><div class="eq">tan α = a / e</div></div>
@@ -1349,7 +1457,7 @@ sim($('cvMZ'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMZ')); ctx.clearRect(0,0,W,H);
 });
 
 /* ---------- Checkliste ---------- */
-const CHECK=[['Nachmittag 1',['Schwingkreis: Energieumwandlung E-Feld ↔ B-Feld beschreiben','Thomson-Formel T = 2π√(LC) anwenden','Hertz’scher Dipol: Entstehung von EM-Wellen erklären','Brechung erklären und Snellius anwenden','Huygens-Prinzip erklären','Geschwindigkeit im Medium bestimmen','Totalreflexion und Grenzwinkel berechnen','Interferenzbedingungen unterscheiden','Phasendifferenz berechnen','Doppelspaltformel herleiten und anwenden']],
+const CHECK=[['Nachmittag 1',['Schwingkreis: Energieumwandlung E-Feld ↔ B-Feld beschreiben','Thomson-Formel T = 2π√(LC) anwenden','Hertz’scher Dipol: Entstehung von EM-Wellen erklären','Brechung erklären und Snellius anwenden','Huygens-Prinzip erklären','Geschwindigkeit im Medium bestimmen','EM-Spektrum mit λ, f und Anwendungen ordnen','Beugung mit Huygens erklären','Einzelspalt: Minima und Maxima herleiten','Kleinwinkelnäherung begründen und wissen, wann sie gilt','Glasfaser erklären (Kern/Mantel, Totalreflexion)','Totalreflexion und Grenzwinkel berechnen','Interferenzbedingungen unterscheiden','Phasendifferenz berechnen','Doppelspaltformel herleiten und anwenden']],
  ['Nachmittag 2',['Gittergleichung anwenden','Beugungswinkel aus der Geometrie bestimmen','Wellenlänge bestimmen','höchste Ordnung bestimmen','Spektren und Überlappung erklären','Auflösungsvermögen berechnen','Natrium-D-Linien einordnen','stehende Wellen mit Knoten, Bäuchen und λ/2 verstehen']],
  ['Nachmittag 3',['Michelson-Aufbau erklären und λ = 2Δd/k anwenden','Polarisation erklären: nur Transversalwellen','Gesetz von Malus anwenden','Brewster-Winkel berechnen','Einzelspalt, Doppelspalt und Gitter unterscheiden','Mach-Zehnder-Aufbau zeichnen und erklären','Gangdifferenz und Phasendifferenz verbinden','konstruktive/destruktive Interferenz am Ausgang erklären','Intensitätsgleichung anwenden','Brechungsindex eines Gases aus Interferenzverschiebungen bestimmen','alle Formeln ohne Vorlage zuordnen']]];
 let saved={}; try{ saved=JSON.parse(localStorage.getItem('wo-check')||'{}'); }catch(e){}
@@ -1361,6 +1469,10 @@ CHECK.forEach(([h,items],gi)=>{ const hh=document.createElement('h3'); hh.textCo
 
 /* ---------- Quiz ---------- */
 const QZ=[
+ ['Welche Strahlung hat die größte Wellenlänge?',['Röntgen','Infrarot','Radiowellen'],2,'Radiowellen: Meter bis Kilometer. Röntgen liegt im Bereich von Atomgrößen.'],
+ ['Wann ist Beugung an einem Spalt besonders stark?',['wenn b ≫ λ','wenn b ≈ λ','nie bei Licht'],1,'Ist der Spalt so schmal wie λ, entsteht fast eine Kreiswelle.'],
+ ['Am Einzelspalt ist b·sin α = 1,5 λ. Dort ist …',['das 1. Minimum','das 1. Nebenmaximum','das Hauptmaximum'],1,'Drei Zonen: Zwei löschen sich aus, eine bleibt übrig, also schwach hell.'],
+ ['Darf man beim Gitter mit α = 35° sin α ≈ tan α nähern?',['ja','nein'],1,'sin 35° = 0,574, tan 35° = 0,700, also über 20 % Fehler!'],
  ['Im Schwingkreis wird C vervierfacht. Die Periodendauer T …',['vervierfacht sich','verdoppelt sich','halbiert sich'],1,'T = 2π√(LC): √4 = 2, also doppelt so lang.'],
  ['Bei t = T/4 ist im Schwingkreis die Energie …',['im E-Feld des Kondensators','im B-Feld der Spule','verschwunden'],1,'Der Kondensator ist leer und der Strom maximal, also steckt alles im Magnetfeld.'],
  ['Wie lang ist ein λ/2-Dipol für 100 MHz?',['3 m','1,5 m','30 cm'],1,'λ = c/f = 3 m, die Hälfte davon sind 1,5 m.'],
@@ -1608,6 +1720,146 @@ sim($('cvDip'),(dt)=>{ const {ctx,W,H}=fit($('cvDip')); ctx.clearRect(0,0,W,H);
   if(m>.97){ ctx.strokeStyle=COL.na; ctx.lineWidth=1.4; const bx=cx-44; ctx.beginPath(); ctx.moveTo(bx+6,yT); ctx.lineTo(bx,yT); ctx.lineTo(bx,yB); ctx.lineTo(bx+6,yB); ctx.stroke(); ctx.fillStyle='rgba(7,10,18,.8)'; ctx.fillRect(bx-70,yT-6,62,24); label(ctx,'l = λ/2',bx-12,yT+11,COL.na,'italic 16px "STIX Two Text", Georgia, serif','right'); }
 });
 
+
+/* ---------- EM-Spektrum ---------- */
+const BANDS=[
+ {n:'Radiowellen',lo:0,hi:4,c:'#6f7dff',g:'Haus bis Fußballfeld',a:'Radio (UKW), Funk, Fernsehen'},
+ {n:'Mikrowellen',lo:-3,hi:0,c:'#4fb8ff',g:'Münze bis Hand',a:'Handy, WLAN, Mikrowellenherd, Radar'},
+ {n:'Infrarot',lo:-6.108,hi:-3,c:'#ff7a4d',g:'Nadelspitze',a:'Wärmestrahlung, Wärmebild, Fernbedienung'},
+ {n:'Sichtbares Licht',lo:-6.42,hi:-6.108,c:'#ffffff',g:'Bakterium',a:'Sehen, Laser, Fotosynthese'},
+ {n:'Ultraviolett',lo:-8,hi:-6.42,c:'#b98bff',g:'Virus',a:'Sonnenbrand, Desinfektion, Geldschein-Prüfung'},
+ {n:'Röntgenstrahlung',lo:-11,hi:-8,c:'#5dffa0',g:'Atom',a:'Röntgenbild, CT, Kristallstruktur'},
+ {n:'Gammastrahlung',lo:-14,hi:-11,c:'#ff5fa8',g:'Atomkern',a:'Radioaktivität, Strahlentherapie'}];
+function fmtLen(l){ const u=[[1e3,'km'],[1,'m'],[1e-2,'cm'],[1e-3,'mm'],[1e-6,'µm'],[1e-9,'nm'],[1e-12,'pm'],[1e-15,'fm']]; for(const [v,n] of u) if(l>=v*.9999) return fmt(l/v,l/v<10?1:0)+' '+n; return fmt(l/1e-15,1)+' fm'; }
+function fmtF(f){ const u=[[1e15,'PHz'],[1e12,'THz'],[1e9,'GHz'],[1e6,'MHz'],[1e3,'kHz']]; if(f>=1e17){ const e=Math.floor(Math.log10(f)); return fmt(f/10**e,1)+'·10'+String(e).split('').map(c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[+c]).join('')+' Hz'; } for(const [v,n] of u) if(f>=v) return fmt(f/v,f/v<10?1:0)+' '+n; return fmt(f,0)+' Hz'; }
+bind('emsP','emsPv',v=>fmtLen(10**(-v)));
+sim($('cvEMS'),(dt,t)=>{ const {ctx,W,H}=fit($('cvEMS')); ctx.clearRect(0,0,W,H);
+  const L=18,R=18,pw=W-L-R, X=lg=>L+(4-lg)/17*pw, lg=-(+$('emsP').value), lam=10**lg, fr=3e8/lam;
+  const by=H*.42, bh=Math.max(26,H*.07);
+  BANDS.forEach(b=>{ const x1=X(Math.min(4,b.hi)), x2=X(Math.max(-13,b.lo));
+    if(b.n==='Sichtbares Licht'){ for(let x=x1;x<x2;x++){ const l=780-(x-x1)/(x2-x1)*400; ctx.fillStyle=wlc(l); ctx.fillRect(x,by,1.3,bh);} }
+    else { ctx.fillStyle=b.c; ctx.globalAlpha=.32; ctx.fillRect(x1,by,x2-x1,bh); ctx.globalAlpha=1; }
+    const on=lg<=b.hi&&lg>b.lo, bl=b.n.replace('strahlung','').replace('Sichtbares ',''); ctx.font='12px "IBM Plex Sans", sans-serif'; if(x2-x1>ctx.measureText(bl).width+10) label(ctx,b.n.replace('strahlung','').replace('Sichtbares ',''),(x1+x2)/2,by+bh/2+4,on?'#fff':COL.text,(on?'600 ':'')+'12px "IBM Plex Sans", sans-serif'); });
+  label(ctx,'Licht',X(-6.26),by-6,'#fff','600 11px "IBM Plex Sans", sans-serif');
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.textAlign='center';
+  const nar=W<700; [[3,'1 km'],[0,'1 m'],[-3,'1 mm'],[-6,'1 µm'],[-9,'1 nm'],[-12,'1 pm']].filter((_,j)=>!nar||j%2===1).forEach(([g,t])=>{ const x=X(g); ctx.fillRect(x,by+bh,1,6); ctx.fillText(t,x,by+bh+18); ctx.fillText(fmtF(3e8/10**g),x,by+bh+33); });
+  label(ctx,'λ',L,by+bh+18,COL.muted,'italic 13px "STIX Two Text", serif','left'); label(ctx,'f',L,by+bh+33,COL.muted,'italic 13px "STIX Two Text", serif','left');
+  label(ctx,W<700?'← lang':'← lange Wellen · niedrige Frequenz · wenig Energie',L,20,COL.muted,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,W<700?'kurz · viel Energie →':'kurze Wellen · hohe Frequenz · viel Energie →',W-R,20,COL.muted,'12px "IBM Plex Sans", sans-serif','right');
+  // Chirp-Welle
+  const wy=H*.22, A=Math.min(26,H*.06), l0=Math.min(170,pw/4), ln=Math.log(l0/2.5);
+  ctx.strokeStyle='rgba(230,235,245,.55)'; ctx.lineWidth=1.6; ctx.beginPath();
+  for(let x=0;x<=pw;x+=1){ const ph=2*Math.PI/l0*pw/ln*(Math.exp(x*ln/pw)-1); const y=wy-Math.sin(ph-t*3)*A; x?ctx.lineTo(L+x,y):ctx.moveTo(L+x,y); } ctx.stroke();
+  // Marker
+  const band=BANDS.find(b=>lg<=b.hi&&lg>b.lo)||BANDS[0], mx=X(lg), col=band.n==='Sichtbares Licht'?wlc(Math.min(780,Math.max(380,lam*1e9))):band.c;
+  ctx.strokeStyle=col; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(mx,wy-A-10); ctx.lineTo(mx,by+bh+2); ctx.stroke();
+  ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(mx-7,wy-A-18); ctx.lineTo(mx+7,wy-A-18); ctx.lineTo(mx,wy-A-8); ctx.fill();
+  const cy0=by+bh+50, cw=Math.min(560,W-32), cx0=Math.max(16,Math.min(W-16-cw,mx-cw/2)), ch=H-cy0-12;
+  ctx.fillStyle='rgba(18,26,44,.95)'; ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.beginPath(); ctx.rect(cx0,cy0,cw,ch); ctx.fill(); ctx.stroke();
+  label(ctx,band.n,cx0+16,cy0+28,col,'700 19px "Syne", "IBM Plex Sans", sans-serif','left');
+  label(ctx,'λ ≈ '+fmtLen(lam)+'    f ≈ '+fmtF(fr),cx0+16,cy0+52,'#fff','500 14px "IBM Plex Mono", monospace','left');
+  label(ctx,'so groß wie: '+band.g,cx0+16,cy0+74,COL.text,'13px "IBM Plex Sans", sans-serif','left');
+  if(ch>90) label(ctx,'Anwendungen: '+band.a,cx0+16,cy0+94,COL.text,'13px "IBM Plex Sans", sans-serif','left');
+});
+
+/* ---------- Beugung am Spalt ---------- */
+bind('bgB','bgBv',v=>fmt(v,1)+' λ');
+const bgOff=document.createElement('canvas'); let bgImg=null;
+sim($('cvBeug'),(dt,t)=>{ const {ctx,W,H}=fit($('cvBeug')); const b=+$('bgB').value;
+  const gw=Math.round(Math.min(150,W/3.4)), gh=Math.round(gw*H/W); if(bgOff.width!==gw||bgOff.height!==gh){bgOff.width=gw;bgOff.height=gh;bgImg=bgOff.getContext('2d').createImageData(gw,gh);}
+  const sc=W/gw, lp=Math.max(14,Math.min(W,H*1.6)/30), k=2*Math.PI/lp, om=2*Math.PI*.7*t, x0=W*.3, cy=H/2, bp=b*lp;
+  const ns=Math.max(1,Math.min(24,Math.ceil(b*2.6-.5))), src=[]; for(let j=0;j<ns;j++) src.push(ns===1?cy:cy-bp/2+bp*(j+.5)/ns);
+  const d=bgImg.data;
+  for(let y=0;y<gh;y++) for(let x=0;x<gw;x++){ const X=(x+.5)*sc, Y=(y+.5)*sc, q=(y*gw+x)*4; let v;
+    if(X<x0) v=Math.cos(k*(X-x0)-om)*.9;
+    else { let sum=0; for(const sy of src){ const r=Math.hypot(X-x0,Y-sy)+1; sum+=Math.cos(k*r-om)/Math.sqrt(r/lp+.3); } v=sum*(ns===1?Math.max(bp,lp*.5):bp/ns)/lp*(ns<3?1.5:.85); }
+    const s2=Math.max(0,Math.min(1,(v+1)/2)); d[q]=6+s2*60; d[q+1]=20+s2*160; d[q+2]=48+s2*200; d[q+3]=255; }
+  bgOff.getContext('2d').putImageData(bgImg,0,0); ctx.imageSmoothingEnabled=true; ctx.drawImage(bgOff,0,0,W,H);
+  ctx.fillStyle='#e6ebf5'; ctx.fillRect(x0-4,0,8,cy-bp/2); ctx.fillRect(x0-4,cy+bp/2,8,H);
+  ctx.setLineDash([6,6]); ctx.strokeStyle='rgba(255,201,60,.8)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x0,cy-bp/2); ctx.lineTo(W,cy-bp/2); ctx.moveTo(x0,cy+bp/2); ctx.lineTo(W,cy+bp/2); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx,'geometrischer Schatten',W-12,Math.max(18,cy-bp/2-12),COL.na,'600 12px "IBM Plex Sans", sans-serif','right');
+  label(ctx,'geometrischer Schatten',W-12,Math.min(H-8,cy+bp/2+22),COL.na,'600 12px "IBM Plex Sans", sans-serif','right');
+  src.forEach(sy=>{ ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(x0,sy,2.6,0,7); ctx.fill(); });
+  ctx.strokeStyle=COL.na; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(x0-18,cy-bp/2); ctx.lineTo(x0-18,cy+bp/2); ctx.stroke(); label(ctx,'b',x0-26,cy+5,COL.na,'italic 16px "STIX Two Text", serif','right');
+  ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(14,H-20); ctx.lineTo(14+lp,H-20); ctx.stroke(); label(ctx,'λ',14+lp/2,H-26,'#fff','italic 15px "STIX Two Text", serif');
+  label(ctx,'ebene Welle',14,22,'#fff','600 12px "IBM Plex Sans", sans-serif','left');
+});
+
+/* ---------- Einzelspalt-Herleitung ---------- */
+const ES={m:0,cur:0};
+function esSet(m){ ES.m=m; document.querySelectorAll('[data-es]').forEach(b=>b.classList.toggle('on',+b.dataset.es===m)); }
+document.querySelectorAll('[data-es]').forEach(b=>b.onclick=()=>esSet(+b.dataset.es)); esSet(0);
+sim($('cvESH'),(dt,t)=>{ const {ctx,W,H}=fit($('cvESH')); ctx.clearRect(0,0,W,H);
+  ES.cur+=(ES.m-ES.cur)*Math.min(1,dt*2.2); const r=.26, sa=Math.min(.9,ES.cur*r), a=Math.asin(sa);
+  const sx=W*.2, bp=Math.min(H*.6,280), cy=H*.5, yT=cy-bp/2, yB=cy+bp/2, sw=W-80;
+  ctx.fillStyle='#e6ebf5'; ctx.fillRect(sx-5,0,10,yT); ctx.fillRect(sx-5,yB,10,H-yB);
+  for(let j=0;j<5;j++){ const x=((t*40+j*(sx/5))%sx); ctx.strokeStyle='rgba(255,77,77,.35)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,yT); ctx.lineTo(x,yB); ctx.stroke(); }
+  const zones=ES.cur<.25?1:Math.max(2,Math.round(ES.cur*2)), Nr=24, d={x:Math.cos(a),y:Math.sin(a)};
+  const zc=z=>zones===1?COL.red:(zones%2===1&&z===zones-1)?COL.na:(z%2?COL.pink:COL.cyan);
+  const pair=Math.floor(t*1.3)%(Nr/ (zones>1?zones:1));
+  for(let i=0;i<Nr;i++){ const y=yT+(i+.5)/Nr*bp, z=Math.min(zones-1,Math.floor((i/Nr)*zones)), len=(sw-sx)/Math.max(.35,d.x);
+    const per=Nr/zones, idx=i-z*per, hl=zones>1 && Math.floor(idx)===pair && (z<2 || false);
+    ctx.strokeStyle=zc(z); ctx.globalAlpha=hl?1:.45; ctx.lineWidth=hl?3:1.3; ctx.beginPath(); ctx.moveTo(sx,y); ctx.lineTo(sx+d.x*len,y+d.y*len); ctx.stroke(); ctx.globalAlpha=1; }
+  // Zonen-Markierung am Spalt
+  if(zones>1) for(let z=0;z<zones;z++){ const y0=yT+z*bp/zones, y1=y0+bp/zones; ctx.fillStyle=zc(z); ctx.fillRect(sx+6,y0+2,6,y1-y0-4); label(ctx,String(z+1),sx+26,(y0+y1)/2+5,zc(z),'600 13px "IBM Plex Mono", monospace'); }
+  // Dreieck mit Gangunterschied
+  if(ES.cur>.05){ const ds=bp*sa, T={x:sx,y:yT}, F={x:sx+d.x*ds,y:yT+d.y*ds}, B={x:sx,y:yB};
+    ctx.setLineDash([5,4]); ctx.strokeStyle='#fff'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(B.x,B.y); ctx.lineTo(F.x,F.y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle=COL.na; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(T.x,T.y); ctx.lineTo(F.x,F.y); ctx.stroke();
+    const n=Math.round(ES.cur*2); for(let j=1;j<n;j++){ const p={x:sx+d.x*ds*j/n,y:yT+d.y*ds*j/n}; ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(p.x,p.y,3,0,7); ctx.fill(); }
+    label(ctx,'Δs = b·sin α = '+fmt(ES.cur,1).replace(',0','')+' λ',F.x+10,F.y-10,COL.na,'600 14px "IBM Plex Mono", monospace','left');
+    if(n>=2) label(ctx,'je Abschnitt λ/2',F.x+10,F.y+8,COL.muted,'12px "IBM Plex Sans", sans-serif','left');
+    ctx.strokeStyle=COL.na; ctx.lineWidth=1.5; arcBetween(ctx,B,-Math.PI/2,-Math.PI/2+a,30); label(ctx,'α',B.x+14,B.y-34,COL.na); }
+  label(ctx,'b',sx-18,cy+5,COL.na,'italic 18px "STIX Two Text", serif','right');
+  // Mini-Schirm
+  const xs=W-44, amax=rad(62);
+  for(let y=14;y<H-14;y++){ const th=(y-cy)/(H/2-14)*amax, be=Math.PI*Math.sin(th)/r, I=Math.abs(be)<1e-6?1:Math.pow(Math.sin(be)/be,2); ctx.fillStyle=wlc(633,Math.min(1,Math.sqrt(I)*1.1)); ctx.fillRect(xs,y,22,1.2); }
+  const ym=cy+a/amax*(H/2-14); ctx.fillStyle='#fff'; ctx.beginPath(); ctx.moveTo(xs-4,ym); ctx.lineTo(xs-14,ym-7); ctx.lineTo(xs-14,ym+7); ctx.fill();
+  label(ctx,'Schirm',xs+11,12,COL.muted,'11px "IBM Plex Sans", sans-serif');
+  const st=ES.cur<.25?['Hauptmaximum: hell',COL.green]:Math.abs(ES.cur-Math.round(ES.cur))<.12?[Math.round(ES.cur)+'. Minimum: dunkel',COL.pink]:Math.abs(ES.cur%1-.5)<.12?[Math.floor(ES.cur)+'. Nebenmaximum: schwach hell',COL.na]:['…',COL.muted];
+  label(ctx,st[0],14,24,st[1],'700 16px "IBM Plex Sans", sans-serif','left');
+});
+
+/* ---------- Kleinwinkelnäherung ---------- */
+bind('kwA','kwAv',v=>fmt(v)+'°');
+sim($('cvKW'),()=>{ const {ctx,W,H}=fit($('cvKW')); ctx.clearRect(0,0,W,H);
+  const A=+$('kwA').value, narrow=W<700, pw0=narrow?W-40:W*.58-40, L=40,T=16,ph=narrow?H*.55:H-50, X=a=>L+a/45*pw0, Y=v=>T+ph-v/1.0*ph;
+  ctx.font='11px "IBM Plex Mono", monospace'; ctx.fillStyle=COL.muted; ctx.strokeStyle=COL.grid; ctx.textAlign='center';
+  for(let a=0;a<=45;a+=5){ ctx.beginPath(); ctx.moveTo(X(a),T); ctx.lineTo(X(a),T+ph); ctx.stroke(); ctx.fillText(a+'°',X(a),T+ph+14); }
+  ctx.textAlign='right'; for(let v=0;v<=1;v+=.25){ ctx.fillText(fmt(v,2),L-6,Y(v)+4); }
+  ctx.fillStyle='rgba(93,255,160,.08)'; ctx.fillRect(X(0),T,X(8)-X(0),ph); label(ctx,'Fehler < 1 %',X(4),T+14,COL.green,'11px "IBM Plex Sans", sans-serif');
+  const cur=(fn,col)=>{ ctx.strokeStyle=col; ctx.lineWidth=2.2; ctx.beginPath(); for(let a=0;a<=45;a+=.25){ const v=fn(rad(a)); a?ctx.lineTo(X(a),Y(v)):ctx.moveTo(X(a),Y(v)); } ctx.stroke(); };
+  cur(Math.tan,COL.cyan); cur(a=>a,'#fff'); cur(Math.sin,COL.red);
+  label(ctx,'tan α',X(45)-4,Y(1)+14,COL.cyan,'600 12px "IBM Plex Sans", sans-serif','right'); label(ctx,'α (rad)',X(45)-4,Y(rad(45))-8,'#fff','600 12px "IBM Plex Sans", sans-serif','right'); label(ctx,'sin α',X(45)-4,Y(Math.sin(rad(45)))+18,COL.red,'600 12px "IBM Plex Sans", sans-serif','right');
+  ctx.strokeStyle=COL.na; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(X(A),T); ctx.lineTo(X(A),T+ph); ctx.stroke();
+  // Dreieck
+  const gx=narrow?30:W*.62, gy=narrow?T+ph+40:H*.75, e=narrow?W-80:W*.33, ar=rad(A), a=e*Math.tan(ar), hmax=narrow?H-gy-10+ (H-gy)*0:gy-30, aa=Math.min(a,narrow?H*.35:hmax);
+  const sc2=aa/Math.max(a,1e-6), ee=e*sc2*0+e*(aa<a?aa/a:1);
+  ctx.strokeStyle='#e6ebf5'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(gx,gy); ctx.lineTo(gx+ee,gy); ctx.lineTo(gx+ee,gy-ee*Math.tan(ar)); ctx.closePath(); ctx.stroke();
+  label(ctx,'e',gx+ee/2,gy+18,COL.text); label(ctx,'a',gx+ee+12,gy-ee*Math.tan(ar)/2+5,COL.text,undefined,'left');
+  ctx.strokeStyle=COL.na; arcBetween(ctx,{x:gx,y:gy},0,-ar,40); label(ctx,'α',gx+52,gy-8,COL.na);
+  label(ctx,'Hypotenuse ≈ e, wenn α klein',gx,gy-ee*Math.tan(ar)-12>20?gy-ee*Math.tan(ar)-12:20,COL.muted,'12px "IBM Plex Sans", sans-serif','left');
+  const s1=Math.sin(ar), t1=Math.tan(ar), err=(t1/s1-1)*100;
+  $('kwS').textContent=fmt(s1,4); $('kwT').textContent=fmt(t1,4); $('kwR').textContent=fmt(ar,4); $('kwE').textContent=fmt(err,2)+' %'; $('kwBox').className='o '+(err<1.6?'good':'bad');
+});
+
+/* ---------- Glasfaser ---------- */
+bind('fbT','fbTv',v=>fmt(v)+'°');
+sim($('cvFib'),(dt,t)=>{ const {ctx,W,H}=fit($('cvFib')); ctx.clearRect(0,0,W,H);
+  const th=rad(+$('fbT').value), nk=1.5, nm=1.4, cy=H*.5, hc=Math.min(H*.16,48), hm=hc+Math.min(H*.12,32), x0=20, x1=W-20;
+  ctx.fillStyle='rgba(120,160,220,.12)'; ctx.fillRect(x0,cy-hm,x1-x0,2*hm); ctx.fillStyle='rgba(150,220,255,.2)'; ctx.fillRect(x0,cy-hc,x1-x0,2*hc);
+  ctx.strokeStyle='rgba(170,230,255,.6)'; ctx.lineWidth=1; ctx.strokeRect(x0,cy-hc,x1-x0,2*hc);
+  label(ctx,'Mantel n = 1,40',x0+8,cy-hm+14,COL.muted,'12px "IBM Plex Sans", sans-serif','left'); label(ctx,'Kern n = 1,50',x0+8,cy-hc+16,'#cfe9ff','12px "IBM Plex Sans", sans-serif','left');
+  let p={x:x0,y:cy}, dy=-1, I=1; const seg=[]; const dx=Math.tan(th);
+  for(let k=0;k<200&&p.x<x1&&I>.01;k++){ const ty=dy<0?(p.y-(cy-hc)):((cy+hc)-p.y); let q={x:p.x+ty*dx,y:dy<0?cy-hc:cy+hc}; if(q.x>x1){ const f=(x1-p.x)/(q.x-p.x); q={x:x1,y:p.y+(q.y-p.y)*f}; seg.push([p,q,I]); p=q; break; }
+    seg.push([p,q,I]); const F=fresnel(nk,nm,th); if(!F.tir){ const lx=Math.sin(F.b), ly=Math.cos(F.b), len=Math.max(40,hm*2); seg.push([q,{x:q.x+lx*len,y:q.y+dy*ly*len},I*F.T,1]); I*=F.R; } p=q; dy=-dy; }
+  let tot=0; const path=seg.filter(s=>!s[3]).map(([a,b,J])=>{const l=Math.hypot(b.x-a.x,b.y-a.y),o={a,b,J,l,s0:tot}; tot+=l; return o;});
+  seg.forEach(([a,b,J,leak])=>{ ctx.strokeStyle='rgba(255,77,77,'+(0.15+0.85*J)+')'; ctx.lineWidth=leak?1.6:2.4; ctx.shadowColor=COL.red; ctx.shadowBlur=leak?0:8*J; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); }); ctx.shadowBlur=0;
+  for(let j=0;j<6;j++){ const sPos=((t*220+j*tot/6)%Math.max(tot,1)); const g=path.find(g=>sPos<=g.s0+g.l); if(!g) continue; const f=(sPos-g.s0)/g.l; ctx.fillStyle='rgba(255,235,235,'+Math.min(1,g.J*1.2)+')'; ctx.beginPath(); ctx.arc(g.a.x+(g.b.x-g.a.x)*f,g.a.y+(g.b.y-g.a.y)*f,4,0,7); ctx.fill(); }
+  const tir=deg(th)>=69.0, endI=p.x>=x1-1?I:0;
+  label(ctx,tir?'θ > 69° · Totalreflexion: Licht bleibt gefangen ✓':'θ < 69° · Licht entweicht bei jeder Reflexion ✗',W/2,H-12,tir?COL.green:COL.pink,'600 13px "IBM Plex Sans", sans-serif');
+  $('fbE').textContent=Math.round(endI*100)+' %'; $('fbBox').className='o '+(endI>.9?'good':'bad');
+});
+
 /* ================= Erklär-Modus: Touren ================= */
 const tours=[];
 function tour(anchor,steps){
@@ -1629,7 +1881,7 @@ function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0;
   T.cap.classList.add('fade'); setTimeout(()=>{ T.cap.innerHTML=s.cap; T.cap.classList.remove('fade'); },200);
   T.n.textContent=(T.i+1)+' / '+T.steps.length; }
 let tl=performance.now();
-(function tick(now){ const dt=Math.min(.05,(now-tl)/1000); tl=now;
+(function tick(now){ const dt=Math.min(.25,(now-tl)/1000); tl=now;
   for(const T of tours){ if(!T.vis||!T.run) continue; if(T.i<0){ go(T,0); continue; }
     const s=T.steps[T.i], dur=s.dur||7, tw=s.tween||1.8; const prev=T.t; T.t+=dt;
     if(s.set && prev<tw){ const p=Math.min(1,T.t/tw), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
@@ -1770,6 +2022,36 @@ tour($('cvDip'),[
  {start:()=>setRad(true),dur:11,cap:'Jetzt <b>lösen sich die Felder ab</b> und laufen als elektromagnetische Welle mit Lichtgeschwindigkeit nach außen. Rot und Blau zeigen das E-Feld in entgegengesetzter Richtung.'},
  {dur:8,cap:'Senkrecht zum Stab (links und rechts) strahlt der Dipol am stärksten. In Richtung der Stabachse (oben und unten) strahlt er <b>gar nicht</b>.'},
  {dur:9,cap:'Am besten funktioniert es, wenn der Stab eine <b>halbe Wellenlänge</b> lang ist: <b>l = λ/2</b>. Beispiel WLAN: 2,4 GHz ergibt λ = 12,5 cm, die Antenne ist also etwa 6 cm lang.'}]);
+
+tour($('cvEMS'),[
+ {set:{emsP:-2},tween:2.5,dur:8,cap:'<b>Radiowellen</b>: λ von Metern bis Kilometern, so groß wie ein Haus. Sie tragen Radio, Funk und Fernsehen. UKW-Radio: 100 MHz, also λ = 3 m.'},
+ {set:{emsP:.9},tween:3,dur:8,cap:'<b>Mikrowellen</b>: λ von mm bis m. Handy, WLAN (λ = 12,5 cm) und der Mikrowellenherd, der Wassermoleküle zum Schwingen bringt.'},
+ {set:{emsP:5},tween:3,dur:7,cap:'<b>Infrarot</b>: Wärmestrahlung. Jeder warme Körper strahlt IR ab, das nutzen Wärmebildkameras. Auch die TV-Fernbedienung sendet Infrarot.'},
+ {set:{emsP:6.25},tween:2.5,dur:9,cap:'<b>Sichtbares Licht</b>: nur 380 bis 780 nm, ein <b>winziger Streifen</b> des Spektrums! Rot hat das größte λ, Violett das kleinste.'},
+ {set:{emsP:7.3},tween:2.5,dur:7,cap:'<b>Ultraviolett</b>: energiereicher als Licht, deshalb Sonnenbrand. Man nutzt es zum Desinfizieren und zur Geldschein-Prüfung.'},
+ {set:{emsP:10},tween:3,dur:7,cap:'<b>Röntgen</b>: λ etwa so groß wie ein Atom. Es durchdringt Gewebe, aber Knochen halten es auf. Daher kommt das Röntgenbild.'},
+ {set:{emsP:12.3},tween:2.5,dur:8,cap:'<b>Gamma</b>: die kürzesten Wellen mit der meisten Energie (<span class="m">E</span> = <span class="m">h</span>·<span class="m">f</span>). Sie entstehen bei radioaktivem Zerfall. Alle Bereiche laufen mit derselben Geschwindigkeit <span class="m">c</span>!'}]);
+tour($('cvBeug'),[
+ {set:{bgB:7},dur:8,cap:'Eine ebene Welle trifft auf einen <b>breiten</b> Spalt (7λ). Jeder Punkt im Spalt sendet eine Elementarwelle aus (weiße Punkte).'},
+ {dur:7,cap:'Viele Elementarwellen ergeben zusammen wieder eine fast ebene Front. Die Welle läuft fast geradeaus, und nur an den Rändern gelangt ein bisschen in den Schatten (gelb gestrichelt).'},
+ {set:{bgB:2.5},tween:4,dur:8,cap:'Schmalerer Spalt: Die Welle fächert <b>stärker</b> auf, immer mehr läuft in den Schattenraum.'},
+ {set:{bgB:.7},tween:4,dur:9,cap:'Spalt ≈ λ: Es bleibt praktisch <b>eine</b> Elementarwelle übrig, und dahinter entsteht eine <b>Kreiswelle</b>. Das ist Beugung: Die Welle läuft um die Ecke.'},
+ {dur:6,cap:'Merke: Beugung ist merklich, wenn die Öffnung etwa so groß wie λ ist. Für Licht (λ ≈ 0,5 µm) braucht man also sehr feine Spalte.'}]);
+tour($('cvESH'),[
+ {start:()=>esSet(0),dur:7,cap:'<b>Hauptmaximum (α = 0):</b> Alle Teilwellen aus dem Spalt laufen gleich weit zum Schirm. Sie kommen gleichphasig an und verstärken sich: hell!'},
+ {start:()=>esSet(1),dur:11,cap:'Schräg unter α: Der Randstrahl unten läuft Δs = <span class="m">b</span>·sin α weniger (gelbe Strecke). Ist Δs = λ, teilen wir den Spalt in <b>zwei Hälften</b>. Jeder Strahl oben hat unten einen Partner mit Δs = λ/2 (dicke Linien), und sie löschen sich <b>paarweise</b> aus: <b>1. Minimum</b>.'},
+ {start:()=>esSet(1.5),dur:10,cap:'Bei Δs = 1,5λ gibt es <b>drei Zonen</b>. Zwei löschen sich gegenseitig aus, die dritte (gelb) bleibt übrig: schwach hell, das <b>1. Nebenmaximum</b>.'},
+ {start:()=>esSet(2),dur:9,cap:'Bei Δs = 2λ gibt es <b>vier Zonen</b>, die sich paarweise auslöschen: <b>2. Minimum</b>. Allgemein gilt für die Minima: <b><span class="m">b</span>·sin α = <span class="m">k</span>·λ</b>.'},
+ {start:()=>esSet(2.5),dur:9,cap:'Dazwischen liegen die Nebenmaxima bei <b><span class="m">b</span>·sin α ≈ (<span class="m">k</span> + ½)·λ</b>, immer schwächer. Achtung: Beim Doppelspalt und beim Gitter ist es genau umgekehrt!'}]);
+tour($('cvKW'),[
+ {set:{kwA:3},dur:7,cap:'Bei 3° liegen sin α, tan α und α (im Bogenmaß) praktisch <b>aufeinander</b>: Der Unterschied liegt unter 0,2 %. Das ist die Situation beim Doppelspalt.'},
+ {set:{kwA:10},tween:3,dur:7,cap:'Bei 10° ist der Fehler etwa 1,5 %. Die Näherung ist meist noch in Ordnung. Das ist die Faustregel-Grenze.'},
+ {set:{kwA:25},tween:3,dur:7,cap:'Bei 25° gehen die Kurven sichtbar auseinander: tan α ist 10 % größer als sin α. Hier darf man <b>nicht</b> mehr nähern.'},
+ {set:{kwA:40},tween:3,dur:8,cap:'Beim Gitter sind 40° normal: Der Fehler liegt über 30 %! Deshalb beim Gitter immer exakt rechnen: α = arctan(<span class="m">a</span>/<span class="m">e</span>), dann <span class="m">d</span>·sin α = <span class="m">k</span>λ.'}]);
+tour($('cvFib'),[
+ {set:{fbT:80},dur:8,cap:'Licht trifft unter θ = 80° auf die Grenze Kern–Mantel. 80° &gt; 69° (Grenzwinkel), also <b>Totalreflexion</b> bei jedem Aufprall. 100 % kommen am Ende an.'},
+ {set:{fbT:60},tween:3,dur:9,cap:'Bei θ = 60° (&lt; 69°) wird an jeder Stelle nur ein Teil reflektiert, der Rest tritt in den Mantel aus. Nach wenigen Reflexionen ist fast nichts mehr übrig.'},
+ {set:{fbT:75},tween:3,dur:8,cap:'Darum koppelt man Licht möglichst <b>flach</b> ein. Dann bleibt es über Kilometer gefangen: Internet, Telefon, Endoskop.'}]);
 
 setTimeout(()=>{ if(!window.__em3d) document.body.classList.add('no3d'); },9000);
 })();
