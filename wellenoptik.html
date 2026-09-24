@@ -236,9 +236,8 @@ body.video .tour{display:block}
 .th-count{height:3px;background:rgba(255,255,255,.1);margin:22px auto 0;max-width:260px;border-radius:2px;overflow:hidden}
 .th-count i{display:block;height:100%;width:0;background:var(--green)}
 .th-unmute{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:9;max-width:calc(100% - 32px);padding:16px 22px;border:0;border-radius:14px;background:#ffd166;color:#14110a;font-family:inherit;font-size:1.1rem;font-weight:700;line-height:1.3;box-shadow:0 10px 40px rgba(0,0,0,.5);cursor:pointer}
-.th-run{display:block;flex:none;width:min(calc(100% - 40px),60vh);height:30vh;min-height:140px;margin:2px auto 4px;border-radius:12px;background:#2e2622}
-.th-run[hidden]{display:none}
-#thRunBtn[aria-pressed="true"]{background:#ffb703;color:#14110a;border-color:#ffb703}
+#thYT{font-family:var(--body);font-size:.84rem;padding:7px 13px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--text);text-decoration:none;display:inline-flex;align-items:center}
+#thYT:hover{border-color:var(--cyan)}
 .th-score{flex:none;font-size:.85rem;color:#ffd60a;margin-right:12px;transition:transform .25s}
 .th-score.pop{transform:scale(1.35)}
 .th-card.quiz{pointer-events:auto}
@@ -338,7 +337,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="lv-side">
       <div class="eyebrow">Neu · zurücklehnen, zuschauen, zuhören</div>
       <h2>Das Lernvideo</h2>
-      <p>Alle Themen laufen <b>im Vollbild</b> nacheinander ab, in einer Reihenfolge, die aufeinander aufbaut. Jedes Kapitel beginnt mit einer Titelkarte und der Kernaussage. Dann läuft die Animation, und die Erklärung erscheint als <b>Untertitel</b>. Am Ende jedes Themas fasst eine <b>Merkkarte</b> die wichtigsten Formeln zusammen, danach kommt eine <b>⚡ Blitzfrage</b> mit Punkten und Serien-Bonus. Tippst du nichts an, kommt die Auflösung von selbst. Für zwischendurch blendet der Knopf <b>🏃 Runner</b> ein kleines Lauf-Spiel unter dem Video ein. Lieber echtes Gameplay? Öffne <a href="https://youtu.be/zZ7AimPACzc" target="_blank" rel="noopener">das Gameplay-Video auf YouTube</a> und zieh es auf dem iPad in die <b>Split View</b> neben diese Seite. Du musst nichts tun, und Antippen unterbricht nichts.</p>
+      <p>Alle Themen laufen <b>im Vollbild</b> nacheinander ab, in einer Reihenfolge, die aufeinander aufbaut. Jedes Kapitel beginnt mit einer Titelkarte und der Kernaussage. Dann läuft die Animation, und die Erklärung erscheint als <b>Untertitel</b>. Am Ende jedes Themas fasst eine <b>Merkkarte</b> die wichtigsten Formeln zusammen, danach kommt eine <b>⚡ Blitzfrage</b> mit Punkten und Serien-Bonus. Tippst du nichts an, kommt die Auflösung von selbst. Für zwischendurch öffnet der Knopf <b>📺 Gameplay</b> <a href="https://youtu.be/zZ7AimPACzc" target="_blank" rel="noopener">das Gameplay-Video auf YouTube</a>. Auf dem iPad legst du es per <b>Split View</b> daneben: In Safari den Knopf gedrückt halten und „In Split View öffnen“ wählen. Oder die YouTube-App öffnen, oben auf die drei Punkte (•••) tippen und „Split View“ wählen.</p>
       <label class="lv-voice" for="lvVoice"><input type="checkbox" id="lvVoice" checked> 🔊 <b>Erklärstimme</b> liest alles vor (Stimme <b>Claribel</b>, alternativ Thorsten). Jede Animation wartet, bis der Satz fertig ist.</label>
       <p class="hint" id="lvVoiceInfo">Stimme: wird gesucht …</p>
       <div class="btns"><button class="btn-video" id="lvStart" type="button" style="margin-top:0">▶ Von vorn starten</button><button class="b" id="lvCont" type="button" hidden>Weiter bei Kapitel 1</button></div>
@@ -1138,13 +1137,12 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="th-card" id="thCard"><div class="th-card-in"><div class="th-eye" id="thEye">–</div><div class="th-title" id="thTitle">–</div><div class="th-kurz" id="thKurz"></div><div class="th-count"><i id="thCount"></i></div></div></div>
   </div>
   <div class="th-sub"><div class="th-dots" id="thDots"></div><p id="thSub"></p></div>
-  <canvas id="thRun" class="th-run" hidden aria-hidden="true"></canvas>
   <div class="th-ctrl" id="thCtrl">
     <button class="b" id="thPrev" type="button" aria-label="Vorheriges Kapitel">⏮</button>
     <button class="b th-main" id="thPlay" type="button" aria-label="Pause">❚❚</button>
     <button class="b" id="thNext" type="button" aria-label="Nächstes Kapitel">⏭</button>
     <button class="b" id="thSpeed" type="button" aria-label="Tempo">1×</button>
-    <button class="b" id="thRunBtn" type="button" aria-pressed="false" title="Kleines Lauf-Spiel unter dem Video ein- oder ausblenden">🏃 Runner</button>
+    <a class="b" id="thYT" href="https://youtu.be/zZ7AimPACzc" target="_blank" rel="noopener" title="Gameplay-Video auf YouTube öffnen, auf dem iPad per Split View daneben legen">📺 Gameplay</a>
     <button class="b" id="thVoice" type="button" aria-label="Erklärstimme ein oder aus">🔊 Stimme</button>
     <select id="thVoiceSel" aria-label="Stimme wählen"></select>
     <button class="b" id="thExit" type="button" aria-label="Lernvideo beenden">✕ Beenden</button>
@@ -2315,71 +2313,6 @@ tour($('cvFib'),[
  {set:{fbT:75},tween:3,dur:8,cap:'Darum koppelt man Licht möglichst <b>flach</b> ein. Dann bleibt es über Kilometer gefangen: Internet, Telefon, Endoskop.'}]);
 
 
-/* ================= Runner: Spaß-Gameplay unter dem Video (optional) ================= */
-const RUN=(function(){
-  const cv=document.getElementById('thRun'); let on=false, raf=0, lastT=0, t=0, dist=0, coins=0, v=13;
-  const LANES=[-1.7,0,1.7], RZ=2.6, FAR=70; let lane=1, px=0, jumpT=-1, objs=[], nextRow=18, bld=[];
-  const COLS=['#ff4d6d','#ffb703','#3a86ff','#8338ec','#06d6a0','#fb5607'];
-  for(let i=0;i<24;i++) bld.push({z:i*3.2,side:i%2?1:-1,h:3+Math.random()*6,c:COLS[i%COLS.length]});
-  function row(z){ const trains=Math.random()<.35?2:1, idx=[0,1,2].sort(()=>Math.random()-.5);
-    for(let k=0;k<3;k++){ const L=idx[k];
-      if(k<trains) objs.push({t:'train',L,z,len:6+Math.random()*4,c:COLS[(Math.random()*COLS.length)|0]});
-      else if(k===trains&&Math.random()<.45) objs.push({t:'bar',L,z:z+2});
-      else for(let j=0;j<5;j++) objs.push({t:'coin',L,z:z+j*1.4,y:1}); } }
-  function reset(){ objs=[]; nextRow=18; dist=0; coins=0; v=13; lane=1; px=0; jumpT=-1; for(let z=18;z<FAR;z+=15) row(z); nextRow=z0(); }
-  const z0=()=>objs.reduce((m,o)=>Math.max(m,o.z),0)+15;
-  function blocked(L,a,b){ return objs.some(o=>o.t==='train'&&o.L===L&&o.z<b&&o.z+o.len>a); }
-  function think(){ // autopilot: rechtzeitig ausweichen, über Sperren springen
-    if(blocked(lane,RZ-.5,RZ+16)){ const c=[lane-1,lane+1].filter(L=>L>=0&&L<3).sort(()=>Math.random()-.5).find(L=>!blocked(L,RZ-1.5,RZ+14)); if(c!==undefined) lane=c; }
-    else if(Math.random()<.004){ const c=lane+(Math.random()<.5?-1:1); if(c>=0&&c<3&&!blocked(c,RZ-1.5,RZ+14)) lane=c; }
-    if(jumpT<0&&objs.some(o=>o.t==='bar'&&o.L===lane&&o.z>RZ&&o.z-RZ<2.4)) jumpT=0; }
-  function draw(dt){
-    const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2), W=Math.max(1,r.width|0), H=Math.max(1,r.height|0);
-    if(cv.width!==W*dpr||cv.height!==H*dpr){ cv.width=W*dpr; cv.height=H*dpr; } const c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0);
-    const hy=H*.3, cam=2.4, ZC=4, f=(H-hy)*ZC/cam, cx=W/2, P=(x,y,z)=>{ const d=Math.max(.4,z+ZC); return [cx+f*(x-px*.55)/d, hy+f*(cam-y)/d, f/d]; };
-    // Himmel + Stadt
-    let g=c.createLinearGradient(0,0,0,hy); g.addColorStop(0,'#3b1d6e'); g.addColorStop(1,'#ff8a5b'); c.fillStyle=g; c.fillRect(0,0,W,hy+1);
-    c.fillStyle='#2a1640'; for(let i=0;i<14;i++){ const bw=W/14, bh=hy*(.25+.5*((i*37%11)/11)); c.fillRect(i*bw,hy-bh,bw-2,bh); }
-    c.fillStyle='#ffd166'; c.beginPath(); c.arc(W*.78,hy*.45,hy*.18,0,7); c.fill();
-    // Boden
-    g=c.createLinearGradient(0,hy,0,H); g.addColorStop(0,'#5a4a42'); g.addColorStop(1,'#2e2622'); c.fillStyle=g; c.fillRect(0,hy,W,H-hy);
-    // Wände/Häuser seitlich
-    bld.forEach(b=>{ b.z-=v*dt; if(b.z<-1){ b.z+=24*3.2; b.h=3+Math.random()*6; } });
-    [...bld].filter(b=>b.z>-2.5).sort((a,b)=>b.z-a.z).forEach(b=>{ const x=b.side*4.6, [x1,y1]=P(x,0,b.z), [x2,y2]=P(x,b.h,b.z), [x3]=P(x+b.side*3,0,b.z);
-      const [xa,ya]=P(x,0,b.z+3), [xb,yb]=P(x,b.h,b.z+3); c.fillStyle=b.c; c.globalAlpha=.85; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.lineTo(xb,yb); c.lineTo(xa,ya); c.fill(); c.globalAlpha=1; });
-    // Schwellen + Schienen
-    const ph=dist%1.3; for(let z=FAR-ph; z>-3; z-=1.3){ const [a1,ay,s]=P(-2.7,0,z), [a2]=P(2.7,0,z); c.fillStyle='rgba(70,48,32,'+Math.min(1,1.3-z/FAR)+')'; c.fillRect(a1,ay-s*.05,a2-a1,Math.max(1,s*.12)); }
-    c.strokeStyle='#c9ced8'; LANES.forEach(L=>[-.55,.55].forEach(o=>{ const [x1,y1,s1]=P(L+o,0,-3), [x2,y2]=P(L+o,0,FAR); c.lineWidth=Math.max(1,f/ZC*.05); c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke(); }));
-    // Objekte von hinten nach vorn
-    const list=objs.filter(o=>o.z<FAR&&o.z+(o.len||0)>-1).sort((a,b)=>b.z-a.z); let runnerDrawn=false;
-    const drawRunner=()=>{ runnerDrawn=true; const jy=jumpT>=0?Math.sin(Math.min(1,jumpT/.62)*Math.PI)*1.5:0, [x,y,s]=P(px,jy,RZ), u=s*.55, st=Math.sin(t*16);
-      c.fillStyle='rgba(0,0,0,.35)'; const [,gy]=P(px,0,RZ); c.beginPath(); c.ellipse(x,gy,u*.5,u*.12,0,0,7); c.fill();
-      c.lineCap='round'; c.strokeStyle='#1d3557'; c.lineWidth=u*.22; [st,-st].forEach((k,i)=>{ c.beginPath(); c.moveTo(x+(i?.12:-.12)*u,y-1.05*u); c.lineTo(x+(i?.16:-.16)*u,y-(.55+.25*k)*u); c.lineTo(x+(i?.14:-.14)*u,y-(.1+.2*Math.max(0,k))*u); c.stroke(); });
-      c.fillStyle='#e63946'; c.beginPath(); c.roundRect(x-.3*u,y-1.85*u,.6*u,.85*u,.15*u); c.fill();
-      c.fillStyle='#ffb703'; c.beginPath(); c.roundRect(x-.24*u,y-1.8*u,.48*u,.5*u,.1*u); c.fill();
-      c.strokeStyle='#e63946'; c.lineWidth=u*.16; [st,-st].forEach((k,i)=>{ c.beginPath(); c.moveTo(x+(i?.28:-.28)*u,y-1.7*u); c.lineTo(x+(i?.42:-.42)*u,y-(1.35-.25*k)*u); c.stroke(); });
-      c.fillStyle='#f4c29b'; c.beginPath(); c.arc(x,y-2.08*u,.2*u,0,7); c.fill(); c.fillStyle='#023047'; c.beginPath(); c.arc(x,y-2.14*u,.21*u,Math.PI,0); c.fill(); c.fillRect(x-.05*u,y-2.2*u,.32*u,.07*u); };
-    list.forEach(o=>{ if(!runnerDrawn&&o.z<RZ) drawRunner(); const Lx=LANES[o.L];
-      if(o.t==='train'){ const w=.75,h=2.6,z1=Math.max(-2.5,o.z),z2=o.z+o.len; const p=[P(Lx-w,0,z1),P(Lx+w,0,z1),P(Lx+w,h,z1),P(Lx-w,h,z1)], q=[P(Lx-w,h,z2),P(Lx+w,h,z2)], sd=Lx<px*.55?[P(Lx+w,0,z1),P(Lx+w,0,z2),P(Lx+w,h,z2),P(Lx+w,h,z1)]:[P(Lx-w,0,z1),P(Lx-w,0,z2),P(Lx-w,h,z2),P(Lx-w,h,z1)];
-        const poly=(pts,fill)=>{ c.fillStyle=fill; c.beginPath(); pts.forEach(([a,b],i)=>i?c.lineTo(a,b):c.moveTo(a,b)); c.fill(); };
-        poly(sd,'#26334d'); poly([p[3],p[2],q[1],q[0]],'#9aa7bd'); poly(p,o.c);
-        const s=p[0][2]; c.fillStyle='#bde0fe'; c.fillRect(p[0][0]+s*.25,p[3][1]+s*.35,(p[1][0]-p[0][0])-s*.5,s*.6); c.fillStyle='#fff3b0'; [.3,1.2].forEach(k=>{ c.beginPath(); c.arc(p[0][0]+s*k*.95/1.5*1.1,p[0][1]-s*.45,s*.12,0,7); c.fill(); });
-      } else if(o.t==='bar'){ const [x1,y1,s]=P(Lx-.8,.9,o.z), [x2]=P(Lx+.8,.9,o.z), [,yb]=P(Lx,0,o.z); c.fillStyle='#fff'; c.fillRect(x1,y1,x2-x1,s*.28); c.fillStyle='#e63946'; for(let k=0;k<4;k++) c.fillRect(x1+(x2-x1)*k/4,y1,(x2-x1)/8,s*.28); c.fillStyle='#ddd'; c.fillRect(x1,y1,s*.08,yb-y1); c.fillRect(x2-s*.08,y1,s*.08,yb-y1);
-      } else if(o.t==='coin'&&!o.got){ const [x,y,s]=P(Lx,o.y+.3*Math.sin(t*4+o.z),o.z), sq=Math.abs(Math.cos(t*5+o.z)); c.fillStyle='#ffd60a'; c.strokeStyle='#e09f00'; c.lineWidth=Math.max(1,s*.05); c.beginPath(); c.ellipse(x,y,s*.25*Math.max(.15,sq),s*.25,0,0,7); c.fill(); c.stroke(); } });
-    if(!runnerDrawn) drawRunner();
-    // HUD
-    c.font='700 '+Math.max(12,H*.075)+'px "IBM Plex Mono", monospace'; c.textBaseline='top'; c.fillStyle='rgba(0,0,0,.45)'; c.fillRect(8,8,Math.max(150,H*.75),H*.2); c.fillStyle='#ffd60a'; c.fillText('● '+coins,16,12); c.fillStyle='#fff'; c.fillText(Math.floor(dist)+' m',16,12+H*.09); }
-  function step(now){ if(!on) return; raf=requestAnimationFrame(step); const dt=Math.min(.05,(now-lastT)/1000||0); lastT=now; const run=!RUN.paused();
-    if(run){ t+=dt; v=Math.min(24,v+dt*.12); dist+=v*dt; objs.forEach(o=>o.z-=v*dt);
-      objs=objs.filter(o=>o.z+(o.len||0)>-2); while(z0()<FAR+15) row(z0());
-      think(); px+=(LANES[lane]-px)*Math.min(1,dt*9); if(jumpT>=0){ jumpT+=dt; if(jumpT>.62) jumpT=-1; }
-      objs.forEach(o=>{ if(o.t==='coin'&&!o.got&&o.L===lane&&Math.abs(o.z-RZ)<.6){ o.got=1; coins++; } }); }
-    draw(run?dt:0); }
-  return { paused:()=>false, get on(){ return on; }, start(){ if(on) return; on=true; cv.hidden=false; if(!objs.length) reset(); lastT=performance.now(); raf=requestAnimationFrame(step); },
-    stop(){ on=false; cancelAnimationFrame(raf); cv.hidden=true; } };
-})();
-
-
 /* ================= Lernvideo im Vollbild ================= */
 (function(){
   const ORDER=['cvLC','cvDip','emL','cvEMS','cvRefH','cvRefF','cvBrH','cvBrF','cvWater','cvRain','cvFib','cvInt','cvBeug','cvSingle','cvESH','cvDouble','cvKW','cvGrat','cvSpecG','cvRes','cvStand','cvMZ','cvMi','cvPol','cvBrew','cvCmp'];
@@ -2475,11 +2408,7 @@ const RUN=(function(){
     if(phase==='play'){ setSub(c.T.cap.innerHTML); dots(); }
     const done=chapters.slice(0,idx).reduce((a,x)=>a+x.dur,0)+progress()*c.dur; $('thTime').textContent=fmtT(done)+' / '+fmtT(total);
     segUI(); if(performance.now()>hideT&&playing) $('thCtrl').classList.add('hide'); };
-  RUN.paused=()=>!playing;
-  const rb=$('thRunBtn'); let runOn=false; try{ runOn=localStorage.getItem('wo-run')==='1'; }catch(e){}
-  function setRun(v){ runOn=v; rb.setAttribute('aria-pressed',v?'true':'false'); try{ localStorage.setItem('wo-run',v?'1':'0'); }catch(e){} if(v&&TH.on) RUN.start(); else RUN.stop(); layout(); }
-  rb.setAttribute('aria-pressed',runOn?'true':'false');
-  rb.onclick=e=>{ e.stopPropagation(); setRun(!runOn); showCtrl(); };
+  $('thYT').addEventListener('click',e=>e.stopPropagation());
   VOICE.onBlocked=b=>{ $('thUnmute').hidden=!b; if(b) showCtrl(); };
   $('thUnmute').onclick=e=>{ e.stopPropagation(); VOICE.resume(); };
   document.addEventListener('visibilitychange',()=>{ if(document.hidden&&TH.on&&playing) VID.toggle(); });
@@ -2492,8 +2421,8 @@ const RUN=(function(){
   function open(i){ if(TH.on){ begin(i); return; } finished=false; TH.on=true; VID.on=true; Object.defineProperty(VID,'cur',{get:()=>TH.on?chapters[idx].T:null,configurable:true});
     tours.forEach(t=>{ t._r=t.run; t.run=false; }); th.hidden=false; document.body.style.overflow='hidden'; playing=true;
     try{ th.requestFullscreen&&th.requestFullscreen().catch(()=>{}); }catch(e){}
-    begin(i); showCtrl(); wake(); if(runOn){ RUN.start(); layout(); } }
-  function close(){ stopSpeech(); RUN.stop(); const c=chapters[idx]; if(c) c.T.run=false; unmount(); TH.on=false; VID.on=false; th.hidden=true; document.body.style.overflow=''; playing=false;
+    begin(i); showCtrl(); wake(); }
+  function close(){ stopSpeech(); const c=chapters[idx]; if(c) c.T.run=false; unmount(); TH.on=false; VID.on=false; th.hidden=true; document.body.style.overflow=''; playing=false;
     tours.forEach(t=>{ t.run=t._r!==false; t.upd&&t.upd(); }); try{ document.fullscreenElement&&document.exitFullscreen(); }catch(e){} try{ lock&&lock.release(); }catch(e){} lock=null; refreshCont(); }
   function finish(){ save(0); finished=true; speakHTML('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); unmount(); phase='end'; card.classList.add('show');
     $('thEye').textContent='Geschafft 🎉'; $('thTitle').textContent='Du hast alle '+chapters.length+' Kapitel gesehen'; $('thKurz').innerHTML='Jetzt festigen: Mach das <b>Quiz</b> und hake die <b>Checkliste</b> ab. Beenden bringt dich zurück zur Seite.';
