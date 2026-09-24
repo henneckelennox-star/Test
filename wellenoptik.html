@@ -230,6 +230,7 @@ body.video .tour{display:block}
 .th-kurz:empty{display:none}
 .th-count{height:3px;background:rgba(255,255,255,.1);margin:22px auto 0;max-width:260px;border-radius:2px;overflow:hidden}
 .th-count i{display:block;height:100%;width:0;background:var(--green)}
+.th-unmute{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:9;max-width:calc(100% - 32px);padding:16px 22px;border:0;border-radius:14px;background:#ffd166;color:#14110a;font-family:inherit;font-size:1.1rem;font-weight:700;line-height:1.3;box-shadow:0 10px 40px rgba(0,0,0,.5);cursor:pointer}
 .th-sub{padding:12px 20px 6px;display:flex;flex-direction:column;align-items:center;gap:8px}
 .th-dots{display:flex;gap:6px}
 .th-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}
@@ -1106,6 +1107,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   </div>
   <div class="th-seg" id="thSeg"></div>
   <div class="th-stage" id="thStage">
+    <button class="th-unmute" id="thUnmute" type="button" hidden>🔊 Antippen, um die Stimme fortzusetzen</button>
     <div class="th-card" id="thCard"><div class="th-card-in"><div class="th-eye" id="thEye">–</div><div class="th-title" id="thTitle">–</div><div class="th-kurz" id="thKurz"></div><div class="th-count"><i id="thCount"></i></div></div></div>
   </div>
   <div class="th-sub"><div class="th-dots" id="thDots"></div><p id="thSub"></p></div>
@@ -2028,18 +2030,30 @@ VOICE.useFile=true; VOICE.rec='claribel'; try{ const n=localStorage.getItem('wo-
 function recSet(){ if(VOICE.rec==='claribel'&&AUDIO2_SET.size) return [AUDIO2_SET,'audio2','Claribel']; return [AUDIO_SET,'audio','Thorsten']; }
 function hashStr(t){ let h=5381; for(let i=0;i<t.length;i++){ h=((h<<5)+h+t.charCodeAt(i))|0; } return (h>>>0).toString(36); }
 window.__hashStr=hashStr;
-function speakHTML(html){ VOICE.last=html; VOICE.token++; const tk=VOICE.token; try{ AUD.pause(); }catch(e){} try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){}
+function speakHTML(html){ VOICE.last=html; VOICE.token++; const tk=VOICE.token; if(VOICE.blocked){ VOICE.blocked=false; VOICE.onBlocked&&VOICE.onBlocked(false); } try{ AUD.pause(); }catch(e){} try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){}
   if(!VOICE.on||!html){ VOICE.speaking=false; return; }
   const txt=toSpeech(html); if(!txt){ VOICE.speaking=false; return; }
   const h=hashStr(txt);
   const [RS,RD]=recSet();
-  if(VOICE.useFile&&RS.has(h)){ VOICE.speaking=true; const rate=Math.max(.75,Math.min(1.5,VID.speed||1)); VOICE.deadline=performance.now()+txt.length/10/rate*1000+8000;
-    const done=()=>{ if(tk===VOICE.token){ VOICE.speaking=false; VOICE.endAt=performance.now(); } };
-    AUD.onended=done; AUD.onerror=()=>{ if(tk===VOICE.token) synth(txt,tk); };
+  if(VOICE.useFile&&RS.has(h)){ VOICE.speaking=true; VOICE.file=true; VOICE.tries=0; VOICE.url=RD+'/'+h+'.mp3'; VOICE.startAt=VOICE.ctAt=performance.now(); VOICE.ct=0;
+    const rate=Math.max(.75,Math.min(1.5,VID.speed||1)); VOICE.deadline=performance.now()+txt.length/10/rate*1000+8000;
+    const done=()=>{ if(tk===VOICE.token){ VOICE.speaking=false; VOICE.file=false; VOICE.endAt=performance.now(); } };
+    AUD.onended=done; AUD.onerror=()=>{ if(tk!==VOICE.token) return; if(VOICE.tries++<2) setTimeout(()=>{ if(tk===VOICE.token){ AUD.src=VOICE.url+'?r='+Date.now(); tryPlay(tk); } },500); else voiceBlocked(tk); };
     AUD.onloadedmetadata=()=>{ if(tk===VOICE.token&&isFinite(AUD.duration)) VOICE.deadline=performance.now()+AUD.duration/rate*1000+3000; };
     AUD.src=RD+'/'+h+'.mp3'; AUD.playbackRate=rate; AUD.preservesPitch=true; AUD.webkitPreservesPitch=true;
-    const pr=AUD.play(); if(pr&&pr.catch) pr.catch(()=>{ if(tk===VOICE.token) synth(txt,tk); }); return; }
-  synth(txt,tk); }
+    tryPlay(tk); prefetchNext(); return; }
+  VOICE.file=false; synth(txt,tk); }
+// iPad/Safari: unterbrochene Wiedergabe erkennen und wieder aufnehmen
+function tryPlay(tk){ const pr=AUD.play(); if(pr&&pr.catch) pr.catch(e=>{ if(tk!==VOICE.token||(e&&e.name==='AbortError')) return; voiceBlocked(tk); }); }
+function voiceBlocked(tk){ if(tk!==VOICE.token) return; VOICE.blocked=true; VOICE.speaking=true; VOICE.deadline=Infinity; VOICE.onBlocked&&VOICE.onBlocked(true); }
+VOICE.resume=()=>{ const tk=VOICE.token; VOICE.blocked=false; VOICE.onBlocked&&VOICE.onBlocked(false); if(!VOICE.file){ VOICE.speaking=false; return; }
+  if(AUD.error) AUD.src=VOICE.url+'?r='+Date.now();
+  VOICE.deadline=performance.now()+(isFinite(AUD.duration)?AUD.duration*1000:20000)+3000; VOICE.ctAt=performance.now(); tryPlay(tk); };
+VOICE.watch=()=>{ if(!VOICE.file||!VOICE.speaking||VOICE.blocked||AUD.ended) return; const now=performance.now();
+  if(AUD.currentTime!==VOICE.ct){ VOICE.ct=AUD.currentTime; VOICE.ctAt=now; return; }
+  if(now-VOICE.ctAt>(AUD.paused?1500:5000)){ VOICE.ctAt=now; if(AUD.paused) tryPlay(VOICE.token); else if(VOICE.tries++<2){ const t=AUD.currentTime; AUD.src=VOICE.url+'?r='+Date.now(); AUD.onloadedmetadata=()=>{ try{ AUD.currentTime=t; }catch(e){} }; tryPlay(VOICE.token); } } };
+const PRE=new Set();
+function prefetchNext(){ try{ const T=VID.cur; if(!T) return; const nx=T.steps[T.i+1]; if(!nx) return; const t=toSpeech(nx.cap), h=hashStr(t), [RS,RD]=recSet(); if(!RS.has(h)||PRE.has(h)) return; PRE.add(h); fetch(RD+'/'+h+'.mp3').catch(()=>PRE.delete(h)); }catch(e){} }
 function synth(txt,tk){ if(!VOICE.ok){ VOICE.speaking=false; return; } try{ speechSynthesis.cancel(); }catch(e){}
   const parts=txt.match(/[^.!?]+[.!?]*/g)||[txt], rate=Math.max(.75,Math.min(1.5,.98*(VID.speed||1)));
   VOICE.speaking=true; VOICE.deadline=performance.now()+txt.length/13/rate*1000+5000;
@@ -2048,9 +2062,9 @@ function synth(txt,tk){ if(!VOICE.ok){ VOICE.speaking=false; return; } try{ spee
     speechSynthesis.speak(u); }); }
 window.__toSpeech=toSpeech;
 const sent=t=>{ t=String(t).trim(); return /[.!?:]$/.test(t)?t+' ':t+'. '; };
-function stopSpeech(){ VOICE.token++; VOICE.speaking=false; try{ AUD.pause(); }catch(e){} try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){} }
+function stopSpeech(){ VOICE.token++; VOICE.speaking=false; VOICE.file=false; if(VOICE.blocked){ VOICE.blocked=false; VOICE.onBlocked&&VOICE.onBlocked(false); } try{ AUD.pause(); }catch(e){} try{ VOICE.ok&&speechSynthesis.cancel(); }catch(e){} }
 VOICE.setRate=r=>{ try{ AUD.playbackRate=r; }catch(e){} };
-VID.holding=()=>VOICE.ok&&VOICE.on&&((VOICE.speaking&&performance.now()<VOICE.deadline)||performance.now()-VOICE.endAt<650);
+VID.holding=()=>(VOICE.ok||VOICE.file)&&VOICE.on&&((VOICE.speaking&&performance.now()<VOICE.deadline)||performance.now()-VOICE.endAt<650);
 
 function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0; T.fired=[]; const s=T.steps[T.i];
   if(VID.on&&VID.cur===T) speakHTML(s.cap);
@@ -2287,11 +2301,14 @@ tour($('cvFib'),[
     speakHTML(introText(c,idx));
     card.classList.add('show'); $('thCh').textContent=(idx+1)+' · '+c.title; setSub(c.first?'':'<span style="color:var(--muted)">'+c.title+'</span>'); dots(); ui(); }
   function play(){ const c=chapters[idx]; phase='play'; card.classList.remove('show'); c.T.run=playing; go(c.T,0); dots(); }
-  VID.tick=dt=>{ if(!TH.on) return; const c=chapters[idx];
+  VID.tick=dt=>{ if(!TH.on) return; const c=chapters[idx]; if(playing) VOICE.watch();
     if(playing&&phase==='intro'){ pt+=dt*VID.speed; const L=c.first?INTRO_LONG:INTRO_SHORT; $('thCount').style.width=Math.min(100,pt/L*100)+'%'; if(pt>=L&&!VID.holding()) play(); }
     if(phase==='play'){ setSub(c.T.cap.innerHTML); dots(); }
     const done=chapters.slice(0,idx).reduce((a,x)=>a+x.dur,0)+progress()*c.dur; $('thTime').textContent=fmtT(done)+' / '+fmtT(total);
     segUI(); if(performance.now()>hideT&&playing) $('thCtrl').classList.add('hide'); };
+  VOICE.onBlocked=b=>{ $('thUnmute').hidden=!b; if(b) showCtrl(); };
+  $('thUnmute').onclick=e=>{ e.stopPropagation(); VOICE.resume(); };
+  document.addEventListener('visibilitychange',()=>{ if(document.hidden&&TH.on&&playing) VID.toggle(); });
   VID.ended=()=>{ if(idx<chapters.length-1) begin(idx+1); else finish(); };
   VID.userPaused=()=>{};
   VID.toggle=()=>{ playing=!playing; const T=chapters[idx].T; if(phase==='play'){ T.run=playing; } if(!playing) stopSpeech(); else if(phase==='intro'||phase==='play') speakHTML(VOICE.last); ui(); showCtrl(); if(playing) wake(); };
