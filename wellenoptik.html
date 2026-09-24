@@ -236,6 +236,26 @@ body.video .tour{display:block}
 .th-count{height:3px;background:rgba(255,255,255,.1);margin:22px auto 0;max-width:260px;border-radius:2px;overflow:hidden}
 .th-count i{display:block;height:100%;width:0;background:var(--green)}
 .th-unmute{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:9;max-width:calc(100% - 32px);padding:16px 22px;border:0;border-radius:14px;background:#ffd166;color:#14110a;font-family:inherit;font-size:1.1rem;font-weight:700;line-height:1.3;box-shadow:0 10px 40px rgba(0,0,0,.5);cursor:pointer}
+.th-run{display:block;flex:none;width:min(calc(100% - 40px),60vh);height:30vh;min-height:140px;margin:2px auto 4px;border-radius:12px;background:#2e2622}
+.th-run[hidden]{display:none}
+#thRunBtn[aria-pressed="true"]{background:#ffb703;color:#14110a;border-color:#ffb703}
+.th-score{flex:none;font-size:.85rem;color:#ffd60a;margin-right:12px;transition:transform .25s}
+.th-score.pop{transform:scale(1.35)}
+.th-card.quiz{pointer-events:auto}
+.th-card.quiz .th-eye{color:#ffd60a}
+.th-card.quiz .th-title{font-size:clamp(1.3rem,3.4vw,2.2rem)}
+.th-card.quiz .th-kurz{display:grid;gap:10px;background:transparent;border:0;padding:0}
+.qv-o{font:inherit;font-size:clamp(1rem,2.1vw,1.2rem);text-align:left;padding:14px 18px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;transition:background .2s,border-color .2s,transform .15s}
+.qv-o:hover{background:rgba(255,255,255,.12)}
+.qv-o:active{transform:scale(.98)}
+.qv-o.r{background:rgba(93,255,160,.18);border-color:var(--green)}
+.qv-o.w{background:rgba(255,77,77,.18);border-color:var(--red)}
+.qv-o[disabled]{cursor:default}
+.qv-ex{font-size:clamp(.98rem,2vw,1.12rem);color:#e8f3ec;line-height:1.5;min-height:1.5em}
+.qv-fx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:6}
+.qv-fx i{position:absolute;top:45%;left:50%;width:10px;height:14px;border-radius:2px;animation:qvf 1.3s ease-out forwards}
+@keyframes qvf{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+@media(prefers-reduced-motion:reduce){.qv-fx{display:none}}
 .th-sub{padding:12px 20px 6px;display:flex;flex-direction:column;align-items:center;gap:8px}
 .th-dots{display:flex;gap:6px}
 .th-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.18)}
@@ -318,7 +338,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="lv-side">
       <div class="eyebrow">Neu · zurücklehnen, zuschauen, zuhören</div>
       <h2>Das Lernvideo</h2>
-      <p>Alle Themen laufen <b>im Vollbild</b> nacheinander ab, in einer Reihenfolge, die aufeinander aufbaut. Jedes Kapitel beginnt mit einer Titelkarte und der Kernaussage. Dann läuft die Animation, und die Erklärung erscheint als <b>Untertitel</b>. Am Ende jedes Themas fasst eine <b>Merkkarte</b> die wichtigsten Formeln zusammen. Du musst nichts tun, und Antippen unterbricht nichts.</p>
+      <p>Alle Themen laufen <b>im Vollbild</b> nacheinander ab, in einer Reihenfolge, die aufeinander aufbaut. Jedes Kapitel beginnt mit einer Titelkarte und der Kernaussage. Dann läuft die Animation, und die Erklärung erscheint als <b>Untertitel</b>. Am Ende jedes Themas fasst eine <b>Merkkarte</b> die wichtigsten Formeln zusammen, danach kommt eine <b>⚡ Blitzfrage</b> mit Punkten und Serien-Bonus. Tippst du nichts an, kommt die Auflösung von selbst. Für zwischendurch blendet der Knopf <b>🏃 Runner</b> ein kleines Lauf-Spiel unter dem Video ein. Lieber echtes Gameplay? Öffne <a href="https://youtu.be/zZ7AimPACzc" target="_blank" rel="noopener">das Gameplay-Video auf YouTube</a> und zieh es auf dem iPad in die <b>Split View</b> neben diese Seite. Du musst nichts tun, und Antippen unterbricht nichts.</p>
       <label class="lv-voice" for="lvVoice"><input type="checkbox" id="lvVoice" checked> 🔊 <b>Erklärstimme</b> liest alles vor (Stimme <b>Claribel</b>, alternativ Thorsten). Jede Animation wartet, bis der Satz fertig ist.</label>
       <p class="hint" id="lvVoiceInfo">Stimme: wird gesucht …</p>
       <div class="btns"><button class="btn-video" id="lvStart" type="button" style="margin-top:0">▶ Von vorn starten</button><button class="b" id="lvCont" type="button" hidden>Weiter bei Kapitel 1</button></div>
@@ -932,6 +952,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   <div class="t-body" style="margin-top:30px">
     <div class="txt">
       <h3>So funktioniert es</h3>
+      <p class="hint" style="font-size:1rem"><b>Anschaulich:</b> Zwei Läufer starten gleichzeitig im Gleichschritt und laufen verschiedene Wege. Sind die Wege gleich lang, kommen sie im Gleichschritt an (hell). Ist ein Weg um einen halben Schritt länger, kommen sie genau gegeneinander an (dunkel).</p>
       <ol class="st">
         <li>Der Strahl I₁ trifft bei Port 1 auf einen <b>50:50-Strahlteiler</b>. Die Hälfte geht geradeaus (unterer Weg), die Hälfte wird nach oben reflektiert (oberer Weg).</li>
         <li>Zwei Spiegel lenken beide Teilstrahlen zum <b>zweiten Strahlteiler</b>. Dort werden sie wieder zusammengeführt und verlassen das Gerät über <b>Port 3</b> (rechts) oder <b>Port 4</b> (oben).</li>
@@ -959,7 +980,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
 
 <section class="topic" id="michelson">
   <div class="t-head"><span class="t-num">3.2</span><h2>Das Michelson-Interferometer</h2></div>
-  <div class="kurz"><span class="k">Kurz gesagt</span><p>Wie Mach-Zehnder, aber das Licht läuft <b>hin und zurück</b>. Schiebt man einen Spiegel um λ/2, läuft genau <b>ein Ring</b> durch die Mitte.</p></div>
+  <div class="kurz"><span class="k">Kurz gesagt</span><p>Ein Strahlteiler schickt das Licht zu zwei Spiegeln, und es läuft <b>hin und zurück</b>. Schiebt man einen Spiegel um λ/2, wird der Weg um ein ganzes λ länger, und genau <b>ein Ring</b> kommt aus der Mitte.</p></div>
   <div class="t-body full">
     <div class="bench">
       <div class="bench-top"><span>Laser · Strahlteiler · Spiegel M₁ und M₂ · Schirm</span><span class="live">● live</span></div>
@@ -972,6 +993,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   <div class="t-body" style="margin-top:30px">
     <div class="txt">
       <h3>Aufbau und Funktion</h3>
+      <p class="hint" style="font-size:1rem"><b>Anschaulich:</b> Wie ein Echo in zwei Gängen. Verlängerst du einen Gang um 1 m, ist der Rückweg des Echos 2 m länger. Genauso zählt beim Michelson jede Spiegelverschiebung <b>doppelt</b>.</p>
       <ol class="st">
         <li>Ein Laserstrahl trifft auf einen <b>Strahlteiler</b> (halbdurchlässiger Spiegel). Die Hälfte läuft zum <b>festen Spiegel M₁</b>, die andere Hälfte zum <b>beweglichen Spiegel M₂</b>.</li>
         <li>Beide Teilstrahlen werden reflektiert, laufen <b>denselben Weg zurück</b> und werden am Strahlteiler wieder vereinigt. Auf dem Schirm überlagern sie sich.</li>
@@ -1108,7 +1130,7 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
   <div class="th-top">
     <div class="th-brand">Wellenoptik Q3 · Lernvideo</div>
     <div class="th-ch" id="thCh">–</div>
-    <div class="th-time mono" id="thTime">–</div>
+    <span class="th-score mono" id="thScore" title="Punkte aus den Blitzfragen">⭐ 0</span><div class="th-time mono" id="thTime">–</div>
   </div>
   <div class="th-seg" id="thSeg"></div>
   <div class="th-stage" id="thStage">
@@ -1116,11 +1138,13 @@ footer{border-top:1px solid var(--line);margin-top:70px;padding-block:34px 50px;
     <div class="th-card" id="thCard"><div class="th-card-in"><div class="th-eye" id="thEye">–</div><div class="th-title" id="thTitle">–</div><div class="th-kurz" id="thKurz"></div><div class="th-count"><i id="thCount"></i></div></div></div>
   </div>
   <div class="th-sub"><div class="th-dots" id="thDots"></div><p id="thSub"></p></div>
+  <canvas id="thRun" class="th-run" hidden aria-hidden="true"></canvas>
   <div class="th-ctrl" id="thCtrl">
     <button class="b" id="thPrev" type="button" aria-label="Vorheriges Kapitel">⏮</button>
     <button class="b th-main" id="thPlay" type="button" aria-label="Pause">❚❚</button>
     <button class="b" id="thNext" type="button" aria-label="Nächstes Kapitel">⏭</button>
     <button class="b" id="thSpeed" type="button" aria-label="Tempo">1×</button>
+    <button class="b" id="thRunBtn" type="button" aria-pressed="false" title="Kleines Lauf-Spiel unter dem Video ein- oder ausblenden">🏃 Runner</button>
     <button class="b" id="thVoice" type="button" aria-label="Erklärstimme ein oder aus">🔊 Stimme</button>
     <select id="thVoiceSel" aria-label="Stimme wählen"></select>
     <button class="b" id="thExit" type="button" aria-label="Lernvideo beenden">✕ Beenden</button>
@@ -1549,8 +1573,23 @@ sim($('cvStand'),(dt,t)=>{ const {ctx,W,H}=fit($('cvStand')); ctx.clearRect(0,0,
   const lam=2*16/m; $('stL').textContent=fmt(lam,2)+' cm'; $('stK').textContent=fmt(lam/2,2)+' cm'; $('stF').textContent=fmt(3e8/(lam/100)/1e9,2)+' GHz';
 });
 
+/* ---------- Wellen-Lupe und Hervorhebung für die Interferometer ---------- */
+function waveLupe(ctx,x,y,w,h,ph,t,title,nA,nB){ // zwei Wellen und ihre Summe, ph = Phasenunterschied
+  const I=Math.pow(Math.cos(ph/2),2), tw=Math.min(w*.42,190), wx=x+tw, ww=w-tw-10, A=h*.1, om=t*5, kx=2*Math.PI/Math.max(40,ww*.5), fs=Math.max(10,Math.min(12,h/7));
+  ctx.fillStyle='rgba(7,10,18,.85)'; ctx.strokeStyle='rgba(255,201,60,.45)'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.roundRect(x,y,w,h,10); ctx.fill(); ctx.stroke();
+  const F=b=>(b?'600 ':'')+fs+'px "IBM Plex Sans", sans-serif', lh=h/4.4;
+  label(ctx,title,x+10,y+lh,COL.na,F(1),'left'); label(ctx,'— '+nA,x+10,y+2*lh,'#ff9d9d',F(),'left'); label(ctx,'— '+nB,x+10,y+3*lh,COL.cyan,F(),'left');
+  const verdict=I>.93?'Berg + Berg → hell':I<.07?'Berg + Tal → dunkel':'halb hell';
+  label(ctx,verdict,x+10,y+4*lh,I>.93?COL.green:I<.07?COL.red:COL.na,F(1),'left');
+  const wave=(yc,f,col,lw)=>{ ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.beginPath(); for(let i=0;i<=ww;i+=2){ const yy=yc+f(i)*A; i?ctx.lineTo(wx+i,yy):ctx.moveTo(wx+i,yy); } ctx.stroke(); };
+  wave(y+h*.32,i=>Math.sin(kx*i-om),'rgba(255,120,120,.95)',1.8); wave(y+h*.32,i=>Math.sin(kx*i-om-ph),'rgba(70,217,255,.95)',1.8);
+  ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(wx,y+h*.55); ctx.lineTo(wx+ww,y+h*.55); ctx.stroke();
+  wave(y+h*.76,i=>Math.sin(kx*i-om)+Math.sin(kx*i-om-ph),I>.5?'#fff':'rgba(255,255,255,'+(.3+.7*I)+')',3); }
+function hlRing(ctx,c,r,t){ const a=.55+.45*Math.sin(t*5); ctx.strokeStyle='rgba(255,201,60,'+a+')'; ctx.lineWidth=3; ctx.shadowColor=COL.na; ctx.shadowBlur=14; ctx.beginPath(); ctx.arc(c.x,c.y,r,0,7); ctx.stroke(); ctx.shadowBlur=0; }
+function hlBox(ctx,x,y,w,h,t){ const a=.55+.45*Math.sin(t*5); ctx.strokeStyle='rgba(255,201,60,'+a+')'; ctx.lineWidth=3; ctx.shadowColor=COL.na; ctx.shadowBlur=14; ctx.beginPath(); ctx.roundRect(x,y,w,h,10); ctx.stroke(); ctx.shadowBlur=0; }
+
 /* ---------- 3.1 Mach-Zehnder ---------- */
-const MZ={phi:0,n1:0,target:0,k:0,trace:[]}; const MZ_L=0.05, MZ_LAM=633e-9, MZ_NAIR=2.92e-4;
+const MZ={phi:0,n1:0,target:0,k:0,trace:[],hl:''}; const MZ_L=0.05, MZ_LAM=633e-9, MZ_NAIR=2.92e-4;
 bind('mzP','mzPv',v=>fmt(v,2)+' π',v=>MZ.phi=v*Math.PI);
 $('mzGas').onclick=()=>MZ.target=MZ_NAIR; $('mzVac').onclick=()=>MZ.target=0;
 sim($('cvMZ'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMZ')); ctx.clearRect(0,0,W,H);
@@ -1574,6 +1613,15 @@ sim($('cvMZ'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMZ')); ctx.clearRect(0,0,W,H);
   label(ctx,'1',bs1.x-44*s,bs1.y+30*s,'#fff'); label(ctx,'2',bs1.x+14*s,bs1.y+64*s,'#fff'); label(ctx,'I₁',in0.x+30*s,in0.y-12*s,'#fff');
   ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(bs1.x,bs1.y+70*s); ctx.lineTo(bs1.x,bs1.y+20*s); ctx.stroke();
   label(ctx,'Strahlteiler',bs1.x+46*s,bs1.y+44*s,COL.muted,'11px "IBM Plex Sans", sans-serif','left'); label(ctx,'Spiegel',m1.x-40*s,m1.y-30*s,COL.muted,'11px "IBM Plex Sans", sans-serif'); label(ctx,'Spiegel',m2.x+40*s,m2.y+44*s,COL.muted,'11px "IBM Plex Sans", sans-serif');
+  // Hervorhebung (gesteuert von der Erklärung)
+  const hl=MZ.hl;
+  if(hl==='bs1') hlRing(ctx,bs1,44*s,t); if(hl==='bs2') hlRing(ctx,bs2,44*s,t); if(hl==='cell') hlBox(ctx,ce.x-78*s,ce.y-28*s,156*s,56*s,t);
+  if(hl==='arms'){ hlRing(ctx,m1,40*s,t); hlRing(ctx,m2,40*s,t); } if(hl==='p4') hlRing(ctx,out4,24*s+6,t); if(hl==='p3') hlRing(ctx,out3,24*s+6,t);
+  if(hl==='arms'){ label(ctx,'oberer Weg',P(360,90).x,P(0,150).y,COL.cyan,'600 12px "IBM Plex Sans", sans-serif'); label(ctx,'unterer Weg',P(360,0).x,P(0,350).y,'#ff9d9d','600 12px "IBM Plex Sans", sans-serif'); }
+  // Wellen-Lupe im freien Feld zwischen den Wegen
+  { const lx=P(190,0).x, lw=P(530,0).x-lx, ly=P(0,128).y, lh=(P(0,300).y-ly-8)/2;
+    if(lw>150&&lh>52){ waveLupe(ctx,lx,ly,lw,lh,ph,t,'Lupe · Port 4','unterer Weg','oberer Weg'); waveLupe(ctx,lx,ly+lh+8,lw,lh,ph+Math.PI,t,'Lupe · Port 3 (+π)','unterer Weg','oberer Weg');
+      if(hl==='lupe4') hlBox(ctx,lx-3,ly-3,lw+6,lh+6,t); if(hl==='lupe3') hlBox(ctx,lx-3,ly+lh+5,lw+6,lh+6,t); } }
   // Werte
   $('mzI4').textContent=fmt(I4*100,1)+' %'; $('mzI3').textContent=fmt(I3*100,1)+' %'; $('mzC').textContent=fmt(Math.cos(ph),3);
   $('mzK').textContent=MZ.k; $('mzN').textContent=MZ.k>0?(1+MZ_LAM*MZ.k/MZ_L).toFixed(6).replace('.',','):'–';
@@ -1609,7 +1657,7 @@ const QZ=[
  ['Was bleibt beim Übergang in ein anderes Medium gleich?',['die Wellenlänge','die Geschwindigkeit','die Frequenz'],2,'Die Frequenz gibt die Quelle vor. v und λ sinken beide um den Faktor n.'],
  ['Warum meldet der Regensensor Regen?',['Wasser verschluckt das Infrarotlicht vollständig','Mit Wasser außen steigt der Grenzwinkel, und die Totalreflexion bricht zusammen','Tropfen wirken wie Spiegel'],1,'Glas→Wasser: αG = 61°. Bei θ = 50° tritt Licht in den Tropfen aus, und am Empfänger kommt weniger an.'],
  ['Für destruktive Interferenz muss gelten …',['Δs = kλ','Δs = (k + ½)λ','Δs = 2kλ'],1,'Ein halbes λ Versatz bedeutet: Berg trifft Tal.'],
- ['Vergrößert man beim Doppelspalt den Spaltabstand d, dann …',['rücken die Maxima zusammen','rücken sie auseinander','ändert sich nichts'],0,'a_k = kλe/d: großes d ergibt kleines a_k.'.replace('a_k','aₖ')],
+ ['Vergrößert man beim Doppelspalt den Spaltabstand d, dann …',['rücken die Maxima zusammen','rücken sie auseinander','ändert sich nichts'],0,'a_k = kλe/d: großes d ergibt kleines a_k.'.replace(/a_k/g,'aₖ')],
  ['Mehr Spalte bei gleicher Gitterkonstante bewirken …',['andere Lagen der Maxima','schärfere und hellere Maxima','mehr Ordnungen'],1,'Die Lage folgt aus d sin α = kλ, sie bleibt gleich. Mit N werden die Maxima schmaler und intensiver.'],
  ['Gitter mit 600 Linien/mm, λ = 600 nm. Höchste Ordnung?',['1','2','3'],1,'d = 1,67 µm; k ≤ d/λ = 2,78, also k_max = 2.'.replace('k_max','kₘₐₓ')],
  ['Kann ein Gitter mit N = 500 in der 2. Ordnung die Na-D-Linien trennen?',['Ja, A = 1000 > 982','Nein, A = 500','Nur mit Doppelspalt'],0,'A = nN = 2·500 = 1000 ≥ λ/Δλ ≈ 982.'],
@@ -1632,14 +1680,14 @@ QZ.forEach(([q,o,r,e],i)=>{ const d=document.createElement('div'); d.className='
 
 
 /* ---------- 3.2 Michelson ---------- */
-const miOff=document.createElement('canvas'); let miImg=null;
+const miOff=document.createElement('canvas'); let miImg=null; const MI={hl:''};
 bind('miD','miDv',v=>Math.round(v)+' nm');
 function glowBeam(ctx,a,b,I,t,col){ ctx.strokeStyle='rgba(255,77,77,'+(0.12+0.88*I)+')'; ctx.lineWidth=2+3.5*I; ctx.shadowColor=col||COL.red; ctx.shadowBlur=16*I; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.shadowBlur=0;
   if(I>.03){ ctx.strokeStyle='rgba(255,230,230,'+(.65*I)+')'; ctx.lineWidth=1.3; ctx.setLineDash([6,18]); ctx.lineDashOffset=-(t*90)%24; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.setLineDash([]); } }
 sim($('cvMi'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMi')); ctx.clearRect(0,0,W,H);
   const dd=+$('miD').value, lam=633, narrow=W<640, sw=narrow?W:W*.64, sh=narrow?H*.62:H;
   const s=Math.min(sw/640,sh/420), ox=(sw-620*s)/2, oy=(sh-400*s)/2, P=(x,y)=>({x:ox+x*s,y:oy+y*s});
-  const shift=dd/2000*46, Ic=Math.pow(Math.cos(2*Math.PI*dd/lam),2);
+  const k0=Math.floor(2*dd/lam+1e-6), shift=dd/2000*46, Ic=Math.pow(Math.cos(2*Math.PI*dd/lam),2);
   const L0=P(70,200), BS=P(300,200), M1=P(300,40), M2=P(520+shift,200), SC=P(300,372);
   const off=(a,b,o)=>{ const dx=b.x-a.x, dy=b.y-a.y, l=Math.hypot(dx,dy), nx=-dy/l*o, ny=dx/l*o; return [{x:a.x+nx,y:a.y+ny},{x:b.x+nx,y:b.y+ny}]; };
   glowBeam(ctx,L0,BS,1,t);
@@ -1667,7 +1715,12 @@ sim($('cvMi'),(dt,t)=>{ const {ctx,W,H}=fit($('cvMi')); ctx.clearRect(0,0,W,H);
   ctx.save(); ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.clip(); ctx.imageSmoothingEnabled=true; ctx.drawImage(miOff,cx-R,cy-R,2*R,2*R); ctx.restore();
   ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.stroke();
   label(ctx,'Schirmbild',cx,cy-R-10,COL.muted,'12px "IBM Plex Sans", sans-serif');
-  const k=Math.floor(2*dd/lam+1e-6);
+  const hl=MI.hl; if(hl==='bs') hlRing(ctx,BS,46*s,t); if(hl==='mir'){ hlRing(ctx,M1,50*s,t); hlRing(ctx,M2,50*s,t); } if(hl==='rings') hlRing(ctx,{x:cx,y:cy},R+8,t);
+  if(hl==='dd'){ hlBox(ctx,P(505,0).x,ay-14,Math.max(60*s,M2.x-P(505,0).x+30*s),34,t); label(ctx,'hin + zurück = 2·Δd',P(520,0).x,ay+36,COL.na,'600 12px "IBM Plex Sans", sans-serif'); }
+  { const lx=P(14,0).x, ly=P(0,250).y, lw=Math.min(P(262,0).x-lx,260), lh=Math.min(P(0,398).y-ly,120);
+    if(lw>140&&lh>60){ waveLupe(ctx,lx,ly,lw,lh,4*Math.PI*dd/lam,t,'Lupe · Schirmmitte','von M₁','von M₂'); if(hl==='lupe') hlBox(ctx,lx-3,ly-3,lw+6,lh+6,t); } }
+  if(k0>0||dd>0){ ctx.fillStyle='rgba(7,10,18,.7)'; ctx.fillRect(cx-60,cy+R+8,120,26); label(ctx,'Ringe: '+k0,cx,cy+R+26,COL.na,'600 14px "IBM Plex Mono", monospace'); }
+  const k=k0;
   $('miS').textContent=Math.round(2*dd)+' nm = '+fmt(2*dd/lam,2)+' λ'; $('miK').textContent=k; $('miL').textContent=k>0?fmt(2*dd/k,0)+' nm':'–';
 });
 
@@ -2032,8 +2085,8 @@ function toSpeech(html){ const d=document.createElement('div'); d.innerHTML=html
     [/[₀₁₂₃₄₅₆₇₈₉ₖₘ]/g,c=>SUBD[c]],[/°/g,' Grad'],[/%/g,' Prozent'],[/≈/g,' ungefähr '],[/≥/g,' größer gleich '],[/≤/g,' kleiner gleich '],[/>/g,' größer als '],[/</g,' kleiner als '],
     [/⇒/g,', also '],[/→/g,' in '],[/·/g,' mal '],[/×/g,' mal '],[/−/g,' minus '],[/=/g,' gleich '],[/\//g,' durch '],[/\+/g,' plus '],[/B′B/g,'B Strich B'],[/([A-Z])′/g,'$1 Strich'],[/[↕•]/g,''],[/’/g,"'"],[/[…]/g,'.'],[/\(\s*\+/g,'(plus'],[/\s+/g,' ']];
   R.forEach(([a,b])=>{ t=t.replace(a,b); }); return t.trim(); }
-const AUDIO_SET=new Set(/*AUDIO_LIST*/["62ld75", "1g94bm3", "amo753", "14eewyx", "connf1", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "14d8q8f", "1vqheo1", "1cjee2b", "1squw3e", "a36xxi", "1vhe6vc", "15dlg4q", "18svh0z", "1y6u6ui", "10i5351", "wws5m0", "umltvh", "6hqm3t", "6aeril", "1g6e28x", "1f2z4tp", "1uzezt6", "1daepf8", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "tnuzv", "1uu6ngg", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "rp12yl", "2yqtck", "5lsn4x", "1h3yx1h", "1i6clr", "1e1b0r2", "iwyz81", "knbl96", "1oc2a3b", "a5ev2k", "s8ysl", "lc2jq2", "pj4u16", "1uigiv2", "zlszr5", "5n103h", "1hebqso", "1qfl2e2", "w9i7cy", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "ods0fy", "1tlds99", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1t2ho71", "1fjdjjs", "azcaw4", "1a1em2u", "23xtq", "17unmin", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "oxahh8", "8lzzi6", "1p6kzch", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "1uf7thk", "7ifqmd", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "153sqc0", "1b9amx9", "ga42hr", "c635sq", "1yac8h9", "8r8gyd", "9ivqbi", "1evupa5", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "eyg1de", "sfe79g", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "e8s457", "1813yt6", "eqac6j", "642cak", "56pvbz", "1osc1at", "9sshdr", "1o2sph4", "1izriw2", "1v0jvw2", "dtz651", "1w7758c", "4111fy", "11941ag", "1kxxi6d", "lt1uf2", "bqr27v", "8fqsoz", "1ca46mg", "aibh2e", "1u5vzuw", "rkc1y9", "fleyj1", "1x3doby", "galxaw", "3chumh", "1mtnva1", "11u8ymm", "1t2t5wh", "1ufkekf", "10ls2qq", "13rrpum", "15723e8", "1nzfr28", "17jhd73", "i38ob0", "16jo7ya", "15q1xfw", "nb7kol", "15g7p7z", "5iap91", "hwl2we", "1ngbvu0", "qmxild", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "cmqb48", "79vwkn", "1avfk9s", "apbc0x", "137hq2d", "jfj935", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "94tdld", "9dkglu", "q1nwrv"]); const AUD=new Audio(); AUD.preload='auto';
-const AUDIO2_SET=new Set(/*AUDIO2_LIST*/["62ld75", "1g94bm3", "amo753", "14eewyx", "connf1", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "14d8q8f", "1vqheo1", "1cjee2b", "1squw3e", "a36xxi", "1vhe6vc", "15dlg4q", "18svh0z", "1y6u6ui", "10i5351", "wws5m0", "umltvh", "6hqm3t", "6aeril", "1g6e28x", "1f2z4tp", "1uzezt6", "1daepf8", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "tnuzv", "1uu6ngg", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "rp12yl", "2yqtck", "5lsn4x", "1h3yx1h", "1i6clr", "1e1b0r2", "iwyz81", "knbl96", "1oc2a3b", "a5ev2k", "s8ysl", "lc2jq2", "pj4u16", "1uigiv2", "zlszr5", "5n103h", "1hebqso", "1qfl2e2", "w9i7cy", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "ods0fy", "1tlds99", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1t2ho71", "1fjdjjs", "azcaw4", "1a1em2u", "23xtq", "17unmin", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "oxahh8", "8lzzi6", "1p6kzch", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "1uf7thk", "7ifqmd", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "153sqc0", "1b9amx9", "ga42hr", "c635sq", "1yac8h9", "8r8gyd", "9ivqbi", "1evupa5", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "eyg1de", "sfe79g", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "e8s457", "1813yt6", "eqac6j", "642cak", "56pvbz", "1osc1at", "9sshdr", "1o2sph4", "1izriw2", "1v0jvw2", "dtz651", "1w7758c", "4111fy", "11941ag", "1kxxi6d", "lt1uf2", "bqr27v", "8fqsoz", "1ca46mg", "aibh2e", "1u5vzuw", "rkc1y9", "fleyj1", "1x3doby", "galxaw", "3chumh", "1mtnva1", "11u8ymm", "1t2t5wh", "1ufkekf", "10ls2qq", "13rrpum", "15723e8", "1nzfr28", "17jhd73", "i38ob0", "16jo7ya", "15q1xfw", "nb7kol", "15g7p7z", "5iap91", "hwl2we", "1ngbvu0", "qmxild", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "cmqb48", "79vwkn", "1avfk9s", "apbc0x", "137hq2d", "jfj935", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "94tdld", "9dkglu", "q1nwrv"]);
+const AUDIO_SET=new Set(/*AUDIO_LIST*/["62ld75", "1g94bm3", "amo753", "14eewyx", "connf1", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "14d8q8f", "1vqheo1", "1cjee2b", "1squw3e", "a36xxi", "1vhe6vc", "15dlg4q", "18svh0z", "1exzleb", "1y6u6ui", "10i5351", "wws5m0", "umltvh", "6hqm3t", "6aeril", "1g6e28x", "169mkas", "1f2z4tp", "1uzezt6", "1daepf8", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "tnuzv", "fanrwt", "1uu6ngg", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "rp12yl", "2yqtck", "5lsn4x", "1h3yx1h", "1i6clr", "xzg06n", "1e1b0r2", "iwyz81", "knbl96", "1oc2a3b", "a5ev2k", "s8ysl", "lc2jq2", "pj4u16", "1uigiv2", "zlszr5", "5n103h", "1hebqso", "1qfl2e2", "1o0ib33", "w9i7cy", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "ods0fy", "1mfsl7f", "1tlds99", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1t2ho71", "1fjdjjs", "azcaw4", "1a1em2u", "23xtq", "1hz0049", "17unmin", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "oxahh8", "8lzzi6", "3o3r5b", "1p6kzch", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "1uf7thk", "1g7hh5z", "7ifqmd", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "153sqc0", "1b9amx9", "ga42hr", "c635sq", "1yac8h9", "8r8gyd", "9ivqbi", "7btar7", "1evupa5", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "eyg1de", "1all0ra", "sfe79g", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "e8s457", "7k5sns", "1813yt6", "eqac6j", "642cak", "56pvbz", "1osc1at", "9sshdr", "1o2sph4", "kho27v", "1izriw2", "1v0jvw2", "dtz651", "1w7758c", "4111fy", "11941ag", "ctg6nx", "1kxxi6d", "lt1uf2", "bqr27v", "8fqsoz", "1ca46mg", "aibh2e", "1u5vzuw", "16bpnuu", "rkc1y9", "fleyj1", "1x3doby", "galxaw", "3chumh", "1mtnva1", "185hkzm", "11u8ymm", "r4d708", "i9ntzh", "2pmnpp", "xi8igl", "127e2p8", "om4bkv", "4advey", "1ty2kiq", "hecyxz", "1gcxnau", "1nzfr28", "s88h89", "bdgk11", "11zfil5", "bwg4gy", "1trthoh", "1ntznw0", "1qyr7ul", "stqg2b", "117p0df", "yvm3kc", "hwl2we", "1ngbvu0", "6kq0wt", "qmxild", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "cmqb48", "79vwkn", "1avfk9s", "apbc0x", "137hq2d", "1mopscv", "jfj935", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "94tdld", "9dkglu", "uguipk", "1e9dp3g", "q1nwrv"]); const AUD=new Audio(); AUD.preload='auto';
+const AUDIO2_SET=new Set(/*AUDIO2_LIST*/["62ld75", "1g94bm3", "amo753", "14eewyx", "connf1", "1s57sv", "rdsm1g", "1bew4ws", "1qdgqst", "14d8q8f", "1vqheo1", "1cjee2b", "1squw3e", "a36xxi", "1vhe6vc", "15dlg4q", "18svh0z", "1exzleb", "1y6u6ui", "10i5351", "wws5m0", "umltvh", "6hqm3t", "6aeril", "1g6e28x", "169mkas", "1f2z4tp", "1uzezt6", "1daepf8", "1wdxedf", "1iyv9r1", "s3mkdv", "q3u82m", "1jv5c3q", "tnuzv", "fanrwt", "1uu6ngg", "1wqh2ma", "tlx2dz", "7r18he", "1oz2vz", "rp12yl", "2yqtck", "5lsn4x", "1h3yx1h", "1i6clr", "xzg06n", "1e1b0r2", "iwyz81", "knbl96", "1oc2a3b", "a5ev2k", "s8ysl", "lc2jq2", "pj4u16", "1uigiv2", "zlszr5", "5n103h", "1hebqso", "1qfl2e2", "1o0ib33", "w9i7cy", "p2wfzr", "ktgfds", "1gqzzdr", "ffyr7a", "ods0fy", "1mfsl7f", "1tlds99", "1a3uiw5", "1j0nkjg", "1med2z8", "me98pr", "1t2ho71", "1fjdjjs", "azcaw4", "1a1em2u", "23xtq", "1hz0049", "17unmin", "ixqnpi", "1ddd7ur", "1lrbn3r", "xto66z", "oxahh8", "8lzzi6", "3o3r5b", "1p6kzch", "1ne8d4k", "1abxzdn", "sa97e3", "rxpay3", "1771la", "1uf7thk", "1g7hh5z", "7ifqmd", "en27yg", "b25i50", "mkwrj", "1fvx2hf", "y49pqt", "153sqc0", "1b9amx9", "ga42hr", "c635sq", "1yac8h9", "8r8gyd", "9ivqbi", "7btar7", "1evupa5", "5vyejt", "zskiut", "2kfyr", "16j7mnc", "s2bd6v", "11hsa98", "eyg1de", "1all0ra", "sfe79g", "1rn2py4", "uwjw37", "1adauz", "1dpyjwe", "e8s457", "7k5sns", "1813yt6", "eqac6j", "642cak", "56pvbz", "1osc1at", "9sshdr", "1o2sph4", "kho27v", "1izriw2", "1v0jvw2", "dtz651", "1w7758c", "4111fy", "11941ag", "ctg6nx", "1kxxi6d", "lt1uf2", "bqr27v", "8fqsoz", "1ca46mg", "aibh2e", "1u5vzuw", "16bpnuu", "rkc1y9", "fleyj1", "1x3doby", "galxaw", "3chumh", "1mtnva1", "185hkzm", "11u8ymm", "r4d708", "i9ntzh", "2pmnpp", "xi8igl", "127e2p8", "om4bkv", "4advey", "1ty2kiq", "hecyxz", "1gcxnau", "1nzfr28", "s88h89", "bdgk11", "11zfil5", "bwg4gy", "1trthoh", "1ntznw0", "1qyr7ul", "stqg2b", "117p0df", "yvm3kc", "hwl2we", "1ngbvu0", "6kq0wt", "qmxild", "peq41s", "w3cq2y", "lewe9a", "1l2we6c", "tl2ag0", "ouw6cl", "cmqb48", "79vwkn", "1avfk9s", "apbc0x", "137hq2d", "1mopscv", "jfj935", "162mp01", "k83fpb", "1iwr52n", "1qr8n7i", "1bbjy60", "94tdld", "9dkglu", "uguipk", "1e9dp3g", "q1nwrv"]);
 VOICE.useFile=true; VOICE.rec='claribel'; try{ const n=localStorage.getItem('wo-voice-name'); if(n==='__file') VOICE.rec='thorsten'; else if(n&&n!=='__claribel') VOICE.useFile=false; }catch(e){}
 function recSet(){ if(VOICE.rec==='claribel'&&AUDIO2_SET.size) return [AUDIO2_SET,'audio2','Claribel']; return [AUDIO_SET,'audio','Thorsten']; }
 function hashStr(t){ let h=5381; for(let i=0;i<t.length;i++){ h=((h<<5)+h+t.charCodeAt(i))|0; } return (h>>>0).toString(36); }
@@ -2175,18 +2228,25 @@ tour($('cvStand'),[
  {set:{stM:5},dur:7,cap:'Die hinlaufende (rot) und die reflektierte Welle (blau) ergeben zusammen die stehende Welle (weiß). Die Knoten bleiben immer in Ruhe.'},
  {set:{stM:10},dur:7,cap:'<span class="m">m</span> = 10: λ = 3,2 cm, also <span class="m">f</span> = 9,4 GHz, eine typische Schul-Mikrowelle. Der Knotenabstand λ/2 = 1,6 cm ist messbar.'}]);
 tour($('cvMZ'),[
- {set:{mzP:0},start:()=>$('mzVac').click(),dur:8,cap:'Der Strahlteiler teilt das Licht auf zwei Wege. Bei gleich langen Wegen kommen die Teile an Port 4 gleichphasig an (hell), Port 3 bleibt dunkel.'},
- {set:{mzP:1},tween:3,dur:8,cap:'Das Element verschiebt die Phase um ΔΦ = π. Jetzt ist Port 4 dunkel und Port 3 hell. Die Energie wandert nur: I₃ + I₄ = I₁.'},
- {set:{mzP:2},tween:3,dur:6,cap:'ΔΦ = 2π: wie am Anfang. Allgemein: I₄ = I₁·cos²(ΔΦ/2).'},
- {set:{mzP:0},start:()=>$('mzGas').click(),dur:11,cap:'Gas strömt in die Küvette: <span class="m">n</span> steigt, und der optische Weg wird länger. Jeder Hell-Dunkel-Wechsel an Port 4 bedeutet eine Wellenlänge mehr. Schau auf den Zähler!'},
- {dur:6,cap:'Aus <span class="m">k</span> Wechseln folgt <span class="m">n</span>(Gas) = 1 + λ·<span class="m">k</span>/<span class="m">L</span> ≈ 1,0003 für Luft.'}]);
+ {set:{mzP:0},start:()=>{ $('mzVac').click(); MZ.hl='bs1'; },dur:8,cap:'Ein Laserstrahl trifft auf den ersten <b>Strahlteiler</b>, einen halbdurchlässigen Spiegel. Die Hälfte des Lichts geht geradeaus, die andere Hälfte wird nach oben gespiegelt.'},
+ {start:()=>MZ.hl='arms',dur:7,cap:'Jetzt gibt es <b>zwei getrennte Wege</b>, einen oberen und einen unteren. Zwei normale Spiegel lenken beide Teilstrahlen um.'},
+ {start:()=>MZ.hl='bs2',dur:7,cap:'Am zweiten Strahlteiler treffen sich beide Wege wieder. Jeder Ausgang, Port 3 und Port 4, bekommt Licht <b>von beiden Wegen</b>.'},
+ {start:()=>MZ.hl='lupe4',dur:9,cap:'Schau in die <b>Wellen-Lupe</b>: Bei gleich langen Wegen kommen an Port 4 beide Wellen im Gleichtakt an. Berg trifft Berg, also ist Port 4 <b>hell</b>.'},
+ {start:()=>MZ.hl='lupe3',dur:9,cap:'An Port 3 hat eine der beiden Wellen durch die Reflexionen einen zusätzlichen Phasensprung von π. Berg trifft Tal, also ist Port 3 <b>dunkel</b>.'},
+ {set:{mzP:.5},tween:3,start:()=>MZ.hl='cell',dur:9,cap:'Jetzt verzögert ein Element im oberen Weg die Welle ein wenig. Bei ΔΦ = π/2 sind beide Ports <b>halb hell</b>.'},
+ {set:{mzP:1},tween:3,start:()=>MZ.hl='lupe4',dur:9,cap:'Bei ΔΦ = π ist es genau umgekehrt: Port 4 ist dunkel und Port 3 hell. Das Licht verschwindet nicht, es wechselt nur den Ausgang: I₃ + I₄ = I₁.'},
+ {set:{mzP:2},tween:3,start:()=>MZ.hl='',dur:8,cap:'Bei ΔΦ = 2π, also einer ganzen Wellenlänge Verzögerung, ist alles wie am Anfang. Allgemein gilt I₄ = I₁·cos²(ΔΦ/2).'},
+ {set:{mzP:0},start:()=>{ $('mzGas').click(); MZ.hl='cell'; },dur:12,cap:'Anwendung: Im oberen Weg steht eine Küvette, und wir lassen Gas hinein. Der Weg wird für das Licht <b>optisch länger</b>. Jeder Hell-Dunkel-Wechsel an Port 4 bedeutet eine Wellenlänge mehr. Schau auf den Zähler!'},
+ {start:()=>MZ.hl='',dur:7,cap:'Aus <span class="m">k</span> gezählten Wechseln folgt <span class="m">n</span>(Gas) = 1 + λ·<span class="m">k</span>/<span class="m">L</span>. Für Luft ergibt das etwa 1,0003.'}]);
 tour($('cvMi'),[
- {set:{miD:0},dur:7,cap:'Der Strahlteiler schickt das Laserlicht in zwei Arme: zum festen Spiegel M₁ (oben) und zum beweglichen Spiegel M₂ (rechts).'},
- {dur:7,cap:'Beide Teilstrahlen laufen zurück und werden am Strahlteiler wieder vereinigt. Auf dem Schirm interferieren sie, und es entstehen Ringe.'},
- {set:{miD:158},tween:3,dur:6,cap:'M₂ wird um λ/4 = 158 nm verschoben. Der Weg ändert sich um das <b>Doppelte</b>, Δ<span class="m">s</span> = 2·Δ<span class="m">d</span> = λ/2, und die Mitte wird dunkel!'},
- {set:{miD:316},tween:3,dur:6,cap:'Nochmal λ/4 weiter: Δ<span class="m">s</span> = λ, die Mitte ist wieder hell. Ein Ring ist „herausgequollen“: <span class="m">k</span> = 1.'},
- {set:{miD:1582},tween:12,dur:15,cap:'Weiter schieben und Ringe zählen: Pro λ/2 Spiegelweg läuft genau ein Ring durch. Also λ = 2·Δ<span class="m">d</span>/<span class="m">k</span>.'},
- {dur:6,cap:'Hier: Δ<span class="m">d</span> = 1582 nm und <span class="m">k</span> = 5, also λ = 2·1582 nm / 5 ≈ 633 nm. Das ist ein Helium-Neon-Laser!'},
+ {set:{miD:0},start:()=>MI.hl='bs',dur:8,cap:'Der Laserstrahl trifft auf einen <b>Strahlteiler</b>. Die eine Hälfte läuft nach oben zum festen Spiegel M₁, die andere nach rechts zum beweglichen Spiegel M₂.'},
+ {start:()=>MI.hl='mir',dur:8,cap:'Beide Spiegel werfen das Licht <b>genau zurück</b>. Die Teilstrahlen treffen sich wieder am Strahlteiler und laufen gemeinsam nach unten zum Schirm.'},
+ {start:()=>MI.hl='lupe',dur:8,cap:'Die <b>Wellen-Lupe</b> zeigt beide Wellen in der Mitte des Schirms. Sind beide Arme gleich lang, kommen sie im Gleichtakt an: Die Mitte ist hell.'},
+ {start:()=>MI.hl='rings',dur:9,cap:'Der Strahl ist etwas aufgeweitet, deshalb läuft ein Teil des Lichts leicht schräg. Schräge Strahlen haben einen etwas anderen Weg. So entstehen <b>helle und dunkle Ringe</b>.'},
+ {set:{miD:158},tween:3,start:()=>MI.hl='dd',dur:10,cap:'Jetzt schieben wir M₂ um λ/4 = 158 nm nach rechts. Weil das Licht <b>hin und zurück</b> läuft, wird sein Weg doppelt so viel länger: um λ/2. Berg trifft Tal, die Mitte wird dunkel.'},
+ {set:{miD:317},tween:3,start:()=>MI.hl='lupe',dur:9,cap:'Noch einmal λ/4 weiter: Der Gangunterschied ist jetzt ein ganzes λ. Die Mitte ist wieder hell, und ein Ring ist aus der Mitte herausgequollen. Das ist <span class="m">k</span> = 1.'},
+ {set:{miD:1583},tween:12,start:()=>MI.hl='rings',dur:15,cap:'Wir schieben weiter und zählen die Ringe. Merke: Pro λ/2 Spiegelweg kommt genau <b>ein Ring</b> aus der Mitte. Also gilt 2·Δ<span class="m">d</span> = <span class="m">k</span>·λ.'},
+ {start:()=>MI.hl='',dur:8,cap:'Hier: Δ<span class="m">d</span> = 1583 nm und <span class="m">k</span> = 5 Ringe. Also λ = 2·1583 nm / 5 ≈ 633 nm. Das ist das rote Licht eines Helium-Neon-Lasers.'},
  {set:{miD:0},tween:3,dur:4,cap:'Zurück in die Ausgangsstellung …'}]);
 tour($('cvPol'),[
  {set:{polA:0},start:()=>setMid(false),dur:7,cap:'Links: <b>unpolarisiertes</b> Licht. Das E-Feld schwingt quer zur Laufrichtung, aber in ständig wechselnden Richtungen.'},
@@ -2255,10 +2315,85 @@ tour($('cvFib'),[
  {set:{fbT:75},tween:3,dur:8,cap:'Darum koppelt man Licht möglichst <b>flach</b> ein. Dann bleibt es über Kilometer gefangen: Internet, Telefon, Endoskop.'}]);
 
 
+/* ================= Runner: Spaß-Gameplay unter dem Video (optional) ================= */
+const RUN=(function(){
+  const cv=document.getElementById('thRun'); let on=false, raf=0, lastT=0, t=0, dist=0, coins=0, v=13;
+  const LANES=[-1.7,0,1.7], RZ=2.6, FAR=70; let lane=1, px=0, jumpT=-1, objs=[], nextRow=18, bld=[];
+  const COLS=['#ff4d6d','#ffb703','#3a86ff','#8338ec','#06d6a0','#fb5607'];
+  for(let i=0;i<24;i++) bld.push({z:i*3.2,side:i%2?1:-1,h:3+Math.random()*6,c:COLS[i%COLS.length]});
+  function row(z){ const trains=Math.random()<.35?2:1, idx=[0,1,2].sort(()=>Math.random()-.5);
+    for(let k=0;k<3;k++){ const L=idx[k];
+      if(k<trains) objs.push({t:'train',L,z,len:6+Math.random()*4,c:COLS[(Math.random()*COLS.length)|0]});
+      else if(k===trains&&Math.random()<.45) objs.push({t:'bar',L,z:z+2});
+      else for(let j=0;j<5;j++) objs.push({t:'coin',L,z:z+j*1.4,y:1}); } }
+  function reset(){ objs=[]; nextRow=18; dist=0; coins=0; v=13; lane=1; px=0; jumpT=-1; for(let z=18;z<FAR;z+=15) row(z); nextRow=z0(); }
+  const z0=()=>objs.reduce((m,o)=>Math.max(m,o.z),0)+15;
+  function blocked(L,a,b){ return objs.some(o=>o.t==='train'&&o.L===L&&o.z<b&&o.z+o.len>a); }
+  function think(){ // autopilot: rechtzeitig ausweichen, über Sperren springen
+    if(blocked(lane,RZ-.5,RZ+16)){ const c=[lane-1,lane+1].filter(L=>L>=0&&L<3).sort(()=>Math.random()-.5).find(L=>!blocked(L,RZ-1.5,RZ+14)); if(c!==undefined) lane=c; }
+    else if(Math.random()<.004){ const c=lane+(Math.random()<.5?-1:1); if(c>=0&&c<3&&!blocked(c,RZ-1.5,RZ+14)) lane=c; }
+    if(jumpT<0&&objs.some(o=>o.t==='bar'&&o.L===lane&&o.z>RZ&&o.z-RZ<2.4)) jumpT=0; }
+  function draw(dt){
+    const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2), W=Math.max(1,r.width|0), H=Math.max(1,r.height|0);
+    if(cv.width!==W*dpr||cv.height!==H*dpr){ cv.width=W*dpr; cv.height=H*dpr; } const c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0);
+    const hy=H*.3, cam=2.4, ZC=4, f=(H-hy)*ZC/cam, cx=W/2, P=(x,y,z)=>{ const d=Math.max(.4,z+ZC); return [cx+f*(x-px*.55)/d, hy+f*(cam-y)/d, f/d]; };
+    // Himmel + Stadt
+    let g=c.createLinearGradient(0,0,0,hy); g.addColorStop(0,'#3b1d6e'); g.addColorStop(1,'#ff8a5b'); c.fillStyle=g; c.fillRect(0,0,W,hy+1);
+    c.fillStyle='#2a1640'; for(let i=0;i<14;i++){ const bw=W/14, bh=hy*(.25+.5*((i*37%11)/11)); c.fillRect(i*bw,hy-bh,bw-2,bh); }
+    c.fillStyle='#ffd166'; c.beginPath(); c.arc(W*.78,hy*.45,hy*.18,0,7); c.fill();
+    // Boden
+    g=c.createLinearGradient(0,hy,0,H); g.addColorStop(0,'#5a4a42'); g.addColorStop(1,'#2e2622'); c.fillStyle=g; c.fillRect(0,hy,W,H-hy);
+    // Wände/Häuser seitlich
+    bld.forEach(b=>{ b.z-=v*dt; if(b.z<-1){ b.z+=24*3.2; b.h=3+Math.random()*6; } });
+    [...bld].filter(b=>b.z>-2.5).sort((a,b)=>b.z-a.z).forEach(b=>{ const x=b.side*4.6, [x1,y1]=P(x,0,b.z), [x2,y2]=P(x,b.h,b.z), [x3]=P(x+b.side*3,0,b.z);
+      const [xa,ya]=P(x,0,b.z+3), [xb,yb]=P(x,b.h,b.z+3); c.fillStyle=b.c; c.globalAlpha=.85; c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.lineTo(xb,yb); c.lineTo(xa,ya); c.fill(); c.globalAlpha=1; });
+    // Schwellen + Schienen
+    const ph=dist%1.3; for(let z=FAR-ph; z>-3; z-=1.3){ const [a1,ay,s]=P(-2.7,0,z), [a2]=P(2.7,0,z); c.fillStyle='rgba(70,48,32,'+Math.min(1,1.3-z/FAR)+')'; c.fillRect(a1,ay-s*.05,a2-a1,Math.max(1,s*.12)); }
+    c.strokeStyle='#c9ced8'; LANES.forEach(L=>[-.55,.55].forEach(o=>{ const [x1,y1,s1]=P(L+o,0,-3), [x2,y2]=P(L+o,0,FAR); c.lineWidth=Math.max(1,f/ZC*.05); c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke(); }));
+    // Objekte von hinten nach vorn
+    const list=objs.filter(o=>o.z<FAR&&o.z+(o.len||0)>-1).sort((a,b)=>b.z-a.z); let runnerDrawn=false;
+    const drawRunner=()=>{ runnerDrawn=true; const jy=jumpT>=0?Math.sin(Math.min(1,jumpT/.62)*Math.PI)*1.5:0, [x,y,s]=P(px,jy,RZ), u=s*.55, st=Math.sin(t*16);
+      c.fillStyle='rgba(0,0,0,.35)'; const [,gy]=P(px,0,RZ); c.beginPath(); c.ellipse(x,gy,u*.5,u*.12,0,0,7); c.fill();
+      c.lineCap='round'; c.strokeStyle='#1d3557'; c.lineWidth=u*.22; [st,-st].forEach((k,i)=>{ c.beginPath(); c.moveTo(x+(i?.12:-.12)*u,y-1.05*u); c.lineTo(x+(i?.16:-.16)*u,y-(.55+.25*k)*u); c.lineTo(x+(i?.14:-.14)*u,y-(.1+.2*Math.max(0,k))*u); c.stroke(); });
+      c.fillStyle='#e63946'; c.beginPath(); c.roundRect(x-.3*u,y-1.85*u,.6*u,.85*u,.15*u); c.fill();
+      c.fillStyle='#ffb703'; c.beginPath(); c.roundRect(x-.24*u,y-1.8*u,.48*u,.5*u,.1*u); c.fill();
+      c.strokeStyle='#e63946'; c.lineWidth=u*.16; [st,-st].forEach((k,i)=>{ c.beginPath(); c.moveTo(x+(i?.28:-.28)*u,y-1.7*u); c.lineTo(x+(i?.42:-.42)*u,y-(1.35-.25*k)*u); c.stroke(); });
+      c.fillStyle='#f4c29b'; c.beginPath(); c.arc(x,y-2.08*u,.2*u,0,7); c.fill(); c.fillStyle='#023047'; c.beginPath(); c.arc(x,y-2.14*u,.21*u,Math.PI,0); c.fill(); c.fillRect(x-.05*u,y-2.2*u,.32*u,.07*u); };
+    list.forEach(o=>{ if(!runnerDrawn&&o.z<RZ) drawRunner(); const Lx=LANES[o.L];
+      if(o.t==='train'){ const w=.75,h=2.6,z1=Math.max(-2.5,o.z),z2=o.z+o.len; const p=[P(Lx-w,0,z1),P(Lx+w,0,z1),P(Lx+w,h,z1),P(Lx-w,h,z1)], q=[P(Lx-w,h,z2),P(Lx+w,h,z2)], sd=Lx<px*.55?[P(Lx+w,0,z1),P(Lx+w,0,z2),P(Lx+w,h,z2),P(Lx+w,h,z1)]:[P(Lx-w,0,z1),P(Lx-w,0,z2),P(Lx-w,h,z2),P(Lx-w,h,z1)];
+        const poly=(pts,fill)=>{ c.fillStyle=fill; c.beginPath(); pts.forEach(([a,b],i)=>i?c.lineTo(a,b):c.moveTo(a,b)); c.fill(); };
+        poly(sd,'#26334d'); poly([p[3],p[2],q[1],q[0]],'#9aa7bd'); poly(p,o.c);
+        const s=p[0][2]; c.fillStyle='#bde0fe'; c.fillRect(p[0][0]+s*.25,p[3][1]+s*.35,(p[1][0]-p[0][0])-s*.5,s*.6); c.fillStyle='#fff3b0'; [.3,1.2].forEach(k=>{ c.beginPath(); c.arc(p[0][0]+s*k*.95/1.5*1.1,p[0][1]-s*.45,s*.12,0,7); c.fill(); });
+      } else if(o.t==='bar'){ const [x1,y1,s]=P(Lx-.8,.9,o.z), [x2]=P(Lx+.8,.9,o.z), [,yb]=P(Lx,0,o.z); c.fillStyle='#fff'; c.fillRect(x1,y1,x2-x1,s*.28); c.fillStyle='#e63946'; for(let k=0;k<4;k++) c.fillRect(x1+(x2-x1)*k/4,y1,(x2-x1)/8,s*.28); c.fillStyle='#ddd'; c.fillRect(x1,y1,s*.08,yb-y1); c.fillRect(x2-s*.08,y1,s*.08,yb-y1);
+      } else if(o.t==='coin'&&!o.got){ const [x,y,s]=P(Lx,o.y+.3*Math.sin(t*4+o.z),o.z), sq=Math.abs(Math.cos(t*5+o.z)); c.fillStyle='#ffd60a'; c.strokeStyle='#e09f00'; c.lineWidth=Math.max(1,s*.05); c.beginPath(); c.ellipse(x,y,s*.25*Math.max(.15,sq),s*.25,0,0,7); c.fill(); c.stroke(); } });
+    if(!runnerDrawn) drawRunner();
+    // HUD
+    c.font='700 '+Math.max(12,H*.075)+'px "IBM Plex Mono", monospace'; c.textBaseline='top'; c.fillStyle='rgba(0,0,0,.45)'; c.fillRect(8,8,Math.max(150,H*.75),H*.2); c.fillStyle='#ffd60a'; c.fillText('● '+coins,16,12); c.fillStyle='#fff'; c.fillText(Math.floor(dist)+' m',16,12+H*.09); }
+  function step(now){ if(!on) return; raf=requestAnimationFrame(step); const dt=Math.min(.05,(now-lastT)/1000||0); lastT=now; const run=!RUN.paused();
+    if(run){ t+=dt; v=Math.min(24,v+dt*.12); dist+=v*dt; objs.forEach(o=>o.z-=v*dt);
+      objs=objs.filter(o=>o.z+(o.len||0)>-2); while(z0()<FAR+15) row(z0());
+      think(); px+=(LANES[lane]-px)*Math.min(1,dt*9); if(jumpT>=0){ jumpT+=dt; if(jumpT>.62) jumpT=-1; }
+      objs.forEach(o=>{ if(o.t==='coin'&&!o.got&&o.L===lane&&Math.abs(o.z-RZ)<.6){ o.got=1; coins++; } }); }
+    draw(run?dt:0); }
+  return { paused:()=>false, get on(){ return on; }, start(){ if(on) return; on=true; cv.hidden=false; if(!objs.length) reset(); lastT=performance.now(); raf=requestAnimationFrame(step); },
+    stop(){ on=false; cancelAnimationFrame(raf); cv.hidden=true; } };
+})();
+
+
 /* ================= Lernvideo im Vollbild ================= */
 (function(){
   const ORDER=['cvLC','cvDip','emL','cvEMS','cvRefH','cvRefF','cvBrH','cvBrF','cvWater','cvRain','cvFib','cvInt','cvBeug','cvSingle','cvESH','cvDouble','cvKW','cvGrat','cvSpecG','cvRes','cvStand','cvMZ','cvMi','cvPol','cvBrew','cvCmp'];
-  const INTRO_LONG=7, INTRO_SHORT=3.2, RECAP=10;
+  const INTRO_LONG=7, INTRO_SHORT=3.2, RECAP=10, QT=12, QD=20;
+  const QX={reflexion:['Licht trifft unter 30° zum Lot auf einen Spiegel. Unter welchem Winkel zum Lot wird es reflektiert?',['60°','30°','15°'],1,'Einfallswinkel gleich Reflexionswinkel, beide werden zum Lot gemessen.'],
+    brechung:['Licht geht schräg von Luft in Glas. Wie knickt es ab?',['zum Lot hin','vom Lot weg','gar nicht'],0,'Im Glas ist Licht langsamer, deshalb knickt es zum Lot hin.'],
+    wasser:['Eine Wasserwelle läuft ins flache Wasser. Was passiert mit der Wellenlänge?',['Sie wird größer.','Sie wird kleiner.','Sie bleibt gleich.'],1,'Die Welle wird langsamer, die Frequenz bleibt gleich, also wird die Wellenlänge kleiner.'],
+    spektren:['Wo liegt beim Gitter das rote Licht im Spektrum erster Ordnung?',['innen, nahe der Mitte','außen','genau in der Mitte'],1,'Rot hat die größte Wellenlänge und wird am stärksten gebeugt, deshalb liegt es außen.']};
+  const QI={erzeugung:4,'em-text':7,spektrum:0,total:9,interferenz:10,beugung:1,einzelspalt:2,doppelspalt:11,kleinwinkel:3,gitter:13,aufloesung:14,stehend:15,mz:16,michelson:17,polarisation:18,vergleich:21};
+  const qFor=id=>QX[id]||(QI[id]!=null?QZ[QI[id]]:null);
+  const Q_INTRO='Blitzfrage! Tippe auf die richtige Antwort.';
+  const QR={"erzeugung": "Richtig ist: Die Periodendauer verdoppelt sich. C steht unter der Wurzel, und die Wurzel aus vier ist zwei.", "em-text": "Richtig ist: sechs mal zehn hoch vierzehn Hertz. Du rechnest f gleich c durch Lambda, also drei mal zehn hoch acht durch fünf mal zehn hoch minus sieben.", "spektrum": "Richtig ist: Radiowellen. Sie sind Meter bis Kilometer lang. Röntgenstrahlung ist so klein wie Atome.", "reflexion": "Richtig ist: 30 Grad. Einfallswinkel gleich Reflexionswinkel, beide werden zum Lot gemessen.", "brechung": "Richtig ist: zum Lot hin. Im Glas ist Licht langsamer, deshalb knickt es zum Lot hin.", "wasser": "Richtig ist: Sie wird kleiner. Die Welle wird langsamer, die Frequenz bleibt gleich, also wird die Wellenlänge kleiner.", "total": "Richtig ist: Mit Wasser außen steigt der Grenzwinkel auf 61 Grad. Das Licht trifft mit 50 Grad auf, also bricht die Totalreflexion zusammen, und ein Teil des Lichts geht in den Tropfen.", "interferenz": "Richtig ist: Der Gangunterschied muss ein halbes Lambda, anderthalb Lambda und so weiter betragen. Dann trifft Berg auf Tal.", "beugung": "Richtig ist: wenn der Spalt etwa so breit ist wie die Wellenlänge. Dann entsteht hinter dem Spalt fast eine Kreiswelle.", "einzelspalt": "Richtig ist: das erste Nebenmaximum. Es gibt drei Zonen. Zwei löschen sich aus, eine bleibt übrig, also ist es dort schwach hell.", "doppelspalt": "Richtig ist: Die Maxima rücken zusammen. Der Abstand d steht im Nenner, also wird der Streifenabstand kleiner.", "kleinwinkel": "Richtig ist: nein. Bei 35 Grad unterscheiden sich Sinus und Tangens um mehr als 20 Prozent.", "gitter": "Richtig ist: die zweite Ordnung. Die Gitterkonstante ist 1,67 Mikrometer. Geteilt durch 600 Nanometer ergibt das 2,78, und abgerundet ist das zwei.", "spektren": "Richtig ist: außen. Rot hat die größte Wellenlänge und wird am stärksten gebeugt, deshalb liegt es außen.", "aufloesung": "Richtig ist: Ja. Das Auflösungsvermögen ist zwei mal 500, also 1000. Gebraucht werden etwa 982.", "stehend": "Richtig ist: Lambda halbe. Von einem Knoten zum nächsten ist es eine halbe Wellenlänge, von Knoten zu Bauch ein Viertel.", "mz": "Richtig ist: Port vier ist dunkel und Port drei ist hell. Bei einer Phasendifferenz von Pi löschen sich die Wellen an Port vier aus.", "michelson": "Richtig ist: genau ein Ring. Das Licht läuft hin und zurück, also wird der Gangunterschied doppelt so groß, und das ist genau ein Lambda.", "polarisation": "Richtig ist: 12,5 Prozent. Das erste Filter lässt die Hälfte durch. Kosinus Quadrat von 60 Grad ist ein Viertel. Die Hälfte von einem Viertel ist ein Achtel.", "vergleich": "Richtig ist: die Minima. Beim Einzelspalt zählt die Formel die dunklen Stellen, anders als bei Doppelspalt und Gitter."};
+  const qReveal=c=>QR[c.sec.id]||('Richtig ist: '+c.q[1][c.q[2]]+'.');
+  let score=0, streak=0;
   const RECAPS={"erzeugung": "Das nimmst du mit: Im Schwingkreis pendelt die Energie zwischen dem E-Feld des Kondensators und dem B-Feld der Spule, mit T = 2π·√(L·C). Öffnet man ihn zum Dipol, lösen sich die Felder ab und laufen als elektromagnetische Welle davon. Am besten strahlt ein Dipol mit der Länge λ/2.", "em-text": "Das nimmst du mit: E-Feld und B-Feld schwingen senkrecht zueinander und senkrecht zur Ausbreitungsrichtung. Es gilt c = λ·f. Im Medium wird die Welle n-mal langsamer und die Wellenlänge n-mal kürzer. Die Frequenz bleibt gleich.", "spektrum": "Das nimmst du mit: Radiowellen, Mikrowellen, Infrarot, Licht, UV und Röntgenstrahlung sind alles elektromagnetische Wellen mit derselben Geschwindigkeit c. Je kürzer die Wellenlänge, desto höher die Frequenz. Sichtbares Licht reicht nur von etwa 380 bis 780 nm.", "reflexion": "Das nimmst du mit: Einfallswinkel gleich Reflexionswinkel, beide zum Lot gemessen. Das folgt aus dem Huygens-Prinzip und aus dem Fermat-Prinzip: Das Licht nimmt den Weg mit der kürzesten Laufzeit.", "brechung": "Das nimmst du mit: Geht Licht ins langsamere Medium, knickt es zum Lot hin. Geht es ins schnellere Medium, knickt es vom Lot weg. Das Brechungsgesetz lautet n₁·sin α = n₂·sin β.", "wasser": "Das nimmst du mit: Im flachen Wasser ist die Welle langsamer. Die Frequenz bleibt, also wird die Wellenlänge kürzer, und die Welle knickt zum Lot hin. Genau so verhält sich Licht beim Übergang in Glas.", "total": "Das nimmst du mit: Totalreflexion gibt es nur beim Übergang vom optisch dichteren ins dünnere Medium, wenn der Einfallswinkel größer als der Grenzwinkel ist. Den Grenzwinkel berechnet man mit sin α = n₂/n₁. Das nutzen der Regensensor und die Glasfaser.", "interferenz": "Das nimmst du mit: Bei einem Gangunterschied von Δs = k·λ verstärken sich zwei Wellen, es wird hell. Bei Δs = (k + ½)·λ löschen sie sich aus, es wird dunkel. In die Phase rechnest du mit Δφ = 2π·Δs/λ um.", "beugung": "Das nimmst du mit: Hinter einer Öffnung breitet sich eine Welle auch in den Schattenraum aus. Deutlich sieht man das, wenn die Öffnung etwa so groß ist wie die Wellenlänge. Erklärung nach Huygens: Jeder Punkt der Öffnung sendet eine Elementarwelle aus.", "einzelspalt": "Das nimmst du mit: Beim Einzelspalt zählt die Formel b·sin α = k·λ die dunklen Stellen. In der Mitte liegt das breite, helle Hauptmaximum. Je enger der Spalt, desto breiter das Bild.", "doppelspalt": "Das nimmst du mit: Beim Doppelspalt liegen die hellen Streifen dort, wo der Gangunterschied ein Vielfaches von λ ist. Aus dem Abstand a des k-ten Streifens, dem Schirmabstand e und dem Spaltabstand d folgt für kleine Winkel λ = d·a/(k·e).", "kleinwinkel": "Das nimmst du mit: Für kleine Winkel bis etwa 10 Grad gilt sin α ≈ tan α ≈ α. Beim Doppelspalt darf man so nähern. Beim Gitter meist nicht, dort rechnest du exakt mit α = arctan(a/e).", "gitter": "Das nimmst du mit: Das Gitter hat dieselbe Formel wie der Doppelspalt, d·sin α = k·λ, aber viel schärfere und hellere Maxima. Den Winkel bestimmst du mit tan α = a/e. Weil sin α höchstens 1 sein kann, ist die höchste Ordnung d/λ, abgerundet.", "spektren": "Das nimmst du mit: Rot wird stärker gebeugt als Violett, weil seine Wellenlänge größer ist. Deshalb liegt Rot außen. Die nullte Ordnung bleibt weiß. In höheren Ordnungen überlappen sich die Spektren, zum Beispiel die zweite und die dritte.", "aufloesung": "Das nimmst du mit: Das Auflösungsvermögen ist A = λ/Δλ. Beim Gitter gilt A = n·N, mit der Ordnung n und der Zahl N der beleuchteten Spalte. Für die Natrium-D-Linien braucht man etwa A = 1000.", "stehend": "Das nimmst du mit: Eine Welle und ihre Reflexion überlagern sich zur stehenden Welle. An den Knoten schwingt nichts, an den Bäuchen am stärksten. Zwei benachbarte Knoten liegen λ/2 auseinander. So misst man die Wellenlänge von Mikrowellen direkt.", "mz": "Das nimmst du mit: Das Mach-Zehnder-Interferometer teilt das Licht auf zwei Wege und führt es wieder zusammen. Die Phasendifferenz ΔΦ = 2π·Δs/λ entscheidet, an welchem Ausgang das Licht herauskommt. Zählt man die Wechsel beim Einfüllen eines Gases, erhält man seine Brechzahl.", "michelson": "Das nimmst du mit: Beim Michelson-Interferometer läuft das Licht hin und zurück. Verschiebt man einen Spiegel um Δd, ändert sich der Gangunterschied um 2·Δd. Aus k gezählten Ringen folgt λ = 2·Δd/k.", "polarisation": "Das nimmst du mit: Nur Transversalwellen lassen sich polarisieren. Hinter dem ersten Filter bleibt die Hälfte der Intensität, danach gilt das Gesetz von Malus mit cos²θ. Unter dem Brewster-Winkel ist das reflektierte Licht vollständig polarisiert.", "vergleich": "Das nimmst du mit: Beim Einzelspalt zählt die Formel die dunklen Stellen, beim Doppelspalt und beim Gitter die hellen. Je mehr Spalte, desto schärfer und heller werden die Maxima."};
   const chapters=[]; let lastSec=null;
   ORDER.forEach(id=>{ const el=$(id); if(!el) return; const T=tours.find(t=>t.bench.contains(el)); if(!T) return;
@@ -2271,7 +2406,7 @@ tour($('cvFib'),[
     const outs=hero?null:T.bench.querySelector(':scope > .outs');
     const dur=T.steps.reduce((a,x)=>a+(x.dur||7),0)+(first?INTRO_LONG:INTRO_SHORT);
     chapters.push({T,sec,title,sub,kurz,first,day,num,nodes,outs,dur}); });
-  chapters.forEach((c,i)=>{ const nx=chapters[i+1]; if((!nx||nx.sec!==c.sec)&&RECAPS[c.sec.id]){ c.recap=RECAPS[c.sec.id]; c.dur+=RECAP; } });
+  chapters.forEach((c,i)=>{ const nx=chapters[i+1]; if((!nx||nx.sec!==c.sec)&&RECAPS[c.sec.id]){ c.recap=RECAPS[c.sec.id]; c.dur+=RECAP; c.q=qFor(c.sec.id); if(c.q) c.dur+=QD; } });
   const total=chapters.reduce((a,c)=>a+c.dur,0), mins=Math.round(total/60);
   const meta=chapters.length+' Kapitel · ca. '+mins+' Minuten · 3 Nachmittage';
   $('lvMeta').textContent=meta; $('vDur').textContent='· '+meta;
@@ -2298,7 +2433,7 @@ tour($('cvFib'),[
     const k=Math.max(1,Math.min(1.35,stage.clientWidth/820)); moved.forEach(([n])=>{ if(n.tagName==='CANVAS') n._fs=k; }); }
   addEventListener('resize',()=>{ if(TH.on) layout(); });
   function segUI(){ [...seg.children].forEach((e,i)=>{ e.classList.toggle('done',i<idx); e.firstChild.style.width=i===idx?Math.min(100,progress()*100)+'%':''; }); }
-  function progress(){ const c=chapters[idx], intro=c.first?INTRO_LONG:INTRO_SHORT; if(phase==='intro') return pt/c.dur; if(phase==='recap') return (c.dur-RECAP+Math.min(pt,RECAP))/c.dur; const T=c.T; return (intro+T.steps.slice(0,Math.max(0,T.i)).reduce((a,x)=>a+(x.dur||7),0)+Math.max(0,T.t))/c.dur; }
+  function progress(){ const c=chapters[idx], intro=c.first?INTRO_LONG:INTRO_SHORT; if(phase==='intro') return pt/c.dur; const qd=c.q?QD:0; if(phase==='recap') return (c.dur-qd-RECAP+Math.min(pt,RECAP))/c.dur; if(phase==='quiz') return (c.dur-qd+Math.min(pt,qd))/c.dur; const T=c.T; return (intro+T.steps.slice(0,Math.max(0,T.i)).reduce((a,x)=>a+(x.dur||7),0)+Math.max(0,T.t))/c.dur; }
   function fmtT(sec){ sec=Math.max(0,Math.round(sec)); return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0'); }
   function dots(){ const c=chapters[idx], n=c.T.steps.length, d=$('thDots'); if(d.children.length!==n){ d.innerHTML=''; for(let i=0;i<n;i++) d.appendChild(document.createElement('i')); }
     [...d.children].forEach((e,i)=>{ e.className=phase==='play'&&i===c.T.i?'on':(phase==='play'&&i<c.T.i?'past':''); }); }
@@ -2306,7 +2441,7 @@ tour($('cvFib'),[
   function begin(i){ const old=chapters[idx]; if(old){ old.T.run=false; }
     idx=Math.max(0,Math.min(chapters.length-1,i)); save(idx); const c=chapters[idx];
     c.T.run=false; c.T.i=-1; c.T.t=0; mount(c);
-    phase='intro'; pt=0; card.classList.remove('recap');
+    phase='intro'; pt=0; card.classList.remove('recap','quiz'); fx.innerHTML='';
     $('thEye').textContent='Kapitel '+(idx+1)+' von '+chapters.length+' · Nachmittag '+c.day+(c.num?' · Thema '+c.num:'');
     $('thTitle').textContent=c.first?c.title:c.sub; $('thKurz').innerHTML=c.first?c.kurz:'';
     speakHTML(introText(c,idx));
@@ -2314,14 +2449,37 @@ tour($('cvFib'),[
   function recap(c){ c.T.run=false; phase='recap'; pt=0; const keys=[...c.sec.querySelectorAll('.key')].slice(0,3).map(k=>k.outerHTML).join('');
     $('thEye').textContent='Das nimmst du mit'+(c.num?' · Thema '+c.num:''); $('thTitle').textContent=c.title; $('thKurz').innerHTML=keys;
     card.classList.add('show','recap'); speakHTML(c.recap); setSub(c.recap); dots(); }
-  function next(){ if(idx<chapters.length-1) begin(idx+1); else finish(); }
+  let qs=null; const fx=document.createElement('div'); fx.className='qv-fx'; card.appendChild(fx);
+  function quiz(c){ const q=c.q; phase='quiz'; pt=0; qs={q,done:false,at:0}; card.classList.remove('recap'); card.classList.add('show','quiz');
+    $('thEye').textContent='⚡ Blitzfrage · +10 Punkte'+(streak>1?' · Serie '+streak:''); $('thTitle').textContent=q[0];
+    const k=$('thKurz'); k.innerHTML=''; q[1].forEach((o,j)=>{ const b=document.createElement('button'); b.type='button'; b.className='qv-o'; b.textContent=String.fromCharCode(65+j)+')  '+o; b.onclick=e=>{ e.stopPropagation(); answer(j); }; k.appendChild(b); });
+    const ex=document.createElement('div'); ex.className='qv-ex'; ex.id='qvEx'; k.appendChild(ex);
+    speakHTML(Q_INTRO); setSub('<span style="color:var(--muted)">Tippe auf eine Antwort. Nach '+QT+' Sekunden kommt die Auflösung.</span>'); dots(); }
+  function answer(j){ if(!qs||qs.done) return; qs.done=true; qs.at=pt; const q=qs.q, bs=[...$('thKurz').querySelectorAll('.qv-o')]; bs.forEach(b=>b.disabled=true);
+    bs[q[2]].classList.add('r'); let head;
+    if(j===null){ head='⏱ Zeit um.'; streak=0; }
+    else if(j===q[2]){ streak++; const pts=10+(streak>1?5*(streak-1):0); score+=pts; head='✓ Richtig! +'+pts+(streak>1?' (Serie '+streak+')':''); boom(); }
+    else { bs[j].classList.add('w'); head='✗ Knapp daneben.'; streak=0; }
+    $('qvEx').innerHTML='<b>'+head+'</b> '+q[3]; const sc=$('thScore'); sc.textContent='⭐ '+score; sc.classList.add('pop'); setTimeout(()=>sc.classList.remove('pop'),300);
+    const c=chapters[idx]; speakHTML(qReveal(c)); setSub(qReveal(c)); }
+  function boom(){ if(reduce) return; fx.innerHTML=''; const C=['#ffd60a','#5dffa0','#ff4d6d','#3a86ff','#fb5607','#8338ec'];
+    for(let i=0;i<60;i++){ const e=document.createElement('i'), a=Math.random()*Math.PI*2, d=160+Math.random()*320; e.style.background=C[i%C.length];
+      e.style.setProperty('--dx',Math.cos(a)*d+'px'); e.style.setProperty('--dy',(Math.sin(a)*d+120)+'px'); e.style.setProperty('--r',(Math.random()*720-360)+'deg'); e.style.animationDelay=(Math.random()*.15)+'s'; fx.appendChild(e); }
+    setTimeout(()=>{ fx.innerHTML=''; },1600); }
+  function next(){ card.classList.remove('quiz'); qs=null; if(idx<chapters.length-1) begin(idx+1); else finish(); }
   function play(){ const c=chapters[idx]; phase='play'; card.classList.remove('show'); c.T.run=playing; go(c.T,0); dots(); }
   VID.tick=dt=>{ if(!TH.on) return; const c=chapters[idx]; if(playing) VOICE.watch();
     if(playing&&phase==='intro'){ pt+=dt*VID.speed; const L=c.first?INTRO_LONG:INTRO_SHORT; $('thCount').style.width=Math.min(100,pt/L*100)+'%'; if(pt>=L&&!VID.holding()) play(); }
-    if(playing&&phase==='recap'){ pt+=dt*VID.speed; $('thCount').style.width=Math.min(100,pt/RECAP*100)+'%'; if(pt>=RECAP&&!VID.holding()) next(); }
+    if(playing&&phase==='recap'){ pt+=dt*VID.speed; $('thCount').style.width=Math.min(100,pt/RECAP*100)+'%'; if(pt>=RECAP&&!VID.holding()){ if(c.q) quiz(c); else next(); } }
+    if(playing&&phase==='quiz'&&qs){ if(!qs.done){ pt+=dt*VID.speed; $('thCount').style.width=Math.min(100,pt/QT*100)+'%'; if(pt>=QT&&!VID.holding()) answer(null); } else { pt+=dt*VID.speed; if(pt>=qs.at+3.5&&!VID.holding()) next(); } }
     if(phase==='play'){ setSub(c.T.cap.innerHTML); dots(); }
     const done=chapters.slice(0,idx).reduce((a,x)=>a+x.dur,0)+progress()*c.dur; $('thTime').textContent=fmtT(done)+' / '+fmtT(total);
     segUI(); if(performance.now()>hideT&&playing) $('thCtrl').classList.add('hide'); };
+  RUN.paused=()=>!playing;
+  const rb=$('thRunBtn'); let runOn=false; try{ runOn=localStorage.getItem('wo-run')==='1'; }catch(e){}
+  function setRun(v){ runOn=v; rb.setAttribute('aria-pressed',v?'true':'false'); try{ localStorage.setItem('wo-run',v?'1':'0'); }catch(e){} if(v&&TH.on) RUN.start(); else RUN.stop(); layout(); }
+  rb.setAttribute('aria-pressed',runOn?'true':'false');
+  rb.onclick=e=>{ e.stopPropagation(); setRun(!runOn); showCtrl(); };
   VOICE.onBlocked=b=>{ $('thUnmute').hidden=!b; if(b) showCtrl(); };
   $('thUnmute').onclick=e=>{ e.stopPropagation(); VOICE.resume(); };
   document.addEventListener('visibilitychange',()=>{ if(document.hidden&&TH.on&&playing) VID.toggle(); });
@@ -2334,8 +2492,8 @@ tour($('cvFib'),[
   function open(i){ if(TH.on){ begin(i); return; } finished=false; TH.on=true; VID.on=true; Object.defineProperty(VID,'cur',{get:()=>TH.on?chapters[idx].T:null,configurable:true});
     tours.forEach(t=>{ t._r=t.run; t.run=false; }); th.hidden=false; document.body.style.overflow='hidden'; playing=true;
     try{ th.requestFullscreen&&th.requestFullscreen().catch(()=>{}); }catch(e){}
-    begin(i); showCtrl(); wake(); }
-  function close(){ stopSpeech(); const c=chapters[idx]; if(c) c.T.run=false; unmount(); TH.on=false; VID.on=false; th.hidden=true; document.body.style.overflow=''; playing=false;
+    begin(i); showCtrl(); wake(); if(runOn){ RUN.start(); layout(); } }
+  function close(){ stopSpeech(); RUN.stop(); const c=chapters[idx]; if(c) c.T.run=false; unmount(); TH.on=false; VID.on=false; th.hidden=true; document.body.style.overflow=''; playing=false;
     tours.forEach(t=>{ t.run=t._r!==false; t.upd&&t.upd(); }); try{ document.fullscreenElement&&document.exitFullscreen(); }catch(e){} try{ lock&&lock.release(); }catch(e){} lock=null; refreshCont(); }
   function finish(){ save(0); finished=true; speakHTML('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); unmount(); phase='end'; card.classList.add('show');
     $('thEye').textContent='Geschafft 🎉'; $('thTitle').textContent='Du hast alle '+chapters.length+' Kapitel gesehen'; $('thKurz').innerHTML='Jetzt festigen: Mach das <b>Quiz</b> und hake die <b>Checkliste</b> ab. Beenden bringt dich zurück zur Seite.';
@@ -2355,7 +2513,7 @@ tour($('cvFib'),[
   vs.onchange=()=>{ if(vs.value==='__file'||vs.value==='__claribel'){ VOICE.useFile=true; VOICE.rec=vs.value==='__file'?'thorsten':'claribel'; try{ localStorage.setItem('wo-voice-name',vs.value); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); voiceUI(); showCtrl(); return; } VOICE.useFile=false; const v=germanVoices().find(x=>x.name===vs.value); if(v){ VOICE.voice=v; try{ localStorage.setItem('wo-voice-name',v.name); }catch(e){} if(TH.on&&playing) speakHTML(VOICE.last); } showCtrl(); };
   voiceUI();
   function introText(c,i){ return 'Kapitel '+(i+1)+': '+(c.first?sent(c.title)+'Kurz gesagt: '+c.kurz:sent(c.sub.replace(/([?!])\s·\s/g,'$1 ').replace(/\s·\s/g,', '))); }
-  window.__allNarration=()=>{ const out=[]; chapters.forEach((c,i)=>{ out.push(introText(c,i)); c.T.steps.forEach(x=>out.push(x.cap)); if(c.recap) out.push(c.recap); }); out.push('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); return out.map(h=>{ const t=toSpeech(h); return {h:hashStr(t),t}; }); };
+  window.__allNarration=()=>{ const out=[]; chapters.forEach((c,i)=>{ out.push(introText(c,i)); c.T.steps.forEach(x=>out.push(x.cap)); if(c.recap) out.push(c.recap); if(c.q) out.push(qReveal(c)); }); out.push(Q_INTRO); out.push('Geschafft! Du hast alle Kapitel gesehen. Jetzt festigen: Mach das Quiz und hake die Checkliste ab.'); return out.map(h=>{ const t=toSpeech(h); return {h:hashStr(t),t}; }); };
   $('lvStart').onclick=()=>open(0); $('lvPoster').onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); };
   $('lvCont').onclick=()=>open(load());
   [$('vStart'),$('vStart2')].forEach(b=>b&&(b.onclick=()=>{ const v=load(); open(v>0&&v<chapters.length?v:0); }));
