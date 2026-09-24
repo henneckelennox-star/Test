@@ -16,6 +16,7 @@
     --phosphor: #6dff9c;
     --phosphor-dim: #2f8f57;
     --pink: #ff5fa2;
+    --cyan: #5ff3ff;
     --amber: #ffcf5a;
     --pixel: "Press Start 2P", "Courier New", monospace;
     --term: "VT323", "Courier New", monospace;
@@ -71,62 +72,53 @@
     animation: flicker 5s infinite steps(1);
   }
   @keyframes flicker { 0%, 100% { opacity: 1 } 47% { opacity: .85 } 48% { opacity: 1 } }
+  @keyframes blink { 50% { opacity: .2 } }
 
+  /* Titelbild */
+  .title {
+    position: absolute; inset: 0; pointer-events: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    padding-block: 5% 11%;
+  }
+  .logo {
+    margin: 0; font-family: var(--pixel); font-weight: 400;
+    font-size: clamp(30px, 9vw, 66px); letter-spacing: .06em; line-height: 1;
+    color: var(--amber);
+    text-shadow: -3px 0 0 var(--pink), 3px 0 0 var(--cyan), 0 0 18px rgba(255,207,90,.5);
+  }
+  .tag { margin: .5em 0 0; font-family: var(--pixel); font-size: clamp(8px, 1.8vw, 12px); letter-spacing: .2em; color: var(--phosphor); text-align: center; }
+  .start {
+    pointer-events: auto;
+    font-family: var(--pixel); font-size: clamp(11px, 2.6vw, 17px); letter-spacing: .1em;
+    color: var(--phosphor); background: rgba(7,21,16,.75);
+    border: 2px solid var(--phosphor); padding: .8em 1.2em; cursor: pointer;
+    text-shadow: 0 0 6px var(--phosphor);
+    animation: blink 1.1s steps(2) infinite;
+  }
+  .start:hover, .start:focus-visible { animation: none; color: var(--screen); background: var(--phosphor); text-shadow: none; }
+
+  /* Anzeige während des Tanzens */
   .hud {
-    position: absolute; left: 0; right: 0; top: 24%;
-    text-align: center; pointer-events: none;
-    font-family: var(--pixel);
-    font-size: clamp(9px, 2.4vw, 16px);
-    letter-spacing: .08em;
+    position: absolute; left: 5%; right: 5%; top: 5%;
+    display: flex; justify-content: space-between; gap: 12px;
+    pointer-events: none;
+    font-family: var(--pixel); font-size: clamp(7px, 1.7vw, 11px); line-height: 1.7;
     text-shadow: 0 0 6px currentColor;
   }
-  .hud .gebobot { color: var(--pink); animation: blink 1s steps(2) infinite; }
-  @keyframes blink { 50% { opacity: .25 } }
+  .hud .track { color: var(--amber); }
+  .hud .score { color: var(--pink); text-align: right; font-variant-numeric: tabular-nums; }
+  .hud small { display: block; font-family: var(--term); font-size: clamp(13px, 2.4vw, 18px); line-height: 1.1; color: var(--phosphor); opacity: .75; text-shadow: none; }
 
   .ticker {
     position: absolute; left: 0; right: 0; bottom: 3%;
     overflow: hidden; white-space: nowrap; pointer-events: none;
     background: rgba(7,21,16,.8); padding-block: 2px;
-    font-family: var(--term);
     font-size: clamp(16px, 3.4vw, 26px);
     color: var(--amber);
     text-shadow: 0 0 6px rgba(255,207,90,.7);
   }
-  .ticker span { display: inline-block; padding-left: 100%; animation: marquee 22s linear infinite; }
+  .ticker span { display: inline-block; padding-left: 100%; animation: marquee 26s linear infinite; }
   @keyframes marquee { to { transform: translateX(-100%); } }
-
-  /* Der Köder: sieht aus wie ein geheimer Download */
-  .bait {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; justify-content: center; gap: .5em;
-    padding: 8% 9%;
-    background: var(--screen);
-    font-size: clamp(17px, 3.6vw, 26px);
-    line-height: 1.15;
-    text-shadow: 0 0 5px rgba(109,255,156,.6);
-  }
-  .bait h1 {
-    margin: 0 0 .3em; font-family: var(--pixel); font-weight: 400;
-    font-size: clamp(11px, 2.8vw, 18px); color: var(--amber);
-    text-wrap: balance; line-height: 1.5;
-  }
-  .bait p { margin: 0; }
-  .bait .dim { color: var(--phosphor-dim); }
-  .bar {
-    height: 1.1em; border: 2px solid var(--phosphor); padding: 2px; margin-top: .3em;
-  }
-  .bar i { display: block; height: 100%; width: 0; background: var(--phosphor);
-    background-image: repeating-linear-gradient(90deg, var(--phosphor) 0 10px, var(--screen) 10px 12px); }
-  .bait button {
-    align-self: flex-start; margin-top: .6em;
-    font: inherit; font-family: var(--pixel); font-size: clamp(10px, 2.4vw, 15px);
-    color: var(--screen); background: var(--phosphor);
-    border: 0; padding: .9em 1.2em; cursor: pointer;
-    box-shadow: 4px 4px 0 var(--phosphor-dim);
-  }
-  .bait button:hover { background: var(--amber); }
-  .bait button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--phosphor-dim); }
-  .cursor { animation: blink 1s steps(2) infinite; }
 
   .panel {
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
@@ -150,25 +142,29 @@
   button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .glare, .hud .gebobot, .cursor { animation: none; }
-    .ticker span { animation-duration: 60s; }
+    .glare, .start { animation: none; }
+    .ticker span { animation-duration: 70s; }
   }
 </style>
 
 <main class="monitor">
-  <div class="screen" id="screen">
-    <canvas id="c" width="128" height="96" aria-label="Bobot, ein kleiner Pixelmann, tanzt in der Disco"></canvas>
-    <div class="hud" id="hud" hidden><span class="gebobot">DU WURDEST GEBOBOT!</span></div>
-    <div class="ticker" id="ticker" hidden><span>+++ BOBOT GIBT DICH NIEMALS AUF +++ BOBOT LÄSST DICH NIEMALS HÄNGEN +++ KLICK AUF BOBOT FÜR EINEN SPEZIALMOVE +++ SCHICK DIESE SEITE AN DEINE FREUNDE +++ ES GIBT KEINE LÖSUNGEN, ES GIBT NUR BOBOT +++</span></div>
+  <div class="screen">
+    <canvas id="c" width="128" height="96" aria-label="Bobot, ein kleiner Pixel-Roboter, tanzt in der Disco"></canvas>
 
-    <section class="bait" id="bait">
-      <h1>GEHEIM.EXE</h1>
-      <p>&gt; Datei: <span style="color:var(--amber)">Loesungen_Mathearbeit.zip</span></p>
-      <p class="dim">&gt; Größe: 1,337 MB · Quelle: Lehrerzimmer-PC</p>
-      <p id="status">&gt; Bereit zum Herunterladen<span class="cursor">_</span></p>
-      <div class="bar" id="bar" hidden><i id="fill"></i></div>
-      <button id="go" type="button">HERUNTERLADEN</button>
-    </section>
+    <div class="title" id="title">
+      <div>
+        <h1 class="logo">BOBOT</h1>
+        <p class="tag">DER TANZROBOTER</p>
+      </div>
+      <button class="start" id="start" type="button">▶ START</button>
+    </div>
+
+    <div class="hud" id="hud" hidden>
+      <div class="track">♪ <span id="trackName">KOROBEINIKI</span><small id="trackInfo">Russisches Volkslied, 1861</small></div>
+      <div class="score">MOVES <span id="moves">0000</span><small id="poseName">HURRA</small></div>
+    </div>
+
+    <div class="ticker"><span>+++ BOBOT V1.0 ONLINE +++ TANZPROGRAMM GELADEN +++ SERVOMOTOREN AUF 110 % +++ KLICK AUF BOBOT FÜR DEN TURBO-MOVE +++ LEERTASTE = MUSIK AN/AUS +++ BEIM BERGKÖNIG WIRD ES IMMER SCHNELLER +++</span></div>
 
     <div class="scan"></div>
     <div class="glare"></div>
@@ -177,11 +173,12 @@
   <div class="panel">
     <div class="brand"><span class="led"></span><b>BOBOTRON 3000</b><small>Tanzmonitor</small></div>
     <div class="controls">
+      <button id="trackA" type="button" aria-pressed="true">A: TETRIS</button>
+      <button id="trackB" type="button" aria-pressed="false">B: BERGKÖNIG</button>
       <button id="snd" type="button" aria-pressed="false">SOUND AUS</button>
       <button id="slower" type="button" aria-label="Langsamer">−</button>
-      <span class="bpm" id="bpm">114 BPM</span>
+      <span class="bpm" id="bpm">144 BPM</span>
       <button id="faster" type="button" aria-label="Schneller">+</button>
-      <button id="again" type="button">NOCHMAL REINLEGEN</button>
     </div>
   </div>
 </main>
@@ -193,290 +190,338 @@
   const W = cv.width, H = cv.height;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ---------- Songs (beide gemeinfrei) ----------
+  // Melodie als [MIDI-Note, Länge in Achteln]; 0 = Pause
+  const SONGS = [
+    {
+      id: 'A', name: 'KOROBEINIKI', info: 'Russisches Volkslied, 1861 · bekannt aus Tetris', bpm: 144,
+      mel: [
+        [76,2],[71,1],[72,1],[74,2],[72,1],[71,1],
+        [69,2],[69,1],[72,1],[76,2],[74,1],[72,1],
+        [71,3],[72,1],[74,2],[76,2],
+        [72,2],[69,2],[69,2],[0,2],
+        [74,3],[77,1],[81,2],[79,1],[77,1],
+        [76,3],[72,1],[76,2],[74,1],[72,1],
+        [71,2],[71,1],[72,1],[74,2],[76,2],
+        [72,2],[69,2],[69,2],[0,2],
+      ],
+      bass: [40, 45, 44, 45, 38, 36, 44, 45],
+    },
+    {
+      id: 'B', name: 'IN DER HALLE DES BERGKÖNIGS', info: 'Edvard Grieg, 1875 · wird immer schneller', bpm: 96, accel: true,
+      mel: [
+        [59,1],[61,1],[62,1],[64,1],[66,1],[62,1],[66,2],
+        [65,1],[61,1],[65,2],[64,1],[60,1],[64,2],
+        [59,1],[61,1],[62,1],[64,1],[66,1],[62,1],[66,1],[71,1],
+        [69,1],[66,1],[62,1],[66,1],[69,4],
+      ],
+      bass: [47, 42, 47, 42],
+    },
+  ];
+  // In Achtel-Raster umrechnen
+  SONGS.forEach(s => {
+    s.steps = [];
+    s.mel.forEach(([m, len]) => { s.steps.push({ m, len }); for (let i = 1; i < len; i++) s.steps.push(null); });
+  });
+
+  let song = SONGS[0];
+  let bpm = song.bpm;
+
   // ---------- Takt ----------
-  let bpm = 114;
-  let beatPos = 0;          // laufende Beat-Position (Kommazahl)
+  let beatPos = 0;
   let lastT = performance.now();
-  let spinUntil = -1;       // Spezialmove bis zu dieser Beat-Position
+  let turboUntil = -1;
+  let moves = 0, lastBeat = 0, started = false;
 
   // ---------- Farben ----------
   const C = {
-    skin: '#ffc89a', skinD: '#e59a6a', shirt: '#ff5fa2', shirtD: '#c93d7d',
-    pants: '#3d6bff', pantsD: '#2746b0', shoe: '#1a1a22', glove: '#ffffff',
-    glass: '#101018', lens: '#5ff3ff', tooth: '#ffffff', mouth: '#7a1f32',
-    metal: '#c9ccd6', gold: '#ffcf5a', bulbOn: '#ff4040', bulbOff: '#6a2020',
-    tie: '#ffcf5a', belt: '#1a1a22'
+    metal: '#b9c3d8', metalL: '#e3e9f5', metalD: '#7d88a3', line: '#1c2130',
+    joint: '#5d667c', red: '#ff4d6d', visor: '#0b0f14', eye: '#5ff3ff', eyeHappy: '#ff5fa2',
+    panel: '#101820', boot: '#2a2f3d', bootL: '#4a5266', bulbOn: '#ffcf5a', bulbOff: '#6a5520'
   };
+  const TILE = ['#ff5fa2', '#6dff9c', '#5ff3ff', '#ffcf5a', '#b07bff'];
 
   function px(x, y, w = 1, h = 1, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); }
 
-  // Pixel-Linie mit Dicke 2 (für Arme und Beine)
-  function limb(x, y, ang, len, col, t = 2) {
+  // Gelenkarm: abwechselnd hell/dunkel wie ein Faltenbalg
+  function segment(x, y, ang, len) {
     const r = ang * Math.PI / 180, dx = Math.cos(r), dy = Math.sin(r);
-    for (let i = 0; i <= len; i++) px(x + dx * i - t / 2 + .5, y + dy * i - t / 2 + .5, t, t, col);
+    for (let i = 0; i <= len; i++) px(x + dx * i - .5, y + dy * i - .5, 2, 2, i % 2 ? C.joint : C.metal);
     return [x + dx * len, y + dy * len];
   }
   function arm(x, y, a1, a2) {
-    let [ex, ey] = limb(x, y, a1, 5, C.skin);
-    limb(x, y, a1, 1.5, C.shirt, 3);                 // Ärmel
-    let [hx, hy] = limb(ex, ey, a2, 4, C.skin);
-    px(hx - 1.5, hy - 1.5, 3, 3, C.glove);           // Cartoon-Handschuh
+    const [ex, ey] = segment(x, y, a1, 5);
+    px(ex - 1, ey - 1, 2, 2, C.red);                  // Ellbogen
+    const [hx, hy] = segment(ex, ey, a2, 4);
+    // Greifzange
+    px(hx - 1.5, hy - 1.5, 3, 3, C.red);
+    px(hx - .5, hy - .5, 1, 1, C.visor);
   }
   function leg(x, y, kx, ky, fx, fy, dir) {
     const seg = (ax, ay, bx, by) => {
       const n = Math.max(Math.abs(bx - ax), Math.abs(by - ay), 1);
-      for (let i = 0; i <= n; i++) px(ax + (bx - ax) * i / n, ay + (by - ay) * i / n, 3, 1.5, C.pants);
+      for (let i = 0; i <= n; i++) px(ax + (bx - ax) * i / n, ay + (by - ay) * i / n, 3, 1.5, i % 3 ? C.metalD : C.joint);
     };
     seg(x, y, kx, ky); seg(kx, ky, fx, fy);
-    px(dir < 0 ? fx - 2 : fx, fy, 5, 2, C.shoe);    // Schuh zeigt nach außen
+    px(kx, ky, 3, 2, C.red);                          // Knie
+    const bx = dir < 0 ? fx - 3 : fx - 1;
+    px(bx, fy, 7, 3, C.boot); px(bx + 1, fy, 5, 1, C.bootL);
   }
 
   // Tanzposen: la/ra = Winkel Oberarm/Unterarm (0 = rechts, -90 = hoch)
   const POSES = [
-    { la: [-125, -105], ra: [-55, -75], legs: 'wide',  lean: 0,  name: 'Hurra' },
-    { la: [-150, -95],  ra: [60, 130],  legs: 'kickR', lean: -1, name: 'Disco-Finger' },
-    { la: [180, 180],   ra: [0, 0],     legs: 'squat', lean: 0,  name: 'Flugzeug' },
-    { la: [120, 50],    ra: [-30, -85], legs: 'kickL', lean: 1,  name: 'Disco-Finger 2' },
-    { la: [-160, -20],  ra: [-20, -160],legs: 'wide',  lean: 0,  name: 'Hände auf den Kopf' },
-    { la: [150, 20],    ra: [30, 160],  legs: 'cross', lean: 0,  name: 'Roboter' },
-    { la: [-100, -100], ra: [100, 100], legs: 'kickR', lean: 0,  name: 'Rakete' },
-    { la: [200, 250],   ra: [-20, -70], legs: 'squat', lean: 1,  name: 'Lasso' },
+    { la: [-125, -105], ra: [-55, -75],  legs: 'wide',  lean: 0,  name: 'HURRA' },
+    { la: [-150, -95],  ra: [60, 130],   legs: 'kickR', lean: -1, name: 'DISCO-FINGER' },
+    { la: [180, 180],   ra: [0, 0],      legs: 'squat', lean: 0,  name: 'FLUGZEUG' },
+    { la: [120, 50],    ra: [-30, -85],  legs: 'kickL', lean: 1,  name: 'DISCO-FINGER' },
+    { la: [180, 90],    ra: [0, 90],     legs: 'wide',  lean: 0,  name: 'ROBOTER' },
+    { la: [150, 20],    ra: [30, 160],   legs: 'cross', lean: 0,  name: 'SCHERE' },
+    { la: [-100, -100], ra: [100, 100],  legs: 'kickR', lean: 0,  name: 'RAKETE' },
+    { la: [200, 250],   ra: [-20, -70],  legs: 'squat', lean: 1,  name: 'LASSO' },
   ];
 
-  function drawBobot(cx, floor, pose, bounce, beatFrac, flip) {
+  function drawBobot(cx, floor, pose, bounce, beat, turbo) {
+    const b = Math.floor(beat), frac = beat - b;
     const squat = pose.legs === 'squat' ? 3 : 0;
-    const hipY = floor - 9 + squat - bounce;
-    const lean = pose.lean;
-    const bx = cx + lean;
+    const hipY = floor - 11 + squat - bounce;
+    const bx = cx + pose.lean;
+    const fy = floor - 3;
 
     // Beine
-    const hl = cx - 3, hr = cx + 1;
+    const hl = cx - 5, hr = cx + 2;
     switch (pose.legs) {
-      case 'wide':  leg(hl, hipY, hl - 2, hipY + 5, hl - 4, floor - 2, -1); leg(hr, hipY, hr + 2, hipY + 5, hr + 4, floor - 2, 1); break;
-      case 'squat': leg(hl, hipY, hl - 4, hipY + 3, hl - 4, floor - 2, -1); leg(hr, hipY, hr + 4, hipY + 3, hr + 4, floor - 2, 1); break;
-      case 'kickR': leg(hl, hipY, hl, hipY + 4, hl, floor - 2, -1); leg(hr, hipY, hr + 4, hipY + 2, hr + 8, hipY + 3, 1); break;
-      case 'kickL': leg(hl, hipY, hl - 4, hipY + 2, hl - 8, hipY + 3, -1); leg(hr, hipY, hr, hipY + 4, hr, floor - 2, 1); break;
-      case 'cross': leg(hl, hipY, hl + 2, hipY + 4, hr + 1, floor - 2, 1); leg(hr, hipY, hr - 2, hipY + 4, hl - 1, floor - 2, -1); break;
+      case 'wide':  leg(hl, hipY, hl - 2, hipY + 5, hl - 4, fy, -1); leg(hr, hipY, hr + 2, hipY + 5, hr + 4, fy, 1); break;
+      case 'squat': leg(hl, hipY, hl - 4, hipY + 3, hl - 4, fy, -1); leg(hr, hipY, hr + 4, hipY + 3, hr + 4, fy, 1); break;
+      case 'kickR': leg(hl, hipY, hl, hipY + 4, hl, fy, -1); leg(hr, hipY, hr + 4, hipY + 2, hr + 8, hipY + 3, 1); break;
+      case 'kickL': leg(hl, hipY, hl - 4, hipY + 2, hl - 8, hipY + 3, -1); leg(hr, hipY, hr, hipY + 4, hr, fy, 1); break;
+      case 'cross': leg(hl, hipY, hl + 2, hipY + 4, hr + 1, fy, 1); leg(hr, hipY, hr - 2, hipY + 4, hl - 1, fy, -1); break;
     }
 
-    // Körper
-    const top = hipY - 11;
-    px(bx - 5, top, 10, 9, C.shirt);
-    px(bx - 5, top + 7, 10, 2, C.shirtD);
-    px(bx - 5, top + 9, 10, 2, C.belt);
-    px(bx - 1, top + 9, 2, 2, C.gold);                // Gürtelschnalle
-    px(bx - 2, top + 1, 1, 1, C.tie); px(bx + 1, top + 1, 1, 1, C.tie); px(bx - 1, top + 1, 2, 2, C.tie); // Fliege
-    px(bx - 2, top + 3, 1, 1, C.gold); px(bx - 1, top + 4, 2, 1, C.gold); px(bx + 1, top + 3, 1, 1, C.gold); // Goldkette
-    px(bx - 1, top + 5, 2, 2, C.gold);
+    // Rumpf
+    const top = hipY - 14;
+    px(bx - 5, hipY - 1, 10, 3, C.joint);              // Becken
+    px(bx - 8, top - 1, 16, 14, C.line);
+    px(bx - 7, top, 14, 12, C.metal);
+    px(bx - 7, top, 14, 1, C.metalL);
+    px(bx + 5, top + 1, 2, 11, C.metalD);
+    // Brustpanel mit Lämpchen und Pegelanzeige
+    px(bx - 5, top + 2, 9, 8, C.panel);
+    for (let i = 0; i < 3; i++) px(bx - 4 + i * 3, top + 3, 1, 1, TILE[(i + b) % 5]);
+    const level = turbo ? 7 : 2 + Math.round((1 - frac) * 5);
+    for (let i = 0; i < 7; i++) px(bx - 4 + i, top + 8 - (i < level ? 2 : 0), 1, i < level ? 3 : 1, i < 4 ? '#6dff9c' : i < 6 ? '#ffcf5a' : '#ff4d6d');
+    // Schulterbolzen
+    px(bx - 10, top + 1, 2, 3, C.red); px(bx + 8, top + 1, 2, 3, C.red);
 
     // Arme
-    const la = flip ? POSES[0].la : pose.la, ra = flip ? POSES[0].ra : pose.ra;
-    arm(bx - 5, top + 1, la[0], la[1]);
-    arm(bx + 4, top + 1, ra[0], ra[1]);
+    arm(bx - 9, top + 2, pose.la[0], pose.la[1]);
+    arm(bx + 9, top + 2, pose.ra[0], pose.ra[1]);
 
-    // Kopf (wackelt etwas mit dem Beat)
-    const tilt = Math.round(Math.sin(beatFrac * Math.PI * 2) * 1);
-    const hx = bx - 7 + tilt, hy = top - 13;
-    px(hx + 1, hy, 12, 12, C.skin);
-    px(hx, hy + 1, 14, 10, C.skin);
-    px(hx + 1, hy + 10, 12, 2, C.skinD);
-    px(hx - 1, hy + 5, 1, 3, C.skinD); px(hx + 14, hy + 5, 1, 3, C.skinD); // Ohren
-    // Frisur: kleine Tolle
-    px(hx + 2, hy - 1, 10, 2, '#5a3218'); px(hx + 3, hy - 3, 5, 2, '#5a3218'); px(hx + 6, hy - 4, 3, 1, '#5a3218');
-    // Antenne mit Lämpchen, das im Takt blinkt
-    px(hx + 11, hy - 5, 1, 4, C.metal);
-    px(hx + 10, hy - 7, 3, 2, beatFrac < .5 ? C.bulbOn : C.bulbOff);
-    // Sonnenbrille
-    px(hx, hy + 3, 14, 1, C.glass);
-    px(hx + 1, hy + 4, 5, 3, C.glass); px(hx + 8, hy + 4, 5, 3, C.glass);
-    px(hx + 2, hy + 4, 2, 1, C.lens); px(hx + 9, hy + 4, 2, 1, C.lens);
-    // Breites Grinsen
-    px(hx + 3, hy + 8, 8, 2, C.mouth);
-    px(hx + 4, hy + 8, 6, 1, C.tooth);
-    px(hx + 2, hy + 7, 1, 1, C.mouth); px(hx + 11, hy + 7, 1, 1, C.mouth);
-    px(hx + 1, hy + 7, 1, 1, '#ff8fa8'); px(hx + 12, hy + 7, 1, 1, '#ff8fa8'); // Bäckchen
+    // Hals (Feder)
+    px(bx - 2, top - 3, 4, 1, C.joint); px(bx - 2, top - 2, 4, 1, C.metalD);
+
+    // Kopf wackelt mit dem Takt
+    const tilt = reduce ? 0 : Math.round(Math.sin(frac * Math.PI * 2));
+    const hx = bx - 8 + tilt, hy = top - 15;
+    px(hx - 1, hy - 1, 18, 13, C.line);
+    px(hx, hy, 16, 11, C.metal);
+    px(hx, hy, 16, 1, C.metalL);
+    px(hx + 14, hy + 1, 2, 10, C.metalD);
+    px(hx + 1, hy + 1, 1, 1, C.metalD); px(hx + 13, hy + 1, 1, 1, C.metalD); // Nieten
+    // Ohrbolzen
+    px(hx - 3, hy + 4, 2, 4, C.red); px(hx + 17, hy + 4, 2, 4, C.red);
+    // Visier + Augen
+    px(hx + 2, hy + 3, 12, 4, C.visor);
+    const blinkNow = (b % 8 === 7) && frac > .7;
+    if (turbo) {           // Herzchen-Augen im Turbo
+      [[hx + 4], [hx + 9]].forEach(([ex]) => { px(ex, hy + 4, 1, 1, C.eyeHappy); px(ex + 2, hy + 4, 1, 1, C.eyeHappy); px(ex, hy + 5, 3, 1, C.eyeHappy); px(ex + 1, hy + 6, 1, 1, C.eyeHappy); });
+    } else if (blinkNow) {
+      px(hx + 4, hy + 5, 3, 1, C.eye); px(hx + 9, hy + 5, 3, 1, C.eye);
+    } else {               // ^ ^ fröhliche Augen
+      [[hx + 4], [hx + 9]].forEach(([ex]) => { px(ex, hy + 5, 1, 1, C.eye); px(ex + 1, hy + 4, 1, 1, C.eye); px(ex + 2, hy + 5, 1, 1, C.eye); });
+    }
+    // Lautsprecher-Mund, öffnet sich im Takt
+    const open = frac < .35;
+    px(hx + 5, hy + 8, 6, open ? 2 : 1, C.visor);
+    if (!open) for (let i = 0; i < 6; i += 2) px(hx + 5 + i, hy + 9, 1, 1, C.visor);
+    // Antenne mit Lämpchen
+    px(hx + 7, hy - 4, 2, 3, C.metalD);
+    px(hx + 6, hy - 6, 4, 2, frac < .5 ? C.bulbOn : C.bulbOff);
+    if (frac < .5) { g.globalAlpha = .35; px(hx + 5, hy - 7, 6, 4, C.bulbOn); g.globalAlpha = 1; }
   }
 
   // ---------- Szene ----------
   const stars = Array.from({ length: 26 }, (_, i) => [(i * 37) % W, 6 + (i * 53) % 44]);
-  const TILE = ['#ff5fa2', '#6dff9c', '#5ff3ff', '#ffcf5a', '#b07bff'];
 
   function drawScene(beat) {
     const b = Math.floor(beat), frac = beat - b;
-    g.fillStyle = '#071510'; g.fillRect(0, 0, W, H);
+    px(0, 0, W, H, '#071510');
 
-    // Sterne funkeln versetzt
     stars.forEach(([x, y], i) => { if ((i + b) % 3) px(x, y, 1, 1, i % 4 ? '#2f8f57' : '#6dff9c'); });
 
     // Scheinwerfer
     g.globalAlpha = .13;
-    [[20, TILE[(b) % 5]], [W - 20, TILE[(b + 2) % 5]]].forEach(([x, col], k) => {
+    [[18, TILE[b % 5]], [W - 18, TILE[(b + 2) % 5]]].forEach(([x, col], k) => {
       const sway = Math.sin(beat * Math.PI / 2 + k * 2) * 22;
       g.fillStyle = col; g.beginPath();
-      g.moveTo(x, 0); g.lineTo(W / 2 + sway - 14, 76); g.lineTo(W / 2 + sway + 14, 76); g.fill();
+      g.moveTo(x, 0); g.lineTo(W / 2 + sway - 16, 78); g.lineTo(W / 2 + sway + 16, 78); g.fill();
     });
     g.globalAlpha = 1;
 
-    // Discokugel
+    // Discokugel (erst nach dem Start, vorher steht dort das Logo)
     const dx = W / 2, dy = 14;
-    px(dx, 0, 1, 7, '#8a8f99');
+    if (started) {
+    px(dx, 0, 1, 8, '#8a8f99');
     for (let y = -5; y <= 5; y++) for (let x = -5; x <= 5; x++) {
       if (x * x + y * y > 28) continue;
       const on = ((x + y + b) & 3) === 0;
       px(dx + x, dy + y, 1, 1, on ? '#ffffff' : ((x + y) & 1 ? '#aab0bb' : '#6d7380'));
     }
-    // Lichtpunkte, die über die Wand wandern
     for (let i = 0; i < 8; i++) {
-      const a = i * 0.8 + beat * 0.5;
-      px(dx + Math.cos(a) * (30 + i * 5), 28 + Math.sin(a * 1.3) * 10, 1, 1, TILE[i % 5]);
+      const a = i * .8 + beat * .5;
+      px(dx + Math.cos(a) * (30 + i * 5), 30 + Math.sin(a * 1.3) * 10, 1, 1, TILE[i % 5]);
+    }
     }
 
     // Tanzboden
-    const floorY = 78;
+    const floorY = 80;
     for (let r = 0; r < 3; r++) for (let c = 0; c < 16; c++) {
       const lit = (c + r + b) % 3 === 0;
-      const col = lit ? TILE[(c + b) % 5] : '#12261d';
-      px(c * 8 + 1, floorY + r * 6 + 1, 7, 5, col);
+      px(c * 8 + 1, floorY + r * 6 + 1, 7, 5, lit ? TILE[(c + b) % 5] : '#12261d');
     }
+    g.globalAlpha = .45; px(W / 2 - 10, floorY - 1, 20, 2, '#000'); g.globalAlpha = 1;
 
-    // Schatten
-    g.globalAlpha = .45; px(W / 2 - 8, floorY - 1, 16, 2, '#000'); g.globalAlpha = 1;
+    const turbo = beat < turboUntil;
+    const pose = turbo ? POSES[Math.abs(Math.floor(beat * 4)) % POSES.length] : POSES[Math.abs(b) % POSES.length];
+    const bounce = reduce ? 0 : Math.round(Math.abs(Math.sin(frac * Math.PI)) * (turbo ? 5 : 2));
+    drawBobot(W / 2, floorY + 1, pose, bounce, beat, turbo);
 
-    // Bobot
-    const special = beat < spinUntil;
-    const pose = special ? POSES[Math.abs(Math.floor(beat * 4)) % POSES.length] : POSES[Math.abs(b) % POSES.length];
-    const bounce = reduce ? 0 : Math.round(Math.abs(Math.sin(frac * Math.PI)) * (special ? 5 : 2));
-    drawBobot(W / 2, floorY + 1, pose, bounce, frac, false);
-
-    // Musiknoten
-    for (let i = 0; i < 3; i++) {
+    // Musiknoten, nur wenn Musik läuft
+    if (soundOn) for (let i = 0; i < 3; i++) {
       const t = (beat * .5 + i / 3) % 1;
-      const nx = W / 2 + 18 + i * 9 - t * 6, ny = 58 - t * 30;
       if (t > .85) continue;
-      const col = TILE[(i + b) % 5];
+      const nx = W / 2 + 22 + i * 9 - t * 6, ny = 58 - t * 30, col = TILE[(i + b) % 5];
       px(nx, ny, 2, 2, col); px(nx + 1, ny - 4, 1, 4, col); px(nx + 2, ny - 4, 2, 1, col);
     }
+    return pose;
   }
 
-  // ---------- Musik (eigene Chiptune-Melodie, Web Audio) ----------
-  let ac = null, master = null, soundOn = false, nextNoteT = 0, step = 0, beatOrigin = null;
-  const n = m => 440 * Math.pow(2, (m - 69) / 12);
-  // Akkordfolge C – Am – F – G, je ein Takt aus 8 Achteln
-  const BASS = [48, 45, 41, 43];
-  const MEL = [
-    72, 0, 76, 79, 76, 0, 74, 72,   69, 0, 72, 76, 74, 72, 69, 0,
-    65, 69, 72, 0, 77, 76, 74, 72,  67, 71, 74, 0, 79, 77, 74, 71,
-  ];
+  // ---------- Musik (Chiptune mit Web Audio) ----------
+  let ac = null, master = null, soundOn = false, nextNoteT = 0, songStep = 0, tick = 0;
+  let queue = [];   // geplante Achtel für die Synchronisation mit der Animation
+  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
   function tone(freq, t, dur, type, vol) {
     const o = ac.createOscillator(), gn = ac.createGain();
     o.type = type; o.frequency.value = freq;
-    gn.gain.setValueAtTime(vol, t); gn.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    gn.gain.setValueAtTime(vol, t); gn.gain.setValueAtTime(vol, t + dur * .7); gn.gain.exponentialRampToValueAtTime(.001, t + dur);
     o.connect(gn).connect(master); o.start(t); o.stop(t + dur + .02);
   }
   function kick(t) {
     const o = ac.createOscillator(), gn = ac.createGain();
-    o.frequency.setValueAtTime(140, t); o.frequency.exponentialRampToValueAtTime(40, t + .12);
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(40, t + .12);
     gn.gain.setValueAtTime(.7, t); gn.gain.exponentialRampToValueAtTime(.001, t + .15);
     o.connect(gn).connect(master); o.start(t); o.stop(t + .16);
   }
   let noiseBuf = null;
-  function hat(t, vol) {
+  function noise(t, vol, freq, len) {
     if (!noiseBuf) {
-      noiseBuf = ac.createBuffer(1, ac.sampleRate * .1, ac.sampleRate);
+      noiseBuf = ac.createBuffer(1, ac.sampleRate * .2, ac.sampleRate);
       const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
     }
     const s = ac.createBufferSource(), f = ac.createBiquadFilter(), gn = ac.createGain();
-    s.buffer = noiseBuf; f.type = 'highpass'; f.frequency.value = 6000;
-    gn.gain.setValueAtTime(vol, t); gn.gain.exponentialRampToValueAtTime(.001, t + .05);
-    s.connect(f).connect(gn).connect(master); s.start(t); s.stop(t + .06);
+    s.buffer = noiseBuf; f.type = 'highpass'; f.frequency.value = freq;
+    gn.gain.setValueAtTime(vol, t); gn.gain.exponentialRampToValueAtTime(.001, t + len);
+    s.connect(f).connect(gn).connect(master); s.start(t); s.stop(t + len + .01);
   }
   function schedule() {
-    if (!soundOn) return;
-    const eighth = 60 / bpm / 2;
     while (nextNoteT < ac.currentTime + .15) {
-      const bar = Math.floor(step / 8) % 4, s8 = step % 8;
-      const root = BASS[bar];
-      tone(n(root + (s8 % 2 ? 12 : 0)), nextNoteT, eighth * .9, 'triangle', .35);
-      const m = MEL[step % 32];
-      if (m) tone(n(m), nextNoteT, eighth * .8, 'square', .09);
+      const eighth = 60 / bpm / 2;
+      const steps = song.steps, i = songStep % steps.length, s8 = i % 8;
+      const note = steps[i];
+      if (note && note.m) tone(hz(note.m), nextNoteT, note.len * eighth * .92, 'square', .1);
+      const root = song.bass[Math.floor(i / 8) % song.bass.length];
+      tone(hz(root + (s8 % 2 ? 12 : 0)), nextNoteT, eighth * .85, 'triangle', .38);
       if (s8 % 2 === 0) kick(nextNoteT);
-      hat(nextNoteT, s8 % 2 ? .12 : .05);
-      if (s8 === 2 || s8 === 6) hat(nextNoteT, .25);
-      nextNoteT += eighth; step++;
+      noise(nextNoteT, s8 % 2 ? .1 : .04, 7000, .04);
+      if (s8 === 2 || s8 === 6) noise(nextNoteT, .22, 1800, .12);   // Snare
+      queue.push({ t: nextNoteT, n: tick, d: eighth });
+      nextNoteT += eighth; songStep++; tick++;
+      // Bergkönig: nach jedem Durchlauf schneller, dann wieder von vorn
+      if (song.accel && songStep % steps.length === 0) setBpm(bpm >= 216 ? song.bpm : bpm + 24);
     }
   }
   function startSound() {
     try {
-      if (!ac) { ac = new (window.AudioContext || window.webkitAudioContext)(); master = ac.createGain(); master.gain.value = .5; master.connect(ac.destination); }
+      if (!ac) {
+        ac = new (window.AudioContext || window.webkitAudioContext)();
+        master = ac.createGain(); master.gain.value = .45; master.connect(ac.destination);
+      }
       ac.resume();
-      soundOn = true; step = 0; nextNoteT = ac.currentTime + .05;
-      beatOrigin = { audio: nextNoteT, beat: Math.ceil(beatPos) };
+      soundOn = true; songStep = 0; queue = [];
+      tick = Math.ceil(beatPos * 2); nextNoteT = ac.currentTime + .05;
     } catch (e) { soundOn = false; }
-    updateSndBtn();
+    updateButtons();
   }
-  function stopSound() { soundOn = false; beatOrigin = null; updateSndBtn(); }
-  const sndBtn = document.getElementById('snd');
-  function updateSndBtn() { sndBtn.textContent = soundOn ? 'SOUND AN' : 'SOUND AUS'; sndBtn.setAttribute('aria-pressed', soundOn); }
-  sndBtn.onclick = () => soundOn ? stopSound() : startSound();
+  function stopSound() { soundOn = false; queue = []; updateButtons(); }
 
-  // Tempo
-  const bpmEl = document.getElementById('bpm');
-  function setBpm(v) {
-    bpm = Math.max(60, Math.min(200, v));
-    bpmEl.textContent = bpm + ' BPM';
-    if (soundOn) { step = Math.ceil(step / 8) * 8; beatOrigin = { audio: nextNoteT, beat: Math.ceil(beatPos) }; }
+  // ---------- Bedienung ----------
+  const $ = id => document.getElementById(id);
+  const sndBtn = $('snd'), bpmEl = $('bpm');
+  function updateButtons() {
+    sndBtn.textContent = soundOn ? 'SOUND AN' : 'SOUND AUS';
+    sndBtn.setAttribute('aria-pressed', soundOn);
+    $('trackA').setAttribute('aria-pressed', song.id === 'A');
+    $('trackB').setAttribute('aria-pressed', song.id === 'B');
+    $('trackName').textContent = song.name;
+    $('trackInfo').textContent = song.info;
   }
-  document.getElementById('slower').onclick = () => setBpm(bpm - 12);
-  document.getElementById('faster').onclick = () => setBpm(bpm + 12);
+  function setBpm(v) { bpm = Math.max(60, Math.min(240, v)); bpmEl.textContent = bpm + ' BPM'; }
+  function pickSong(s) {
+    song = s; setBpm(s.bpm);
+    if (soundOn) { songStep = 0; }
+    updateButtons();
+  }
+  function begin() {
+    started = true;
+    $('title').hidden = true; $('hud').hidden = false;
+    startSound();
+    turboUntil = beatPos + 4;
+  }
 
-  // Spezialmove per Klick
-  cv.addEventListener('click', () => { spinUntil = beatPos + 2; });
+  $('start').onclick = begin;
+  sndBtn.onclick = () => soundOn ? stopSound() : ($('title').hidden ? startSound() : begin());
+  $('slower').onclick = () => setBpm(bpm - 12);
+  $('faster').onclick = () => setBpm(bpm + 12);
+  $('trackA').onclick = () => pickSong(SONGS[0]);
+  $('trackB').onclick = () => pickSong(SONGS[1]);
+  cv.addEventListener('click', () => { turboUntil = beatPos + 2; });
+  addEventListener('keydown', e => {
+    if (e.code !== 'Space' || e.target.tagName === 'BUTTON') return;
+    e.preventDefault();
+    soundOn ? stopSound() : ($('title').hidden ? startSound() : begin());
+  });
 
   // ---------- Hauptschleife ----------
   function frame(now) {
     const dt = Math.max(0, Math.min(.1, (now - lastT) / 1000)); lastT = now;
-    if (soundOn && beatOrigin) {
+    if (soundOn) {
       schedule();
-      beatPos = Math.max(beatPos, beatOrigin.beat + (ac.currentTime - beatOrigin.audio) * bpm / 60);
+      const t = ac.currentTime;
+      while (queue.length > 1 && queue[1].t <= t) queue.shift();
+      const q = queue[0];
+      if (q && q.t <= t) beatPos = Math.max(beatPos, (q.n + Math.min(1, (t - q.t) / q.d)) / 2);
     } else {
       beatPos += dt * bpm / 60;
     }
-    drawScene(beatPos);
+    const pose = drawScene(beatPos);
+    const b = Math.floor(beatPos);
+    if (b !== lastBeat) {
+      lastBeat = b;
+      if (soundOn) { moves++; $('moves').textContent = String(moves).padStart(4, '0'); }
+      $('poseName').textContent = pose.name;
+    }
     requestAnimationFrame(frame);
   }
+  updateButtons();
   requestAnimationFrame(frame);
-
-  // ---------- Der Streich ----------
-  const bait = document.getElementById('bait'), go = document.getElementById('go');
-  const bar = document.getElementById('bar'), fill = document.getElementById('fill');
-  const status = document.getElementById('status');
-  const hud = document.getElementById('hud'), ticker = document.getElementById('ticker');
-  let timer = null;
-
-  go.onclick = () => {
-    startSound();                 // der Klick erlaubt dem Browser den Ton
-    go.hidden = true; bar.hidden = false;
-    const t0 = performance.now(), dur = 2600;
-    const tick = () => {
-      const p = Math.min(1, (performance.now() - t0) / dur);
-      const shown = Math.min(99, Math.floor(p * p * 100 + (p > .5 ? 12 : 0)));
-      fill.style.width = shown + '%';
-      status.textContent = p < .9 ? '> Lade herunter … ' + shown + ' %' : '> Entpacke … Moment mal …';
-      if (p >= 1) { clearInterval(timer); reveal(); }
-    };
-    timer = setInterval(tick, 50);
-  };
-  function reveal() {
-    bait.hidden = true; hud.hidden = false; ticker.hidden = false;
-    spinUntil = beatPos + 4;
-  }
-  function reset() {
-    clearInterval(timer); stopSound();
-    bait.hidden = false; go.hidden = false; bar.hidden = true; fill.style.width = '0';
-    status.innerHTML = '&gt; Bereit zum Herunterladen<span class="cursor">_</span>';
-    hud.hidden = true; ticker.hidden = true;
-    go.focus();
-  }
-  document.getElementById('again').onclick = reset;
 })();
 </script>
