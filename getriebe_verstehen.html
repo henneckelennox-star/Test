@@ -38,9 +38,9 @@ h1 span{color:var(--acc);text-shadow:0 0 34px rgba(255,122,26,.55)}
 .sf td small{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .sf td b{font-family:var(--display);font-size:1.05rem}
 .faden{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px;margin:18px 0 6px}
-.faden div{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:10px;padding:12px 14px}
-.faden div:nth-child(2){border-top-color:var(--steel)}
-.faden div:nth-child(3){border-top-color:var(--ok)}
+.faden>div{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:10px;padding:12px 14px}
+.faden>div:nth-child(2){border-top-color:var(--steel)}
+.faden>div:nth-child(3){border-top-color:var(--ok)}
 .faden b{display:block;font-family:var(--display);font-size:1.25rem;line-height:1.1;margin-bottom:4px}
 .faden p{margin:0;font-size:.95rem;color:var(--muted)}
 .faden .f{margin-top:6px}
@@ -70,7 +70,7 @@ section.ch{margin:36px 0 0;scroll-margin-top:60px}
 .btop .live{color:var(--ok)}
 canvas{display:block;width:100%;background:radial-gradient(ellipse at 50% 40%,#122030,var(--panel2) 70%)}
 .cv{height:340px}.cv-s{height:260px}.cv-l{height:420px}
-@media (max-width:600px){.cv{height:300px}.cv-l{height:360px}}
+@media (max-width:600px){.cv{height:300px}.cv-l{height:360px}#cvBasics{height:560px}#cvNames{height:480px}}
 .cap{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line);background:var(--panel)}
 .tp{width:40px;height:40px;border-radius:50%;border:0;background:var(--acc);color:var(--acc-ink);font-size:.95rem;cursor:pointer;flex:none}
 .ctext{margin:0;min-height:3em;font-size:1.02rem;transition:opacity .18s}
@@ -177,6 +177,83 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
 .theme{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;border:1px solid var(--line2);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;font:600 .82rem var(--body);cursor:pointer;box-shadow:0 6px 20px -10px rgba(0,0,0,.5)}
 @media (max-width:600px){.theme{padding:8px 11px;font-size:0}.theme::before{content:"◐";font-size:1rem}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Anfänger-Hilfen */
+[hidden]{display:none!important}
+.fadenh{margin:22px 0 0;max-width:70ch;color:var(--muted)}
+.fadenh b{color:var(--ink)}
+.faden .hint{margin-top:6px;font-size:.8rem}
+.start{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;margin:18px 0 8px}
+.stc{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:14px 16px}
+.stc .h{display:block;font-family:var(--display);font-size:1.45rem;line-height:1.1;margin-bottom:8px}
+ol.how{margin:0 0 12px;padding-left:1.3em;display:grid;gap:7px;max-width:62ch}
+ol.how b{color:var(--acc)}
+.go{display:flex;flex-wrap:wrap;gap:8px}
+.go .btn{text-decoration:none;display:inline-block}
+.prog{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:.88rem;color:var(--muted)}
+.prog .bar{flex:1;height:10px;border-radius:6px;background:var(--panel2);border:1px solid var(--line2);overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--warn));transition:width .4s}
+ol.plan{list-style:none;margin:0;padding:0;display:grid;gap:0}
+ol.plan li{display:grid;grid-template-columns:128px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:.95rem}
+ol.plan .tm{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--acc);padding-top:3px}
+ol.plan em{display:block;font-style:normal;color:var(--muted);font-size:.84rem}
+ol.plan a{color:var(--ink)}
+@media (max-width:480px){ol.plan li{grid-template-columns:1fr;gap:2px}}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:-2px 0 12px}
+.meta span{font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;color:var(--muted);border:1px solid var(--line2);border-radius:999px;padding:3px 9px}
+.meta a{color:var(--steel)}
+.worte{font-size:.93rem;color:var(--ink);margin:2px 0 6px;max-width:62ch}
+.worte::before{content:"In Worten: ";color:var(--acc);font-weight:700}
+h4.subh{font-family:var(--display);font-size:1.5rem;margin:22px 0 10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,245px),1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.card .ch1{display:flex;gap:10px;align-items:center}
+.card .sy{flex:none;min-width:42px;height:42px;padding:0 6px;border-radius:10px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;font:700 1.25rem var(--mono)}
+.card .ch1 b{display:block;font-family:var(--display);font-size:1.2rem;line-height:1}
+.card .ch1 small{font-size:.76rem;color:var(--muted)}
+.card p{margin:0;font-size:.93rem}
+.card p.bsp{color:var(--muted);font-size:.86rem;margin-top:auto}
+table.units td:nth-child(3){font-family:var(--mono);color:var(--acc);white-space:nowrap}
+.gg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:8px;margin:0 0 10px}
+.gg>div{background:var(--panel2);border-radius:8px;padding:8px 10px;font-size:.92rem}
+.gg b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--steel);margin-bottom:2px}
+ol.st{margin:0;padding-left:1.4em;display:grid;gap:8px}
+ol.st li::marker{color:var(--acc);font-weight:700}
+ol.st p{margin:0 0 2px!important;font-size:.93rem;color:var(--muted)}
+ol.st .f{white-space:normal;overflow-wrap:anywhere}
+p.fazit{margin:10px 0 0!important;padding-top:8px;border-top:1px dashed var(--line2);font-size:.92rem}
+details.blatt summary::before{content:"Aufgabe aus deinen Blättern · Schritt für Schritt · "}
+/* Glossar */
+button.gw{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--steel) 80%,transparent);text-underline-offset:3px;text-decoration-thickness:1.5px;display:inline;text-align:inherit}
+button.gw:hover{color:var(--steel)}
+#glPop{position:fixed;z-index:60;max-width:min(360px,calc(100vw - 24px));background:var(--panel);border:1px solid var(--steel);border-radius:12px;padding:12px 14px 10px;box-shadow:0 18px 50px -12px rgba(0,0,0,.9);font-size:.93rem}
+#glPop b.t{display:block;font-family:var(--display);font-size:1.3rem;line-height:1.05}
+#glPop .s{font-family:var(--mono);font-size:.78rem;color:var(--acc)}
+#glPop p{margin:6px 0 8px}
+#glPop .l{display:flex;gap:12px;flex-wrap:wrap;font-size:.85rem}
+#glPop .x{position:absolute;right:6px;top:4px;border:0;background:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:4px 8px}
+/* Mini-Check */
+.endbox{margin:20px 0 0;border:1px solid var(--line2);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel2));padding:14px 16px}
+.endbox .eh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.endbox .eh b{font-family:var(--display);font-size:1.35rem}
+.endbox .qz{background:var(--panel2)}
+.donebtn{font:700 .95rem var(--body);border:1.5px solid var(--ok);background:transparent;color:var(--ok);border-radius:999px;padding:8px 16px;cursor:pointer}
+.donebtn[aria-pressed="true"]{background:var(--ok);color:#06140c}
+.endbox .nx{font-size:.9rem;color:var(--muted);margin:8px 0 0}
+nav.toc a.done .p{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+nav.toc a.done.on .p{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+/* Lexikon */
+.lexs{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+.lexs input{font:500 1rem var(--body);padding:9px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);width:min(100%,360px)}
+.lexs span{font-size:.85rem;color:var(--muted)}
+.lexl{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:8px}
+.lexl .le{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px;scroll-margin-top:70px}
+.lexl .le:target{border-color:var(--acc)}
+.lexl .le b{font-family:var(--display);font-size:1.12rem}
+.lexl .le .s{font-family:var(--mono);font-size:.75rem;color:var(--acc);margin-left:6px}
+.lexl .le p{margin:3px 0 4px;font-size:.9rem}
+.lexl .le a{font-size:.82rem}
+.lexl .lh{grid-column:1/-1;font-family:var(--display);font-size:1.4rem;color:var(--acc);margin:6px 0 -2px}
 </style>
 
 </head>
@@ -186,11 +263,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
     <div>
       <div class="eyebrow">LK Technik Q3 · Industriemechanik LF 13 · Funktionssysteme</div>
       <h1>Getriebe <span>verstehen</span></h1>
-      <p class="lead">Vom Motor bis zur Maschine: Hier siehst du, warum ein Getriebe funktioniert. Wer die drei Grundsätze unten verstanden hat, kann fast jede Aufgabe herleiten, statt sie auswendig zu lernen. Jede Animation erklärt sich selbst. Sobald du einen Regler anfasst, übernimmst du.</p>
+      <p class="lead">Du weißt noch nichts über Getriebe? Dann bist du hier richtig. Die Seite fängt bei null an: erst die Grundwörter, dann das Prinzip, dann alle Getriebearten und zum Schluss die Rechenaufgaben aus deinen Blättern, jede Schritt für Schritt. Alles, was sich bewegt, kannst du anfassen.</p>
     </div>
     <table class="sf" aria-label="Schriftfeld">
       <tr><td colspan="2"><small>Benennung</small><b>Getriebe verstehen</b></td></tr>
-      <tr><td><small>Umfang</small><b>18 Kapitel</b></td><td><small>Teile</small><b>A bis E</b></td></tr>
+      <tr><td><small>Umfang</small><b>20 Kapitel</b></td><td><small>Teile</small><b>0 bis E</b></td></tr>
       <tr><td><small>Grundlage</small>Heft „1 Getriebe“, Übungsblätter</td><td><small>Hilfsmittel</small>Tabellenbuch Metall</td></tr>
     </table>
   </div>
@@ -201,16 +278,139 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
     <div class="v3ui"><button type="button" data-x="exp" aria-pressed="false">⚙ Auseinanderbauen</button><button type="button" data-x="hous" aria-pressed="false">Gehäuse ausblenden</button><button type="button" data-x="slow" aria-pressed="false">Zeitlupe</button></div>
   </div>
 
+  <p class="fadenh"><b>Die drei Grundsätze.</b> Wer sie versteht, kann fast jede Aufgabe herleiten. Kapitel 2 erklärt sie ausführlich. Wenn dir die Buchstaben noch nichts sagen: Fang mit Kapitel 0 an.</p>
   <div class="faden" aria-label="Der rote Faden">
-    <div><b>1 · Gleich schnell am Berührpunkt</b><p>Die Zähne rutschen nicht. Beide Teilkreise bewegen sich am Berührpunkt gleich schnell. Daraus folgt die Übersetzung.</p><div class="f">π·d₁·n₁ = π·d₂·n₂ ⇒ i = n₁/n₂ = d₂/d₁ = z₂/z₁</div></div>
-    <div><b>2 · Gleiche Kraft, anderer Hebel</b><p>Die Zähne drücken mit derselben Kraft aufeinander. Das große Rad hat den längeren Hebel und deshalb mehr Drehmoment.</p><div class="f">M = F_u · d/2 ⇒ M₂ = M₁ · i · η</div></div>
-    <div><b>3 · Die Leistung fließt durch</b><p>Ein Getriebe erzeugt keine Energie. Es tauscht Drehzahl gegen Drehmoment, nur ein kleiner Teil geht als Wärme verloren.</p><div class="f">P = 2π·n·M ⇒ P₂ = P₁ · η</div></div>
+    <div><b>1 · Gleich schnell am Berührpunkt</b><p>Die Zähne rutschen nicht. Beide Teilkreise bewegen sich am Berührpunkt gleich schnell. Daraus folgt die Übersetzung.</p><div class="f">π·d₁·n₁ = π·d₂·n₂ ⇒ i = n₁/n₂ = d₂/d₁ = z₂/z₁</div><div class="hint">d = Durchmesser · n = Drehzahl · z = Zähnezahl · i = Übersetzung</div></div>
+    <div><b>2 · Gleiche Kraft, anderer Hebel</b><p>Die Zähne drücken mit derselben Kraft aufeinander. Das große Rad hat den längeren Hebel und deshalb mehr Drehmoment.</p><div class="f">M = F_u · d/2 ⇒ M₂ = M₁ · i · η</div><div class="hint">M = Drehmoment · F_u = Kraft am Zahn · η = Wirkungsgrad</div></div>
+    <div><b>3 · Die Leistung fließt durch</b><p>Ein Getriebe erzeugt keine Energie. Es tauscht Drehzahl gegen Drehmoment, nur ein kleiner Teil geht als Wärme verloren.</p><div class="f">P = 2π·n·M ⇒ P₂ = P₁ · η</div><div class="hint">P = Leistung · n = Drehzahl · M = Drehmoment</div></div>
+  </div>
+
+  <div class="start">
+    <div class="stc">
+      <b class="h">So lernst du mit dieser Seite</b>
+      <ol class="how">
+        <li><b>Bei null anfangen.</b> Kapitel 0 erklärt die Grundwörter wie Drehzahl, Drehmoment und Übersetzung. Das dauert etwa 15 Minuten.</li>
+        <li><b>Erst zuschauen, dann anfassen.</b> Jede Animation erklärt sich selbst. ❚❚ hält an, die Striche darunter springen zu einem Schritt. Sobald du einen Regler bewegst, steuerst du selbst. 3D-Modelle drehst du mit dem Finger.</li>
+        <li><b>Gepunktet unterstrichene Wörter antippen.</b> Dann erscheint eine kurze Erklärung. Alle Wörter stehen auch im Lexikon am Ende.</li>
+        <li><b>Am Kapitelende prüfen.</b> Beantworte den Mini-Check und hake das Kapitel ab. So siehst du oben, wie weit du bist.</li>
+      </ol>
+      <div class="go"><a class="btn pri" href="#k0">Bei null anfangen</a><a class="btn" id="goOn" href="#k1" hidden>Weiter</a></div>
+    </div>
+    <div class="stc">
+      <b class="h">Dein Lerntag</b>
+      <div class="prog"><div class="bar"><i id="progBar"></i></div><span id="progTxt">0 von 18 Kapiteln verstanden</span></div>
+      <ol class="plan">
+        <li><span class="tm">Block 1 · 60 min</span><span><a href="#k0">Grundbegriffe</a>, <a href="#k1">Warum?</a>, <a href="#k2">Zahnradpaar</a><em>Das Fundament. Hier nicht abkürzen.</em></span></li>
+        <li><span class="tm">Block 2 · 45 min</span><span><a href="#k3">Drehrichtung</a>, <a href="#k4">mehrstufig</a>, <a href="#k5">Wirkungsgrad</a></span></li>
+        <li><span class="tm">Block 3 · 45 min</span><span><a href="#k6">Modul</a>, <a href="#k7">Evolvente</a>, <a href="#k8">Verzahnungsarten</a></span></li>
+        <li><span class="tm">Block 4 · 60 min</span><span><a href="#k9">Grundformen</a> bis <a href="#k14">Schaltgetriebe</a><em>Alle Getriebearten, viel 3D</em></span></li>
+        <li><span class="tm">Block 5 · 45 min</span><span><a href="#k15">Riemen und Ketten</a>, <a href="#k16">Kupplungen</a></span></li>
+        <li><span class="tm">Block 6 · 45 min</span><span><a href="#k17">Antrieb auslegen</a>, <a href="#k18">Selbsttest</a><em>Danach die 44 Fragen im Getriebe-Trainer</em></span></li>
+      </ol>
+    </div>
   </div>
 </div>
 
 <nav class="toc" aria-label="Kapitel"><div class="wrap" id="toc"></div></nav>
 
 <main class="wrap">
+
+<!-- ===================== START ===================== -->
+<div class="teil" id="t0"><span class="tl">Teil 0</span><h2>Bevor es losgeht</h2></div>
+
+<section class="ch" id="k0" data-t="Grundbegriffe">
+  <div class="chh"><span class="pos">0</span><h3>Die Grundbegriffe: acht Wörter, ohne die nichts geht</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Getriebe klingen kompliziert, weil viele Fachwörter und Buchstaben vorkommen. Dahinter stecken aber nur wenige Ideen. Wer Drehzahl, Drehmoment und Übersetzung verstanden hat, kann jede Formel auf dieser Seite lesen.</p>
+
+  <div class="bench" id="b0">
+    <div class="btop"><span>Drehzahl und Drehmoment zum Anfassen</span><span class="live">● live</span></div>
+    <canvas id="cvBasics" class="cv-l"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <label>Drehzahl n <input type="range" id="b0n" min="6" max="120" step="6" value="30"><b id="b0nv">30</b>/min</label>
+      <label>Kraft F <input type="range" id="b0F" min="20" max="300" step="10" value="100"><b id="b0Fv">100</b>N</label>
+      <label>Hebelarm r <input type="range" id="b0r" min="10" max="50" step="5" value="20"><b id="b0rv">20</b>cm</label>
+    </div>
+    <div class="outs" id="b0Out"></div>
+  </div>
+
+  <div class="cols">
+    <div class="txt">
+      <h4>Drehzahl: Wie schnell dreht sich etwas?</h4>
+      <p>Die <b>Drehzahl n</b> sagt, wie oft sich eine Welle in einer Minute dreht. Ein normaler Elektromotor schafft etwa 1400 Umdrehungen pro Minute, man schreibt <b>n = 1400 /min</b> oder 1400 min⁻¹.</p>
+      <p>In manchen Formeln brauchst du Umdrehungen pro <b>Sekunde</b>. Dafür teilst du durch 60: 1400 /min = 23,3 /s.</p>
+      <h4>Drehmoment: Wie stark dreht sich etwas?</h4>
+      <p>Das <b>Drehmoment M</b> ist die „Drehkraft“. Es hängt von zwei Dingen ab: wie fest du drückst (Kraft F) und wie weit weg von der Drehachse (Hebelarm r). <b>M = F · r</b>, Einheit Newtonmeter (Nm).</p>
+      <p>Darum lösen sich festsitzende Schrauben mit einem langen Schlüssel leichter. Bei Zahnrädern ist der Hebelarm der Radius des Rades. Ein großes Rad hat einen langen Hebel und damit viel Drehmoment.</p>
+    </div>
+    <div class="txt">
+      <div class="analog">Du fährst Fahrrad. Die Drehzahl ist, wie schnell du trittst. Das Drehmoment ist, wie fest du auf das Pedal drückst. Am Berg trittst du langsam und drückst fest (wenig Drehzahl, viel Drehmoment). In der Ebene trittst du schnell und locker.</div>
+      <div class="key"><span class="lbl">Die wichtigste Erkenntnis</span>Drehzahl und Drehmoment sind wie zwei Seiten einer Waage. Ein Getriebe macht die eine kleiner und die andere größer. Das Produkt aus beiden, die <b>Leistung</b>, bleibt fast gleich.<div class="f big">Leistung P = 2π · n · M</div><div class="hint">In Worten: Leistung = 2 mal Pi mal Drehzahl (pro Sekunde) mal Drehmoment.</div></div>
+      <div class="warn">Die Drehzahl in /min direkt in P = 2π·n·M einsetzen. Dann ist das Ergebnis 60-mal zu groß. Immer erst durch 60 teilen.</div>
+    </div>
+  </div>
+
+  <h4 class="subh">Alle Grundbegriffe auf einen Blick</h4>
+  <div class="cards">
+    <div class="card"><div class="ch1"><span class="sy">—</span><div><b>Welle</b><small>Bauteil</small></div></div><p>Eine drehende Stange aus Stahl. Auf ihr sitzen Zahnräder, Riemenscheiben oder Kupplungen. Die <b>Antriebswelle</b> kommt vom Motor, die <b>Abtriebswelle</b> geht zur Maschine.</p><p class="bsp">Beispiel: Die Welle, die aus einem Elektromotor herausschaut.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">n</span><div><b>Drehzahl</b><small>Einheit: 1/min oder 1/s</small></div></div><p>Wie oft sich eine Welle pro Minute dreht. Umrechnen in pro Sekunde: durch 60 teilen.</p><p class="bsp">Beispiel: Motor n = 1400 /min, Förderband-Trommel n = 290 /min.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">M</span><div><b>Drehmoment</b><small>Einheit: Nm (Newtonmeter)</small></div></div><p>Wie stark eine Welle dreht. Kraft mal Hebelarm: M = F · r.</p><p class="bsp">Beispiel: 100 N am 0,3 m langen Schlüssel = 30 Nm.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">P</span><div><b>Leistung</b><small>Einheit: W oder kW (1 kW = 1000 W)</small></div></div><p>Wie viel Arbeit pro Sekunde übertragen wird. Drehzahl und Drehmoment zusammen: P = 2π · n · M.</p><p class="bsp">Beispiel: Der Motor auf dem Typenschild: 4 kW.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">i</span><div><b>Übersetzung</b><small>keine Einheit</small></div></div><p>Wie viel langsamer die Abtriebswelle dreht als die Antriebswelle: i = n₁ / n₂. Um genau diesen Faktor steigt das Drehmoment.</p><p class="bsp">Beispiel: i = 5 heißt 5-mal langsamer und 5-mal mehr Drehmoment.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">η</span><div><b>Wirkungsgrad</b><small>„eta“, Zahl zwischen 0 und 1</small></div></div><p>Welcher Anteil der Leistung ankommt. Der Rest wird zu Wärme (Reibung). η = 0,95 heißt: 95 % kommen an, 5 % gehen verloren.</p><p class="bsp">Beispiel: gutes Stirnradgetriebe η ≈ 0,98.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">z</span><div><b>Zahnrad-Wörter</b><small>Zähnezahl z, Durchmesser d</small></div></div><p>Das kleine Zahnrad heißt <b>Ritzel</b>, das große <b>Rad</b>. <b>z</b> ist die Anzahl der Zähne, <b>d</b> der Durchmesser am Teilkreis. Der <b>Modul m</b> sagt, wie groß die Zähne sind.</p><p class="bsp">Beispiel: Ritzel z₁ = 17, Rad z₂ = 40.</p></div>
+    <div class="card"><div class="ch1"><span class="sy">₁ ₂</span><div><b>Antrieb und Abtrieb</b><small>kleine Zahlen unten = Index</small></div></div><p>Die kleine Zahl unten rechts sagt, zu welchem Teil ein Wert gehört. <b>1</b> ist das treibende Teil (Antrieb), <b>2</b> das getriebene (Abtrieb). n₁ ist also die Drehzahl des Antriebs.</p><p class="bsp">Bei mehreren Stufen geht es weiter: z₃, z₄ …</p></div>
+  </div>
+
+  <div class="bench" id="b0b" style="margin-top:18px">
+    <div class="btop"><span>Ein Zahnradpaar mit allen Namen</span><span class="live">● live</span></div>
+    <canvas id="cvNames" class="cv-l"></canvas>
+  </div>
+
+  <div class="cols">
+    <div class="txt">
+      <h4>So liest du eine Formel</h4>
+      <div class="tw"><table class="t">
+        <tr><th>Zeichen</th><th>Bedeutung</th><th>Beispiel</th></tr>
+        <tr><td>·</td><td>mal</td><td>2 · 3 = 6</td></tr>
+        <tr><td>/ oder Bruchstrich</td><td>geteilt durch</td><td>n₁ / n₂</td></tr>
+        <tr><td>⇒</td><td>daraus folgt</td><td>v₁ = v₂ ⇒ i = z₂/z₁</td></tr>
+        <tr><td>≈</td><td>ungefähr gleich</td><td>π ≈ 3,14</td></tr>
+        <tr><td>n₁ (kleine Zahl unten)</td><td>Index: gehört zu Teil 1</td><td>n₁ = Drehzahl Antrieb</td></tr>
+        <tr><td>F_u (Buchstabe unten)</td><td>Index als Wort-Abkürzung</td><td>F_u = Umfangskraft</td></tr>
+        <tr><td>i_ges</td><td>gesamt</td><td>i_ges = i₁ · i₂</td></tr>
+      </table></div>
+    </div>
+    <div class="txt">
+      <h4>Griechische Buchstaben, die vorkommen</h4>
+      <div class="tw"><table class="t">
+        <tr><th>Zeichen</th><th>Name</th><th>steht hier für</th></tr>
+        <tr><td>η</td><td>eta</td><td>Wirkungsgrad</td></tr>
+        <tr><td>π</td><td>pi</td><td>3,14159… (Umfang = π · d)</td></tr>
+        <tr><td>α</td><td>alpha</td><td>Eingriffswinkel (20°), Rillenwinkel</td></tr>
+        <tr><td>β</td><td>beta</td><td>Schrägungswinkel der Zähne</td></tr>
+        <tr><td>γ</td><td>gamma</td><td>Steigungswinkel der Schnecke</td></tr>
+        <tr><td>δ, Σ</td><td>delta, Sigma</td><td>Kegelwinkel, Achsenwinkel</td></tr>
+        <tr><td>μ, ρ</td><td>mü, rho</td><td>Reibwert, Reibwinkel</td></tr>
+        <tr><td>ν</td><td>nü</td><td>Sicherheitsfaktor der Kupplung</td></tr>
+        <tr><td>φ</td><td>phi</td><td>Drehwinkel</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="key"><span class="lbl">Einheiten umrechnen (die häufigsten Fehlerquellen)</span>
+    <div class="tw" style="margin:6px 0 0"><table class="t units">
+      <tr><th>von</th><th>nach</th><th>Rechnung</th><th>Beispiel</th></tr>
+      <tr><td>1/min</td><td>1/s</td><td>÷ 60</td><td>1400 /min = 23,33 /s</td></tr>
+      <tr><td>m/min</td><td>m/s</td><td>÷ 60</td><td>1,5 m/min = 0,025 m/s</td></tr>
+      <tr><td>mm</td><td>m</td><td>÷ 1000</td><td>200 mm = 0,2 m</td></tr>
+      <tr><td>kW</td><td>W</td><td>× 1000</td><td>4 kW = 4000 W</td></tr>
+      <tr><td>t (Tonne)</td><td>kg</td><td>× 1000</td><td>5 t = 5000 kg</td></tr>
+      <tr><td>Masse m in kg</td><td>Gewichtskraft F in N</td><td>× 9,81</td><td>100 kg wiegen F = 981 N</td></tr>
+      <tr><td>η als Zahl</td><td>Prozent</td><td>× 100</td><td>0,93 = 93 %</td></tr>
+    </table></div>
+  </div>
+</section>
 
 <!-- ===================== TEIL A ===================== -->
 <div class="teil" id="tA"><span class="tl">Teil A</span><h2>Das Prinzip</h2></div>
@@ -278,12 +478,12 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
     <div class="txt">
       <h4>Satz 1: gleich schnell → Übersetzung</h4>
       <p>Die Zähne greifen ineinander und können nicht rutschen. Am Berührpunkt (Wälzpunkt) legen beide Teilkreise in derselben Zeit denselben Weg zurück. Ihre Umfangsgeschwindigkeit ist gleich:</p>
-      <div class="key"><span class="lbl">Umfangsgeschwindigkeit</span><div class="f">v = π·d₁·n₁ = π·d₂·n₂</div><div class="f big">i = n₁/n₂ = d₂/d₁ = z₂/z₁</div><div class="hint">Index 1 = Antrieb (treibend), Index 2 = Abtrieb (getrieben). Weil d = m·z, darf man statt der Durchmesser auch die Zähnezahlen nehmen.</div></div>
+      <div class="key"><span class="lbl">Umfangsgeschwindigkeit</span><div class="worte">Am Berührpunkt sind beide Räder gleich schnell. Deshalb dreht das größere Rad (mehr Zähne) langsamer, und zwar genau um das Verhältnis der Größen.</div><div class="f">v = π·d₁·n₁ = π·d₂·n₂</div><div class="f big">i = n₁/n₂ = d₂/d₁ = z₂/z₁</div><div class="hint">Index 1 = Antrieb (treibend), Index 2 = Abtrieb (getrieben). Weil d = m·z, darf man statt der Durchmesser auch die Zähnezahlen nehmen.</div></div>
       <h4>Satz 2: gleiche Kraft → Drehmoment</h4>
       <p>Der Zahn des kleinen Rades drückt mit der Umfangskraft F_u auf den Zahn des großen Rades, und der drückt genauso stark zurück (actio = reactio). Drehmoment ist Kraft mal Hebelarm. Das große Rad hat den längeren Hebel d₂/2:</p>
-      <div class="key"><span class="lbl">Drehmoment</span><div class="f">F_u = 2·M₁/d₁ = 2·M₂/d₂</div><div class="f big">M₂ = M₁ · i &nbsp;(real: M₂ = M₁ · i · η)</div></div>
+      <div class="key"><span class="lbl">Drehmoment</span><div class="worte">Beide Zähne drücken mit derselben Kraft. Das große Rad hat den längeren Hebel und bekommt deshalb das i-fache Drehmoment, abzüglich ein paar Prozent Verlust.</div><div class="f">F_u = 2·M₁/d₁ = 2·M₂/d₂</div><div class="f big">M₂ = M₁ · i &nbsp;(real: M₂ = M₁ · i · η)</div></div>
       <h4>Satz 3: Leistung fließt durch</h4>
-      <div class="key"><span class="lbl">Leistung</span><div class="f">P = F_u · v = 2π · n · M</div><div class="hint">F_u und v sind für beide Räder gleich, also ist auch die Leistung gleich. In P = 2π·n·M muss n in 1/s eingesetzt werden!</div></div>
+      <div class="key"><span class="lbl">Leistung</span><div class="worte">Leistung ist Kraft mal Geschwindigkeit. Beides ist am Berührpunkt für beide Räder gleich, also geht die Leistung unverändert durch.</div><div class="f">P = F_u · v = 2π · n · M</div><div class="hint">F_u und v sind für beide Räder gleich, also ist auch die Leistung gleich. In P = 2π·n·M muss n in 1/s eingesetzt werden!</div></div>
     </div>
     <div class="txt">
       <h4>Ins Langsame, ins Schnelle</h4>
@@ -294,14 +494,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
       <div class="merk">Bei den Drehzahlen steht der <b>Antrieb</b> oben (n₁/n₂), bei Zähnen und Durchmessern der <b>Abtrieb</b> (z₂/z₁). Denn: Je größer ein Rad, desto langsamer dreht es.</div>
       <div class="warn">„i = z₁/z₂“ ist falsch herum. Prüfe immer mit gesundem Menschenverstand: Treibt ein kleines Rad ein großes, muss i &gt; 1 herauskommen.</div>
       <details class="blatt"><summary>Pkw-Dieselmotor (Funktionseinheiten)</summary><div class="in">
-        <p>a) P = 105 kW bei 4200/min: M = P/(2π·n) = 105 000 W / (2π · 70 1/s) = <span class="res">239 Nm</span></p>
-        <p>b) M = 315 Nm bei 2200/min: P = 2π · 36,67 1/s · 315 Nm = <span class="res">72,6 kW</span></p>
-        <p>c) Am Rad: M = 300 Nm · 13,515 · 0,9 = 3649 Nm. F = M/r = 3649 Nm / 0,308 m = <span class="res">11,8 kN</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>P = 105 kW bei n = 4200 /min · größtes Drehmoment 315 Nm bei 2200 /min · für c): Motormoment 300 Nm, Gesamtübersetzung i = 13,515, η = 0,9, Radradius r = 308 mm</div><div><b>Gesucht</b>a) Drehmoment bei 105 kW · b) Leistung bei 315 Nm · c) Drehmoment und Antriebskraft am Rad</div></div>
+        <ol class="st"><li><p>Drehzahl in Umdrehungen pro Sekunde umrechnen, weil die Formel Sekunden braucht.</p><div class="f">n = 4200 /min ÷ 60 = 70 /s</div></li><li><p>a) Die Leistungsformel P = 2π·n·M nach M umstellen.</p><div class="f">M = P / (2π · n) = 105 000 W / (2π · 70 /s) = <span class="res">239 Nm</span></div></li><li><p>b) Wieder erst umrechnen, dann einsetzen.</p><div class="f">n = 2200 ÷ 60 = 36,67 /s → P = 2π · 36,67 /s · 315 Nm = 72 570 W = <span class="res">72,6 kW</span></div></li><li><p>c) Das Getriebe vervielfacht das Drehmoment um i, Verluste ziehen η ab.</p><div class="f">M_Rad = 300 Nm · 13,515 · 0,9 = 3649 Nm</div></li><li><p>Am Rad wirkt das Drehmoment über den Radius als Kraft auf die Straße: F = M / r (r in Metern).</p><div class="f">F = 3649 Nm / 0,308 m = 11 848 N ≈ <span class="res">11,8 kN</span></div></li></ol><p class="fazit">Merke: Bei P = 2π·n·M immer n in 1/s. Und M wird durch das Getriebe größer, die Leistung nicht.</p></div></details>
       <details class="blatt"><summary>Hubwerk (Stirnverzahnungen_3, Aufgabe 6)</summary><div class="in">
-        <p>i = (57/17) · (65/21) = 10,38. Seiltrommel: n = 550/min / 10,38 = <span class="res">53,0 /min</span></p>
-        <p>Hubgeschwindigkeit v = π · 0,2 m · 53,0/60 1/s = <span class="res">0,555 m/s</span></p>
-        <p>Trommel: M = F·r = 3000 N · 0,1 m = <span class="res">300 Nm</span>. Motor (ohne Verluste): 300 Nm / 10,38 = <span class="res">28,9 Nm</span></p>
-        <p>Zweistufig, weil i = 10,4 in einer Stufe ein Rad mit 177 Zähnen bräuchte (→ Kapitel 4).</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Motor 550 /min · Stufe 1: z = 17 → 57 · Stufe 2: z = 21 → 65 · Seiltrommel d = 200 mm · Last F = 3000 N</div><div><b>Gesucht</b>Gesamtübersetzung, Trommeldrehzahl, Hubgeschwindigkeit, Drehmoment an Trommel und Motor</div></div>
+        <ol class="st"><li><p>Jede Stufe einzeln: i = getrieben / treibend. Dann malnehmen.</p><div class="f">i = (57/17) · (65/21) = 3,353 · 3,095 = <span class="res">10,38</span></div></li><li><p>Die Trommel dreht um i langsamer als der Motor.</p><div class="f">n_Trommel = 550 /min / 10,38 = <span class="res">53,0 /min</span></div></li><li><p>Ein Punkt am Seil bewegt sich so schnell wie der Trommelumfang: v = π·d·n. Durchmesser in m, Drehzahl in 1/s.</p><div class="f">v = π · 0,2 m · (53,0 / 60) /s = <span class="res">0,555 m/s</span></div></li><li><p>Das Seil zieht mit 3000 N am Hebel r = d/2 = 0,1 m.</p><div class="f">M_Trommel = 3000 N · 0,1 m = <span class="res">300 Nm</span></div></li><li><p>Rückwärts zum Motor: Das Drehmoment ist dort um i kleiner.</p><div class="f">M_Motor = 300 Nm / 10,38 = <span class="res">28,9 Nm</span> (ohne Verluste)</div></li></ol><p class="fazit">Warum zwei Stufen? Mit Ritzel z = 17 bräuchte eine einzige Stufe ein Rad mit 17 · 10,38 ≈ 177 Zähnen (→ Kapitel 4).</p></div></details>
     </div>
   </div>
 </section>
@@ -328,18 +525,15 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
         <li><b>Mehrere Eingriffe:</b> Zähle die Außeneingriffe. Ungerade Zahl: Abtrieb dreht andersherum. Gerade Zahl: gleiche Richtung.</li>
       </ul>
       <h4>Warum das Zwischenrad die Übersetzung nicht ändert</h4>
-      <div class="key"><span class="lbl">Zwischenrad z₂ kürzt sich heraus</span><div class="f">i_ges = (z₂/z₁) · (z₃/z₂) = z₃/z₁</div></div>
+      <div class="key"><span class="lbl">Zwischenrad z₂ kürzt sich heraus</span><div class="worte">Das Zwischenrad übersetzt erst ins Langsame und dann genauso viel wieder ins Schnelle. Es hebt sich selbst auf.</div><div class="f">i_ges = (z₂/z₁) · (z₃/z₂) = z₃/z₁</div></div>
       <p>Das Zwischenrad nimmt die Umfangsgeschwindigkeit vom ersten Rad auf und gibt sie unverändert an das dritte weiter, egal wie groß es ist. Man braucht es, um einen <b>Abstand zu überbrücken</b> oder die <b>Drehrichtung umzukehren</b>.</p>
     </div>
     <div class="txt">
       <div class="analog">Drei Leute stehen im Kreis und geben sich ein Seil weiter. Wie schnell das Seil läuft, hängt nicht davon ab, wie groß der Mittlere ist. Er gibt es nur weiter.</div>
       <p>Beim Riementrieb gilt dasselbe Prinzip: Offener Riemen, gleiche Drehrichtung. Gekreuzter Riemen, entgegengesetzt (Kapitel 15).</p>
       <details class="blatt"><summary>Zahnradtrieb (Stirnverzahnungen_3, 1/3, Aufgabe 1)</summary><div class="in">
-        <p>z₁ = 64, z₂ = 24, z₃ = 40, m = 2 mm</p>
-        <p>a) a₁ = m·(z₁+z₂)/2 = 2 · 88/2 = <span class="res">88 mm</span>, a₂ = 2 · 64/2 = <span class="res">64 mm</span></p>
-        <p>b) Der Modul ist die Größe der Zähne (d = m·z). Nur Räder mit gleichem Modul passen zusammen (→ Kapitel 6).</p>
-        <p>c) i_ges = z₃/z₁ = 40/64 = <span class="res">0,625</span> (ins Schnelle)</p>
-        <p>d) z₂ ist ein Zwischenrad: Es ändert nur die Drehrichtung und den Abstand. Ohne z₂: a = 2 · (64+40)/2 = <span class="res">104 mm</span>, z₃ dreht andersherum, i bleibt 0,625.</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Drei Räder hintereinander: z₁ = 64 (treibt), z₂ = 24 (Mitte), z₃ = 40 · Modul m = 2 mm</div><div><b>Gesucht</b>a) beide Achsabstände · b) Bedeutung des Moduls · c) Gesamtübersetzung · d) Aufgabe von z₂</div></div>
+        <ol class="st"><li><p>a) Achsabstand = halbe Summe der Durchmesser. Mit d = m·z geht es direkt mit den Zähnezahlen.</p><div class="f">a₁ = m · (z₁ + z₂) / 2 = 2 · (64 + 24) / 2 = <span class="res">88 mm</span> · a₂ = 2 · (24 + 40) / 2 = <span class="res">64 mm</span></div></li><li><p>b) Der Modul ist die Größe der Zähne. Nur Räder mit gleichem Modul passen zusammen (→ Kapitel 6).</p><div class="f">d = m · z</div></li><li><p>c) Die Zähnezahl des mittleren Rades kürzt sich heraus.</p><div class="f">i_ges = (z₂/z₁) · (z₃/z₂) = z₃/z₁ = 40/64 = <span class="res">0,625</span> → ins Schnelle</div></li><li><p>d) z₂ ist ein Zwischenrad. Ohne es würden z₁ und z₃ direkt kämmen:</p><div class="f">a = 2 · (64 + 40) / 2 = <span class="res">104 mm</span>, z₃ dreht andersherum, i bleibt 0,625</div></li></ol><p class="fazit">Merke: Ein Zwischenrad ändert Drehrichtung und Abstand, nie die Übersetzung.</p></div></details>
     </div>
   </div>
 </section>
@@ -356,7 +550,7 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   </div>
   <div class="cols">
     <div class="txt">
-      <div class="key"><span class="lbl">Gesamtübersetzung</span><div class="f big">i_ges = i₁ · i₂ · i₃ …</div><div class="f">n_Ende = n_Anfang / i_ges</div><div class="f">i₁ = z₂/z₁, &nbsp;i₂ = z₄/z₃, …</div></div>
+      <div class="key"><span class="lbl">Gesamtübersetzung</span><div class="worte">Die Übersetzungen aller Stufen werden malgenommen. Die Drehzahl am Ende ist die Anfangsdrehzahl geteilt durch die Gesamtübersetzung.</div><div class="f big">i_ges = i₁ · i₂ · i₃ …</div><div class="f">n_Ende = n_Anfang / i_ges</div><div class="f">i₁ = z₂/z₁, &nbsp;i₂ = z₄/z₃, …</div></div>
       <h4>Warum nicht alles in einer Stufe?</h4>
       <ul>
         <li>Das Ritzel braucht mindestens etwa <b>17 Zähne</b>. Bei weniger Zähnen schneidet das Fräswerkzeug den Zahnfuß frei (<b>Unterschnitt</b>), und der Zahn wird geschwächt.</li>
@@ -371,15 +565,14 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
       <div class="warn">Die Übersetzungen werden <b>multipliziert</b>, nicht addiert. i₁ = 3 und i₂ = 4 ergeben i_ges = 12, nicht 7.</div>
       <p>Bei jeder Stufe steigt das Drehmoment. Deshalb sind in der letzten Stufe Zahnbreite und Wellendurchmesser größer (Projektaufgabe Kegelstirnradgetriebe, Frage 13).</p>
       <details class="blatt"><summary>Antriebsstation 3c: mehrstufig statt einstufig</summary><div class="in">
-        <p>Einstufig: a = 378 mm, m = 6 mm → z₁ + z₂ = 126 → z₁ = 21, z₂ = 105. Das große Rad hat d_a = 642 mm, der Kasten ist über 1000 mm hoch.</p>
-        <p>Zweistufig koaxial: 18/45 (i₁ = 2,5) und 21/42 (i₂ = 2), beide a = 189 mm, i_ges = <span class="res">5</span>. Das größte Rad hat nur noch d_a = 282 mm. Die Bauhöhe sinkt etwa auf die Hälfte.</p>
-        <p>Lagerung: drei Wellen mit je zwei Wälzlagern (Fest- und Loslager).</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Achsabstand a = 378 mm · Modul m = 6 mm · Übersetzung i = 5</div><div><b>Gesucht</b>Vergleich einstufig mit zweistufig: Wie groß wird das größte Rad?</div></div>
+        <ol class="st"><li><p>Einstufig: Aus a = m·(z₁+z₂)/2 folgt die Zahnsumme.</p><div class="f">z₁ + z₂ = 2a / m = 2 · 378 / 6 = 126</div></li><li><p>Die Summe im Verhältnis 1 : 5 aufteilen.</p><div class="f">z₁ = 21, z₂ = 105 → d_a2 = m · (z₂ + 2) = 6 · 107 = 642 mm. Der Kasten wird über 1 m hoch.</div></li><li><p>Zweistufig koaxial: Beide Stufen haben denselben Achsabstand, z. B. mit Zahnsumme 63.</p><div class="f">18/45 (i₁ = 2,5) und 21/42 (i₂ = 2) → a = 6 · 63 / 2 = 189 mm</div></li><li><p>Gesamtübersetzung = Produkt der Stufen.</p><div class="f">i_ges = 2,5 · 2 = <span class="res">5</span></div></li><li><p>Größtes Rad jetzt: z = 45.</p><div class="f">d_a = 6 · (45 + 2) = <span class="res">282 mm</span> statt 642 mm</div></li></ol><p class="fazit">Die Bauhöhe sinkt etwa auf die Hälfte. Lagerung: drei Wellen mit je zwei Wälzlagern (Fest- und Loslager).</p></div></details>
       <details class="blatt"><summary>Handbohrmaschine (Übersetzungsverhältnisse)</summary><div class="in">
-        <p>Erste Stufe z₁/z₂ = 52/10 = <span class="res">5,2</span>. Zweite Stufe wahlweise z₃/z₄ = 36/24 = <span class="res">1,5</span> oder z₅/z₆ = 44/16 = <span class="res">2,75</span>.</p>
-        <p>n_max = 6000 / (5,2 · 1,5) = <span class="res">769 /min</span> · n_min = 6000 / (5,2 · 2,75) = <span class="res">420 /min</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Motor 6000 /min · Stufe 1: z₁ = 10 treibt z₂ = 52 · Stufe 2 wahlweise 24 → 36 oder 16 → 44</div><div><b>Gesucht</b>Übersetzungen der Stufen, größte und kleinste Bohrdrehzahl</div></div>
+        <ol class="st"><li><p>Stufe 1: getrieben durch treibend.</p><div class="f">i₁ = 52/10 = <span class="res">5,2</span></div></li><li><p>Stufe 2, Möglichkeit A und B.</p><div class="f">i_A = 36/24 = <span class="res">1,5</span> · i_B = 44/16 = <span class="res">2,75</span></div></li><li><p>Schnellster Gang = kleinste Gesamtübersetzung.</p><div class="f">n_max = 6000 / (5,2 · 1,5) = <span class="res">769 /min</span></div></li><li><p>Langsamster Gang = größte Gesamtübersetzung.</p><div class="f">n_min = 6000 / (5,2 · 2,75) = <span class="res">420 /min</span></div></li></ol><p class="fazit">Kleines i = schnell, großes i = langsam, aber kräftig (für große Bohrer).</p></div></details>
       <details class="blatt"><summary>Tischantrieb 1 (vier Wechselräder)</summary><div class="in">
-        <p>i₂ = 136/34 = 4 fest. Wechselräder: 130/26 = 5, 120/40 = 3, 110/44 = 2,5, 104/52 = 2.</p>
-        <p>i_ges = 20, 12, 10, 8 → n = 6000 / i_ges = <span class="res">300, 500, 600, 750 /min</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Motor 6000 /min · feste Stufe 34 → 136 · Wechselräderpaare 26→130, 40→120, 44→110, 52→104</div><div><b>Gesucht</b>Gesamtübersetzung und Abtriebsdrehzahl für jedes Paar</div></div>
+        <ol class="st"><li><p>Feste Stufe.</p><div class="f">i₂ = 136/34 = 4</div></li><li><p>Wechselräder, jeweils getrieben durch treibend.</p><div class="f">130/26 = 5 · 120/40 = 3 · 110/44 = 2,5 · 104/52 = 2</div></li><li><p>Gesamt = Wechselrad-i mal 4.</p><div class="f">i_ges = 20 · 12 · 10 · 8</div></li><li><p>Abtriebsdrehzahl = 6000 / i_ges.</p><div class="f">n = <span class="res">300 · 500 · 600 · 750 /min</span></div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -406,11 +599,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   </div>
   <div class="cols">
     <div class="txt">
-      <div class="key"><span class="lbl">Leistung</span>
+      <div class="key"><span class="lbl">Leistung</span><div class="worte">Leistung ist, wie viel Arbeit pro Sekunde geleistet wird. Beim Schieben oder Heben: Kraft mal Geschwindigkeit. Beim Drehen: Drehzahl mal Drehmoment (mal 2π).</div>
         <div class="f">geradlinig: P = F · v &nbsp;·&nbsp; heben: F = m · g</div>
         <div class="f">drehend: P = 2π · n · M &nbsp;(n in 1/s)</div>
         <div class="f">Zahlenwertgleichung: M = 9550 · P / n &nbsp;(M in Nm, P in kW, n in 1/min)</div></div>
-      <div class="key"><span class="lbl">Wirkungsgrad</span>
+      <div class="key"><span class="lbl">Wirkungsgrad</span><div class="worte">Jedes Bauteil verliert etwas. Wirkungsgrade hintereinander werden malgenommen. Wer wissen will, was der Motor liefern muss, teilt die Nutzleistung durch η_ges.</div>
         <div class="f">η = P_ab / P_zu &nbsp;(immer kleiner als 1)</div>
         <div class="f big">η_ges = η₁ · η₂ · η₃</div>
         <div class="f">P_zu = P_nutz / η_ges</div></div>
@@ -425,13 +618,14 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
       <div class="warn">n in 1/min in P = 2π·n·M einsetzen. Dann ist das Ergebnis 60-mal zu groß. Erst durch 60 teilen oder M = 9550·P/n benutzen.</div>
       <div class="warn">Abgegebene und aufgenommene Motorleistung verwechseln. Auf dem Typenschild steht die <b>abgegebene</b> Leistung an der Welle.</div>
       <details class="blatt"><summary>Kreiselpumpe (Funktionseinheiten)</summary><div class="in">
-        <p>66 L Wasser = 66 kg pro Sekunde auf 51 m Höhe.</p>
-        <p>a) P = m·g·h/t = 66 · 9,81 · 51 W = <span class="res">33,0 kW</span> · b) 33,0/0,75 = <span class="res">44,0 kW</span> · c) 44,0/0,85 = <span class="res">51,8 kW</span> · d) η = 0,75 · 0,85 = <span class="res">0,64</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>66 L Wasser pro Sekunde · Förderhöhe h = 51 m · η_Pumpe = 0,75 · η_Motor = 0,85</div><div><b>Gesucht</b>a) Nutzleistung · b) Pumpen-Antriebsleistung · c) Motor-Aufnahme · d) Gesamtwirkungsgrad</div></div>
+        <ol class="st"><li><p>66 L Wasser wiegen 66 kg. Pro Sekunde wird diese Masse um 51 m gehoben: P = m·g·h / t.</p><div class="f">P_nutz = 66 kg · 9,81 m/s² · 51 m / 1 s = 33 020 W = <span class="res">33,0 kW</span></div></li><li><p>b) Rückwärts: Die Pumpe braucht mehr, als sie abgibt.</p><div class="f">P_Pumpe = 33,0 kW / 0,75 = <span class="res">44,0 kW</span></div></li><li><p>c) Noch einmal durch den Motor zurück.</p><div class="f">P_Motor = 44,0 kW / 0,85 = <span class="res">51,8 kW</span></div></li><li><p>d) Wirkungsgrade hintereinander werden malgenommen.</p><div class="f">η_ges = 0,75 · 0,85 = <span class="res">0,64</span></div></li></ol><p class="fazit">Rückwärts rechnen heißt: durch η teilen. Vorwärts: mal η.</p></div></details>
       <details class="blatt"><summary>Seilwinde 5 t (Funktionseinheiten)</summary><div class="in">
-        <p>v = 1,5 m/min = 0,025 m/s. P_nutz = 5000 · 9,81 · 0,025 = 1226 W. P_auf = 1226 W / (0,80 · 0,86) = <span class="res">1,78 kW</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Masse 5 t = 5000 kg · Hubgeschwindigkeit v = 1,5 m/min · Wirkungsgrade 0,80 und 0,86</div><div><b>Gesucht</b>Leistungsaufnahme des Motors</div></div>
+        <ol class="st"><li><p>Geschwindigkeit in m/s umrechnen.</p><div class="f">v = 1,5 m/min ÷ 60 = 0,025 m/s</div></li><li><p>Heben: Kraft = Gewichtskraft m·g, Leistung = Kraft mal Geschwindigkeit.</p><div class="f">P_nutz = 5000 kg · 9,81 m/s² · 0,025 m/s = 1226 W</div></li><li><p>Rückwärts durch beide Wirkungsgrade teilen.</p><div class="f">P_auf = 1226 W / (0,80 · 0,86) = 1782 W ≈ <span class="res">1,78 kW</span></div></li></ol></div></details>
       <details class="blatt"><summary>Antriebsstation 1 (Förderband Hochofen)</summary><div class="in">
-        <p>Trommel: n = v/(π·d) = 3 / (π · 0,2) 1/s = 286,5/min → i = 1400/286,5 = <span class="res">4,89</span></p>
-        <p>P_nutz = 2500 kg · 9,81 · 3 m/s = 73,6 kW (Last als Gewichtskraft angesetzt). η_ges = 0,67 · 0,93 · 0,89 = 0,555 → P_auf = <span class="res">132,7 kW</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Bandgeschwindigkeit v = 3 m/s · Trommel d = 200 mm · Motor 1400 /min · Last 2500 kg · η Maschine 0,67, Getriebe 0,93, Motor 0,89</div><div><b>Gesucht</b>Trommeldrehzahl, Übersetzung, Leistungsaufnahme</div></div>
+        <ol class="st"><li><p>Das Band läuft so schnell wie der Trommelumfang: n = v / (π·d).</p><div class="f">n = 3 m/s / (π · 0,2 m) = 4,775 /s = 286,5 /min</div></li><li><p>Übersetzung = Motordrehzahl durch Trommeldrehzahl.</p><div class="f">i = 1400 / 286,5 = <span class="res">4,89</span></div></li><li><p>Nutzleistung: Last als Gewichtskraft mal Geschwindigkeit.</p><div class="f">P_nutz = 2500 kg · 9,81 m/s² · 3 m/s = 73 575 W ≈ 73,6 kW</div></li><li><p>Alle Wirkungsgrade malnehmen, dann durch das Ergebnis teilen.</p><div class="f">η_ges = 0,67 · 0,93 · 0,89 = 0,555 → P_auf = 73,6 kW / 0,555 = <span class="res">132,7 kW</span></div></li></ol><p class="fazit">Das ist der Standardweg aus Kapitel 17: von der Maschine rückwärts bis zum Netz.</p></div></details>
     </div>
   </div>
 </section>
@@ -457,8 +651,8 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
     <div class="txt">
       <h4>Woher kommt der Modul?</h4>
       <p>Auf dem Teilkreis sitzen z Zähne im Abstand der Teilung p. Der Umfang ist also z·p = π·d. Damit wäre d = z·p/π, eine unpraktische Zahl mit π. Deshalb definiert man den Modul:</p>
-      <div class="key"><span class="lbl">Modul</span><div class="f big">m = p/π = d/z</div><div class="hint">Der Modul ist genormt (Modulreihe DIN 780: … 1; 1,25; 1,5; 2; 2,5; 3; 4; 5; 6; 8 …). So braucht man weniger Fräswerkzeuge.</div></div>
-      <div class="key"><span class="lbl">Maße (Außenverzahnung, gerade)</span>
+      <div class="key"><span class="lbl">Modul</span><div class="worte">Der Modul ist die Zahngröße in Millimetern. Durchmesser = Modul mal Zähnezahl.</div><div class="f big">m = p/π = d/z</div><div class="hint">Der Modul ist genormt (Modulreihe DIN 780: … 1; 1,25; 1,5; 2; 2,5; 3; 4; 5; 6; 8 …). So braucht man weniger Fräswerkzeuge.</div></div>
+      <div class="key"><span class="lbl">Maße (Außenverzahnung, gerade)</span><div class="worte">Alles hängt am Modul: Der Zahnkopf ist ein Modul hoch, der Zahnfuß ein Modul plus Kopfspiel tief.</div>
         <div class="f">Teilkreis &nbsp;&nbsp;d = m · z</div>
         <div class="f">Teilung &nbsp;&nbsp;&nbsp;&nbsp;p = π · m &nbsp;(Zahndicke s = Lücke e = p/2)</div>
         <div class="f">Kopfhöhe &nbsp;&nbsp;h_a = m</div>
@@ -475,13 +669,14 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
       <div class="key"><span class="lbl">Innenverzahnung (Hohlrad)</span><div class="f">d_a = d − 2m &nbsp;(Kopfkreis innen!)</div><div class="f">d_f = d + 2 · (m + c)</div><div class="f">a = (d₂ − d₁)/2</div></div>
       <div class="merk">Kopf nach außen: +2 Module. Fuß nach innen: −2·(m + c). Beim Hohlrad ist alles gespiegelt.</div>
       <details class="blatt"><summary>Außenverzahntes Stirnrad (Stirnverzahnungen_3, Aufgabe 2)</summary><div class="in">
-        <p>m = 1,5 mm, z = 50, c = 0,167·m: d = <span class="res">75 mm</span>, d_a = 1,5 · 52 = <span class="res">78 mm</span>, h = 2 · 1,5 + 0,25 = <span class="res">3,25 mm</span></p>
-        <p>F_u = 2M/d = 2 · 160 Nm / 0,075 m = <span class="res">4267 N</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>m = 1,5 mm · z = 50 · Kopfspiel c = 0,167 · m · Drehmoment M = 160 Nm</div><div><b>Gesucht</b>Teilkreis, Kopfkreis, Zahnhöhe, Umfangskraft</div></div>
+        <ol class="st"><li><p>Teilkreis = Modul mal Zähnezahl.</p><div class="f">d = 1,5 · 50 = <span class="res">75 mm</span></div></li><li><p>Kopfkreis: zwei Module mehr.</p><div class="f">d_a = m · (z + 2) = 1,5 · 52 = <span class="res">78 mm</span></div></li><li><p>Zahnhöhe = zwei Module plus Kopfspiel.</p><div class="f">c = 0,167 · 1,5 = 0,25 mm → h = 2 · 1,5 + 0,25 = <span class="res">3,25 mm</span></div></li><li><p>Umfangskraft: Drehmoment geteilt durch den Hebel d/2 (in Metern).</p><div class="f">F_u = 2 · M / d = 2 · 160 Nm / 0,075 m = <span class="res">4267 N</span></div></li></ol></div></details>
       <details class="blatt"><summary>Zahnradpumpe (Aufgabe 3)</summary><div class="in">
-        <p>d_a = m·(z + 2) → m = 32,5 / 13 = 2,5 mm. d = 2,5 · 11 = 27,5 mm. Zwei gleiche Räder: a = d = <span class="res">27,5 mm</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Zwei gleiche Räder · z = 11 · Kopfkreis d_a = 32,5 mm</div><div><b>Gesucht</b>Modul und Achsabstand</div></div>
+        <ol class="st"><li><p>Kopfkreisformel nach m umstellen.</p><div class="f">d_a = m · (z + 2) → m = 32,5 / 13 = 2,5 mm</div></li><li><p>Teilkreis ausrechnen.</p><div class="f">d = 2,5 · 11 = 27,5 mm</div></li><li><p>Zwei gleiche Räder: a = (d + d)/2 = d.</p><div class="f">a = <span class="res">27,5 mm</span></div></li></ol></div></details>
       <details class="blatt"><summary>Innenverzahnung (Aufgabe 7)</summary><div class="in">
-        <p>m = 1,5 mm, c = 0,25·m = 0,375 mm, z₁ = 28, z₂ = 80.</p>
-        <p>d₁ = <span class="res">42 mm</span>, d₂ = <span class="res">120 mm</span> · d_a1 = 45 mm, d_a2 = 120 − 3 = <span class="res">117 mm</span> · d_f1 = 42 − 3,75 = <span class="res">38,25 mm</span>, d_f2 = 120 + 3,75 = <span class="res">123,75 mm</span> · h = <span class="res">3,375 mm</span> · a = (120 − 42)/2 = <span class="res">39 mm</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>m = 1,5 mm · Ritzel z₁ = 28 · Hohlrad z₂ = 80 · c = 0,25 · m</div><div><b>Gesucht</b>Teil-, Kopf- und Fußkreise, Zahnhöhe, Achsabstand</div></div>
+        <ol class="st"><li><p>Teilkreise wie immer: d = m·z.</p><div class="f">d₁ = <span class="res">42 mm</span> · d₂ = <span class="res">120 mm</span></div></li><li><p>Kopfkreis: Beim Ritzel nach außen (+2m), beim Hohlrad zeigen die Zähne nach innen (−2m).</p><div class="f">d_a1 = 42 + 3 = 45 mm · d_a2 = 120 − 3 = <span class="res">117 mm</span></div></li><li><p>Fußkreis: Beim Hohlrad liegt der Zahngrund außen, also plus.</p><div class="f">c = 0,375 mm → d_f1 = 42 − 2·1,875 = <span class="res">38,25 mm</span> · d_f2 = 120 + 3,75 = <span class="res">123,75 mm</span></div></li><li><p>Zahnhöhe.</p><div class="f">h = 2 · 1,5 + 0,375 = <span class="res">3,375 mm</span></div></li><li><p>Achsabstand beim Hohlrad: Differenz statt Summe.</p><div class="f">a = (d₂ − d₁) / 2 = (120 − 42) / 2 = <span class="res">39 mm</span></div></li></ol><p class="fazit">Beim Hohlrad ist alles gespiegelt: Kopf innen, Fuß außen, Achsabstand mit Minus.</p></div></details>
     </div>
   </div>
 </section>
@@ -543,7 +738,7 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
       <p class="hint">Lösung zum Blatt „Grundformen 2“, Verzahnungsarten. Geradverzahnung bekommt hier kein Kreuz. Ihre Stärken sind andere: einfach, günstig, keine Axialkraft, verschiebbar im Schieberadgetriebe. Pfeilverzahnung wird laut Heft S. 7 auch in Kfz-Getrieben eingesetzt.</p>
     </div>
     <div class="txt">
-      <div class="key"><span class="lbl">Schrägverzahnung</span>
+      <div class="key"><span class="lbl">Schrägverzahnung</span><div class="worte">Schräge Zähne drücken die Welle zur Seite (Axialkraft). Und weil der Zahn schräg steht, wird das Rad bei gleichem Modul etwas größer: Man teilt durch cos β.</div>
         <div class="f big">F_a = F_u · tan β</div>
         <div class="f">Stirnmodul m_t = m_n / cos β</div>
         <div class="f">d = z · m_n / cos β &nbsp;·&nbsp; d_a = d + 2·m_n</div>
@@ -551,12 +746,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
         <div class="hint">m_n = Normalmodul (senkrecht zum Zahn, genormt). Gepaart werden Räder mit gleichem β, aber <b>gegensinniger</b> Steigung (rechts mit links).</div></div>
       <div class="warn">Bei Schrägverzahnung d = z·m_n rechnen. Das ist zu klein, man muss durch cos β teilen.</div>
       <details class="blatt"><summary>Schrägverzahntes Radpaar (Aufgabe 4)</summary><div class="in">
-        <p>z₁ = 17, z₂ = 81, m_n = 4 mm, β = 25°, c = 0,2·m_n. m_t = 4/cos 25° = 4,414 mm.</p>
-        <p>d₁ = 75,03 mm, d₂ = 357,49 mm → a) d_a1 = <span class="res">83,03 mm</span>, d_a2 = <span class="res">365,49 mm</span></p>
-        <p>b) p_t = π·m_t = <span class="res">13,87 mm</span> · c) h = 2 · 4 + 0,8 = <span class="res">8,8 mm</span></p>
-        <p>d) F_u = 2 · 150 Nm / 0,07503 m = <span class="res">3998 N</span>, M₂ = 150 · 81/17 = <span class="res">714,7 Nm</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>z₁ = 17 · z₂ = 81 · Normalmodul m_n = 4 mm · β = 25° · c = 0,2 · m_n · M₁ = 150 Nm</div><div><b>Gesucht</b>a) Kopfkreise · b) Stirnteilung · c) Zahnhöhe · d) Umfangskraft und M₂</div></div>
+        <ol class="st"><li><p>Bei Schrägverzahnung erst den Stirnmodul ausrechnen.</p><div class="f">m_t = m_n / cos β = 4 / cos 25° = 4,414 mm</div></li><li><p>Teilkreise mit m_t.</p><div class="f">d₁ = 17 · 4,414 = 75,03 mm · d₂ = 81 · 4,414 = 357,49 mm</div></li><li><p>a) Kopfhöhe ist m_n (nicht m_t).</p><div class="f">d_a1 = 75,03 + 8 = <span class="res">83,03 mm</span> · d_a2 = 357,49 + 8 = <span class="res">365,49 mm</span></div></li><li><p>b) Teilung in der Stirnansicht.</p><div class="f">p_t = π · m_t = <span class="res">13,87 mm</span></div></li><li><p>c) Zahnhöhe mit m_n.</p><div class="f">h = 2 · 4 + 0,8 = <span class="res">8,8 mm</span></div></li><li><p>d) Kraft am Zahn und Drehmoment am großen Rad.</p><div class="f">F_u = 2 · 150 Nm / 0,07503 m = <span class="res">3998 N</span> · M₂ = 150 · 81/17 = <span class="res">714,7 Nm</span></div></li></ol></div></details>
       <details class="blatt"><summary>Tischantrieb (Aufgabe 5)</summary><div class="in">
-        <p>a₁ = 1,75 · (26 + 130) / (2 · cos 10°) = <span class="res">138,6 mm</span> · a₂ = 2,75 · (34 + 136) / (2 · cos 10°) = <span class="res">237,4 mm</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Stufe 1: z = 26 und 130, m_n = 1,75 mm · Stufe 2: z = 34 und 136, m_n = 2,75 mm · β = 10°</div><div><b>Gesucht</b>Achsabstände</div></div>
+        <ol class="st"><li><p>Achsabstand bei Schrägverzahnung: wie gerade, aber durch cos β.</p><div class="f">a = m_n · (z₁ + z₂) / (2 · cos β)</div></li><li><p>Stufe 1.</p><div class="f">a₁ = 1,75 · 156 / (2 · cos 10°) = <span class="res">138,6 mm</span></div></li><li><p>Stufe 2.</p><div class="f">a₂ = 2,75 · 170 / (2 · cos 10°) = <span class="res">237,4 mm</span></div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -629,7 +823,7 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   </div>
   <div class="cols">
     <div class="txt">
-      <div class="key"><span class="lbl">Übersetzung</span><div class="f big">i = z₂ / z₁ &nbsp;(z₁ = Gangzahl der Schnecke)</div><div class="hint">Beweis (Frage 20): Eine Schneckenumdrehung schiebt das Rad um z₁ Zähne weiter. Für eine volle Radumdrehung (z₂ Zähne) braucht es z₂/z₁ Schneckenumdrehungen. Also i = n₁/n₂ = z₂/z₁.</div></div>
+      <div class="key"><span class="lbl">Übersetzung</span><div class="worte">Bei jeder Umdrehung der Schnecke rückt das Rad nur so viele Zähne weiter, wie die Schnecke Gänge hat.</div><div class="f big">i = z₂ / z₁ &nbsp;(z₁ = Gangzahl der Schnecke)</div><div class="hint">Beweis (Frage 20): Eine Schneckenumdrehung schiebt das Rad um z₁ Zähne weiter. Für eine volle Radumdrehung (z₂ Zähne) braucht es z₂/z₁ Schneckenumdrehungen. Also i = n₁/n₂ = z₂/z₁.</div></div>
       <h4>Selbsthemmung</h4>
       <p>Der Gewindegang der Schnecke ist eine schiefe Ebene mit dem <b>Steigungswinkel γ</b>. Ist γ kleiner als der Reibwinkel (etwa 5°), kann das Rad die Schnecke nicht zurückdrehen, egal wie stark die Last zieht. Wie eine Schraube, die sich unter Last nicht von selbst löst.</p>
       <ul><li>Vorteil: Eine Winde, ein Tor oder ein Aufzug hält die Last, auch wenn der Motor aus ist.</li><li>Achtung: Für Personen reicht das nicht als Sicherung, dort ist trotzdem eine Bremse Pflicht.</li></ul>
@@ -639,8 +833,8 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
       <h4>Warum Bronze oder Grauguss?</h4>
       <p>Die Schnecke gleitet am Rad entlang (Schraubbewegung). Das erzeugt Wärme und Verschleiß. Die Paarung <b>gehärteter Stahl (Schnecke) auf Bronze CuSn oder Grauguss (Rad)</b> gleitet gut und hat Notlaufeigenschaften. Der Radsatz läuft im Ölbad.</p>
       <details class="blatt"><summary>Stirnverzahnungen_3, 3/3, Aufgaben 7 und 8</summary><div class="in">
-        <p>7: Riemen 4200 · 240/600 = 1680/min → Kegelräder · 20/70 = 480/min → eingängige Schnecke / 60 = 8/min = <span class="res">0,133 Umdrehungen pro Sekunde</span></p>
-        <p>8: Ritzel d = 20 mm, n = 15,7 m/min / (π · 0,02 m) = 250/min. Schnecke eingängig, z₂ = 60: n_A = 250 · 60 = <span class="res">15 000 /min</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>7: Motor 4200 /min, Riemen d = 240 → 600 mm, Kegelräder 20 → 70, eingängige Schnecke auf Rad z = 60 · 8: Ritzel d = 20 mm auf Zahnstange, v = 15,7 m/min, eingängige Schnecke, Rad z = 60</div><div><b>Gesucht</b>7: Drehzahl am Ende · 8: Drehzahl der Schneckenwelle</div></div>
+        <ol class="st"><li><p>7) Stufe für Stufe teilen. Riemen: i = d₂/d₁.</p><div class="f">4200 · 240/600 = 1680 /min</div></li><li><p>Kegelräder.</p><div class="f">1680 · 20/70 = 480 /min</div></li><li><p>Eingängige Schnecke: i = z₂/z₁ = 60.</p><div class="f">480 / 60 = 8 /min = <span class="res">0,133 Umdrehungen pro Sekunde</span></div></li><li><p>8) Rückwärts: Wie schnell muss das Ritzel drehen, damit die Zahnstange 15,7 m/min fährt?</p><div class="f">n = v / (π · d) = 15,7 m/min / (π · 0,02 m) = 250 /min</div></li><li><p>Die Schnecke muss 60-mal schneller drehen als ihr Rad.</p><div class="f">n_Schnecke = 250 · 60 = <span class="res">15 000 /min</span></div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -660,7 +854,7 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   </div>
   <div class="cols">
     <div class="txt">
-      <div class="key"><span class="lbl">Teilkegelwinkel</span>
+      <div class="key"><span class="lbl">Teilkegelwinkel</span><div class="worte">Die zwei Kegel müssen sich mit ihren Spitzen in einem Punkt treffen. Die Winkel teilen sich den Achsenwinkel Σ im Verhältnis der Zähnezahlen.</div>
         <div class="f">Σ = δ₁ + δ₂</div>
         <div class="f big">Σ = 90°: tan δ₁ = z₁/z₂ = 1/i</div>
         <div class="f">allgemein: tan δ₁ = sin Σ / (i + cos Σ)</div></div>
@@ -680,11 +874,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
         <li>Anwendung: Differenzialgetriebe, Winkelgetriebe, Kegelstirnradgetriebe</li>
       </ul>
       <details class="blatt"><summary>Kegelrad-Nullgetriebe Σ = 75° (Aufgabe 4)</summary><div class="in">
-        <p>z₁ = 22, i = 1,5 → z₂ = 33, m = 3,5 mm. tan δ₁ = sin 75°/(1,5 + cos 75°) → δ₁ = <span class="res">28,78°</span>, δ₂ = <span class="res">46,22°</span></p>
-        <p>d₁ = 77 mm, d₂ = 115,5 mm · d_a1 = <span class="res">83,14 mm</span>, d_a2 = <span class="res">120,34 mm</span> · R_e = 79,98 mm, κ_a = 2,51° → δ_a1 = <span class="res">31,28°</span>, δ_a2 = <span class="res">48,73°</span> · h_a = 3,5 mm, c = 0,7 mm (0,2·m), h = 7,7 mm</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>z₁ = 22 · i = 1,5 · m = 3,5 mm · Achsenwinkel Σ = 75° · c = 0,2 · m</div><div><b>Gesucht</b>Teilkegelwinkel, Kopfkreise, Kopfkegelwinkel, Zahnmaße</div></div>
+        <ol class="st"><li><p>Zähnezahl des Rades.</p><div class="f">z₂ = 22 · 1,5 = 33</div></li><li><p>Σ ist nicht 90°, also die allgemeine Formel.</p><div class="f">tan δ₁ = sin 75° / (1,5 + cos 75°) → δ₁ = <span class="res">28,78°</span> · δ₂ = 75° − 28,78° = <span class="res">46,22°</span></div></li><li><p>Teilkreise am äußeren Ende.</p><div class="f">d₁ = 3,5 · 22 = 77 mm · d₂ = 3,5 · 33 = 115,5 mm</div></li><li><p>Kopfkreis: Der Zahnkopf steht schräg, deshalb mal cos δ.</p><div class="f">d_a1 = 77 + 7 · cos 28,78° = <span class="res">83,14 mm</span> · d_a2 = 115,5 + 7 · cos 46,22° = <span class="res">120,34 mm</span></div></li><li><p>Kegellänge und Kopfwinkel.</p><div class="f">R_e = 77 / (2 · sin 28,78°) = 79,98 mm · tan κ_a = 3,5 / 79,98 → κ_a = 2,51°</div></li><li><p>Kopfkegelwinkel = Teilkegelwinkel + Kopfwinkel.</p><div class="f">δ_a1 = <span class="res">31,28°</span> · δ_a2 = <span class="res">48,73°</span> · h_a = 3,5 mm, c = 0,7 mm, h = 7,7 mm</div></li></ol></div></details>
       <details class="blatt"><summary>Transportband Σ = 90° (Aufgabe 5)</summary><div class="in">
-        <p>z₁ = 12, i = 1,25 → z₂ = <span class="res">15</span>, m = 6 mm. tan δ₁ = 12/15 → δ₁ = <span class="res">38,66°</span>, δ₂ = <span class="res">51,34°</span></p>
-        <p>d₁ = 72 mm, d₂ = 90 mm · d_a1 = <span class="res">81,37 mm</span>, d_a2 = <span class="res">97,50 mm</span> · κ_a = 5,94° → δ_a1 = <span class="res">44,60°</span>, δ_a2 = <span class="res">57,28°</span> · h_a = 6 mm, c = 1,2 mm, h = 13,2 mm</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>z₁ = 12 · i = 1,25 · m = 6 mm · Σ = 90° · c = 0,2 · m</div><div><b>Gesucht</b>z₂, Teilkegelwinkel, Kopfkreise, Kopfkegelwinkel</div></div>
+        <ol class="st"><li><p>Zähnezahl des Rades.</p><div class="f">z₂ = 12 · 1,25 = <span class="res">15</span></div></li><li><p>Bei 90° reicht der Tangens des Zähneverhältnisses.</p><div class="f">tan δ₁ = 12/15 → δ₁ = <span class="res">38,66°</span> · δ₂ = 90° − 38,66° = <span class="res">51,34°</span></div></li><li><p>Teilkreise.</p><div class="f">d₁ = 72 mm · d₂ = 90 mm</div></li><li><p>Kopfkreise mit cos δ.</p><div class="f">d_a1 = 72 + 12 · cos 38,66° = <span class="res">81,37 mm</span> · d_a2 = 90 + 12 · cos 51,34° = <span class="res">97,50 mm</span></div></li><li><p>Kopfwinkel und Kopfkegelwinkel.</p><div class="f">κ_a = 5,94° → δ_a1 = <span class="res">44,60°</span> · δ_a2 = <span class="res">57,28°</span> · h_a = 6 mm, c = 1,2 mm, h = 13,2 mm</div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -744,19 +938,20 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   </div>
   <div class="cols">
     <div class="txt">
-      <div class="key"><span class="lbl">Zahnstange</span><div class="f big">s = N · π · d &nbsp;·&nbsp; v = π · d · n</div><div class="f">Drehwinkel φ = s / (π·d) · 360°</div></div>
-      <div class="key"><span class="lbl">Gewindespindel</span><div class="f big">s = N · P &nbsp;·&nbsp; v = n · P</div><div class="hint">P = Steigung (bei eingängigem Gewinde gleich der Teilung).</div></div>
+      <div class="key"><span class="lbl">Zahnstange</span><div class="worte">Pro Umdrehung rollt das Ritzel einmal seinen Umfang π·d auf der Zahnstange ab.</div><div class="f big">s = N · π · d &nbsp;·&nbsp; v = π · d · n</div><div class="f">Drehwinkel φ = s / (π·d) · 360°</div></div>
+      <div class="key"><span class="lbl">Gewindespindel</span><div class="worte">Pro Umdrehung wandert die Mutter genau eine Steigung P weiter.</div><div class="f big">s = N · P &nbsp;·&nbsp; v = n · P</div><div class="hint">P = Steigung (bei eingängigem Gewinde gleich der Teilung).</div></div>
       <p>Anwendungen: Vorschub an Drehmaschinen, Pinole der Säulenbohrmaschine, Lenkung im Auto, Frästisch.</p>
     </div>
     <div class="txt">
       <details class="blatt"><summary>Bohrspindel</summary><div class="in">
-        <p>a) d = 4 · 18 = <span class="res">72 mm</span>, n = v_f/(π·d) = 162 / (π · 72) = <span class="res">0,716 /min</span></p>
-        <p>b) s = 162 mm/min · 0,6 min = <span class="res">97,2 mm</span> · c) φ = 97,2 / (π · 72) · 360° = <span class="res">154,7°</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Ritzel m = 4 mm, z = 18 · Vorschub v_f = 162 mm/min · Zeit t = 0,6 min</div><div><b>Gesucht</b>a) Teilkreis und Ritzeldrehzahl · b) Vorschubweg · c) Drehwinkel</div></div>
+        <ol class="st"><li><p>a) Teilkreis.</p><div class="f">d = 4 · 18 = <span class="res">72 mm</span></div></li><li><p>Pro Umdrehung rollt das Ritzel seinen Umfang π·d ab. Drehzahl = Weg pro Minute / Umfang.</p><div class="f">n = 162 / (π · 72) = <span class="res">0,716 /min</span></div></li><li><p>b) Weg = Geschwindigkeit mal Zeit.</p><div class="f">s = 162 mm/min · 0,6 min = <span class="res">97,2 mm</span></div></li><li><p>c) Welcher Anteil einer Umdrehung ist das? Mal 360°.</p><div class="f">φ = 97,2 / (π · 72) · 360° = <span class="res">154,7°</span></div></li></ol></div></details>
       <details class="blatt"><summary>Tischantrieb 2 (Gewindespindel P = 5 mm)</summary><div class="in">
-        <p>a) Zahnriemen: n_Spindel = 600 · 16/40 = 240/min → v = 240 · 5 mm = 1200 mm/min → t = 200/1200 min = <span class="res">10 s</span></p>
-        <p>b) 200 mm / 5 mm = 40 Spindelumdrehungen · Räderpaar 60/30 → <span class="res">80 Kurbelumdrehungen</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Motor 600 /min · Zahnriemen 16 → 40 Zähne · Spindel P = 5 mm · Weg 200 mm · Handkurbel über Räderpaar 30 → 60</div><div><b>Gesucht</b>a) Zeit für 200 mm · b) Kurbelumdrehungen für 200 mm</div></div>
+        <ol class="st"><li><p>a) Spindeldrehzahl hinter dem Zahnriemen.</p><div class="f">n = 600 · 16/40 = 240 /min</div></li><li><p>Pro Umdrehung eine Steigung.</p><div class="f">v = n · P = 240 · 5 mm = 1200 mm/min</div></li><li><p>Zeit = Weg / Geschwindigkeit.</p><div class="f">t = 200 / 1200 min = <span class="res">10 s</span></div></li><li><p>b) Spindelumdrehungen für 200 mm.</p><div class="f">200 mm / 5 mm = 40</div></li><li><p>Die Kurbel dreht wegen 60/30 doppelt so oft.</p><div class="f">40 · 2 = <span class="res">80 Kurbelumdrehungen</span></div></li></ol></div></details>
       <details class="blatt"><summary>Stirnverzahnungen_3, 3/3, Aufgabe 6</summary><div class="in">
-        <p>z₂ dreht 90 · 18/45 = 36-mal → Schneckenrad 36 · 3/30 = 3,6-mal → Ritzel d₅ = 40 mm → s = 3,6 · π · 40 mm = <span class="res">452 mm</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Kurbel 90 Umdrehungen · Zahnräder 18 → 45 · dreigängige Schnecke auf Rad z = 30 · Ritzel d₅ = 40 mm auf Zahnstange</div><div><b>Gesucht</b>Weg der Zahnstange</div></div>
+        <ol class="st"><li><p>Das Rad z = 45 dreht um 45/18 langsamer.</p><div class="f">90 · 18/45 = 36 Umdrehungen</div></li><li><p>Dreigängige Schnecke: pro Umdrehung 3 Zähne weiter.</p><div class="f">36 · 3/30 = 3,6 Umdrehungen des Schneckenrades</div></li><li><p>Das Ritzel sitzt auf derselben Welle und rollt pro Umdrehung π·d ab.</p><div class="f">s = 3,6 · π · 40 mm = <span class="res">452 mm</span></div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -823,7 +1018,7 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   </div>
   <div class="cols">
     <div class="txt">
-      <div class="key"><span class="lbl">Riementrieb</span>
+      <div class="key"><span class="lbl">Riementrieb</span><div class="worte">Wie beim Zahnradpaar: Die kleine Scheibe dreht schneller. Das Verhältnis der Durchmesser ist die Übersetzung.</div>
         <div class="f big">i = n₁/n₂ = d₂/d₁</div>
         <div class="f">Keilriemen: Wirkdurchmesser d_w einsetzen</div>
         <div class="f">Riemenlänge ≈ 2a + π/2·(d₁+d₂) + (d₂−d₁)²/(4a)</div>
@@ -850,7 +1045,8 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
         <li>Spannrad oder Spannschiene am Leertrum gleicht die Kettenlängung aus und verhindert Überspringen und Schwingungen.</li>
       </ul>
       <details class="blatt"><summary>Frage 31: Länge des Flachriemens</summary><div class="in">
-        <p>d₁ = 224 mm, d₂ = 140 mm, a = 420 mm: L ≈ 840 + 571,8 + 4,2 = <span class="res">1416 mm</span></p></div></details>
+        <div class="gg"><div><b>Gegeben</b>d₁ = 224 mm · d₂ = 140 mm · Achsabstand a = 420 mm</div><div><b>Gesucht</b>Riemenlänge</div></div>
+        <ol class="st"><li><p>Formel: zwei gerade Stücke, zwei halbe Umfänge, Korrektur für ungleiche Scheiben.</p><div class="f">L ≈ 2a + π/2 · (d₁ + d₂) + (d₁ − d₂)² / (4a)</div></li><li><p>Einsetzen.</p><div class="f">L ≈ 840 + 571,8 + 4,2 = <span class="res">1416 mm</span></div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -889,16 +1085,16 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
         <tr><td>Stöße oder Schwingungen?</td><td>elastische Kupplung</td></tr>
         <tr><td>Muss im Betrieb getrennt werden?</td><td>schaltbare Kupplung</td></tr>
         <tr><td>Gefahr von Blockieren und Überlast?</td><td>Sicherheits- oder Rutschkupplung</td></tr></table></div>
-      <div class="key"><span class="lbl">Scheibenkupplung (Reibschluss)</span>
+      <div class="key"><span class="lbl">Scheibenkupplung (Reibschluss)</span><div class="worte">Die Schrauben pressen die Scheiben zusammen. Die Reibung zwischen ihnen überträgt das Drehmoment.</div>
         <div class="f">Schrauben pressen die Scheiben mit F_N zusammen</div>
         <div class="f">F_R = μ · F_N &nbsp;·&nbsp; M = F_R · r · Anzahl Schrauben</div>
         <div class="f">Auslegung: M_erf = ν · M_Motor → Größe aus der Tabelle</div></div>
       <details class="blatt"><summary>Antriebsstation 2 und 3</summary><div class="in">
-        <p>2: Wellen fluchten, keine Stöße → <b>starre Scheibenkupplung</b>: einfach, günstig, spielfrei, wartungsfrei.</p>
-        <p>3: Steine aus 80 cm erzeugen Stöße, die starr ins Getriebe gehen → Zahnbrüche, Lagerschäden. Lösung: <b>elastische Kupplung</b> (dämpft) und eventuell eine Rutschkupplung gegen Blockieren.</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>2: Motor und Getriebe fluchten genau, gleichmäßiger Lauf · 3: Steine fallen aus 80 cm Höhe auf das Band</div><div><b>Gesucht</b>passende Kupplung mit Begründung</div></div>
+        <ol class="st"><li><p>2) Keine Stöße, kein Versatz: Es reicht die einfachste Lösung.</p><div class="f"><b>starre Scheibenkupplung</b>: einfach, günstig, spielfrei, wartungsfrei</div></li><li><p>3) Jeder Stein ist ein Schlag. Eine starre Kupplung gibt ihn voll ans Getriebe weiter (Zahnbruch, Lagerschaden).</p><div class="f"><b>elastische Kupplung</b> (dämpft), eventuell dazu eine <b>Rutschkupplung</b> gegen Blockieren</div></li></ol><p class="fazit">Schau dir den Steinbrecher weiter oben an: Dort siehst du alle drei Fälle.</p></div></details>
       <details class="blatt"><summary>Skilift 4 bis 6 (Scheibenkupplung)</summary><div class="in">
-        <p>M_Motor = 11 000 W / (2π · 24,33 1/s) = 71,9 Nm → mit ν = 3: 216 Nm → <span class="res">Größe 40</span> (236 Nm, 4100/min ≥ 1460/min)</p>
-        <p>Spannkraft: Reibung am Lochkreis r = 50 mm, 3 Schrauben, μ = 0,15 (Annahme, Tabellenbuch): F_u = 216/0,05 = 4317 N → F_S = 4317/(3 · 0,15) ≈ <span class="res">9,6 kN</span> pro Schraube</p></div></details>
+        <div class="gg"><div><b>Gegeben</b>Motor P = 11 kW bei n = 1460 /min · Sicherheitsfaktor ν = 3 · Lochkreis r = 50 mm · 3 Schrauben · μ = 0,15 (Annahme, Tabellenbuch)</div><div><b>Gesucht</b>Kupplungsgröße und Schraubenkraft</div></div>
+        <ol class="st"><li><p>Motordrehmoment aus der Leistung (n in 1/s).</p><div class="f">M = 11 000 W / (2π · 24,33 /s) = 71,9 Nm</div></li><li><p>Mit Sicherheitsfaktor, damit Stöße nicht durchrutschen.</p><div class="f">M_erf = 3 · 71,9 = 216 Nm</div></li><li><p>In der Tabelle die erste Größe suchen, die das schafft.</p><div class="f"><span class="res">Größe 40</span> (236 Nm, bis 4100 /min ≥ 1460 /min)</div></li><li><p>Kraft, die am Lochkreis wirken muss.</p><div class="f">F_u = 216 Nm / 0,05 m = 4317 N</div></li><li><p>Diese Kraft muss als Reibung von 3 Schrauben kommen: F_R = μ · F_S je Schraube.</p><div class="f">F_S = 4317 N / (3 · 0,15) ≈ <span class="res">9,6 kN</span> pro Schraube</div></li></ol></div></details>
     </div>
   </div>
 </section>
@@ -934,6 +1130,14 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
   <p class="kurz"><b>Kurz gesagt</b>14 Verständnisfragen. Zu jeder gibt es die Begründung. Die 44 Fragen aus dem Heft übst du mit dem <a href="https://claude.ai/artifact/95ooJiJGhxh3bjsvaBoWaH" target="_blank" rel="noopener">Getriebe-Trainer</a> (Karteikarten).</p>
   <div id="quiz"></div>
   <p style="font-family:var(--mono);font-size:.9rem" id="qScore"></p>
+</section>
+
+<div class="teil" id="tL"><span class="tl">Anhang</span><h2>Nachschlagen</h2></div>
+<section class="ch" id="k19" data-t="Lexikon">
+  <div class="chh"><span class="pos">19</span><h3>Lexikon: alle Fachwörter von A bis Z</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Jedes Fachwort dieser Seite in ein bis zwei einfachen Sätzen. Tippe ein Wort in das Suchfeld oder scrolle durch die Liste. Der Pfeil führt zum Kapitel, in dem es erklärt wird.</p>
+  <div class="lexs"><label for="lexQ">Suchen</label><input id="lexQ" type="search" placeholder="z. B. Modul, Schlupf, η" autocomplete="off"><span id="lexN"></span></div>
+  <div id="lexList" class="lexl"></div>
 </section>
 
 </main>
@@ -1200,6 +1404,78 @@ tour('b5',[
  {dur:9,cap:'Deshalb rechnet man <b>rückwärts</b>: 73,5 kW Nutzleistung durch 0,55 ergibt rund 133 kW, die der Motor aus dem Netz aufnehmen muss.'},
  {on:()=>flSet('0.86,0.8,1,1.23'),dur:8,cap:'Seilwinde mit Schneckengetriebe: Allein im Getriebe gehen 20 % verloren. Schnecken haben viel Gleitreibung (Kapitel 10).'},
  {on:()=>flSet('0.85,1,0.75,33'),dur:8,cap:'Kreiselpumpe ohne Getriebe: 33 kW hebt sie ins Hochbecken, 51,8 kW nimmt der Motor auf. η_ges = 0,85 · 0,75 = 0,64.'}]);
+
+/* ================= K0: Drehzahl und Drehmoment ================= */
+bindV('b0n',v=>v); bindV('b0F',v=>v); bindV('b0r',v=>v);
+const B0={rev:0,tim:0,th:-.3,hold:0};
+$('b0n').addEventListener('input',()=>{ B0.rev=0; B0.tim=0; });
+sim('cvBasics',(dt,t)=>{ const [c,W,H]=fit($('cvBasics')); const n=+$('b0n').value, F=+$('b0F').value, r=+$('b0r').value/100, M=F*r, NEED=60;
+  const two=W>=620, sp=two?0:H*.42; const P1=two?[0,0,W*.42,H]:[0,0,W,sp], P2=two?[W*.42,0,W*.58,H]:[0,sp,W,H-sp];
+  if(two) line(c,W*.42,20,W*.42,H-20,C.line2,1,[4,4]); else line(c,20,sp,W-20,sp,C.line2,1,[4,4]);
+  // --- Drehzahl
+  B0.rev+=n/60*dt; B0.tim+=dt; if(B0.tim>60){ B0.rev=0; B0.tim=0; }
+  { const [x0,y0,w,h]=P1, R=two?Math.min(w*.3,h*.3):Math.min(w*.26,(h-104)/2), cx=x0+w/2, cy=two?y0+h*.5:y0+46+R, a=-Math.PI/2+B0.rev*TAU;
+    txt(c,'Drehzahl n',x0+14,y0+24,C.ink,15,'left','700');
+    c.fillStyle=C.steelSoft; c.strokeStyle=C.steel; c.lineWidth=3; c.beginPath(); c.arc(cx,cy,R,0,TAU); c.fill(); c.stroke();
+    for(let k=0;k<6;k++){ const b=a+k*TAU/6; line(c,cx,cy,cx+R*.92*Math.cos(b),cy+R*.92*Math.sin(b),C.steel,2); }
+    c.fillStyle=C.acc; c.beginPath(); c.arc(cx+R*.78*Math.cos(a),cy+R*.78*Math.sin(a),Math.max(6,R*.1),0,TAU); c.fill();
+    c.fillStyle=C.panel; c.beginPath(); c.arc(cx,cy,R*.14,0,TAU); c.fill(); c.strokeStyle=C.steel; c.stroke();
+    rotArrow(c,cx,cy,R+12,1,C.acc,2.5);
+    const yT=cy+R+(two?42:30);
+    txt(c,'Umdrehungen: '+fmt(B0.rev,1)+'   Zeit: '+fmt(B0.tim,1)+' s',cx,yT,C.ink,13,'center','600',true);
+    txt(c,'n = '+n+' /min = '+fmt(n/60,2)+' /s',cx,yT+20,C.acc,14,'center','700',true); }
+  // --- Drehmoment
+  { const [x0,y0,w,h]=P2, bx=x0+w*.18, by=y0+h*(two?.42:.5), sc=(w*.68)/.5, L=r*sc;
+    txt(c,'Drehmoment M = F · r',x0+14,y0+24,C.ink,15,'left','700');
+    if(M>=NEED){ if(B0.hold>0) B0.hold-=dt; else { B0.th+=dt*.7*Math.min(2,M/NEED); if(B0.th>.75){ B0.th=-.3; B0.hold=.6; } } }
+    else B0.th=-.3+Math.sin(t*38)*.012*Math.min(1,M/NEED);
+    const th=B0.th, ux=Math.cos(th), uy=Math.sin(th), ex=bx+L*ux, ey=by+L*uy;
+    // Schraubenkopf
+    c.save(); c.translate(bx,by); c.rotate(th); c.fillStyle=C.panel2; c.strokeStyle=C.muted; c.lineWidth=2; c.beginPath(); for(let k=0;k<6;k++){ const b=k*TAU/6; c.lineTo(15*Math.cos(b),15*Math.sin(b)); } c.closePath(); c.fill(); c.stroke();
+    // Schlüssel
+    c.fillStyle='#8b98a6'; c.beginPath(); c.roundRect(-4,-9,L+8,18,8); c.fill(); c.strokeStyle='#c9d2dc'; c.lineWidth=1.2; c.stroke();
+    c.fillStyle='#8b98a6'; c.beginPath(); c.arc(0,0,24,0,TAU); c.fill(); c.stroke(); c.fillStyle=C.panel2; c.beginPath(); for(let k=0;k<6;k++){ const b=k*TAU/6; c.lineTo(15*Math.cos(b),15*Math.sin(b)); } c.closePath(); c.fill();
+    c.fillStyle='#e7c9a6'; c.beginPath(); c.roundRect(L-26,-13,30,26,9); c.fill(); c.restore();
+    c.fillStyle=C.ink; c.beginPath(); c.arc(bx,by,3,0,TAU); c.fill();
+    // Kraftpfeil senkrecht zum Schlüssel
+    const fl=12+F/300*h*.3, px=-uy, py=ux; arrow(c,ex-px*fl-px*16,ey-py*fl-py*16,ex-px*16,ey-py*16,C.acc,3.5,12);
+    tag(c,'F = '+F+' N',ex-px*(fl+30),ey-py*(fl+30),C.acc,12);
+    // Hebelarm
+    const ox=uy*34, oy=-ux*34; line(c,bx+ox,by+oy,ex+ox,ey+oy,C.steel,1.3,[5,4]); line(c,bx,by,bx+ox*1.1,by+oy*1.1,C.steel,1); line(c,ex,ey,ex+ox*1.1,ey+oy*1.1,C.steel,1);
+    tag(c,'r = '+fmt(r,2)+' m',(bx+ex)/2+ox*1.45,(by+ey)/2+oy*1.45,C.steel,12);
+    // Anzeige
+    const gx=x0+18, gw=w-36, gy=y0+h-(two?46:36), mx=100, ok=M>=NEED;
+    txt(c,'M = '+F+' N · '+fmt(r,2)+' m = '+fmt(M,0)+' Nm',gx,gy-14,ok?C.ok:C.ink,14,'left','700',true);
+    c.fillStyle=C.panel2; c.beginPath(); c.roundRect(gx,gy,gw,12,6); c.fill(); c.fillStyle=ok?C.ok:C.acc; c.beginPath(); c.roundRect(gx,gy,Math.max(6,gw*Math.min(1,M/mx)),12,6); c.fill();
+    const nx=gx+gw*NEED/mx; line(c,nx,gy-4,nx,gy+16,C.ink,2); txt(c,'Schraube braucht 60 Nm',nx,gy+30,C.muted,11.5,'center','600');
+    tag(c,ok?'dreht sich':'sitzt fest',bx,by+44,ok?C.ok:C.bad,12); }
+  outs('b0Out',[['Drehzahl pro Minute',n+' /min'],['pro Sekunde (÷ 60)',fmt(n/60,2)+' /s'],['Drehmoment M = F · r',fmt(M,0)+' Nm'],['Schraube (braucht 60 Nm)',M>=NEED?'dreht sich':'sitzt fest']]); });
+tour('b0',[
+ {set:{b0n:30,b0F:100,b0r:20},dur:9,cap:'<b>Drehzahl n</b> zählt die Umdrehungen pro Minute. Das Rad dreht sich 30-mal pro Minute, also alle 2 Sekunden einmal. Schau auf den Zähler: n = 30 /min = 0,5 /s.'},
+ {set:{b0n:120},dur:8,cap:'Jetzt viermal so schnell: n = 120 /min. Das sind 2 Umdrehungen pro Sekunde. <b>Von /min nach /s teilst du durch 60.</b>'},
+ {set:{b0F:100,b0r:20},dur:9,cap:'Rechts: <b>Drehmoment M = Kraft · Hebelarm.</b> 100 N am 0,2 m langen Schlüssel ergeben 100 · 0,2 = 20 Nm. Die Schraube braucht 60 Nm. Sie bewegt sich nicht.'},
+ {set:{b0r:50},dur:8,cap:'Gleiche Kraft, aber ein längerer Schlüssel: M = 100 N · 0,5 m = 50 Nm. Der längere Hebel bringt mehr Drehmoment. Fast geschafft.'},
+ {set:{b0F:150},dur:9,cap:'150 N · 0,5 m = 75 Nm: Die Schraube dreht sich. <b>Merke dir das Bild:</b> Beim Zahnradpaar ist das große Rad der lange Schlüssel. Deshalb hat es mehr Drehmoment.'}]);
+
+/* ================= K0: Zahnradpaar mit Namen ================= */
+sim('cvNames',(dt,t)=>{ const [c,W,H]=fit($('cvNames')); const wide=W>=720, z1=14, z2=28;
+  const gw=wide?W*.58:W, gh=wide?H-40:H-250, r1=Math.min((gw-40)/6,(gh-30)/4), r2=2*r1, x1=(gw-6*r1)/2+r1, x2=x1+r1+r2, cy=(wide?H/2-14:20+r2), a1=t*.5, a2=meshExt(a1,z1,z2,0);
+  gear(c,x2,cy,r2,z2,a2,C.gear2,C.steel,{pitch:true}); gear(c,x1,cy,r1,z1,a1,C.gear1,C.acc,{pitch:true});
+  rotArrow(c,x1,cy,r1*.55,1,C.acc,2.5); rotArrow(c,x2,cy,r2*.45,-1,C.steel,2.5);
+  c.fillStyle=C.ok; c.beginPath(); c.arc(x1+r1,cy,5,0,TAU); c.fill();
+  const it=[['Ritzel (klein)','treibt an · Index 1 · z₁ = 14',C.acc,[x1-r1*.35,cy+r1*.35]],
+    ['Rad (groß)','wird getrieben · Index 2 · z₂ = 28',C.steel,[x2+r2*.3,cy+r2*.42]],
+    ['Zahn','z = Anzahl der Zähne',C.acc,[x1+(r1*1.02)*Math.cos(-2.3),cy+(r1*1.02)*Math.sin(-2.3)]],
+    ['Teilkreis (gestrichelt)','an ihm misst man den Durchmesser d',C.muted,[x2+r2*Math.cos(-.9),cy+r2*Math.sin(-.9)]],
+    ['Berührpunkt (Wälzpunkt)','hier sind beide Räder gleich schnell',C.ok,[x1+r1,cy-20]],
+    ['Welle','sitzt in der Mitte und dreht mit',C.ink,[x2,cy]]];
+  it.forEach(([a,b,col,[x,y]],k)=>{ c.fillStyle=C.panel; c.beginPath(); c.arc(x,y,11,0,TAU); c.fill(); c.strokeStyle=col; c.lineWidth=2; c.stroke(); txt(c,String(k+1),x,y+4.5,col,12,'center','800'); });
+  const lx=wide?gw+10:14, ly=wide?40:cy+r2+30, rh=wide?46:34;
+  it.forEach(([a,b,col],k)=>{ const x=lx, y=ly+k*rh;
+    c.fillStyle=C.panel; c.beginPath(); c.arc(x+10,y,10,0,TAU); c.fill(); c.strokeStyle=col; c.lineWidth=2; c.stroke(); txt(c,String(k+1),x+10,y+4.5,col,11.5,'center','800');
+    if(wide){ txt(c,a,x+26,y+4,col,14,'left','700'); txt(c,b,x+26,y+19,C.muted,12,'left','500'); } else { txt(c,a,x+26,y+1,col,12.5,'left','700'); txt(c,b,x+26,y+15,C.muted,11,'left','500'); } });
+  const fy=H-12; if(wide) txt(c,'i = z₂ / z₁ = 28 / 14 = 2: Das Rad dreht halb so schnell und hat doppeltes Drehmoment.',gw/2,fy,C.ink,13.5,'center','600');
+  else txt(c,'i = z₂ / z₁ = 28/14 = 2 → halb so schnell, doppeltes Drehmoment',W/2,fy,C.ink,11.5,'center','600'); });
 
 /* ================= K6: Zahnradmaße mit Bezugsprofil ================= */
 bindV('toM',v=>fmt(v,2)); bindV('toZ',v=>v); bindV('toC',v=>fmt(v,2));
@@ -1619,6 +1895,173 @@ const QU=[
 let lastT=performance.now(), TT=0;
 function loop(now){ const dt=Math.min(.05,(now-lastT)/1000); lastT=now; const d=reduce?dt*.35:dt; TT+=d; tourTick(dt); for(const s of sims) if(s.vis){ try{ s.draw(d,TT); }catch(e){ console.error(s.cv.id,e); } } requestAnimationFrame(loop); }
 requestAnimationFrame(loop);
+
+/* ================= Glossar: Fachwörter zum Antippen ================= */
+// [id, Begriff, RegExp-Formen, Zeichen/Einheit, Erklärung, Kapitel]
+const GL=[
+['welle','Welle','Wellen?','','Drehende Stange aus Stahl, die Drehbewegung und Drehmoment weiterleitet. Auf ihr sitzen Zahnräder, Riemenscheiben oder Kupplungen.','k0'],
+['antrieb','Antrieb','Antrieb(?:s|e)?','Index 1','Das treibende Teil, von dem die Bewegung kommt, meist der Motor. Seine Werte bekommen den Index 1.','k0'],
+['abtrieb','Abtrieb','Abtrieb(?:s|e)?','Index 2','Das getriebene Teil, zu dem die Bewegung hingeht, also zur Maschine. Index 2, bei mehreren Stufen die letzte Zahl.','k0'],
+['drehzahl','Drehzahl','Drehzahl(?:en)?','n · in 1/min','Wie oft sich eine Welle pro Minute dreht. Für Formeln mit Sekunden durch 60 teilen.','k0'],
+['drehmoment','Drehmoment','Drehmoment(?:e|s|en)?','M · in Nm','Die Drehkraft: Kraft mal Hebelarm, M = F · r. Je größer ein Rad, desto länger der Hebel und desto mehr Drehmoment.','k0'],
+['leistung','Leistung','Leistung(?:en)?','P · in W oder kW','Arbeit pro Sekunde. Beim Drehen P = 2π · n · M (n in 1/s), beim Schieben oder Heben P = F · v.','k5'],
+['uebersetzung','Übersetzung','Übersetzung(?:en)?','i · ohne Einheit','Verhältnis der Drehzahlen: i = n₁ / n₂ = z₂ / z₁. i größer als 1 heißt ins Langsame, kleiner als 1 ins Schnelle.','k2'],
+['wirkungsgrad','Wirkungsgrad','Wirkungsgrad(?:e|es|s)?','η (eta) · 0 bis 1','Welcher Anteil der Leistung ankommt: η = P_ab / P_zu. Der Rest wird durch Reibung zu Wärme.','k5'],
+['ritzel','Ritzel','Ritzel[ns]?','','Das kleinere Zahnrad eines Paares, meist das treibende.','k0'],
+['zaehnezahl','Zähnezahl','Zähnezahl(?:en)?','z','Die Anzahl der Zähne eines Zahnrades.','k0'],
+['teilkreis','Teilkreis','Teilkreis(?:es|e|durchmesser)?','d = m · z','Gedachter Kreis, auf dem sich zwei Zahnräder berühren und abwälzen. Wenn von „dem Durchmesser“ eines Zahnrades die Rede ist, ist er gemeint.','k6'],
+['modul','Modul','Moduls?','m · in mm','Maß für die Zahngröße: m = d / z. Er ist genormt (DIN 780). Nur Räder mit gleichem Modul passen zusammen.','k6'],
+['teilung','Teilung','Teilung','p = π · m','Abstand von einem Zahn zum nächsten, gemessen auf dem Teilkreis.','k6'],
+['kopfkreis','Kopfkreis','Kopfkreis(?:es|durchmesser)?','d_a = d + 2m','Kreis durch die Zahnspitzen, also der Außendurchmesser des Zahnrades.','k6'],
+['fusskreis','Fußkreis','Fußkreis(?:es|durchmesser)?','d_f = d − 2(m + c)','Kreis durch den Grund der Zahnlücken.','k6'],
+['kopfspiel','Kopfspiel','Kopfspiel(?:s)?','c','Kleiner Spalt zwischen dem Zahnkopf und dem Grund der Gegenlücke. Verhindert Klemmen und lässt Platz für Öl.','k6'],
+['achsabstand','Achsabstand','Achsabstand(?:es|s)?','a = (d₁ + d₂)/2','Abstand zwischen den Mitten der beiden Wellen.','k6'],
+['umfangsgeschw','Umfangsgeschwindigkeit','Umfangsgeschwindigkeit','v = π · d · n','Wie schnell sich ein Punkt am Teilkreis bewegt. Am Berührpunkt ist sie für beide Räder gleich.','k2'],
+['umfangskraft','Umfangskraft','Umfangskraft','F_u = 2M / d','Die Kraft, mit der die Zähne am Teilkreis aufeinander drücken. Sie ist für beide Räder gleich groß.','k2'],
+['waelzpunkt','Wälzpunkt','Wälzpunkt(?:es|s)?|Berührpunkt(?:es|s)?','','Der Punkt, an dem sich die Teilkreise zweier Räder berühren. Dort sind beide Räder gleich schnell.','k2'],
+['stufe','Stufe','Stufen?','','Ein Zahnradpaar im Getriebe. Mehrstufig heißt: mehrere Paare hintereinander. Ihre Übersetzungen werden malgenommen.','k4'],
+['zwischenrad','Zwischenrad','Zwischenr(?:ad|äder|ades|ädern)','','Ein Rad zwischen Antrieb und Abtrieb. Es kehrt die Drehrichtung um und überbrückt Abstand, ändert die Übersetzung aber nicht.','k3'],
+['hohlrad','Hohlrad','Hohlr(?:ad|äder|ades)','','Ein Ring mit Zähnen auf der Innenseite. Ritzel und Hohlrad drehen in die gleiche Richtung.','k3'],
+['innenverz','Innenverzahnung','Innenverzahnung|Innenrad','','Die Zähne sitzen innen an einem Ring (Hohlrad).','k3'],
+['aussenverz','Außenverzahnung','Außenverzahnung|Außeneingriff(?:e|s)?','','Die Zähne sitzen außen am Rad. Zwei außenverzahnte Räder drehen gegeneinander.','k3'],
+['gegenlaeufig','gegenläufig','gegenläufig','','In entgegengesetzte Richtungen drehend: das eine rechts herum, das andere links herum.','k3'],
+['gleichsinnig','gleichsinnig','gleichsinnig','','In dieselbe Richtung drehend.','k3'],
+['unterschnitt','Unterschnitt','Unterschnitt(?:s)?','','Hat ein Ritzel zu wenige Zähne (unter etwa 17), schneidet das Werkzeug den Zahnfuß frei. Der Zahn wird dünn und bricht leichter.','k4'],
+['evolvente','Evolvente','Evolvente(?:n)?','','Die Kurve, die ein Fadenende zeichnet, wenn man den Faden straff von einer Rolle abwickelt. Diese Form haben die Zahnflanken.','k7'],
+['grundkreis','Grundkreis','Grundkreis(?:es)?','','Der Kreis, von dem die Evolvente abgewickelt wird. Er ist etwas kleiner als der Teilkreis.','k7'],
+['eingriffslinie','Eingriffslinie','Eingriffslinie','','Die gerade Linie, auf der der Berührpunkt zweier Zähne wandert.','k7'],
+['eingriffswinkel','Eingriffswinkel','Eingriffswinkel','α = 20°','Die Neigung der Eingriffslinie. Genormt auf 20°.','k7'],
+['flanke','Flanke','Zahnflanken?|Flanken?','','Die Seitenfläche eines Zahnes, mit der er den Gegenzahn berührt.','k7'],
+['axialkraft','Axialkraft','Axialkr(?:aft|äfte)','F_a = F_u · tan β','Kraft in Längsrichtung der Welle. Sie entsteht bei Schrägverzahnung und muss von den Lagern aufgenommen werden.','k8'],
+['schraegungsw','Schrägungswinkel','Schrägungswinkel','β (beta)','Der Winkel, um den die Zähne schräg zur Achse stehen.','k8'],
+['normalmodul','Normalmodul','Normalmodul','m_n','Der Modul senkrecht zum schrägen Zahn gemessen. Er ist genormt und steht in der Zeichnung.','k8'],
+['stirnmodul','Stirnmodul','Stirnmodul','m_t = m_n / cos β','Der Modul in der Stirnansicht eines schrägverzahnten Rades. Mit ihm rechnet man den Durchmesser.','k8'],
+['pfeil','Pfeilverzahnung','Pfeilverzahnung|Doppelschrägverzahnung','','Zwei gegensinnig schräge Hälften auf einem Rad. Ihre Axialkräfte heben sich auf.','k8'],
+['kegelrad','Kegelrad','Kegelr(?:ad|äder|ädern|ades)','','Kegelförmiges Zahnrad für Wellen, die sich schneiden, meist im rechten Winkel.','k11'],
+['teilkegelw','Teilkegelwinkel','Teilkegelwinkel','δ (delta)','Der halbe Öffnungswinkel des Teilkegels. Bei 90° gilt tan δ₁ = z₁ / z₂.','k11'],
+['schnecke','Schnecke','Schnecken?','','Eine Art Schraube mit Gewindegängen. Sie treibt das Schneckenrad an, die Wellen kreuzen sich.','k10'],
+['schneckenrad','Schneckenrad','Schneckenr(?:ad|ades)','z₂','Das Zahnrad, in das die Schnecke greift. Meist aus Bronze, weil es gut gleitet.','k10'],
+['gangzahl','Gangzahl','Gangzahl|eingängig(?:e|en|er)?|zweigängig(?:e|en)?|mehrgängig(?:e|en)?','z₁','Wie viele Gewindegänge die Schnecke hat. Eingängig heißt z₁ = 1.','k10'],
+['steigungsw','Steigungswinkel','Steigungswinkel(?:s)?','γ (gamma)','Die Neigung des Gewindeganges. Ist er kleiner als der Reibwinkel (etwa 5°), ist das Getriebe selbsthemmend.','k10'],
+['selbsthemmung','Selbsthemmung','Selbsthemmung|selbsthemmend(?:e|en|es)?','','Das Getriebe lässt sich von der Abtriebsseite nicht zurückdrehen. Die Last bleibt stehen, auch wenn der Motor aus ist.','k10'],
+['reibwinkel','Reibwinkel','Reibwinkel(?:s)?','ρ (rho)','Der Winkel, ab dem ein Körper auf einer schiefen Ebene zu rutschen beginnt. Es gilt tan ρ = μ.','k10'],
+['steg','Planetenträger (Steg)','Planetenträger(?:s)?|Steg(?:es|s)?','','Der Träger, auf dem die Planetenräder gelagert sind.','k12'],
+['sonnenrad','Sonnenrad','Sonnenr(?:ad|ades)','z_S','Das Zahnrad in der Mitte des Planetengetriebes.','k12'],
+['planetenrad','Planetenräder','Planetenr(?:ad|äder|ädern)','','Räder, die um das Sonnenrad kreisen und dabei im Hohlrad abrollen.','k12'],
+['zahnstange','Zahnstange','Zahnstangen?','','Eine gerade Stange mit Zähnen. Ein Ritzel darauf macht aus Drehen eine gerade Bewegung.','k13'],
+['spindel','Gewindespindel','Gewindespindel(?:n)?','P = Steigung','Eine Welle mit Gewinde. Dreht sie sich, wandert die Mutter pro Umdrehung um die Steigung P.','k13'],
+['steigung','Steigung','Steigung','P','Der Weg, den die Mutter bei einer Umdrehung der Spindel zurücklegt.','k13'],
+['schieberad','Schieberad','Schieber(?:ad|äder|adgetriebe)','','Ein Räderblock, der auf der Welle verschoben wird, um einen anderen Gang einzulegen. Nur im Stillstand schaltbar.','k14'],
+['cvt','CVT','CVT','','Stufenloses Getriebe: Kegelscheiben verstellen den Laufdurchmesser eines Bandes, so ändert sich die Übersetzung gleitend.','k14'],
+['riemen','Riemen','Riemen','','Ein Band, das über zwei Scheiben läuft und die Drehung über einen größeren Abstand überträgt.','k15'],
+['keilriemen','Keilriemen','Keilriemen','','Riemen mit trapezförmigem Querschnitt. Er klemmt sich in die Rille, das erhöht die Reibkraft.','k15'],
+['zahnriemen','Zahnriemen','Zahnriemen','','Riemen mit Zähnen. Er greift formschlüssig in die Scheibe und hat keinen Schlupf.','k15'],
+['schlupf','Schlupf','Schlupf(?:es)?','','Der Riemen rutscht etwas über die Scheibe (1 bis 2 %). Bei Überlast rutscht er ganz durch.','k15'],
+['zugtrum','Zugtrum','Zugtrum(?:s)?','','Der straffe, ziehende Teil des Riemens zwischen den Scheiben.','k15'],
+['leertrum','Leertrum','Leertrum(?:s)?','','Der lockere, zurücklaufende Teil des Riemens. Dort sitzt die Spannrolle.','k15'],
+['umschlingung','Umschlingungswinkel','Umschlingungswinkel(?:s)?','','Wie weit der Riemen um eine Scheibe herumgewickelt ist. Je größer, desto mehr Kraft kann er übertragen.','k15'],
+['vorspannung','Vorspannung','Vorspannung','','Der Riemen wird vorher gespannt, damit er genug Reibkraft hat.','k15'],
+['spannrolle','Spannrolle','Spannrollen?','','Eine Rolle, die den Riemen am Leertrum spannt.','k15'],
+['kupplung','Kupplung','Kupplung(?:en)?','','Verbindet zwei Wellen, zum Beispiel Motor und Getriebe. Je nach Bauart gleicht sie Versatz aus, dämpft Stöße, schaltet oder schützt vor Überlast.','k16'],
+['formschluss','formschlüssig','formschlüssig(?:e|en|er)?|Formschluss','','Kraftübertragung durch Form: Zähne, Klauen oder Kettenglieder greifen ineinander. Nichts kann rutschen.','k15'],
+['kraftschluss','kraftschlüssig','kraftschlüssig(?:e|en|er)?|Kraftschluss','','Kraftübertragung durch Reibung: Riemen, Reibräder, Reibkupplungen. Unter Überlast kann es rutschen.','k15'],
+['fluchten','fluchten','fluchten|fluchtet','','Zwei Wellen fluchten, wenn ihre Mittellinien genau auf einer Linie liegen.','k16'],
+['tragbild','Tragbild','Tragbild(?:es)?','','Abdruck der Berührfläche auf den Zähnen, sichtbar gemacht mit Tuschierfarbe. Zeigt, ob Kegelräder richtig eingestellt sind.','k11'],
+['passscheibe','Passscheibe','Passscheiben?','','Dünne Scheiben, mit denen man die Lage eines Rades auf der Welle genau einstellt.','k11'],
+['festlager','Fest- und Loslager','Fest- und Loslager|Festlager|Loslager','','Das Festlager hält die Welle in Längsrichtung fest. Das Loslager lässt sie etwas wandern, damit sie sich bei Wärme ausdehnen kann.','k4'],
+['waelzlager','Wälzlager','Wälzlager[n]?','','Lager mit Kugeln oder Rollen, in dem sich die Welle leicht dreht.','k4'],
+['notlauf','Notlaufeigenschaften','Notlaufeigenschaften','','Das Material läuft auch bei kurzem Schmiermangel weiter, ohne sofort zu fressen.','k10'],
+['koaxial','koaxial','koaxial(?:e|en|er)?','','Antriebs- und Abtriebswelle liegen auf einer Linie.','k4'],
+['sankey','Sankey-Diagramm','Sankey-Diagramm','','Ein Diagramm, in dem die Breite eines Pfeils die Leistung zeigt. Verluste zweigen seitlich ab.','k5'],
+['gewichtskraft','Gewichtskraft','Gewichtskraft','F = m · g','Die Kraft, mit der eine Masse nach unten zieht. g = 9,81 m/s², also wiegen 100 kg etwa 981 N.','k5'],
+['normalkraft','Normalkraft','Normalkraft','F_N','Kraft senkrecht auf eine Fläche. Sie bestimmt, wie viel Reibung möglich ist: F_R = μ · F_N.','k15'],
+['reibwert','Reibwert','Reibwert(?:e|es|s)?|Reibungszahl','μ (mü)','Zahl, die sagt, wie stark zwei Flächen aneinander haften. Geschmierter Stahl auf Stahl etwa 0,1.','k16'],
+['typenschild','Typenschild','Typenschild(?:es|s)?','','Schild am Motor mit Leistung, Drehzahl und Spannung. Die Leistung dort ist die abgegebene Leistung an der Welle.','k5'],
+['drehstrom','Drehstrommotor','Drehstrommotor(?:en|s)?','','Der häufigste Industriemotor. Er läuft mit fast fester Drehzahl, meist etwa 1400 oder 2900 /min.','k1'],
+['hohlwelle','Hohlwelle','Hohlwelle','','Eine hohle Abtriebswelle, die direkt auf die Welle der Maschine gesteckt wird.','k9'],
+['schraubenrad','Schraubenradgetriebe','Schraubenr(?:ad|äder|adgetriebe)','','Zwei schrägverzahnte Räder auf gekreuzten Wellen. Sie berühren sich nur punktförmig und tragen wenig.','k9'],
+['harmonic','Harmonic Drive','Harmonic Drive','','Getriebe mit einem elastischen Stahlring, der von einer ovalen Scheibe verformt wird. Riesige Übersetzung in einer Stufe, ohne Spiel.','k9'],
+['sicherheit','Sicherheitsfaktor','Sicherheitsfaktor|Sicherheit','ν (nü)','Faktor, mit dem das Motormoment malgenommen wird, damit die Kupplung auch Stöße aushält: M_erf = ν · M_Motor.','k16'],
+['arbeitspunkt','Arbeitspunkt','Arbeitspunkt(?:es|s)?','','Der Zustand, in dem eine Maschine gerade läuft: eine bestimmte Drehzahl mit einem bestimmten Drehmoment.','k1']];
+const GLM={}; GL.forEach(g=>GLM[g[0]]=g);
+const CHN=id=>{ const s=document.getElementById(id); return s?(id.slice(1)+' · '+(s.dataset.t||'')):''; };
+(function(){ const L='A-Za-zÄÖÜäöüß';
+  const RX=GL.map(g=>{ try{ return new RegExp('(^|[^'+L+'])('+g[2]+')(?!['+L+'])'); }catch(e){ return null; } });
+  const SKIP='.f,.ctext,button,summary,h3,h4,a,.bench,.v3,.qz,.card,.lexl,.lexs,.endbox,.meta,.chh,table.units,label,script,style';
+  const nodes=sec=>{ const out=[], w=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{acceptNode:n=>{ const p=n.parentElement; if(!p||p.closest(SKIP)) return NodeFilter.FILTER_REJECT; return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT; }}); let n; while(n=w.nextNode()) out.push(n); return out; };
+  document.querySelectorAll('main section.ch').forEach(sec=>{ if(sec.id==='k19') return;
+    GL.forEach((g,k)=>{ const rx=RX[k]; if(!rx) return;
+      for(const n of nodes(sec)){ const m=rx.exec(n.nodeValue); if(!m) continue; const st=m.index+m[1].length, word=m[2];
+        const rest=n.splitText(st); rest.nodeValue=rest.nodeValue.slice(word.length);
+        const b=document.createElement('button'); b.type='button'; b.className='gw'; b.dataset.g=g[0]; b.textContent=word; b.setAttribute('aria-haspopup','dialog');
+        rest.parentNode.insertBefore(b,rest); break; } }); });
+  const pop=document.createElement('div'); pop.id='glPop'; pop.setAttribute('role','dialog'); pop.hidden=true; document.body.appendChild(pop); let cur=null;
+  const close=()=>{ pop.hidden=true; if(cur){ cur.setAttribute('aria-expanded','false'); cur=null; } };
+  const open=b=>{ const g=GLM[b.dataset.g]; if(!g) return; if(cur===b){ close(); return; } close(); cur=b; b.setAttribute('aria-expanded','true');
+    const here=b.closest('section.ch'); const ch=g[5]&&(!here||here.id!==g[5])?'<a href="#'+g[5]+'">→ Kapitel '+CHN(g[5])+'</a>':'';
+    pop.innerHTML='<button class="x" type="button" aria-label="Schließen">×</button><b class="t">'+g[1]+'</b>'+(g[3]?'<span class="s">'+g[3]+'</span>':'')+'<p>'+g[4]+'</p><div class="l">'+ch+'<a href="#lx-'+g[0]+'">im Lexikon</a></div>';
+    pop.hidden=false; const r=b.getBoundingClientRect(), pw=pop.offsetWidth, ph=pop.offsetHeight, vw=innerWidth, vh=innerHeight;
+    let x=Math.min(Math.max(12,r.left+r.width/2-pw/2),vw-pw-12), y=r.bottom+8; if(y+ph>vh-12) y=Math.max(12,r.top-ph-8);
+    pop.style.left=x+'px'; pop.style.top=y+'px'; pop.querySelector('.x').onclick=close; pop.querySelectorAll('a').forEach(a=>a.addEventListener('click',close)); };
+  document.addEventListener('click',e=>{ const b=e.target.closest('button.gw'); if(b){ open(b); return; } if(!e.target.closest('#glPop')) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+  addEventListener('scroll',()=>{ if(!pop.hidden) close(); },{passive:true});
+  // Lexikon
+  const list=$('lexList'); if(list){ const srt=[...GL].sort((a,b)=>a[1].localeCompare(b[1],'de'));
+    let h='', last=''; srt.forEach(g=>{ const L0=g[1][0].toUpperCase().replace('Ä','A').replace('Ö','O').replace('Ü','U'); if(L0!==last){ h+='<div class="lh">'+L0+'</div>'; last=L0; }
+      h+='<div class="le" id="lx-'+g[0]+'" data-s="'+(g[1]+' '+g[3]+' '+g[4]).toLowerCase()+'"><b>'+g[1]+'</b>'+(g[3]?'<span class="s">'+g[3]+'</span>':'')+'<p>'+g[4]+'</p>'+(g[5]?'<a href="#'+g[5]+'">→ Kapitel '+CHN(g[5])+'</a>':'')+'</div>'; });
+    list.innerHTML=h; const q=$('lexQ'), cnt=$('lexN');
+    const f=()=>{ const v=q.value.trim().toLowerCase(); let n=0; list.querySelectorAll('.le').forEach(e=>{ const ok=!v||e.dataset.s.includes(v); e.hidden=!ok; if(ok) n++; });
+      list.querySelectorAll('.lh').forEach(e=>{ let x=e.nextElementSibling, any=false; while(x&&!x.classList.contains('lh')){ if(!x.hidden) any=true; x=x.nextElementSibling; } e.hidden=!any; }); cnt.textContent=n+' von '+GL.length+' Begriffen'; };
+    q.addEventListener('input',f); f(); } })();
+
+/* ================= Kapitel: Dauer, Vorwissen, Mini-Check, Fortschritt ================= */
+const META={k0:[15,[]],k1:[10,[0]],k2:[20,[0]],k3:[10,[2]],k4:[12,[2]],k5:[15,[0,2]],k6:[15,[2]],k7:[8,[6]],k8:[12,[6]],k9:[12,[1]],k10:[12,[2,9]],k11:[12,[6,9]],k12:[12,[3,9]],k13:[10,[2,6]],k14:[10,[4]],k15:[15,[2]],k16:[15,[1]],k17:[25,[2,4,5,16]],k18:[10,[]]};
+const CHK={
+ k0:[['Ein Motor dreht mit 1200 /min. Wie oft dreht er sich pro Sekunde?',['20-mal','1200-mal','72 000-mal'],0,'Von pro Minute nach pro Sekunde teilst du durch 60: 1200 / 60 = 20.'],
+     ['Du ziehst mit 100 N an einem 0,3 m langen Schlüssel. Wie groß ist das Drehmoment?',['30 Nm','100,3 Nm','333 Nm'],0,'Drehmoment = Kraft mal Hebelarm: 100 N · 0,3 m = 30 Nm.']],
+ k1:[['Warum sitzt zwischen Motor und Förderband ein Getriebe?',['Damit der Motor mehr Leistung bekommt','Damit die Trommel langsamer, aber mit viel mehr Drehmoment dreht','Damit die Trommel schneller dreht'],1,'Der Motor ist schnell, aber schwach. Das Getriebe macht daraus langsam und kräftig. Die Leistung bleibt fast gleich.']],
+ k2:[['Ritzel z₁ = 20 treibt Rad z₂ = 60. Wie groß ist die Übersetzung i?',['3','0,33','80'],0,'i = z₂ / z₁ = 60 / 20 = 3. Das Rad dreht 3-mal langsamer und hat 3-mal so viel Drehmoment.'],
+     ['Welches Rad hat mehr Drehmoment?',['das kleine Ritzel','das große Rad','beide gleich viel'],1,'Die Kraft am Zahn ist gleich, aber das große Rad hat den längeren Hebel.']],
+ k3:[['Drei Stirnräder außen hintereinander: 1 treibt 2, 2 treibt 3. Wie dreht Rad 3 im Vergleich zu Rad 1?',['in die gleiche Richtung','andersherum','gar nicht'],0,'Zwei Außeneingriffe, also zweimal umgedreht: wieder die gleiche Richtung.']],
+ k4:[['Stufe 1 hat i₁ = 4, Stufe 2 hat i₂ = 5. Der Motor dreht 1500 /min. Wie schnell dreht der Abtrieb?',['75 /min','167 /min','300 /min'],0,'i_ges = 4 · 5 = 20, also 1500 / 20 = 75 /min. Übersetzungen werden malgenommen, nicht addiert.']],
+ k5:[['Die Maschine braucht 7,2 kW. Getriebe η = 0,9, Motor η = 0,8. Wie viel nimmt der Motor aus dem Netz auf?',['10 kW','5,2 kW','8,1 kW'],0,'η_ges = 0,9 · 0,8 = 0,72. Rückwärts teilen: 7,2 kW / 0,72 = 10 kW.']],
+ k6:[['Zahnrad mit m = 2 mm und z = 40. Wie groß ist der Teilkreis d?',['80 mm','42 mm','20 mm'],0,'d = m · z = 2 · 40 = 80 mm.'],
+     ['Und der Kopfkreis d_a?',['84 mm','82 mm','80 mm'],0,'d_a = m · (z + 2) = 2 · 42 = 84 mm. Oben und unten kommt je ein Modul dazu.']],
+ k7:[['Warum haben Zahnflanken die Form einer Evolvente?',['Sie sieht schöner aus','Die Zähne wälzen ab, die Übersetzung bleibt in jedem Moment gleich','Damit die Zähne länger sind'],1,'Mit Evolventen wandert der Berührpunkt auf einer geraden Linie. Das Getriebe läuft ruhig und gleichmäßig.']],
+ k8:[['Warum läuft ein schrägverzahntes Getriebe leiser?',['Die Zähne laufen allmählich ein und aus, mehrere tragen gleichzeitig','Es ist aus Kunststoff','Es dreht langsamer'],0,'Bei geraden Zähnen greift jeder Zahn schlagartig über die ganze Breite. Bei schrägen Zähnen geht das sanft.']],
+ k9:[['Antriebs- und Abtriebswelle stehen im rechten Winkel und schneiden sich. Welche Getriebeart?',['Stirnradgetriebe','Kegelradgetriebe','Zahnstange'],1,'Wellen, die sich schneiden: Kegelrad. Parallel: Stirnrad. Gekreuzt: Schnecke.']],
+ k10:[['Zweigängige Schnecke (z₁ = 2), Schneckenrad z₂ = 50. Wie groß ist i?',['25','100','52'],0,'i = z₂ / z₁ = 50 / 2 = 25. Pro Schneckenumdrehung rückt das Rad 2 Zähne weiter.']],
+ k11:[['Kegelräder mit 90°: z₁ = 20, z₂ = 40. Wie groß ist der Teilkegelwinkel δ₁?',['26,6°','45°','63,4°'],0,'tan δ₁ = z₁ / z₂ = 0,5 → δ₁ = 26,6°. Das große Rad bekommt den Rest: δ₂ = 63,4°.']],
+ k12:[['Welches Teil muss festgehalten werden, damit sich die Drehrichtung umkehrt?',['das Hohlrad','das Sonnenrad','der Planetenträger'],2,'Steht der Träger still, sind die Planeten nur Zwischenräder zum Hohlrad. Außen- plus Inneneingriff kehrt die Richtung um.']],
+ k13:[['Eine Gewindespindel mit P = 4 mm dreht sich 50-mal. Wie weit fährt der Tisch?',['200 mm','12,5 mm','54 mm'],0,'Pro Umdrehung eine Steigung: s = 50 · 4 mm = 200 mm.']],
+ k14:[['Warum darf man ein Schieberadgetriebe nur im Stillstand schalten?',['Weil sich die Zähne sonst beim Einschieben anschlagen und beschädigen','Weil der Motor sonst zu heiß wird','Weil sich die Übersetzung sonst umkehrt'],0,'Beim Verschieben müssen die Zähne in die Lücken gleiten. Drehen sich die Räder, schlagen sie aufeinander.']],
+ k15:[['Welcher Riemen hat keinen Schlupf?',['Flachriemen','Keilriemen','Zahnriemen'],2,'Der Zahnriemen greift formschlüssig mit Zähnen. Flach- und Keilriemen übertragen durch Reibung und können rutschen.']],
+ k16:[['Die Wellen fluchten nicht ganz genau (leichter Versatz). Welche Kupplung passt?',['starre Scheibenkupplung','Ausgleichskupplung, z. B. Bogenzahn- oder Gelenkkupplung','Rutschkupplung'],1,'Eine starre Kupplung würde bei Versatz Lager und Wellen verspannen. Ausgleichskupplungen lassen etwas Versatz zu.']],
+ k17:[['In welche Richtung rechnet man bei der Auslegung eines Antriebs?',['vom Motor zur Maschine','von der Maschine rückwärts zum Motor','egal'],1,'Man weiß, was die Maschine braucht (Kraft, Geschwindigkeit). Daraus folgen Drehzahl, Drehmoment und am Ende der passende Motor.']]};
+(function(){ const KEY='gv-done'; let done=new Set(); try{ done=new Set(JSON.parse(localStorage.getItem(KEY)||'[]')); }catch(e){}
+  const save=()=>{ try{ localStorage.setItem(KEY,JSON.stringify([...done])); }catch(e){} };
+  const secs=[...document.querySelectorAll('main section.ch')].filter(s=>CHK[s.id]);
+  const total=secs.length;
+  function refresh(){ const n=secs.filter(s=>done.has(s.id)).length; const bar=$('progBar'), tx=$('progTxt'), on=$('goOn');
+    if(bar) bar.style.width=(n/total*100)+'%'; if(tx) tx.textContent=n+' von '+total+' Kapiteln verstanden';
+    const nx=secs.find(s=>!done.has(s.id)); if(on){ if(n>0&&nx){ on.hidden=false; on.href='#'+nx.id; on.textContent='Weiter mit Kapitel '+nx.id.slice(1)+' · '+nx.dataset.t; } else on.hidden=true; }
+    document.querySelectorAll('nav.toc a[data-k]').forEach(a=>a.classList.toggle('done',done.has(a.dataset.k)));
+    secs.forEach(s=>{ const b=s.querySelector('.donebtn'); if(b){ const d=done.has(s.id); b.setAttribute('aria-pressed',d); b.textContent=d?'✓ Verstanden':'Kapitel verstanden'; } }); }
+  document.querySelectorAll('main section.ch').forEach(s=>{ const M=META[s.id]; if(!M) return; const chh=s.querySelector('.chh');
+    const m=document.createElement('div'); m.className='meta'; m.innerHTML='<span>etwa '+M[0]+' min</span>'+(M[1].length?'<span>baut auf: '+M[1].map(k=>'<a href="#k'+k+'">Kapitel '+k+'</a>').join(', ')+'</span>':'<span>ohne Vorwissen</span>');
+    chh.after(m); });
+  secs.forEach((s,idx)=>{ const box=document.createElement('div'); box.className='endbox';
+    box.innerHTML='<div class="eh"><b>Mini-Check zu Kapitel '+s.id.slice(1)+'</b><button type="button" class="donebtn" aria-pressed="false">Kapitel verstanden</button></div>';
+    CHK[s.id].forEach(([t,o,r,e])=>{ const d=document.createElement('div'); d.className='qz'; d.innerHTML='<b class="q">'+t+'</b><div class="opts"></div><div class="ex"></div>'; const os=d.querySelector('.opts'), ex=d.querySelector('.ex');
+      o.forEach((x,j)=>{ const b=document.createElement('button'); b.type='button'; b.className='opt'; b.textContent=x; b.onclick=()=>{ if(d.dataset.done) return; d.dataset.done=1;
+        if(j===r){ b.classList.add('r'); ex.textContent='✓ Richtig. '+e; } else { b.classList.add('w'); os.children[r].classList.add('r'); ex.textContent='✗ Nicht ganz. '+e+' Lies den Abschnitt oben noch einmal.'; } ex.classList.add('s');
+        const all=[...box.querySelectorAll('.qz')]; if(all.every(q=>q.dataset.done)&&all.every(q=>q.querySelector('.opt.r:not(.w)')&&!q.querySelector('.opt.w'))&&!done.has(s.id)){ done.add(s.id); save(); refresh(); } }; os.appendChild(b); });
+      box.appendChild(d); });
+    const nx=secs[idx+1]||document.getElementById('k18'); const p=document.createElement('p'); p.className='nx'; p.innerHTML='Alles richtig? Dann wird das Kapitel automatisch abgehakt. Weiter geht es mit <a href="#'+nx.id+'">Kapitel '+nx.id.slice(1)+' · '+nx.dataset.t+'</a>.'; box.appendChild(p);
+    box.querySelector('.donebtn').onclick=()=>{ if(done.has(s.id)) done.delete(s.id); else done.add(s.id); save(); refresh(); };
+    s.appendChild(box); });
+  refresh(); })();
 </script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
