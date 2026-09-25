@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getriebe-Trainer LF 13</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#eef0f2; --panel:#ffffff; --panel2:#f5f6f8; --ink:#1a1f26; --muted:#5d6672; --line:#d6dae0; --line2:#c3c9d1;
+  --acc:#e8590c; --acc-ink:#ffffff; --acc-soft:#fde9dc; --steel:#34506b; --steel-soft:#e3ebf3;
+  --ok:#1f8a4c; --ok-soft:#dff3e7; --bad:#c43a2c; --bad-soft:#fbe4e1; --warn:#b7791f; --warn-soft:#fbf0d9;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"Barlow","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#15191e; --panel:#1d232a; --panel2:#232a33; --ink:#e7ebf0; --muted:#9aa4b0; --line:#2f3842; --line2:#3b4652;
+  --acc:#ff7a2e; --acc-ink:#1a1206; --acc-soft:#3a2416; --steel:#8fb4d8; --steel-soft:#1f2c3a;
+  --ok:#4cc27d; --ok-soft:#173226; --bad:#ff6b5c; --bad-soft:#3a1c19; --warn:#e7b04a; --warn-soft:#3a2d14; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#15191e; --panel:#1d232a; --panel2:#232a33; --ink:#e7ebf0; --muted:#9aa4b0; --line:#2f3842; --line2:#3b4652;
+  --acc:#ff7a2e; --acc-ink:#1a1206; --acc-soft:#3a2416; --steel:#8fb4d8; --steel-soft:#1f2c3a;
+  --ok:#4cc27d; --ok-soft:#173226; --bad:#ff6b5c; --bad-soft:#3a1c19; --warn:#e7b04a; --warn-soft:#3a2d14; color-scheme:dark; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px}
+header.top{background:var(--steel);color:#fff;padding-block:22px 18px}
+:root[data-theme="dark"] header.top{background:#223346}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) header.top{background:#223346} }
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.1rem);line-height:1;margin:.2em 0 .25em;letter-spacing:.01em;text-wrap:balance}
+.lead{max-width:62ch;margin:0;opacity:.92}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 12px;min-width:120px}
+.stat b{display:block;font-family:var(--display);font-size:1.6rem;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;opacity:.85}
+.bar{height:6px;background:rgba(255,255,255,.18);border-radius:3px;overflow:hidden;margin-top:12px;max-width:520px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .4s}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--panel);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-block:6px}
+nav.tabs .wrap::-webkit-scrollbar{display:none}
+.tab{flex:none;font:600 .95rem var(--body);border:0;background:none;color:var(--muted);padding:10px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--acc);color:var(--acc-ink)}
+.tab:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+main{padding-block:22px 60px}
+section.view[hidden]{display:none}
+h2{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1.05;margin:0 0 6px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:22px 0 8px}
+.sub{color:var(--muted);margin:0 0 16px;max-width:70ch}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.btn{font:600 .95rem var(--body);border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:9px;padding:9px 14px;cursor:pointer}
+.btn:hover{border-color:var(--acc)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.chip{display:inline-block;font:600 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:5px;background:var(--steel-soft);color:var(--steel)}
+.chip.calc{background:var(--acc-soft);color:var(--acc)}
+.chip.own{background:var(--warn-soft);color:var(--warn)}
+/* Lernplan */
+.plan{display:grid;gap:10px}
+.step{display:grid;grid-template-columns:86px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.step .t{font-family:var(--mono);font-size:.85rem;color:var(--acc);font-weight:700}
+.step h4{margin:0 0 2px;font-size:1.05rem}
+.step p{margin:0;color:var(--muted);font-size:.95rem}
+@media (max-width:520px){.step{grid-template-columns:1fr;gap:2px}}
+.tip{border-left:4px solid var(--acc);background:var(--acc-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:14px 0}
+/* Fragen */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.filters .btn[aria-pressed="true"]{background:var(--steel);border-color:var(--steel);color:#fff}
+.grp{font-family:var(--display);font-size:1.45rem;font-weight:700;margin:26px 0 8px;display:flex;align-items:baseline;gap:10px}
+.grp small{font-family:var(--body);font-size:.9rem;color:var(--muted);font-weight:500}
+details.q{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;overflow:hidden}
+details.q[data-st="ok"]{border-left:5px solid var(--ok)}
+details.q[data-st="again"]{border-left:5px solid var(--bad)}
+details.q summary{list-style:none;cursor:pointer;padding:13px 14px;display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:start}
+details.q summary::-webkit-details-marker{display:none}
+.qn{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1;color:var(--acc);font-variant-numeric:tabular-nums}
+.qt{font-weight:600}
+.qa{padding:0 14px 14px 68px}
+@media (max-width:520px){.qa{padding:0 14px 14px}}
+.kurz{background:var(--steel-soft);border-radius:9px;padding:10px 12px;margin:0 0 10px;font-weight:600}
+.kurz::before{content:"Kurz: ";font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);font-weight:700}
+.qa ul{margin:6px 0 8px;padding-left:1.2em}
+.qa li{margin:3px 0}
+.merk{background:var(--warn-soft);border-radius:9px;padding:8px 12px;margin:8px 0 0;font-size:.95rem}
+.merk::before{content:"💡 Eselsbrücke: ";font-weight:700}
+.src{font-size:.8rem;color:var(--muted);margin-top:8px}
+.rate{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.qa table,.tbl{border-collapse:collapse;width:100%;font-size:.93rem}
+.tw{overflow-x:auto;margin:8px 0}
+.qa th,.qa td,.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.qa th,.tbl th{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.f{font-family:var(--mono);font-size:.93rem;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;overflow-x:auto;white-space:nowrap;font-variant-numeric:tabular-nums}
+.res{color:var(--ok);font-weight:700}
+/* Karteikarten */
+.cardbox{max-width:680px;margin:0 auto}
+.fc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;min-height:260px;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+.fc .qn{font-size:2rem}
+.fc .q{font-family:var(--display);font-size:1.6rem;line-height:1.15;font-weight:700;margin:6px 0 14px;text-wrap:balance}
+.fc .ans[hidden]{display:none}
+.fcbar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.fcbar .btn{flex:1 1 140px;padding:14px;font-size:1.05rem}
+.meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.9rem;margin-bottom:10px;flex-wrap:wrap}
+.sel{font:inherit;padding:7px 10px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--ink)}
+/* Rechnen */
+.calc label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:2px}
+.calc input{width:100%;font:600 1rem var(--mono);padding:8px 10px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--ink)}
+.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:10px}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.out div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.out span{display:block;font-size:.78rem;color:var(--muted)}
+.out b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+ol.steps{padding-left:1.3em;margin:6px 0}
+ol.steps li{margin:6px 0}
+/* Verstehen */
+canvas{display:block;width:100%;border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
+.cv{height:320px}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:10px 0}
+.ctl label{font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:8px}
+.ctl input[type=range]{accent-color:var(--acc);width:150px}
+.live{font-family:var(--mono);font-size:.9rem;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+/* Kupplungen */
+.tree{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.tree .panel h4{margin:0 0 4px;font-family:var(--display);font-size:1.25rem}
+.tree .panel p{margin:0 0 8px;color:var(--muted);font-size:.93rem}
+.tree ul{margin:0;padding-left:1.1em}
+.tree li{margin:2px 0}
+.tree li b{color:var(--steel)}
+footer{color:var(--muted);font-size:.85rem;padding-block:20px 40px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Industriemechaniker · LF 13 · Getriebe und Kupplungen</div>
+    <h1>Getriebe-Trainer</h1>
+    <p class="lead">Alle 44 Übungsfragen mit Musterantworten aus deinen Unterlagen, dazu Karteikarten, Rechenwege, Kupplungen und Animationen zum Verstehen.</p>
+    <div class="stats">
+      <div class="stat"><b id="stOk">0</b><span>kann ich</span></div>
+      <div class="stat"><b id="stAgain">0</b><span>nochmal üben</span></div>
+      <div class="stat"><b id="stOpen">0</b><span>noch offen</span></div>
+    </div>
+    <div class="bar"><i id="stBar"></i></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Bereiche"><div class="wrap" role="tablist">
+  <button class="tab" role="tab" data-v="plan" aria-selected="true">Lernplan</button>
+  <button class="tab" role="tab" data-v="fragen" aria-selected="false">Fragen 1–44</button>
+  <button class="tab" role="tab" data-v="karten" aria-selected="false">Karteikarten</button>
+  <button class="tab" role="tab" data-v="rechnen" aria-selected="false">Rechnen</button>
+  <button class="tab" role="tab" data-v="verstehen" aria-selected="false">Verstehen</button>
+  <button class="tab" role="tab" data-v="kupplung" aria-selected="false">Kupplungen</button>
+</div></nav>
+
+<main class="wrap">
+
+<!-- LERNPLAN -->
+<section class="view" id="v-plan">
+  <h2>So schaffst du es an einem Tag</h2>
+  <p class="sub">Nicht alles gleich lernen: Erst verstehen, dann gezielt auswendig lernen, dann abfragen. Die Karteikarten merken sich, was du noch nicht kannst, und zeigen es dir öfter.</p>
+  <div class="plan">
+    <div class="step"><div class="t">Block 1 · 45 min</div><div><h4>Überblick und Verstehen</h4><p>Tab „Verstehen“: Zahnradpaar, Planetengetriebe und Riementrieb je 5 Minuten ausprobieren. Danach Fragen 1–4 lesen. Wer versteht, wie ein Getriebe arbeitet, muss viel weniger auswendig lernen.</p></div></div>
+    <div class="step"><div class="t">Block 2 · 60 min</div><div><h4>Zahnradgetriebe: Fragen 5–25</h4><p>Jede Frage aufklappen, „Kurz“ laut vorlesen, die Eselsbrücke merken. Danach „kann ich“ oder „nochmal“ tippen.</p></div></div>
+    <div class="step"><div class="t">Pause · 15 min</div><div><h4>Weg vom Bildschirm</h4><p>Das Gehirn sortiert in der Pause. Wirklich Pause machen.</p></div></div>
+    <div class="step"><div class="t">Block 3 · 60 min</div><div><h4>Rechnen: Fragen 26–28 und 31</h4><p>Tab „Rechnen“: Formeln abschreiben, dann jede Aufgabe selbst rechnen und erst danach den Lösungsweg aufdecken. Die Formeln der Zahnradmaße musst du auswendig können.</p></div></div>
+    <div class="step"><div class="t">Block 4 · 60 min</div><div><h4>Zugmittelgetriebe: Fragen 29–44</h4><p>Riemen und Ketten. Die Vergleichstabelle bei Frage 40 ist der Schlüssel, sie beantwortet mehrere Fragen gleichzeitig.</p></div></div>
+    <div class="step"><div class="t">Block 5 · 30 min</div><div><h4>Kupplungen</h4><p>Tab „Kupplungen“: Aufgaben und die drei Gruppen mit Beispielen. Lerne die Einteilung wie einen Stammbaum.</p></div></div>
+    <div class="step"><div class="t">Abends · 30 min</div><div><h4>Karteikarten: nur „nochmal“</h4><p>Im Tab „Karteikarten“ „Nur ‚nochmal‘“ wählen. Morgens vor der Arbeit noch einmal 15 Minuten, das festigt am stärksten.</p></div></div>
+  </div>
+  <div class="tip"><b>Wichtig:</b> Die Fragen 23, 34 und 42 fragen nach <b>deinem Ausbildungsbetrieb</b>. Die Musterantworten nennen typische Beispiele. Ersetze sie durch Maschinen, die du selbst kennst, dann kannst du sie viel leichter erklären.</div>
+</section>
+
+<!-- FRAGEN -->
+<section class="view" id="v-fragen" hidden>
+  <h2>Die 44 Übungsfragen</h2>
+  <p class="sub">Tippe eine Frage an, um die Antwort zu sehen. „Kurz“ ist das, was du mindestens sagen können musst. Die Punkte darunter bringen die volle Punktzahl.</p>
+  <div class="filters" role="group" aria-label="Filter">
+    <button class="btn" data-f="all" aria-pressed="true">Alle</button>
+    <button class="btn" data-f="again" aria-pressed="false">Nur „nochmal“</button>
+    <button class="btn" data-f="open" aria-pressed="false">Noch offen</button>
+    <button class="btn" data-f="calc" aria-pressed="false">Nur Rechnen</button>
+    <button class="btn" id="openAll">Alle aufklappen</button>
+  </div>
+  <div id="qList"></div>
+</section>
+
+<!-- KARTEIKARTEN -->
+<section class="view" id="v-karten" hidden>
+  <h2>Karteikarten</h2>
+  <p class="sub">Frage lesen, Antwort im Kopf oder laut sagen, dann aufdecken. Was du nicht wusstest, kommt nach wenigen Karten wieder.</p>
+  <div class="cardbox">
+    <div class="meta"><span>Stapel: <select class="sel" id="deck">
+      <option value="all">Alle 44 Fragen + Kupplungen</option>
+      <option value="again">Nur „nochmal“ und offene</option>
+      <option value="g">Getriebe allgemein (1–4)</option>
+      <option value="z">Zahnradgetriebe (5–28)</option>
+      <option value="m">Zugmittelgetriebe (29–44)</option>
+      <option value="k">Kupplungen</option>
+    </select></span><span id="fcCount">–</span></div>
+    <div class="fc" id="fc"></div>
+    <div class="fcbar" id="fcBar"></div>
+  </div>
+</section>
+
+<!-- RECHNEN -->
+<section class="view" id="v-rechnen" hidden>
+  <h2>Rechnen: Formeln und Aufgaben</h2>
+  <p class="sub">Diese Formeln musst du auswendig können. Rechne jede Aufgabe erst selbst, dann deckst du den Lösungsweg auf.</p>
+  <div class="grid2">
+    <div class="panel"><h3 style="margin-top:0">Übersetzung und Drehmoment</h3>
+      <div class="f">i = n₁/n₂ = z₂/z₁ = d₂/d₁ = M₂/M₁</div>
+      <div class="f">n₁·z₁ = n₂·z₂</div>
+      <div class="f">i_ges = i₁ · i₂ · i₃</div>
+      <div class="f">F_u = 2·M/d &nbsp;·&nbsp; M = F_u·d/2</div>
+      <div class="f">Schrägverzahnung: F_a = F_u·tan β₀</div>
+      <div class="f">Schnecke: i = z₂/z₁ (z₁ = Gangzahl)</div>
+      <div class="f">Keilriemen: i = d_w2/d_w1 (Wirkdurchmesser)</div>
+      <div class="f">v = π·d·n</div>
+    </div>
+    <div class="panel"><h3 style="margin-top:0">Zahnradmaße (Modul m)</h3>
+      <div class="f">d = z·m &nbsp;·&nbsp; p = π·m</div>
+      <div class="f">d_a = (z + 2)·m</div>
+      <div class="f">d_f = d − 2·(m + c)</div>
+      <div class="f">h_a = m &nbsp;·&nbsp; h_f = m + c &nbsp;·&nbsp; h = h_a + h_f</div>
+      <div class="f">c = (0,1 … 0,3)·m</div>
+      <div class="f">a = d₁/2 + d₂/2 = m·(z₁ + z₂)/2</div>
+      <div class="f">s = l = p/2 &nbsp;·&nbsp; b = (6 … 30)·m</div>
+      <div class="merk">Kopf nach außen: +2 Module. Fuß nach innen: −2·(m + c). Der Kopf ist genau 1 m hoch, der Fuß ist um das Kopfspiel c tiefer.</div>
+    </div>
+  </div>
+
+  <h3>Rechner: Zahnradmaße</h3>
+  <div class="panel calc">
+    <div class="cg">
+      <div><label for="cm">Modul m in mm</label><input id="cm" type="number" step="0.05" value="1.25" inputmode="decimal"></div>
+      <div><label for="cz">Zähnezahl z</label><input id="cz" type="number" step="1" value="79" inputmode="numeric"></div>
+      <div><label for="cc">Kopfspiel c = k·m, k =</label><input id="cc" type="number" step="0.05" value="0.2" inputmode="decimal"></div>
+    </div>
+    <div class="out" id="cOut"></div>
+  </div>
+
+  <h3>Aufgabe 26: Schaltgetriebe</h3>
+  <div class="panel"><p style="margin-top:0">Gegeben: m₁ = 2,5 mm, m₂ = 3,0 mm, z₁ = 37, z₂ = 59, z₃ = 47, M_A = 50 Nm, β₀ = 8°. Beide Stufen sitzen auf denselben Wellen I und II, deshalb ist der Achsabstand in beiden Stufen gleich.</p>
+    <div id="a26"></div></div>
+
+  <h3>Aufgabe 27: Beschädigtes Zahnrad</h3>
+  <div class="panel"><p style="margin-top:0">Gegeben: d_f1 = 95,75 mm, z₁ = 79, c = 0,2·m.</p><div id="a27"></div></div>
+
+  <h3>Aufgabe 28: Gegenrad mit i = 2</h3>
+  <div class="panel"><p style="margin-top:0">Rad aus Aufgabe 27 treibt, i = 2. Gesucht: z₂, d₂, d_a2, d_f2, h, h_a2, h_f2, a.</p><div id="a28"></div></div>
+
+  <h3>Aufgabe 31: Länge des Flachriemens</h3>
+  <div class="panel"><p style="margin-top:0">Gegeben: d₁ = 224 mm, d₂ = 140 mm, a = 420 mm, offener Riementrieb.</p><div id="a31"></div></div>
+</section>
+
+<!-- VERSTEHEN -->
+<section class="view" id="v-verstehen" hidden>
+  <h2>Verstehen statt auswendig lernen</h2>
+  <p class="sub">Drei Animationen zu den Stellen, an denen Verstehen am meisten Auswendiglernen spart.</p>
+
+  <h3>Zahnradpaar: Übersetzung, Drehzahl, Drehmoment</h3>
+  <canvas id="cvGear" class="cv" aria-label="Zwei Zahnräder, die sich drehen"></canvas>
+  <div class="ctl">
+    <label>z₁ (treibend) <input type="range" id="gz1" min="12" max="60" value="24"><b id="gz1v">24</b></label>
+    <label>z₂ (getrieben) <input type="range" id="gz2" min="12" max="90" value="47"><b id="gz2v">47</b></label>
+  </div>
+  <div class="live" id="gLive"></div>
+  <div class="tip">Das große Rad dreht sich langsamer, aber mit mehr Kraft: <b>Drehzahl runter = Drehmoment rauf</b>. Die Umfangskraft F_u ist an beiden Rädern gleich, nur der Hebelarm d/2 ist verschieden. Bei Außenverzahnung dreht das Gegenrad immer andersherum.</div>
+
+  <h3>Planetengetriebe: Was ist fest, was treibt?</h3>
+  <canvas id="cvPlan" class="cv" aria-label="Planetengetriebe"></canvas>
+  <div class="ctl">
+    <label>Kombination <select class="sel" id="pMode"></select></label>
+  </div>
+  <div class="live" id="pLive"></div>
+  <div class="tip">Merke die Grundregel: <b>Hohlrad fest, Sonne treibt, Planetenträger dreht langsam mit, gleiche Richtung.</b> Das ist die Standardbauart aus Bild 3 und die Antwort auf Frage 22. Nur wenn der <b>Planetenträger fest</b> ist, kehrt sich die Drehrichtung um.</div>
+
+  <h3>Riementrieb: offen, gekreuzt und Umschlingungswinkel</h3>
+  <canvas id="cvBelt" class="cv" aria-label="Riementrieb"></canvas>
+  <div class="ctl">
+    <label><input type="checkbox" id="bCross"> gekreuzt</label>
+    <label>d große Scheibe <input type="range" id="bD" min="120" max="300" value="224"><b id="bDv">224</b> mm</label>
+    <label>Achsabstand a <input type="range" id="bA" min="260" max="700" value="420"><b id="bAv">420</b> mm</label>
+  </div>
+  <div class="live" id="bLive"></div>
+  <div class="tip">Wird die große Scheibe größer, wird der Umschlingungswinkel an der kleinen Scheibe <b>kleiner</b> (Frage 32). Beim gekreuzten Riemen drehen die Scheiben gegenläufig und die Umschlingung ist größer, aber der Riemen reibt an sich selbst. Das geht nur mit Flachriemen.</div>
+</section>
+
+<!-- KUPPLUNGEN -->
+<section class="view" id="v-kupplung" hidden>
+  <h2>Kupplungen</h2>
+  <p class="sub">Blatt LF 13 „Kupplungen“. Lerne erst die sechs Aufgaben, dann die Einteilung in drei Gruppen mit Beispielen.</p>
+  <div class="panel"><h3 style="margin-top:0">Aufgaben von Kupplungen</h3>
+    <div class="tw"><table class="tbl"><tr><th>Aufgabe</th><th>Beispiel</th></tr>
+      <tr><td>Verbindung von Antrieb (Motor) und Abtrieb (Getriebe, Spindel)</td><td>Motor mit Getriebe</td></tr>
+      <tr><td>Unterbrechung von Drehmomenten</td><td>Kfz-Kupplung</td></tr>
+      <tr><td>Schaltung von Getriebestufen</td><td>Schaltgetriebe</td></tr>
+      <tr><td>Schutz vor Überlastung</td><td>CNC-Maschine</td></tr>
+      <tr><td>Dämpfung von Stößen</td><td>Förderanlagen</td></tr>
+      <tr><td>Ausgleich von Wellenversatz</td><td>Gelenkkupplung</td></tr></table></div>
+    <div class="merk">„<b>V</b>iele <b>U</b>nfälle <b>S</b>ind <b>S</b>chnell <b>D</b>a, <b>A</b>chtung!“: Verbinden, Unterbrechen, Schalten, Schützen, Dämpfen, Ausgleichen.</div>
+  </div>
+  <h3>Einteilung</h3>
+  <div class="tree">
+    <div class="panel"><h4>Nicht schaltbar</h4><p>Lassen während des Betriebes keine Trennung von An- und Abtrieb zu.</p><ul>
+      <li><b>Starr:</b> Scheibenkupplung, Schalenkupplung mit Kegelhülse</li>
+      <li><b>Drehstarr</b> (gleichen Versatz aus): Bogenzahnkupplung, Gelenkkupplung, Topfgelenk, Gelenkwelle</li>
+      <li><b>Elastisch</b> (dämpfen Stöße): Gummihülsen-, Metallfeder-, Metallbalgkupplung</li>
+      <li><b>Strömungskupplung</b> (Visco-Kupplung)</li></ul></div>
+    <div class="panel"><h4>Schaltbar</h4><p>Lassen eine Trennung von An- und Abtrieb während des Betriebes zu.</p><ul>
+      <li><b>Formschlüssig</b> (Teile greifen ineinander): Klauenkupplung, Zahnkupplung</li>
+      <li><b>Kraftschlüssig</b> (Reibung): Einscheiben-, Mehrscheiben-, Kegel-, Fliehkraftkupplung</li>
+      <li><b>Magnetische Kupplungen</b></li></ul></div>
+    <div class="panel"><h4>Sonderkupplungen</h4><p>Meist Sicherheitskupplungen: Sie unterbrechen den Kraftfluss, wenn das zulässige Drehmoment überschritten wird.</p><ul>
+      <li><b>Sicherheitskupplungen:</b> Abscherstift, Brechbolzen, Rutschkupplung, Durchrastkupplung</li>
+      <li><b>Anlaufkupplungen</b></li>
+      <li><b>Freilaufkupplungen</b> (übertragen nur in eine Drehrichtung)</li></ul></div>
+  </div>
+  <div class="tip"><b>Formschluss oder Kraftschluss?</b> Das gleiche Prinzip wie bei den Zugmittelgetrieben: Formschluss (Klauen, Zähne) ist schlupffrei, aber nur im Stillstand oder bei Gleichlauf schaltbar. Kraftschluss (Reibscheiben) kann unter Last sanft schalten und rutscht bei Überlast.</div>
+</section>
+
+</main>
+<footer><div class="wrap">Erstellt aus deinen Unterlagen „1 Getriebe“, Seiten 2–25, und dem Blatt „Kupplungen“ LF 13. Seitenangaben beziehen sich auf die Seitenzahlen im Heft. Dein Lernstand wird nur in diesem Browser gespeichert.</div></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const Q=[
+// ---------- Getriebe allgemein
+{n:1,g:'g',t:'Nennen Sie die Hauptaufgaben von Getrieben.',k:'Leistung/Drehbewegung übertragen, Drehzahl oder Drehmoment wandeln, Drehrichtung festlegen, Wellenlage bestimmen.',
+ b:['<b>Übertragung</b> einer Leistung oder einer Drehbewegung','<b>Wandlung</b> der Umdrehungsfrequenz (Drehzahl) oder des Drehmoments, z. B. Motor 1470/min auf 35/min, dabei steigt das Drehmoment','<b>Festlegung des Drehsinns</b> zwischen An- und Abtriebswelle','<b>Bestimmung der Wellenlage</b> zwischen An- und Abtriebswelle (parallel, rechtwinklig, gekreuzt)'],
+ m:'„Ü-W-D-W“: Übertragen, Wandeln, Drehsinn, Wellenlage.',s:'S. 2 und 3'},
+{n:2,g:'g',t:'Nennen Sie typische Getriebeformen.',k:'Zahnradgetriebe und Zugmittelgetriebe.',
+ b:['<b>Zahnradgetriebe:</b> Stirnrad-, Kegelrad-, Schneckenrad-, Planeten- und Zahnstangengetriebe','<b>Zugmittelgetriebe:</b> Riementrieb (Flach-, Keil-, Zahn-, Keilrippenriemen) und Kettentrieb (Bolzen-, Buchsen-, Rollenkette)'],s:'S. 2 und 3 (Übersicht)'},
+{n:3,g:'g',t:'Welche Anforderungen haben Getriebe zu erfüllen?',k:'Hoher Wirkungsgrad, lange Lebensdauer, wenig Geräusch, wartungsfreundlich, niedrige Ausfallquote.',
+ b:['einen hohen <b>Wirkungsgrad</b>','eine lange <b>Lebensdauer</b>','eine geringe <b>Geräuschentwicklung</b>','ein hohes Maß an <b>Wartungsfreundlichkeit</b>','eine niedrige <b>Ausfallquote</b>'],m:'„Wie Lange Geht Was Aus?“: Wirkungsgrad, Lebensdauer, Geräusch, Wartung, Ausfall.',s:'S. 2'},
+{n:4,g:'g',t:'Worin unterscheiden sich Zahnradgetriebe von Zugmittelgetrieben?',k:'Bei Zahnradgetrieben greifen die Zähne direkt ineinander. Bei Zugmittelgetrieben überträgt ein Zwischenglied (Riemen oder Kette) die Kraft über größere Abstände.',
+ b:['<b>Zahnradgetriebe:</b> Zähne kämmen direkt, formschlüssig und schlupffrei, kleine Achsabstände, kompakt; bei Außenverzahnung dreht das Gegenrad andersherum','<b>Zugmittelgetriebe:</b> Riemen oder Kette als Zugmittel, <b>beliebige, große Achsabstände</b>, An- und Abtrieb drehen beim offenen Trieb gleichsinnig','Riemen können Stöße dämpfen und rutschen (Schlupf), Zahnriemen und Ketten nicht'],s:'S. 3, 4, 17'},
+// ---------- Zahnradgetriebe
+{n:5,g:'z',t:'Nennen Sie drei Bestimmungsgrößen für Zahnradgetriebe.',k:'Übersetzungsverhältnis, Zahnradmaße, Modul, Zähnezahl (drei davon nennen).',
+ b:['<b>Übersetzungsverhältnis</b> i','<b>Zahnradmaße</b> (Teilkreis, Kopfkreis, Fußkreis, Zahnhöhe …)','<b>Modul</b> m','<b>Zähnezahl</b> z'],s:'S. 3 (Übersicht „Bestimmungsgrößen“)'},
+{n:6,g:'z',t:'Welche Bedingungen müssen erfüllt sein, damit zwei Stirnräder gepaart werden können?',k:'Gleicher Modul. Bei Schrägverzahnung zusätzlich gleiche Zahnschräge mit gegensinniger Steigung.',
+ b:['Beide Räder müssen den <b>gleichen Modul</b> haben (Merke S. 5)','Bei <b>Schrägverzahnung</b>: gleicher Modul und gleiche Zahnschräge β, die Steigungen müssen <b>gegensinnig</b> verlaufen (ein linkssteigendes mit einem rechtssteigenden Rad)','Gleiches Zahnprofil (Evolvente, gleicher Eingriffswinkel) und der passende Achsabstand a = (d₁ + d₂)/2'],s:'S. 5 und 6'},
+{n:7,g:'z',t:'Warum werden bei großen Übersetzungsverhältnissen mehrere Getriebestufen gewählt?',k:'In einer Stufe bräuchte man ein riesiges Zahnrad. Mehrere Stufen ergeben eine kleinere, günstigere Bauweise.',
+ b:['Für ein großes i in <b>einer</b> Stufe wären sehr große Zahnräder nötig: größere Abmessungen, größeres Gehäuse, höhere Kosten','Verteilt auf mehrere Stufen ist die Bauweise insgesamt <b>kleiner</b>: i_ges = i₁ · i₂ · i₃','Richtwert pro Stirnradstufe: etwa 1 : 2,5 ins Schnelle bis 5 : 1 ins Langsame. Kleinere i (z. B. 1 : 4) geben zu hohe Drehzahlen und Geräusche, größere (z. B. 10 : 1) zu große Räder'],s:'S. 4 und 13'},
+{n:8,g:'z',t:'Welche Vorteile haben schrägverzahnte Zahnräder gegenüber geradverzahnten?',k:'Leiser und ruhiger, mehr Zähne tragen gleichzeitig, höhere Drehzahlen und Kräfte möglich, weniger Schwingungen.',
+ b:['Bessere <b>Laufruhe</b> und geringere <b>Geräusche</b>, da jedes Zahnpaar kontinuierlich in den Eingriff und wieder heraus läuft','<b>Verteilung der Umfangskraft auf mehrere Zähne</b>','Größere <b>Umdrehungsfrequenzen</b> realisierbar','Größere <b>Umfangskräfte</b> möglich','<b>Reduzierung der Schwingungen</b>','<i>Nachteile zum Mitlernen:</i> Axialkraft auf die Lager, höhere Fertigungskosten, etwas geringerer Wirkungsgrad (1–2 %)'],m:'Schräg = sanft: Die Zähne „rollen“ nacheinander ein wie ein Reißverschluss.',s:'S. 6 Bild 4'},
+{n:9,g:'z',t:'Nennen Sie Getriebearten, bei denen sich die Drehachsen schneiden.',k:'Kegelradgetriebe (gerad-, schräg- und bogenverzahnt).',
+ b:['<b>Kegelradgetriebe</b>, meist mit 90° Achswinkel, aber beliebige Winkel sind möglich','Gerad-, schräg- oder bogenverzahnt'],s:'S. 10 und 11'},
+{n:10,g:'z',t:'Nennen Sie Getriebearten, bei denen sich die Drehachsen kreuzen.',k:'Schneckengetriebe und Hypoidgetriebe.',
+ b:['<b>Schneckengetriebe</b>: Achsen liegen in verschiedenen Ebenen und kreuzen sich unter 90°, ohne sich zu schneiden','<b>Hypoidgetriebe</b> (Sonderform des Kegelradgetriebes): Achsen kreuzen sich, z. B. im Fahrzeugantrieb'],m:'Schneiden = Kegel treffen sich in einem Punkt. Kreuzen = aneinander vorbei wie zwei Brücken übereinander.',s:'S. 11 und 13'},
+{n:11,g:'z',t:'Wie berechnet man bei Stirnrädern mit Geradverzahnung den Teilkreisdurchmesser?',k:'d = z · m',
+ b:['Teilkreisdurchmesser = Zähnezahl mal Modul: <b>d = z · m</b>','Herleitung: Umfang U = z · p = d · π und p = π · m, also d = z · m'],s:'S. 5'},
+{n:12,g:'z',t:'Was versteht man unter dem Modul eines Zahnrades?',k:'Der Modul m = d/z = p/π ist die Grundgröße eines Zahnrades in mm. Je größer der Modul, desto größer die Zähne.',
+ b:['Definition: <b>m = d/z = p/π</b> (in mm)','Mit dem Modul wachsen alle Verzahnungsmaße, besonders Zahnhöhe h und Zahndicke s','Der Modul ist <b>genormt</b> (Modulreihe 1: … 0,8; 1; 1,25; 1,5; 2; 2,5; 3; 4; 5 …), damit man weniger Werkzeuge braucht','Nur Räder mit gleichem Modul lassen sich paaren'],s:'S. 5'},
+{n:13,g:'z',t:'Wie heißt der Abstand von Zahnmitte zu Zahnmitte?',k:'Teilung p (gemessen als Bogen auf dem Teilkreis), p = π · m.',
+ b:['<b>Teilung p</b>, gemessen auf dem Teilkreis von einem Punkt eines Zahnes zum entsprechenden Punkt des nächsten Zahnes','p = π · m; Zahndicke s und Zahnlücke l sind je p/2'],s:'S. 5'},
+{n:14,g:'z',t:'Wie groß soll das Kopfspiel c bei Zahnradgetrieben gewählt werden?',k:'c = (0,1 … 0,3) · m',b:['Typisch in Aufgaben: c = 0,2 · m','c ist die Differenz zwischen der größeren Zahnfußhöhe des einen und der kleineren Zahnkopfhöhe des anderen Rades'],s:'S. 5'},
+{n:15,g:'z',t:'Wozu ist ein Kopfspiel c bei Zahnrädern erforderlich?',k:'Es verhindert das Klemmen der Räder und nimmt überschüssiges Öl und Schmutz auf.',
+ b:['Verhindert, dass der Zahnkopf des einen Rades im Zahngrund des anderen aufsitzt und die Räder <b>klemmen</b>','Raum für <b>überschüssiges Öl und Schmutz</b>'],s:'S. 5'},
+{n:16,g:'z',t:'Welche besondere Eigenschaft haben Pfeilverzahnungen bzw. Doppelschrägverzahnungen?',k:'Die Axialkräfte heben sich gegenseitig auf. Dazu kommt die Selbstzentrierung.',
+ b:['Zwei gegensinnig schräge Verzahnungen auf einer Welle: Die <b>Axialkräfte heben sich auf</b>','<b>Selbstzentrierung</b>, dadurch weniger aufwändige Lagerung und Wellenführung','Die Laufruhe der Schrägverzahnung bleibt erhalten','Pfeilverzahnung: gleiche Eigenschaften, aufwändiger herzustellen, aber schmaler. Einsatz: Kfz-Getriebe, Pumpenbau, Turbinengetriebe'],m:'Zwei Leute schieben gleich stark gegeneinander: Keiner bewegt sich, also keine Kraft aufs Lager.',s:'S. 6 und 7'},
+{n:17,g:'z',t:'Nennen Sie die besonderen Eigenschaften und Aufgabengebiete eines Stirnrad-, Kegelrad-, Schneckenrad-, Planeten- und Zahnstangengetriebes.',k:'Stirnrad: parallele Wellen. Kegelrad: Wellen schneiden sich, Kraft wird umgelenkt. Schnecke: Wellen kreuzen, große Übersetzung, Selbsthemmung. Planeten: kompakt, koaxial. Zahnstange: Drehung wird zu Längsbewegung.',
+ tbl:[['Getriebe','Lage der Wellen','Besonderheit','Anwendung'],
+  ['Stirnrad außen','parallel','Übersetzung und Drehrichtungsumkehr je Stufe, mehrstufig, einfache Schaltgetriebe, Ritzel mind. 14–15 Zähne','ein-/mehrstufige Getriebe, Planetengetriebe, Hebezeuge'],
+  ['Stirnrad innen (Hohlrad)','parallel','Übersetzung ohne Drehrichtungsänderung, kleiner Achsabstand, mehr Zähne im Eingriff, höheres Drehmoment','Planetengetriebe, Hebezeuge'],
+  ['Kegelrad','schneiden sich (meist 90°)','Übersetzung, Drehrichtungsänderung und <b>Kraftumlenkung</b>; empfindlich gegen Achsverlagerung, paarweise tauschen','Differenzialgetriebe'],
+  ['Schnecke','kreuzen sich (90°)','<b>große einstufige Übersetzung</b> (z. B. 60 : 1), leise, <b>Selbsthemmung</b> bei Steigung < 5°, Wirkungsgrad nur 0,7–0,9','Aufzüge, Winden, Krane, Bandförderer'],
+  ['Planeten','koaxial (eine Achse)','kompakt, große und kleine Drehmomente und Drehzahlen, Schalten ohne Ein-/Ausrücken von Zahnrädern','Roboterachsen, Rundschalttische, Werkzeugwechsler, Lkw, Flugzeugklappen, Hebezeuge'],
+  ['Zahnstange','Welle rechtwinklig zur Zahnstange','Umwandlung Drehbewegung ↔ Längsbewegung','Vorschub an Drehmaschinen, Höhenverstellung an Säulenbohrmaschinen']],
+ s:'S. 9–13, Tabelle S. 13'},
+{n:18,g:'z',t:'Weshalb werden Schneckenräder oft aus Grauguss oder Buntmetall (CuSnP-Legierung) hergestellt?',k:'Zwischen Schnecke und Rad entsteht Gleitreibung. Die Werkstoffpaarung Stahl auf Grauguss oder Bronze hält Verschleiß und Wärme gering.',
+ b:['Die Schraubbewegung der Schnecke erzeugt <b>Gleitreibung</b> am Schneckenrad','Um <b>Verschleiß</b> und <b>Wärmeentwicklung</b> klein zu halten, werden die Werkstoffe aufeinander abgestimmt: Schnecke aus <b>Stahl</b>, Rad aus <b>Grauguss oder Bronze (CuSnP)</b>','Diese Paarung hat gute Gleit- und Notlaufeigenschaften; der Radsatz läuft zusätzlich teilweise im Ölbad'],s:'S. 11'},
+{n:19,g:'z',t:'Warum können mit Schneckengetrieben wesentlich größere Übersetzungen erreicht werden als mit Stirnradgetrieben?',k:'Eine eingängige Schnecke dreht das Schneckenrad pro Umdrehung nur um einen Zahn weiter. Bei 60 Zähnen ist das schon i = 60 in einer Stufe.',
+ b:['i = z₂/z₁ mit z₁ = <b>Gangzahl</b> der Schnecke (oft 1 oder 2)','Pro Schneckenumdrehung wird das Rad nur um so viele Zähne weitergedreht, wie die Schnecke Gänge hat','Stirnradstufen sind auf etwa 5 : 1 begrenzt, weil sonst das große Rad riesig wird und das Ritzel mindestens 14–15 Zähne braucht'],s:'S. 11 und 13'},
+{n:20,g:'z',t:'Zeigen Sie, dass bei einem Schneckengetriebe die Übersetzung = Zähnezahl des Schneckenrades / Gangzahl der Schnecke ist.',k:'Eine Schneckenumdrehung dreht das Rad um z₁ Zähne weiter. Für eine Radumdrehung braucht es z₂/z₁ Schneckenumdrehungen, also i = n₁/n₂ = z₂/z₁.',
+ b:['Die Steigung einer eingängigen Schnecke entspricht der Teilung des Rades: Eine Umdrehung schiebt das Rad um <b>einen Zahn</b> weiter','Eine Schnecke mit z₁ Gängen schiebt pro Umdrehung <b>z₁ Zähne</b> weiter','Für eine volle Radumdrehung (z₂ Zähne) braucht man z₂/z₁ Schneckenumdrehungen','Also n₁ = (z₂/z₁)·n₂ und <b>i = n₁/n₂ = z₂/z₁</b>','Beispiel: z₂ = 60, eingängig: i = 60/1 = 60'],s:'S. 11'},
+{n:21,g:'z',t:'Welche Vorteile besitzen Planetengetriebe?',k:'Kompakt, An- und Abtrieb auf einer Achse, wenig Lageraufwand, für große und kleine Drehmomente und Drehzahlen, schaltbar ohne Ein- und Ausrücken von Zahnrädern.',
+ b:['<b>Kompakte Bauweise</b>','<b>An- und Abtrieb liegen auf einer Achse</b>, dadurch geringerer Lagerungsaufwand','Geeignet für <b>große und kleine Drehmomente und Drehzahlen</b>','Übersetzungen ins Langsame bis etwa i = 10 in einer Stufe','<b>Schaltvorgänge möglich, ohne dass Zahnräder zusätzlich in Eingriff gebracht werden</b>: Man hält einfach ein anderes Teil fest','Alle Zahnräder sind ständig im Eingriff, die Last verteilt sich auf mehrere Planeten'],s:'S. 9 und 10'},
+{n:22,g:'z',t:'Ermitteln Sie die Abtriebsdrehrichtung des einstufigen Planetengetriebes (Seite 9 Bild 3), wenn der Antrieb im Uhrzeigersinn erfolgt.',k:'Auch im Uhrzeigersinn. Hohlrad fest, Sonnenrad treibt, Planetenträger ist Abtrieb: gleiche Drehrichtung, Übersetzung ins Langsame.',
+ b:['In Bild 3 ist das <b>Hohlrad fest</b>, das <b>Sonnenrad</b> ist Antrieb (Welle 1), der <b>Planetenträger</b> ist Abtrieb (Welle 2)','Die Sonne dreht die Planeten gegen den Uhrzeigersinn um ihre eigene Achse. Weil das Hohlrad festsitzt, „rollen“ die Planeten am Hohlrad entlang und nehmen den Träger <b>in Drehrichtung der Sonne</b> mit','Ergebnis: Abtrieb <b>im Uhrzeigersinn</b>, langsamer als der Antrieb (Tabelle S. 10: Übersetzung ins Langsame, gleiche Drehrichtung)'],m:'Wie ein Zahnrad, das an einer festen Zahnstange entlangrollt: Es läuft in die Richtung, in die es geschoben wird.',s:'S. 9 Bild 3, S. 10 Tabelle'},
+{n:23,g:'z',own:1,t:'In welchen Bereichen (Maschinen, Anlagen) werden Zahnradgetriebe in Ihrem Ausbildungsbetrieb genutzt?',k:'Eigene Beispiele aus dem Betrieb nennen und jeweils die Getriebeart zuordnen.',
+ b:['<b>Werkzeugmaschinen:</b> Schaltgetriebe (Stirnräder) an Dreh- und Fräsmaschinen, Zahnstange für den Vorschub','<b>Förderbänder:</b> Kegelstirnradgetriebe oder Stirnradgetriebemotoren','<b>Hebezeuge, Krane, Winden:</b> Schneckengetriebe (Selbsthemmung) oder Planetengetriebe','<b>Roboter, Rundschalttische:</b> Planetengetriebe','<b>Pumpen, Rührwerke, Lüfter:</b> Stirnradgetriebe','Tipp: Ersetze die Beispiele durch Maschinen, die du bei der Arbeit wirklich siehst'],s:'eigener Betrieb'},
+{n:24,g:'z',t:'Worüber gibt die „Schneckengangzahl“ Auskunft?',k:'Wie viele Gewindegänge die Schnecke hat und damit, um wie viele Zähne sie das Schneckenrad pro Umdrehung weiterdreht.',
+ b:['Eine Schnecke kann ein- oder mehrgängig sein (und rechts- oder linksgängig)','Die Gangzahl z₁ bestimmt die Übersetzung: <b>i = z₂/z₁</b>','Mehr Gänge: kleinere Übersetzung, <b>besserer Wirkungsgrad</b>, aber weniger Selbsthemmung'],s:'S. 11 und 13'},
+{n:25,g:'z',t:'Welche Kurvenform für eine Zahnflanke ist im Maschinenbau üblich?',k:'Die Evolvente (Evolventenverzahnung).',
+ b:['Die Zahnflanken wälzen beim Eingriff aufeinander ab und gleiten dabei möglichst wenig: wenig Verschleiß, Wärme und Geräusch','Die <b>Evolventenform</b> sorgt für eine <b>gleichmäßige Übertragung</b> der Drehbewegung','Merke S. 7: Im Maschinenbau wird fast ausschließlich die Evolventenverzahnung verwendet'],m:'Evolvente = die Kurve, die ein straff abgewickelter Faden von einer Rolle beschreibt.',s:'S. 7'},
+{n:26,g:'z',calc:1,t:'Schaltgetriebe (a–g): Achsabstand, z₄, i₁ und i₂, Teilkreisdurchmesser, Umfangskraft, Axialkraft, zulässiger Modul.',k:'a = 120 mm · z₄ = 33 · i₁ ≈ 1,59, i₂ ≈ 0,70 · d₁ = 92,5 mm, d₂ = 147,5 mm · F_u ≈ 1081 N · F_a ≈ 152 N · m = 2 mm',
+ b:['Vollständiger Rechenweg im Tab <b>„Rechnen“</b>'],s:'S. 25 Aufgabe 26'},
+{n:27,g:'z',calc:1,t:'Beschädigtes Zahnrad: d_f1 = 95,75 mm, z₁ = 79, c = 0,2·m. Bestimmen Sie Modul, Teilkreis, Außendurchmesser, Zahnhöhe, Kopfhöhe, Fußhöhe.',k:'m = 1,25 mm · d = 98,75 mm · d_a = 101,25 mm · h = 2,75 mm · h_a = 1,25 mm · h_f = 1,5 mm',b:['Vollständiger Rechenweg im Tab <b>„Rechnen“</b>'],s:'S. 25 Aufgabe 27'},
+{n:28,g:'z',calc:1,t:'Gegenrad zum Rad aus Aufgabe 27 mit i = 2: z₂, d₂, d_a2, d_f2, h, h_a2, h_f2, a.',k:'z₂ = 158 · d₂ = 197,5 mm · d_a2 = 200 mm · d_f2 = 194,5 mm · h = 2,75 mm · h_a2 = 1,25 mm · h_f2 = 1,5 mm · a = 148,125 mm',b:['Vollständiger Rechenweg im Tab <b>„Rechnen“</b>'],s:'S. 25 Aufgabe 28'},
+// ---------- Zugmittel
+{n:29,g:'m',t:'Nennen Sie formschlüssig und kraftschlüssig wirkende Zugmittelgetriebe.',k:'Formschlüssig: Zahnriemen und Kettentrieb. Kraftschlüssig: Flachriemen, Keilriemen, Keilrippenriemen.',
+ b:['<b>Formschlüssig</b> (Zähne greifen ineinander, kein Schlupf): Zahnriemen (Synchronriemen), Kettentrieb','<b>Kraftschlüssig</b> (Übertragung durch Reibung, mit Schlupf): Flachriemen, Keilriemen, Keilrippenriemen'],m:'Form = Formen greifen ineinander wie Puzzleteile. Kraft = Reibung, wie Hände, die sich fest drücken.',s:'S. 24 Tabelle'},
+{n:30,g:'m',t:'Was bedeutet ein Übersetzungsverhältnis von a) i = 0,2, b) i = 3, c) i = 1?',k:'i = n₁/n₂. i < 1: ins Schnelle. i > 1: ins Langsame. i = 1: gleiche Drehzahl.',
+ b:['<b>i = 0,2:</b> Übersetzung <b>ins Schnelle</b>: Der Abtrieb dreht 5-mal so schnell (n₂ = n₁/0,2), das Drehmoment sinkt auf ein Fünftel','<b>i = 3:</b> Übersetzung <b>ins Langsame</b>: Der Abtrieb dreht 3-mal langsamer, das Drehmoment steigt auf das 3-Fache (ohne Verluste)','<b>i = 1:</b> An- und Abtrieb haben <b>gleiche Drehzahl und gleiches Drehmoment</b>, nur die Kraft wird übertragen oder verlagert'],m:'i groß = langsam und stark. i klein = schnell und schwach.',s:'S. 3, 16'},
+{n:31,g:'m',calc:1,t:'Berechnen Sie die Länge des Flachriemens für d₁ = 224 mm, d₂ = 140 mm und a = 420 mm.',k:'L ≈ 2a + π/2·(d₁ + d₂) + (d₁ − d₂)²/(4a) ≈ 1416 mm',b:['Vollständiger Rechenweg im Tab <b>„Rechnen“</b>'],s:'S. 25 Aufgabe 31'},
+{n:32,g:'m',t:'Wie verändert sich der Umschlingungswinkel an der kleinen Riemenscheibe, wenn sich der wirksame Durchmesser der großen Riemenscheibe a) vergrößert, b) verkleinert?',k:'a) Größere große Scheibe: Umschlingungswinkel an der kleinen wird kleiner. b) Kleinere große Scheibe: Umschlingungswinkel wird größer.',
+ b:['Je größer der Durchmesserunterschied, desto steiler laufen die Trume und desto weniger umschlingt der Riemen die kleine Scheibe','Näherung: β ≈ 180° − 2·arcsin((d_groß − d_klein)/(2a))','Folge: Bei kleinerem Umschlingungswinkel kann weniger Kraft übertragen werden (Merke S. 18)'],s:'S. 17 und 18'},
+{n:33,g:'m',t:'Durch welche Maßnahmen kann das übertragbare Drehmoment eines Riementriebes vergrößert werden?',k:'Umschlingungswinkel vergrößern, Vorspannung (Normalkraft) erhöhen, Reibwert erhöhen, Keilriemen statt Flachriemen, mehrere Riemen, größere Scheiben.',
+ b:['Die übertragbare Kraft hängt ab von <b>Reibfaktor</b>, <b>Normalkraft</b> und <b>Umschlingungswinkel</b> (S. 17)','<b>Umschlingungswinkel vergrößern:</b> Spann- oder Umlenkrolle, größerer Achsabstand','<b>Vorspannung erhöhen</b> (nur so weit wie nötig, sonst hohe Lagerbelastung)','<b>Reibwert erhöhen:</b> passender Riemenwerkstoff','<b>Keilriemen</b> statt Flachriemen: Die Keilwirkung vergrößert die Normalkraft (F_N = (F/2)/sin(α/2))','Mehrere Riemen parallel oder Keilrippenriemen','Größerer Scheibendurchmesser: M = F_u · d/2','Oder formschlüssig werden: Zahnriemen'],m:'„Winkel, Spannung, Reibung“: Die drei Stellschrauben des Riemens.',s:'S. 17, 18, 20'},
+{n:34,g:'m',own:1,t:'Nennen Sie typische Anwendungsbeispiele für einzelne Zugmittelgetriebe und beschreiben Sie kurz den besonderen Vorteil.',k:'Flachriemen: große Achsabstände, hohe Geschwindigkeiten. Keilriemen: große Kräfte bei kleinen Scheiben. Zahnriemen: schlupffrei und synchron. Kette: robust und für hohe Kräfte.',
+ tbl:[['Zugmittel','Anwendung','Besonderer Vorteil'],
+  ['Flachriemen','Förderanlagen, Textilmaschinen, Schleif- und Holzbearbeitungsmaschinen','große Achsabstände, hohe Geschwindigkeiten, leise, dämpft Stöße, kann gekreuzt laufen'],
+  ['Keilriemen','Kompressoren, Lüfter, Pumpen, Hauptantrieb von Werkzeugmaschinen, Kfz-Nebenaggregate','Keilwirkung: große Kräfte bei kleinen Scheiben und wenig Vorspannung, dämpft Stöße'],
+  ['Zahnriemen','CNC-Vorschubachsen, Roboter, Nockenwelle im Kfz, Drucker','schlupffrei, genau synchron, keine Schmierung nötig, mehrere Scheiben synchron antreibbar'],
+  ['Kettentrieb','Förderbänder, Land- und Baumaschinen, Textilmaschinen, Gabelstapler-Hubmast (Flyerkette)','formschlüssig, hohe Kräfte, raue Bedingungen und hohe Temperaturen, kleine Vorspannung']],
+ s:'S. 17–24'},
+{n:35,g:'m',t:'Welche Aufgabe erfüllen Spannrollen und an welcher Stelle im Riementrieb werden sie montiert?',k:'Sie erzeugen oder regeln die Vorspannung und vergrößern den Umschlingungswinkel. Montiert werden sie am Leertrum (dem nicht ziehenden Trum).',
+ b:['Aufgabe: <b>Vorspannkraft erzeugen und nachstellen</b>, zum Beispiel bei festem Achsabstand oder Riemenlängung','Sie vergrößern den <b>Umschlingungswinkel</b> und damit die übertragbare Kraft','Einbauort: immer am <b>Leertrum</b>, nie am Zugtrum','Flachriemen: meist von außen, nahe der kleinen Scheibe. Keilriemen: möglichst von innen, damit der Riemen nicht gegengebogen wird'],m:'Leertrum = locker = dort wird gespannt.',s:'S. 18, 20, 21'},
+{n:36,g:'m',t:'Welche Vor- und Nachteile haben Spannrollen bei Riementrieben?',k:'Vorteile: Vorspannung einstellbar, größerer Umschlingungswinkel, fester Achsabstand möglich. Nachteile: zusätzliche Biegung des Riemens (mehr Verschleiß), zusätzliches Bauteil mit Lager und Wartung.',
+ b:['<b>Vorteile:</b> Vorspannung einstell- und nachstellbar (auch bei Riemenlängung), größerer Umschlingungswinkel, Motor oder Welle muss nicht verschoben werden, Schwingungen des Trums werden beruhigt','<b>Nachteile:</b> zusätzliche Biegewechsel, dadurch höhere Riemenbelastung und kürzere Lebensdauer; zusätzliches Bauteil mit eigenem Lager (Kosten, Wartung, Ausfallrisiko); etwas geringerer Wirkungsgrad; beim Keilriemen schadet eine Gegenbiegung von außen'],s:'S. 18, 20, 21'},
+{n:37,g:'m',t:'Erläutern Sie den Begriff „Schlupf“ im Zusammenhang mit kraftschlüssigen Zugmittelgetrieben.',k:'Schlupf ist das kleine Zurückbleiben des Riemens gegenüber der Scheibe. Die Abtriebsdrehzahl ist dadurch etwas kleiner als berechnet.',
+ b:['Der Riemen überträgt die Kraft nur durch <b>Reibung</b>','Unter Last ist das <b>Zugtrum</b> stärker gedehnt als das Leertrum. Beim Umlauf um die Scheibe gleitet der Riemen deshalb etwas (Dehnschlupf, ca. 1–2 %)','Folge: <b>Keine exakte Übersetzung</b>, die Abtriebsdrehzahl ist etwas kleiner als rechnerisch','Bei Überlast rutscht der Riemen durch (Gleitschlupf). Das schützt die Maschine, erzeugt aber Wärme und Verschleiß','Wenn eine genaue Übersetzung nötig ist: Zahnriemen oder Kette (kein Schlupf)'],s:'S. 17, 24'},
+{n:38,g:'m',t:'Beschreiben Sie die Drehrichtungsänderung für die einzelnen Zugmittelgetriebe.',k:'Offener Trieb: gleiche Drehrichtung. Gekreuzter Flachriemen: entgegengesetzte Drehrichtung. Zahnriemen- und Mehrfachantriebe: Scheiben an der Riemenrückseite drehen andersherum.',
+ b:['<b>Offener Riementrieb:</b> An- und Abtriebsscheibe drehen <b>gleichsinnig</b>','<b>Gekreuzter (geschränkter) Riementrieb:</b> <b>entgegengesetzter</b> Drehsinn; nur für Flachriemen, nicht für Keil- und Keilrippenriemen','<b>Mehrfachantrieb</b> (Zahnriemen, Flachriemen): Scheiben, die an der Rückseite des Riemens laufen, drehen gegenläufig','<b>Kettentrieb:</b> gleichsinnig wie der offene Riementrieb','<b>Winkeltrieb:</b> Antrieb von sich kreuzenden Wellen'],s:'S. 19 Bild 1'},
+{n:39,g:'m',t:'Welcher Durchmesser ist bei einer Keilriemenscheibe für das Übersetzungsverhältnis maßgebend?',k:'Der Wirkdurchmesser d_w (Richtdurchmesser), nicht der Außendurchmesser.',
+ b:['Wegen der Keilform liegt der Riemen in der Rille. Wirksam ist der <b>Wirkdurchmesser d_w</b>, er ist kleiner als der Außendurchmesser','<b>i = d_w2 / d_w1</b>; die Werte stehen in den Herstellerangaben','Beispiel S. 18: d_w1 = 80 mm, d_w2 = 100 mm ergibt i = 1,25'],s:'S. 18'},
+{n:40,g:'m',t:'Unterscheiden Sie die Zugmittelgetriebe nach kraftschlüssiger und formschlüssiger Kraftübertragung.',k:'Kraftschlüssig (Reibung): Flach- und Keilriemen, mit Schlupf und Stoßdämpfung. Formschlüssig: Zahnriemen und Kette, ohne Schlupf.',
+ tbl:[['','Flachriemen','Keilriemen','Zahnriemen','Kette'],['Prinzip','kraftschlüssig','kraftschlüssig','formschlüssig','formschlüssig'],['Schlupf','ja','ja','nein','nein'],['Wartung','Vorspannung','Vorspannung','Vorspannung','Schmierung'],['Stoßdämpfung','ja','ja','ja','nein'],['Umwelt','empfindlich gegen Temperatur, nicht für aggressive Medien','wie Flachriemen','wie Flachriemen','für raue Bedingungen, Schmutz erhöht Verschleiß']],
+ b:['<b>Vorteile formschlüssig:</b> kleinere Scheiben möglich, nur geringe Vorspannung (entlastet die Lager), größere Kräfte, bei guter Schmierung lange Lebensdauer','<b>Nachteile formschlüssig:</b> Ketten müssen geschmiert und gereinigt werden, höhere Geräusche, Schwingungen im rücklaufenden Trum müssen gedämpft werden'],s:'S. 24 Bild 1 und 2'},
+{n:41,g:'m',t:'Wie erfolgt die Einstellung bzw. Kontrolle der Riemenvorspannkraft?',k:'Einstellen mit Spannschiene, Schwenkscheibe oder Spannrolle oder durch Gewichtskraft (Wippe, Spannschlitten). Kontrolle durch Messen der Durchbiegung oder der Eigenfrequenz.',
+ b:['<b>Einstellen</b> über einstellbare Spannkraft: <b>Spannschiene</b> (Motor verschieben), <b>Schwenkscheibe</b>, <b>Spannrolle</b>','oder über die <b>Gewichtskraft von Massen</b>: <b>Wippe</b> (Motorgewicht), <b>Spannschlitten</b> mit Gewicht','<b>Kontrolle:</b> Durchbiegung des Trums bei definierter Prüfkraft messen, oder <b>Eigenfrequenz</b> des angeschlagenen Riemens mit einem Sensor messen (bei bekannter Länge ein Maß für die Vorspannung)','Vorher die Scheiben achsparallel und ohne Winkelversatz ausrichten (Laser oder Lineal)','Zu geringe Vorspannung: Überspringen und Aufklettern. Zu große: hohe Lagerbelastung, Verschleiß'],s:'S. 20 und 21'},
+{n:42,g:'m',own:1,t:'In welchen Anwendungsbereichen (Maschinen, Anlagen) werden Zugmittelgetriebe in Ihrem Ausbildungsbetrieb genutzt? Unterscheiden Sie dabei kraft- und formschlüssig wirkende Zugmittelgetriebe.',k:'Eigene Beispiele nennen und nach kraftschlüssig (Riemen) und formschlüssig (Zahnriemen, Kette) ordnen.',
+ b:['<b>Kraftschlüssig:</b> Keilriemen an Kompressoren, Lüftern, Pumpen, am Hauptantrieb von Dreh- und Fräsmaschinen; Flachriemen an Förderbändern','<b>Formschlüssig:</b> Zahnriemen an CNC-Achsen, Linearachsen, Robotern; Ketten an Förderanlagen, Hubwerken, Gabelstaplern','Tipp: Ersetze die Beispiele durch Maschinen aus deinem Betrieb'],s:'eigener Betrieb'},
+{n:43,g:'m',t:'In welchen Fällen werden Kettentriebe verwendet?',k:'Bei rauen Betriebsbedingungen und hohen Temperaturen, wenn hohe Kräfte schlupffrei übertragen werden müssen.',
+ b:['<b>Raue Betriebsverhältnisse</b> (Schmutz, Staub, Feuchtigkeit) und <b>Temperaturen</b>, bei denen Riemen versagen','<b>Hohe Belastungen</b> und Drehmomente, bei niedrigen bis mittleren Geschwindigkeiten','Wenn <b>kein Schlupf</b> erlaubt ist','Mehrere Wellen oder große Achsabstände','Typisch in Textil-, Land- und Baumaschinen und in der Fördertechnik'],s:'S. 22'},
+{n:44,g:'m',t:'Welche Aufgabe hat bei Kettentrieben die Spannrolle?',k:'Sie spannt das Leertrum, gleicht die Längung der Kette aus, verhindert das Überspringen und dämpft Schwingungen.',
+ b:['Die Kette längt sich durch Verschleiß. Das Spannrad am <b>Leertrum</b> hält den Durchhang klein','Es verhindert das <b>Überspringen</b> der Kette über die Zähne','Es dämpft <b>Schwingungen</b> (auch Spann- und Führungsschienen oder Dämpfer)','Es kann die Umschlingung am kleinen Rad vergrößern'],s:'S. 22 Bild 2 und 3'}
+];
+const KUP=[
+ {n:'K1',g:'k',t:'Nennen Sie die Aufgaben von Kupplungen.',k:'Verbinden, Unterbrechen, Schalten von Getriebestufen, Schutz vor Überlastung, Stöße dämpfen, Wellenversatz ausgleichen.',b:['Verbindung von Antrieb und Abtrieb','Unterbrechung von Drehmomenten (Kfz)','Schaltung von Getriebestufen','Schutz vor Überlastung (CNC-Maschine)','Dämpfung von Stößen (Förderanlagen)','Ausgleich von Wellenversatz (Gelenkkupplung)'],m:'„Viele Unfälle Sind Schnell Da, Achtung!“'},
+ {n:'K2',g:'k',t:'In welche drei Gruppen teilt man Kupplungen ein?',k:'Nicht schaltbare, schaltbare und Sonderkupplungen.',b:['<b>Nicht schaltbar:</b> keine Trennung während des Betriebes','<b>Schaltbar:</b> Trennung während des Betriebes möglich','<b>Sonderkupplungen:</b> meist Sicherheitskupplungen, dazu Anlauf- und Freilaufkupplungen']},
+ {n:'K3',g:'k',t:'Nennen Sie Arten und Beispiele nicht schaltbarer Kupplungen.',k:'Starr (Scheiben-, Schalenkupplung), drehstarr (Bogenzahn-, Gelenkkupplung, Gelenkwelle), elastisch (Gummihülsen-, Metallfeder-, Metallbalgkupplung), Strömungskupplung.',b:['Starr: Scheibenkupplung, Schalenkupplung mit Kegelhülse','Drehstarr: Bogenzahnkupplung, Gelenkkupplung, Topfgelenk, Gelenkwelle','Elastisch: Gummihülsen-, Metallfeder-, Metallbalgkupplung','Strömungskupplung (Visco-Kupplung)']},
+ {n:'K4',g:'k',t:'Wie unterscheiden sich formschlüssige und kraftschlüssige schaltbare Kupplungen? Nennen Sie Beispiele.',k:'Formschlüssig: Das Drehmoment wird durch Ineinandergreifen übertragen (Klauen-, Zahnkupplung). Kraftschlüssig: durch Reibung (Ein- und Mehrscheiben-, Kegel-, Fliehkraftkupplung).',b:['Dazu gibt es magnetische Kupplungen','Formschlüssig schaltet man im Stillstand oder bei Gleichlauf, kraftschlüssig auch unter Last']},
+ {n:'K5',g:'k',t:'Welche Aufgabe haben Sicherheitskupplungen? Nennen Sie Beispiele.',k:'Sie unterbrechen den Kraftfluss, wenn das zulässige Drehmoment überschritten wird. Beispiele: Abscherstift, Brechbolzen, Rutschkupplung, Durchrastkupplung.',b:['Abscherstift und Brechbolzen brechen bei Überlast und müssen ersetzt werden','Rutsch- und Durchrastkupplungen kuppeln nach der Überlast wieder ein','Weitere Sonderkupplungen: Anlaufkupplungen, Freilaufkupplungen']}
+];
+const ALL=Q.concat(KUP);
+
+// ---------- Lernstand
+let ST={}; try{ ST=JSON.parse(localStorage.getItem('gt-st')||'{}'); }catch(e){ ST={}; }
+function saveST(){ try{ localStorage.setItem('gt-st',JSON.stringify(ST)); }catch(e){} }
+function setSt(id,v){ ST[id]=v; saveST(); stats(); const d=document.querySelector('details.q[data-id="'+id+'"]'); if(d) d.dataset.st=v; }
+function stats(){ let ok=0,ag=0; ALL.forEach(q=>{ if(ST[q.n]==='ok') ok++; else if(ST[q.n]==='again') ag++; }); $('stOk').textContent=ok; $('stAgain').textContent=ag; $('stOpen').textContent=ALL.length-ok-ag; $('stBar').style.width=(ok/ALL.length*100)+'%'; }
+
+function body(q){ let h='<div class="kurz">'+q.k+'</div>';
+  if(q.tbl){ h+='<div class="tw"><table>'+q.tbl.map((r,i)=>'<tr>'+r.map(c=>i?'<td>'+c+'</td>':'<th>'+c+'</th>').join('')+'</tr>').join('')+'</table></div>'; }
+  if(q.b) h+='<ul>'+q.b.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  if(q.m) h+='<div class="merk">'+q.m+'</div>';
+  if(q.s) h+='<div class="src">Quelle: '+q.s+'</div>';
+  return h; }
+
+// ---------- Fragenliste
+const GR={g:['Getriebe allgemein','Fragen 1–4'],z:['Zahnradgetriebe','Fragen 5–28'],m:['Zugmittelgetriebe','Fragen 29–44']};
+function renderList(){ const L=$('qList'); L.innerHTML=''; let last='';
+  Q.forEach(q=>{ if(q.g!==last){ last=q.g; const h=document.createElement('div'); h.className='grp'; h.dataset.g=q.g; h.innerHTML=GR[q.g][0]+' <small>'+GR[q.g][1]+'</small>'; L.appendChild(h); }
+    const d=document.createElement('details'); d.className='q'; d.dataset.id=q.n; d.dataset.st=ST[q.n]||''; d.dataset.calc=q.calc?1:0;
+    d.innerHTML='<summary><span class="qn">'+q.n+'</span><span class="qt">'+q.t+'</span><span>'+(q.calc?'<span class="chip calc">Rechnen</span>':q.own?'<span class="chip own">Betrieb</span>':'')+'</span></summary><div class="qa">'+body(q)+'<div class="rate"><button class="btn ok" data-r="ok">✓ kann ich</button><button class="btn bad" data-r="again">↻ nochmal</button></div></div>';
+    d.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{ setSt(q.n,b.dataset.r); if(b.dataset.r==='ok') d.open=false; applyFilter(); });
+    L.appendChild(d); });
+  applyFilter(); }
+let FIL='all';
+function applyFilter(){ document.querySelectorAll('#qList details.q').forEach(d=>{ const s=ST[d.dataset.id]||''; let v=true;
+    if(FIL==='again') v=s==='again'; else if(FIL==='open') v=!s; else if(FIL==='calc') v=d.dataset.calc==='1'; d.hidden=!v; });
+  document.querySelectorAll('#qList .grp').forEach(h=>{ let n=h.nextElementSibling, any=false; while(n&&!n.classList.contains('grp')){ if(!n.hidden) any=true; n=n.nextElementSibling; } h.hidden=!any; }); }
+document.querySelectorAll('.filters [data-f]').forEach(b=>b.onclick=()=>{ FIL=b.dataset.f; document.querySelectorAll('.filters [data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false')); applyFilter(); });
+$('openAll').onclick=()=>{ const ds=[...document.querySelectorAll('#qList details.q:not([hidden])')]; const open=!ds.every(d=>d.open); ds.forEach(d=>d.open=open); $('openAll').textContent=open?'Alle zuklappen':'Alle aufklappen'; };
+
+// ---------- Karteikarten (kurze Wiederholungsschleife)
+let deck=[], cur=null, shown=false;
+function buildDeck(){ const v=$('deck').value; let src=ALL;
+  if(v==='again') src=ALL.filter(q=>ST[q.n]!=='ok'); else if(v!=='all') src=ALL.filter(q=>q.g===v);
+  deck=src.slice().sort((a,b)=>(ST[a.n]==='again'?0:ST[a.n]==='ok'?2:1)-(ST[b.n]==='again'?0:ST[b.n]==='ok'?2:1)||Math.random()-.5); nextCard(); }
+function nextCard(){ cur=deck.shift()||null; shown=false; renderCard(); }
+function renderCard(){ const fc=$('fc'), bar=$('fcBar');
+  $('fcCount').textContent=cur?('noch '+(deck.length+1)+' Karten'):'fertig';
+  if(!cur){ fc.innerHTML='<div class="q">Stapel geschafft! 🎉</div><p>Wähle „Nur ‚nochmal‘ und offene“, um die schwierigen Karten zu wiederholen.</p>'; bar.innerHTML='<button class="btn pri" id="fcRe">Stapel neu mischen</button>'; $('fcRe').onclick=buildDeck; return; }
+  fc.innerHTML='<div class="meta" style="margin:0"><span class="qn">'+cur.n+'</span><span>'+(cur.g==='k'?'Kupplungen':GR[cur.g][0])+'</span></div><div class="q">'+cur.t+'</div><div class="ans"'+(shown?'':' hidden')+'>'+body(cur)+'</div>';
+  if(!shown){ bar.innerHTML='<button class="btn pri" id="fcShow">Antwort aufdecken</button>'; $('fcShow').onclick=()=>{ shown=true; renderCard(); }; }
+  else { bar.innerHTML='<button class="btn bad" id="fcNo">↻ Nochmal</button><button class="btn ok" id="fcYes">✓ Wusste ich</button>';
+    $('fcNo').onclick=()=>{ setSt(cur.n,'again'); deck.splice(Math.min(3,deck.length),0,cur); nextCard(); };
+    $('fcYes').onclick=()=>{ setSt(cur.n,'ok'); nextCard(); }; } }
+$('deck').onchange=buildDeck;
+
+// ---------- Rechnen
+const fmt=(v,d=2)=>(Math.round(v*10**d)/10**d).toLocaleString('de-DE',{maximumFractionDigits:d});
+function calcGear(){ const m=+$('cm').value||0, z=+$('cz').value||0, k=+$('cc').value||0, c=k*m, d=z*m;
+  const items=[['Teilkreis d = z·m',fmt(d,3)+' mm'],['Kopfkreis d_a = (z+2)·m',fmt((z+2)*m,3)+' mm'],['Fußkreis d_f = d − 2(m+c)',fmt(d-2*(m+c),3)+' mm'],['Teilung p = π·m',fmt(Math.PI*m,3)+' mm'],['Kopfhöhe h_a = m',fmt(m,3)+' mm'],['Fußhöhe h_f = m + c',fmt(m+c,3)+' mm'],['Zahnhöhe h',fmt(2*m+c,3)+' mm'],['Kopfspiel c',fmt(c,3)+' mm']];
+  $('cOut').innerHTML=items.map(([a,b])=>'<div><span>'+a+'</span><b>'+b+'</b></div>').join(''); }
+['cm','cz','cc'].forEach(id=>$(id).addEventListener('input',calcGear));
+function steps(el,arr){ const box=$(el); box.innerHTML='<ol class="steps">'+arr.map((s,i)=>'<li'+(i?' hidden':'')+'>'+s+'</li>').join('')+'</ol><div class="rate"><button class="btn pri">Nächster Schritt</button><button class="btn">Alles zeigen</button></div>';
+  const lis=[...box.querySelectorAll('li')], [bn,ba]=box.querySelectorAll('button'); let i=1;
+  bn.onclick=()=>{ if(i<lis.length) lis[i++].hidden=false; if(i>=lis.length) bn.disabled=true; }; ba.onclick=()=>{ lis.forEach(l=>l.hidden=false); i=lis.length; bn.disabled=true; }; }
+steps('a26',[
+ '<b>a) Achsabstand Stufe 1:</b><div class="f">a = m₁·(z₁ + z₂)/2 = 2,5 mm · (37 + 59)/2 = <span class="res">120 mm</span></div>',
+ '<b>b) Zähnezahl z₄:</b> Stufe 2 hat denselben Achsabstand.<div class="f">z₃ + z₄ = 2a/m₂ = 240 mm / 3 mm = 80 &nbsp;⇒&nbsp; z₄ = 80 − 47 = <span class="res">33</span></div>',
+ '<b>c) Übersetzungen:</b> Welle I treibt.<div class="f">i₁ = z₂/z₁ = 59/37 ≈ <span class="res">1,59</span> (ins Langsame)</div><div class="f">i₂ = z₄/z₃ = 33/47 ≈ <span class="res">0,70</span> (ins Schnelle)</div>',
+ '<b>d) Teilkreisdurchmesser:</b><div class="f">d₁ = z₁·m₁ = 37 · 2,5 mm = <span class="res">92,5 mm</span></div><div class="f">d₂ = z₂·m₁ = 59 · 2,5 mm = <span class="res">147,5 mm</span></div>Probe: (92,5 + 147,5)/2 = 120 mm ✓',
+ '<b>e) Umfangskraft Stufe 1:</b><div class="f">F_u = 2·M_A/d₁ = 2 · 50 Nm / 0,0925 m ≈ <span class="res">1081 N</span></div>',
+ '<b>f) Axialkraft bei β₀ = 8°:</b><div class="f">F_a = F_u · tan β₀ = 1081 N · tan 8° = 1081 N · 0,1405 ≈ <span class="res">152 N</span></div>',
+ '<b>g) Modul für z₃ = 43 und z₄ = 77:</b> Achsabstand bleibt 120 mm.<div class="f">m = 2a/(z₃ + z₄) = 240 mm / 120 = <span class="res">2 mm</span></div>2 mm steht in der Modulreihe 1, also zulässig ✓']);
+steps('a27',[
+ '<b>a) Modul:</b> Formel für den Fußkreis einsetzen, mit c = 0,2·m.<div class="f">d_f = z·m − 2·(m + 0,2m) = m·(z − 2,4)</div><div class="f">m = d_f/(z − 2,4) = 95,75 mm / 76,6 = <span class="res">1,25 mm</span></div>1,25 mm steht in der Modulreihe ✓',
+ '<b>b) Teilkreis:</b><div class="f">d₁ = z·m = 79 · 1,25 mm = <span class="res">98,75 mm</span></div>',
+ '<b>c) Außendurchmesser (Kopfkreis):</b><div class="f">d_a1 = (z + 2)·m = 81 · 1,25 mm = <span class="res">101,25 mm</span></div>',
+ '<b>e) Kopfhöhe:</b><div class="f">h_a = m = <span class="res">1,25 mm</span></div>',
+ '<b>f) Fußhöhe:</b><div class="f">c = 0,2 · 1,25 mm = 0,25 mm &nbsp;⇒&nbsp; h_f = m + c = <span class="res">1,5 mm</span></div>',
+ '<b>d) Zahnhöhe:</b><div class="f">h = h_a + h_f = 1,25 mm + 1,5 mm = <span class="res">2,75 mm</span></div>Probe: d_f = 98,75 − 2 · 1,5 = 95,75 mm ✓']);
+steps('a28',[
+ '<b>Zähnezahl:</b> Gleicher Modul m = 1,25 mm, das Rad aus 27 treibt.<div class="f">i = z₂/z₁ ⇒ z₂ = i·z₁ = 2 · 79 = <span class="res">158</span></div>',
+ '<b>Durchmesser:</b><div class="f">d₂ = z₂·m = 158 · 1,25 mm = <span class="res">197,5 mm</span></div><div class="f">d_a2 = (z₂ + 2)·m = 160 · 1,25 mm = <span class="res">200 mm</span></div><div class="f">d_f2 = d₂ − 2·(m + c) = 197,5 − 2 · 1,5 = <span class="res">194,5 mm</span></div>',
+ '<b>Höhen:</b> hängen nur vom Modul ab, deshalb wie in Aufgabe 27.<div class="f">h_a2 = <span class="res">1,25 mm</span> · h_f2 = <span class="res">1,5 mm</span> · h = <span class="res">2,75 mm</span></div>',
+ '<b>Achsabstand:</b><div class="f">a = (d₁ + d₂)/2 = (98,75 + 197,5)/2 mm = <span class="res">148,125 mm</span></div>']);
+steps('a31',[
+ '<b>Formel</b> (offener Riementrieb, Näherung aus dem Tabellenbuch):<div class="f">L ≈ 2a + π/2·(d₁ + d₂) + (d₁ − d₂)²/(4a)</div>',
+ '<b>Einsetzen:</b><div class="f">2a = 840 mm</div><div class="f">π/2 · (224 + 140) mm = π/2 · 364 mm ≈ 571,8 mm</div><div class="f">(224 − 140)² / (4 · 420) mm = 7056/1680 mm = 4,2 mm</div>',
+ '<b>Ergebnis:</b><div class="f">L ≈ 840 + 571,8 + 4,2 = <span class="res">≈ 1416 mm</span></div>Die exakte Rechnung mit dem Umschlingungswinkel ergibt ebenfalls 1416 mm.']);
+
+// ---------- Canvas-Helfer
+function fit(cv){ const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2), w=Math.max(1,r.width|0), h=Math.max(1,r.height|0);
+  if(cv.width!==w*dpr||cv.height!==h*dpr){ cv.width=w*dpr; cv.height=h*dpr; } const c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0); return [c,w,h]; }
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function gear(c,x,y,r,z,ang,fill,stroke){ const th=Math.min(r*.18,9); c.beginPath();
+  for(let i=0;i<z;i++){ const a0=ang+i*2*Math.PI/z, w=Math.PI/z; const pts=[[r-th/2,a0-w*.5],[r+th/2,a0-w*.25],[r+th/2,a0+w*.25],[r-th/2,a0+w*.5]];
+    pts.forEach(([rr,a],j)=>{ const px=x+rr*Math.cos(a), py=y+rr*Math.sin(a); (i===0&&j===0)?c.moveTo(px,py):c.lineTo(px,py); }); }
+  c.closePath(); c.fillStyle=fill; c.fill(); c.strokeStyle=stroke; c.lineWidth=1.2; c.stroke();
+  c.beginPath(); c.arc(x,y,Math.max(4,r*.14),0,7); c.fillStyle=stroke; c.fill();
+  c.strokeStyle=stroke; c.lineWidth=2; c.beginPath(); c.moveTo(x,y); c.lineTo(x+r*.7*Math.cos(ang),y+r*.7*Math.sin(ang)); c.stroke(); }
+function arrow(c,x,y,r,dir,col){ const a0=-Math.PI*.75, a1=-Math.PI*.25; c.strokeStyle=col; c.lineWidth=3; c.beginPath(); c.arc(x,y,r,a0,a1); c.stroke();
+  const ae=dir>0?a1:a0, tx=x+r*Math.cos(ae), ty=y+r*Math.sin(ae), tang=ae+(dir>0?Math.PI/2:-Math.PI/2); c.fillStyle=col; c.beginPath();
+  c.moveTo(tx+9*Math.cos(tang),ty+9*Math.sin(tang)); c.lineTo(tx+6*Math.cos(tang+2.3),ty+6*Math.sin(tang+2.3)); c.lineTo(tx+6*Math.cos(tang-2.3),ty+6*Math.sin(tang-2.3)); c.fill(); }
+function txt(c,t,x,y,col,size=13,al='center',w='600'){ c.font=w+' '+size+'px Barlow, Arial, sans-serif'; c.fillStyle=col; c.textAlign=al; c.fillText(t,x,y); }
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let T=0, lt=performance.now(), view='plan';
+
+// Zahnradpaar
+function drawGear(){ const [c,W,H]=fit($('cvGear')); c.clearRect(0,0,W,H); const z1=+$('gz1').value, z2=+$('gz2').value;
+  const k=Math.min((W-60)/(z1+z2), (H-70)/Math.max(z1,z2)), r1=z1*k/2, r2=z2*k/2, cy=H/2+6, x1=(W-(r1+r2)*2)/2+r1+ (W-2*(r1+r2))*0, cx1=W/2-(r1+r2)/2-(r2-r1)/2*0 ;
+  const X1=W/2-r2, X2=X1+r1+r2; const shift=(W-(X2+r2)-(X1-r1))/2; const A=X1+shift, B=X2+shift;
+  const w1=.8, a1=T*w1, a2=-T*w1*z1/z2+Math.PI/z2*( (z2%2)?1:0 )+Math.PI;
+  gear(c,A,cy,r1,z1,a1,css('--acc-soft'),css('--acc')); gear(c,B,cy,r2,z2,a2,css('--steel-soft'),css('--steel'));
+  arrow(c,A,cy,r1*.45,1,css('--acc')); arrow(c,B,cy,r2*.45,-1,css('--steel'));
+  txt(c,'treibend · z₁ = '+z1,A,cy+r1+26,css('--acc')); txt(c,'getrieben · z₂ = '+z2,B,cy+r2+26,css('--steel'));
+  const i=z2/z1, n1=1470; $('gz1v').textContent=z1; $('gz2v').textContent=z2;
+  $('gLive').innerHTML='i = z₂/z₁ = '+z2+'/'+z1+' = <b>'+fmt(i,3)+'</b> · '+(i>1?'ins Langsame':i<1?'ins Schnelle':'gleich')+' · bei n₁ = 1470/min: n₂ = <b>'+fmt(n1/i,1)+'/min</b> · M₂ = '+fmt(i,2)+' · M₁ · Drehrichtung: <b>umgekehrt</b>'; }
+
+// Planetengetriebe (Willis): (ns-nc)/(nr-nc) = -zr/zs
+const zs=24, zr=72, zp=24;
+const PM=[['s','c','r','Sonnenrad treibt, Hohlrad fest → Planetenträger'],['c','s','r','Planetenträger treibt, Hohlrad fest → Sonnenrad'],['r','c','s','Hohlrad treibt, Sonnenrad fest → Planetenträger'],['c','r','s','Planetenträger treibt, Sonnenrad fest → Hohlrad'],['s','r','c','Sonnenrad treibt, Planetenträger fest → Hohlrad'],['r','s','c','Hohlrad treibt, Planetenträger fest → Sonnenrad']];
+PM.forEach((m,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=m[3]; $('pMode').appendChild(o); });
+const NM={s:'Sonnenrad',c:'Planetenträger',r:'Hohlrad'};
+function planSpeeds(){ const [a,b,f]=PM[+$('pMode').value]; const n={}; n[f]=0; n[a]=1;
+  // unknown b from Willis
+  const R=zr/zs; let ns=n.s, nc=n.c, nr=n.r;
+  if(b==='s'){ ns = nc - R*(nr-nc); } else if(b==='c'){ nc = (ns + R*nr)/(1+R); } else { nr = nc - (ns-nc)/R; }
+  return {ns,nc,nr,a,b,f}; }
+const ang={s:0,c:0,r:0,p:0};
+function drawPlan(dt){ const [c,W,H]=fit($('cvPlan')); c.clearRect(0,0,W,H); const S=planSpeeds(); const w=0.9;
+  ang.s+=S.ns*w*dt; ang.c+=S.nc*w*dt; ang.r+=S.nr*w*dt; ang.p+=(-(S.ns-S.nc)*zs/zp + S.nc)*w*dt - S.nc*w*dt; // spin relativ zum Träger
+  const cx=W/2, cy=H/2, Rr=Math.min(W,H)/2-18, k=Rr/(zr/2+1.2), rs=zs*k/2, rp=zp*k/2, rc=rs+rp;
+  // Hohlrad
+  c.beginPath(); c.arc(cx,cy,Rr+10,0,7); c.fillStyle=S.f==='r'?css('--line2'):css('--steel-soft'); c.fill();
+  c.beginPath(); c.arc(cx,cy,zr*k/2,0,7); c.fillStyle=css('--panel2'); c.fill();
+  c.strokeStyle=css('--steel'); c.lineWidth=2; for(let i=0;i<zr;i++){ const a=ang.r+i*2*Math.PI/zr; c.beginPath(); c.moveTo(cx+(zr*k/2)*Math.cos(a),cy+(zr*k/2)*Math.sin(a)); c.lineTo(cx+(zr*k/2-5)*Math.cos(a),cy+(zr*k/2-5)*Math.sin(a)); c.stroke(); }
+  c.beginPath(); c.moveTo(cx+(Rr+10)*Math.cos(ang.r),cy+(Rr+10)*Math.sin(ang.r)); c.lineTo(cx+(Rr-2)*Math.cos(ang.r),cy+(Rr-2)*Math.sin(ang.r)); c.lineWidth=5; c.strokeStyle=css('--steel'); c.stroke();
+  // Träger
+  c.strokeStyle=S.f==='c'?css('--muted'):css('--acc'); c.lineWidth=7; c.lineCap='round';
+  for(let j=0;j<3;j++){ const a=ang.c+j*2*Math.PI/3; c.beginPath(); c.moveTo(cx,cy); c.lineTo(cx+rc*Math.cos(a),cy+rc*Math.sin(a)); c.stroke(); }
+  for(let j=0;j<3;j++){ const a=ang.c+j*2*Math.PI/3; gear(c,cx+rc*Math.cos(a),cy+rc*Math.sin(a),rp,zp,ang.p+ang.c,css('--warn-soft'),css('--warn')); }
+  c.beginPath(); for(let j=0;j<3;j++){ const a=ang.c+j*2*Math.PI/3, px=cx+rc*Math.cos(a), py=cy+rc*Math.sin(a); j?c.lineTo(px,py):c.moveTo(px,py); } c.closePath(); c.lineWidth=3; c.strokeStyle=S.f==='c'?css('--muted'):css('--ink'); c.globalAlpha=.55; c.stroke(); c.globalAlpha=1;
+  for(let j=0;j<3;j++){ const a=ang.c+j*2*Math.PI/3; c.beginPath(); c.arc(cx+rc*Math.cos(a),cy+rc*Math.sin(a),6,0,7); c.fillStyle=S.f==='c'?css('--muted'):css('--ink'); c.fill(); }
+  gear(c,cx,cy,rs,zs,ang.s,S.f==='s'?css('--line2'):css('--acc-soft'),css('--acc'));
+  const lab=(k0)=>k0===S.a?'Antrieb':k0===S.b?'Abtrieb':'fest';
+  txt(c,'Hohlrad: '+lab('r'),14,22,css('--steel'),13,'left'); txt(c,'Sonnenrad: '+lab('s'),14,40,css('--acc'),13,'left'); txt(c,'Planetenträger (Dreieck): '+lab('c'),14,58,css('--ink'),13,'left');
+  const nout=S['n'+S.b], iv=1/nout;
+  $('pLive').innerHTML='Antrieb: '+NM[S.a]+' (im Uhrzeigersinn) · fest: '+NM[S.f]+' · Abtrieb: '+NM[S.b]+' · i = '+fmt(Math.abs(iv),2)+' · '+(Math.abs(iv)>1?'ins Langsame':'ins Schnelle')+' · Drehrichtung: <b>'+(nout>0?'gleich':'umgekehrt')+'</b> (z_Sonne = '+zs+', z_Hohlrad = '+zr+')'; }
+
+// Riementrieb
+function tangents(x1,y1,r1,x2,y2,r2,cross){ // liefert zwei Tangenten [p1,p2]
+  const dx=x2-x1, dy=y2-y1, d=Math.hypot(dx,dy), base=Math.atan2(dy,dx), out=[];
+  for(const s of [1,-1]){ const rr2=cross?-r2:r2; const cosA=(r1-rr2)/d; const a=Math.acos(Math.max(-1,Math.min(1,cosA)));
+    const th=base+s*a; out.push([[x1+r1*Math.cos(th),y1+r1*Math.sin(th)],[x2+rr2*Math.cos(th),y2+rr2*Math.sin(th)],th]); }
+  return out; }
+function drawBelt(){ const [c,W,H]=fit($('cvBelt')); c.clearRect(0,0,W,H); const cross=$('bCross').checked, D=+$('bD').value, d=140, a=+$('bA').value;
+  $('bDv').textContent=D; $('bAv').textContent=a;
+  const sc=Math.min((W-40)/(a+D/2+d/2),(H-60)/Math.max(D,d)); const R1=D/2*sc, R2=d/2*sc, cy=H/2+4, x1=(W-(a*sc+R1+R2))/2+R1, x2=x1+a*sc;
+  const t=tangents(x1,cy,R1,x2,cy,R2,cross);
+  c.lineWidth=5; c.strokeStyle=css('--ink'); c.lineCap='round';
+  // Trume
+  t.forEach(([p,q],i)=>{ c.strokeStyle=i===0?css('--acc'):css('--steel'); c.beginPath(); c.moveTo(p[0],p[1]); c.lineTo(q[0],q[1]); c.stroke(); });
+  // Bögen
+  c.strokeStyle=css('--ink'); c.lineWidth=5;
+  const th1=t[0][2], th2=t[1][2];
+  c.beginPath(); c.arc(x1,cy,R1,th1,th2,false); c.stroke();
+  if(!cross){ c.beginPath(); c.arc(x2,cy,R2,th2,th1,false); c.stroke(); }
+  else { c.beginPath(); c.arc(x2,cy,R2,th1+Math.PI,th2+Math.PI,false); c.stroke(); }
+  // Scheiben
+  for(const [x,r,col] of [[x1,R1,css('--steel-soft')],[x2,R2,css('--acc-soft')]]){ c.beginPath(); c.arc(x,cy,r-3,0,7); c.fillStyle=col; c.fill(); c.beginPath(); c.arc(x,cy,5,0,7); c.fillStyle=css('--ink'); c.fill(); }
+  const rot1=-T*0.9, rot2=rot1*D/d*(cross?-1:1);
+  for(const [x,r,rot] of [[x1,R1,rot1],[x2,R2,rot2]]){ c.strokeStyle=css('--muted'); c.lineWidth=2; for(let k=0;k<3;k++){ const aa=rot+k*2*Math.PI/3; c.beginPath(); c.moveTo(x,cy); c.lineTo(x+(r-6)*Math.cos(aa),cy+(r-6)*Math.sin(aa)); c.stroke(); } }
+  arrow(c,x1,cy,R1*.5,-1,css('--steel')); arrow(c,x2,cy,R2*.5,cross?1:-1,css('--acc'));
+  // Umschlingungswinkel an kleiner Scheibe
+  const beta=cross?180+2*Math.asin((D/2+d/2)/a)*180/Math.PI:180-2*Math.asin((D/2-d/2)/a)*180/Math.PI;
+  txt(c,'große Scheibe d = '+D+' mm',x1,cy+R1+20,css('--steel')); txt(c,'klein d = '+d+' mm',x2,cy+R2+20,css('--acc'));
+  txt(c,cross?'gekreuzt: gegenläufig':'offen: gleiche Drehrichtung',W/2,18,css('--ink'),14);
+  $('bLive').innerHTML='Umschlingungswinkel an der kleinen Scheibe: <b>'+fmt(beta,1)+'°</b> · Drehrichtung: <b>'+(cross?'entgegengesetzt':'gleich')+'</b> · i = '+fmt(d/D,3)+' (große treibt)'; }
+
+// ---------- Tabs und Loop
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{ view=b.dataset.v; document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));
+  document.querySelectorAll('section.view').forEach(s=>s.hidden=s.id!=='v-'+view); try{ localStorage.setItem('gt-tab',view); }catch(e){}
+  if(view==='karten'&&!cur&&!deck.length) buildDeck(); window.scrollTo({top:document.querySelector('nav.tabs').offsetTop,behavior:'smooth'}); });
+function loop(now){ const dt=Math.min(.05,(now-lt)/1000); lt=now; if(!reduce) T+=dt;
+  if(view==='verstehen'){ drawGear(); drawPlan(reduce?0:dt); drawBelt(); }
+  requestAnimationFrame(loop); }
+renderList(); stats(); calcGear(); buildDeck();
+try{ const t=localStorage.getItem('gt-tab'); if(t){ const b=document.querySelector('.tab[data-v="'+t+'"]'); if(b) b.click(); window.scrollTo(0,0); } }catch(e){}
+requestAnimationFrame(loop);
+</script>
+
+</body>
+</html>
