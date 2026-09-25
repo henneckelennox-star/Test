@@ -112,6 +112,13 @@ select{font:inherit;padding:6px 9px;border-radius:8px;border:1px solid var(--lin
 .tag3::before{content:"";position:absolute;left:-12px;top:12px;width:10px;height:2px;background:var(--acc)}
 @media (max-width:600px){.tag3{font-size:0;padding:3px 7px}.tag3 b{font-size:.74rem}.v3{height:480px;min-height:0}}
 .hero3{margin-top:14px}
+.m3{margin:6px 0 18px}
+.v3 .v3stat{margin-top:10px;display:inline-block;max-width:min(580px,100%);background:rgba(10,14,19,.8);border-left:3px solid var(--acc);border-radius:8px;padding:7px 11px;font-size:.9rem;line-height:1.45;color:var(--ink);backdrop-filter:blur(4px)}
+.v3 .v3stat:empty{display:none}
+.v3 .v3stat b{color:var(--acc)}
+.v3 .v3ui .sep{width:1px;background:var(--line2);margin:4px 2px}
+@media (max-width:600px){.v3 .v3stat{font-size:.78rem;padding:5px 8px}.v3 .v3hint{display:none}.v3 .v3ui button{padding:6px 10px;font-size:.8rem}.m3{height:560px!important}}
+
 /* Text */
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:10px 26px;margin-top:18px}
 .txt p{margin:0 0 10px;max-width:66ch}
@@ -605,6 +612,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
 <section class="ch" id="k10" data-t="Schnecke">
   <div class="chh"><span class="pos">10</span><h3>Das Schneckengetriebe: riesige Übersetzung, die festhält</h3></div>
   <p class="kurz"><b>Kurz gesagt</b>Die Schnecke ist eine Schraube, die das Rad weiterschiebt. Pro Umdrehung rückt das Rad nur um so viele Zähne weiter, wie die Schnecke Gänge hat. So entsteht eine riesige Übersetzung in einer Stufe. Dafür gibt es viel Reibung, und bei kleinem Steigungswinkel hält das Getriebe die Last von selbst.</p>
+  <div class="v3 m3" id="hub3d">
+    <div class="v3ov"><div class="v3title">Hubwerk mit Schneckengetriebe</div><div class="v3hint">Ziehen zum Drehen · zwei Finger zum Zoomen</div><div class="v3stat"></div></div>
+    <div class="tag3"></div><div class="tag3"></div><div class="tag3"></div><div class="tag3"></div>
+    <div class="v3ui"><button type="button" data-g="dir" data-x="up" aria-pressed="true">▲ Heben</button><button type="button" data-g="dir" data-x="down" aria-pressed="false">▼ Senken</button><button type="button" data-g="dir" data-x="off" aria-pressed="false">⏻ Motor aus</button><span class="sep"></span><button type="button" data-g="gang" data-x="1" aria-pressed="true">eingängig</button><button type="button" data-g="gang" data-x="4" aria-pressed="false">viergängig</button></div>
+  </div>
   <div class="bench" id="b10">
     <div class="btop"><span>Schneckengetriebe · Schneckenrad z₂ = 40</span><span class="live">● live</span></div>
     <canvas id="cvWorm" class="cv"></canvas>
@@ -714,6 +726,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
 <section class="ch" id="k13" data-t="Zahnstange">
   <div class="chh"><span class="pos">13</span><h3>Zahnstange und Gewindespindel: aus Drehen wird Schieben</h3></div>
   <p class="kurz"><b>Kurz gesagt</b>Ein Ritzel auf einer Zahnstange rollt ab wie ein Rad auf der Straße. Pro Umdrehung bewegt sich die Zahnstange um den Teilkreisumfang π·d. Eine Gewindespindel schiebt ihre Mutter pro Umdrehung um die Steigung P.</p>
+  <div class="v3 m3" id="spin3d">
+    <div class="v3ov"><div class="v3title">Fräsmaschine: Tischvorschub mit Gewindespindel</div><div class="v3hint">Ziehen zum Drehen · zwei Finger zum Zoomen</div><div class="v3stat"></div></div>
+    <div class="tag3"></div><div class="tag3"></div><div class="tag3"></div><div class="tag3"></div>
+    <div class="v3ui"><button type="button" data-g="P" data-x="5" aria-pressed="true">P = 5 mm</button><button type="button" data-g="P" data-x="10" aria-pressed="false">P = 10 mm</button><span class="sep"></span><button type="button" data-x="slow" aria-pressed="false">Zeitlupe</button></div>
+  </div>
   <div class="bench" id="b13">
     <div class="btop"><span>Drehbewegung → Längsbewegung</span><span class="live">● live</span></div>
     <canvas id="cvRack" class="cv"></canvas>
@@ -747,6 +764,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
 <section class="ch" id="k14" data-t="Schaltgetriebe">
   <div class="chh"><span class="pos">14</span><h3>Schaltbare Getriebe: mehrere Gänge</h3></div>
   <p class="kurz"><b>Kurz gesagt</b>Wenn eine feste Übersetzung nicht reicht (Auto, Werkzeugmaschine), schaltet man zwischen verschiedenen Zahnradpaaren. Die Kraft nimmt dann einen anderen Weg durch das Getriebe, den Energiefluss.</p>
+  <div class="v3 m3" id="shift3d">
+    <div class="v3ov"><div class="v3title">Schieberadgetriebe mit drei Gängen</div><div class="v3hint">Ziehen zum Drehen · zwei Finger zum Zoomen</div><div class="v3stat"></div></div>
+    <div class="tag3"></div><div class="tag3"></div><div class="tag3"></div><div class="tag3"></div>
+    <div class="v3ui"><button type="button" data-g="gang" data-x="0" aria-pressed="true">1. Gang</button><button type="button" data-g="gang" data-x="1" aria-pressed="false">2. Gang</button><button type="button" data-g="gang" data-x="2" aria-pressed="false">3. Gang</button><span class="sep"></span><button type="button" data-x="slow" aria-pressed="false">Zeitlupe</button></div>
+  </div>
   <div class="bench" id="b14">
     <div class="btop"><span>Gestuftes Schaltgetriebe vom Übungsblatt · n_A = 900/min · alle Stufen a = 25·m</span><span class="live">● live</span></div>
     <canvas id="cvShift" class="cv-l"></canvas>
@@ -777,6 +799,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
 <section class="ch" id="k15" data-t="Riemen & Kette">
   <div class="chh"><span class="pos">15</span><h3>Riemen und Ketten: über große Abstände</h3></div>
   <p class="kurz"><b>Kurz gesagt</b>Zugmittel überbrücken große Achsabstände. Flach- und Keilriemen übertragen durch Reibung (kraftschlüssig). Sie haben Schlupf, dämpfen aber Stöße. Zahnriemen und Ketten übertragen durch Formschluss, ohne Schlupf.</p>
+  <div class="v3 m3" id="belt3d">
+    <div class="v3ov"><div class="v3title">Kreissäge mit Riementrieb</div><div class="v3hint">Ziehen zum Drehen · zwei Finger zum Zoomen</div><div class="v3stat"></div></div>
+    <div class="tag3"></div><div class="tag3"></div><div class="tag3"></div><div class="tag3"></div>
+    <div class="v3ui"><button type="button" data-g="typ" data-x="v" aria-pressed="true">Keilriemen</button><button type="button" data-g="typ" data-x="z" aria-pressed="false">Zahnriemen</button><span class="sep"></span><button type="button" data-x="last" aria-pressed="false">🪵 Dickes Brett (Überlast)</button></div>
+  </div>
   <div class="bench" id="b15">
     <div class="btop"><span>Riementrieb · kleine Scheibe d = 140 mm</span><span class="live">● live</span></div>
     <canvas id="cvBelt" class="cv"></canvas>
@@ -831,6 +858,11 @@ footer{margin-top:60px;border-top:1px solid var(--line2);padding-block:16px 50px
 <section class="ch" id="k16" data-t="Kupplungen">
   <div class="chh"><span class="pos">16</span><h3>Kupplungen: das Bindeglied</h3></div>
   <p class="kurz"><b>Kurz gesagt</b>Die Kupplung verbindet Motor und Getriebe (oder Getriebe und Maschine). Je nach Bauart gleicht sie Versatz aus, dämpft Stöße, schaltet oder schützt vor Überlast.</p>
+  <div class="v3 m3" id="kup3d">
+    <div class="v3ov"><div class="v3title">Steinbrecher: Was macht die Kupplung beim Stoß?</div><div class="v3hint">Ziehen zum Drehen · zwei Finger zum Zoomen</div><div class="v3stat"></div></div>
+    <div class="tag3"></div><div class="tag3"></div><div class="tag3"></div>
+    <div class="v3ui"><button type="button" data-g="typ" data-x="s" aria-pressed="true">starr</button><button type="button" data-g="typ" data-x="e" aria-pressed="false">elastisch</button><button type="button" data-g="typ" data-x="r" aria-pressed="false">Rutschkupplung</button><span class="sep"></span><button type="button" data-x="rock" data-once>🪨 Stein rein!</button><button type="button" data-x="exp" aria-pressed="false">Auseinander</button><button type="button" data-x="slow" aria-pressed="false">Zeitlupe</button></div>
+  </div>
   <div class="bench" id="b16">
     <div class="btop"><span>Drehmoment am Getriebe, wenn Steine auf das Band fallen</span><span class="live">● live</span></div>
     <canvas id="cvShock" class="cv"></canvas>
@@ -1743,6 +1775,297 @@ function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; for(const
   window.G3={ mode:v=>build(v) }; build(window.__AM||'st');
 })();
 requestAnimationFrame(frame);
+
+/* ================= Gemeinsame Bauteile für die Maschinen ================= */
+const cylZ=(r,l,mat,seg=32)=>new THREE.Mesh(new THREE.CylinderGeometry(r,r,l,seg).rotateX(Math.PI/2),mat);
+const cylX=(r,l,mat,seg=32)=>new THREE.Mesh(new THREE.CylinderGeometry(r,r,l,seg).rotateZ(Math.PI/2),mat);
+const boxM=(x,y,z,mat)=>new THREE.Mesh(new THREE.BoxGeometry(x,y,z),mat);
+const ease=x=>x<.5?2*x*x:1-(-2*x+2)**2/2;
+function scene3(id,opt){ const host=document.getElementById(id); if(!host) return null; const V=viewer(host,opt); VIEWS.push(V);
+  const st=host.querySelector('.v3stat'); V.say=t=>{ if(st&&st._t!==t){ st._t=t; st.innerHTML=t; } }; return {host,V,S:V.S}; }
+function tagsAt(V,host,fns){ const els=[...host.querySelectorAll('.tag3')], v=new THREE.Vector3();
+  V.after=()=>els.forEach((el,k)=>{ const f=fns[k]; if(!f) return; v.copy(f()); v.project(V.cam); el.style.transform='translate('+Math.round((v.x*.5+.5)*V.w)+'px,'+Math.round((-v.y*.5+.5)*V.h)+'px)'; el.style.opacity=v.z<1?1:0; });
+  return (k,h)=>{ if(els[k]&&els[k]._h!==h){ els[k]._h=h; els[k].innerHTML=h; } }; }
+const at=(o,x=0,y=0,z=0)=>{ const v=new THREE.Vector3(); return ()=>o.localToWorld(v.set(x,y,z)); };
+function ui(host,h){ host.querySelectorAll('.v3ui button').forEach(b=>b.onclick=()=>{ const g=b.dataset.g;
+    if(g){ host.querySelectorAll('.v3ui button[data-g="'+g+'"]').forEach(x=>x.setAttribute('aria-pressed',x===b)); h[g]&&h[g](b.dataset.x,true); }
+    else if(b.dataset.once!==undefined){ h[b.dataset.x]&&h[b.dataset.x](); }
+    else { const on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',on); h[b.dataset.x]&&h[b.dataset.x](on); } });
+  return (g,x)=>host.querySelectorAll('.v3ui button[data-g="'+g+'"]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.x===String(x))); }
+function helixTube(x0,x1,rad,lead,starts,tr,mat){ const g=new THREE.Group(), turns=(x1-x0)/lead, N=Math.max(60,Math.ceil(turns*40));
+  for(let s=0;s<starts;s++){ const pts=[]; for(let k=0;k<=N;k++){ const th=k/N*TAU*turns+s*TAU/starts; pts.push(new THREE.Vector3(x0+(x1-x0)*k/N,rad*Math.cos(th),rad*Math.sin(th))); }
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),N,tr,8,false),mat)); } return g; }
+function labelTex(txt,bg,fg){ const c=document.createElement('canvas'); c.width=c.height=256; const x=c.getContext('2d'); x.fillStyle=bg; x.fillRect(0,0,256,256);
+  x.strokeStyle='rgba(0,0,0,.35)'; x.lineWidth=14; x.strokeRect(12,12,232,232); x.beginPath(); x.moveTo(12,12); x.lineTo(244,244); x.moveTo(244,12); x.lineTo(12,244); x.lineWidth=8; x.stroke();
+  x.fillStyle=bg; x.fillRect(40,90,176,76); x.fillStyle=fg; x.font='bold 58px sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(txt,128,130);
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; }
+function floorAt(S,y,size){ const g=new THREE.GridHelper(size,Math.round(size/40),0x35506e,0x1c2b3c); g.position.y=y; g.material.transparent=true; g.material.opacity=.55; S.add(g);
+  const d=new THREE.Mesh(new THREE.CircleGeometry(size*.42,48).rotateX(-Math.PI/2),new THREE.MeshBasicMaterial({color:0x0e1822,transparent:true,opacity:.6})); d.position.y=y-.5; S.add(d); }
+/* Elektromotor: Achse lokal z, Wellenstumpf zeigt nach −z (Spitze bei z = −L/2 − 50) */
+function motorG(r=36,L=110,paint=MAT.paint){ const g=new THREE.Group();
+  g.add(cylZ(r,L,paint,40));
+  for(let k=0;k<18;k++){ const a=k/18*TAU; if(Math.abs(Math.sin(a)+1)<.05) continue; const f=boxM(3,r*.22,L*.78,paint); f.position.set((r+r*.08)*Math.cos(a),(r+r*.08)*Math.sin(a),L*.04); f.rotation.z=a+Math.PI/2; g.add(f); }
+  const fan=cylZ(r*1.06,L*.2,MAT.dark,40); fan.position.z=L/2+L*.08; g.add(fan);
+  for(let k=0;k<3;k++){ const ring=new THREE.Mesh(new THREE.TorusGeometry(r*(.3+k*.25),1.4,6,36),MAT.rubber); ring.position.z=L/2+L*.18+.5; g.add(ring); }
+  const fl=cylZ(r*1.2,8,MAT.dark,40); fl.position.z=-L/2-4; g.add(fl);
+  const tb=boxM(r*.9,r*.5,r*1.1,paint); tb.position.set(0,r+r*.22,-L*.12); g.add(tb);
+  const pl=boxM(2,r*.55,r*.9,new THREE.MeshStandardMaterial({color:0xdfe6ee,metalness:.6,roughness:.3})); pl.position.set(r*1.02,r*.1,-L*.1); g.add(pl);
+  const ft=boxM(r*2.1,8,L*.7,paint); ft.position.y=-r-6; g.add(ft); const ft2=boxM(r*.9,r*.4,L*.6,paint); ft2.position.y=-r*.82; g.add(ft2);
+  const sh=new THREE.Group(); const s=cylZ(r*.17,50,MAT.shaft,20); s.position.z=-L/2-25; const key=boxM(r*.12,r*.09,26,MAT.hot); key.position.set(0,r*.17,-L/2-30); sh.add(s,key); g.add(sh);
+  return {g,sh,r,L,tip:L/2+50}; }
+function coupX(r){ const g=new THREE.Group(); for(const dx of [-7,7]){ const d=cylX(r,10,MAT.dark); d.position.x=dx; g.add(d); } g.add(cylX(r*.8,6,MAT.rubber));
+  for(let k=0;k<6;k++){ const a=k/6*TAU, b=cylX(r*.14,18,MAT.shaft,10); b.position.set(0,r*.7*Math.cos(a),r*.7*Math.sin(a)); g.add(b); } return g; }
+function coupZ(r){ const g=coupX(r); g.rotation.set(0,Math.PI/2,0); const w=new THREE.Group(); w.add(g); return w; }
+
+/* ================= Hubwerk mit Schneckengetriebe (Kap. 10) ================= */
+(function(){ const s=scene3('hub3d',{cam:[480,200,720],target:[-70,-40,-40],spin:.35,minD:260,maxD:1500}); if(!s) return; const {host,V,S}=s;
+  const m=5, z2=30, R=m*z2/2, rw=26, yW=R+rw, W=26, drumR=30, zD=-88;
+  const root=new THREE.Group(); S.add(root); floorAt(S,-300,760);
+  const worms={}, wheels={};
+  for(const st of [1,4]){ const lead=st*Math.PI*m, g=new THREE.Group(); g.add(helixTube(-72,72,rw,lead,st,m*.7,MAT.hot)); g.add(cylX(rw-m*.4,150,MAT.hot)); worms[st]=g;
+    const gam=Math.atan(lead/(TAU*rw))/DEG; wheels[st]=new THREE.Mesh(gearGeo(z2,m,W,{helix:gam,hand:1,bore:10}),MAT.bronze); }
+  const GS=new THREE.Group(); GS.add(worms[1],worms[4],cylX(6,300,MAT.shaft)); root.add(GS);
+  const GW=new THREE.Group(); GW.position.set(0,yW,0); GW.add(wheels[1],wheels[4]); root.add(GW);
+  const ws=cylZ(9,150,MAT.shaft); ws.position.z=-50; GW.add(ws);
+  const drum=cylZ(drumR,50,MAT.steel); drum.position.z=zD; GW.add(drum);
+  const ropeMat=new THREE.MeshStandardMaterial({color:0xcfc6ae,metalness:.55,roughness:.45});
+  const wound=new THREE.Mesh(new THREE.CylinderGeometry(drumR+3,drumR+3,42,40,1,true).rotateX(Math.PI/2),ropeMat); wound.position.z=zD; GW.add(wound);
+  for(const dz of [-27,27]){ const f=cylZ(drumR+12,4,MAT.dark); f.position.z=zD+dz; GW.add(f); } const mk=boxM(8,8,5,MAT.hot); mk.position.set(drumR+6,0,zD+30); GW.add(mk);
+  const xr=drumR+3; const rope=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,1,10).translate(0,-.5,0),ropeMat); rope.position.set(xr,yW,zD); root.add(rope);
+  const hook=new THREE.Group(); const hk=new THREE.Mesh(new THREE.TorusGeometry(9,3,10,24),MAT.steel); hk.position.y=-10; const hb=boxM(14,14,14,MAT.hot); hook.add(hk,hb);
+  const tex=labelTex('500 kg','#d9a441','#2a1a05'), cm=new THREE.MeshStandardMaterial({map:tex,roughness:.7,metalness:.05});
+  const crate=boxM(64,56,64,cm); crate.position.y=-50; hook.add(crate);
+  for(const [x,z] of [[-26,-26],[26,-26],[-26,26],[26,26]]){ const c=new THREE.Mesh(new THREE.CylinderGeometry(1,1,34,6),ropeMat); c.position.set(x*.5,-24,z*.5); c.rotation.set(z*.012,0,-x*.012); hook.add(c); }
+  hook.position.set(xr,0,zD); root.add(hook);
+  const hous=boxM(190,yW+R+m+45,64,MAT.glass); hous.position.set(0,(yW+R+m+10-35)/2,0); hous.add(new THREE.LineSegments(new THREE.EdgesGeometry(hous.geometry),new THREE.LineBasicMaterial({color:0x6fb1ff,transparent:true,opacity:.45}))); root.add(hous);
+  const plat=boxM(440,20,100,MAT.paint); plat.position.set(-120,-50,0); root.add(plat);
+  for(const x of [-320,80]){ const p=boxM(24,240,24,MAT.paint); p.position.set(x,-180,0); root.add(p); }
+  for(const x of [-110,110]){ const b=boxM(22,50,50,MAT.dark); b.position.set(x,-15,0); root.add(b); }
+  const M=motorG(34,110); const MW=new THREE.Group(); MW.rotation.y=-Math.PI/2; MW.add(M.g); MW.position.set(-160-M.tip,0,0); root.add(MW);
+  const cp=coupX(20); cp.position.x=-160; root.add(cp);
+  const botY=-226, topY=-24, thMax=(topY-botY)/drumR, off=Math.PI/z2*.5;
+  let st=1, mode='up', auto=true, ai=0, tt=0, th=0, vel=0, shake=0;
+  const setG=ui(host,{ dir:x=>{ auto=false; mode=x; }, gang:x=>{ st=+x; }, slow:on=>V.slow=on });
+  const tag=tagsAt(V,host,[at(MW,0,M.r+30,0),at(GS,40,rw+10,40),at(GW,-R*.8,R*.5,0),at(hook,32,-30,0)]);
+  tag(0,'<b>Motor</b>1400 /min');
+  V.update=(dt,t)=>{
+    if(auto){ tt+=dt; const seq=['up','off','down','off']; mode=seq[ai]; let nx=false;
+      if(mode==='up'&&th>=thMax-1e-3) nx=true; if(mode==='down'&&th<=1e-3) nx=true; if(mode==='off'&&tt>(ai===1?3.5:1.6)) nx=true;
+      if(nx){ ai=(ai+1)%4; tt=0; mode=seq[ai]; } setG('dir',mode); }
+    const w0=14*st/z2;
+    if(mode==='up') vel+=(w0-vel)*Math.min(1,dt*6); else if(mode==='down') vel+=(-w0-vel)*Math.min(1,dt*6);
+    else if(st===1) vel*=Math.max(0,1-dt*12); else vel=Math.max(-6,vel-3.2*dt);
+    th+=vel*dt; if(th>thMax){ th=thMax; vel=0; } if(th<0){ if(vel<-1.5) shake=.3; th=0; vel=0; }
+    GW.rotation.z=th+off; GS.rotation.x=-th*z2/st; cp.rotation.x=GS.rotation.x; M.sh.rotation.z=-GS.rotation.x;
+    worms[1].visible=wheels[1].visible=st===1; worms[4].visible=wheels[4].visible=st===4;
+    const yh=botY+drumR*th; hook.position.y=yh; rope.scale.y=yW-yh;
+    shake=Math.max(0,shake-dt); root.position.y=shake>0?(Math.random()-.5)*shake*14:0;
+    const i=st===1?'30':'7,5';
+    tag(1,'<b>Schnecke</b>'+(st===1?'z₁ = 1 · eingängig · γ ≈ 5,5°':'z₁ = 4 · viergängig · γ ≈ 21°'));
+    tag(2,'<b>Schneckenrad</b>z₂ = 30 → i = '+i); tag(3,'<b>Last</b>500 kg · '+(Math.abs(vel)<.02?'steht':(vel>0?'▲ ':'▼ ')+(Math.abs(vel)*drumR).toFixed(0)+' mm/s'));
+    if(mode==='up') V.say('<b>Heben:</b> Die Schnecke muss sich '+i+'-mal drehen, bis das Rad einmal herum ist. i = 30/'+st+' = '+i+' → langsam, aber mit großer Kraft.');
+    else if(mode==='down') V.say('<b>Senken:</b> Der Motor dreht rückwärts, die Last fährt kontrolliert nach unten.');
+    else if(st===1) V.say('<b>Motor aus:</b> Die Last bleibt hängen! Eingängige Schnecke, kleiner Steigungswinkel → <b>selbsthemmend</b> (η &lt; 50 %). Das Rad kann die Schnecke nicht zurückdrehen.');
+    else V.say('<b>Motor aus:</b> Die Last dreht das Getriebe zurück und fällt! Viergängig → großer Steigungswinkel → <b>keine Selbsthemmung</b>. Hier bräuchte man eine Bremse.');
+  };
+})();
+
+/* ================= Vorschub mit Gewindespindel (Kap. 13) ================= */
+(function(){ const s=scene3('spin3d',{cam:[210,340,720],target:[20,40,0],spin:.3,minD:240,maxD:1400}); if(!s) return; const {host,V,S}=s;
+  const root=new THREE.Group(); S.add(root); floorAt(S,-92,900);
+  const bed=boxM(720,50,210,MAT.paint); bed.position.set(0,-67,0); root.add(bed);
+  for(const z of [-62,62]){ const r=boxM(600,14,22,MAT.steel); r.position.set(40,-35,z); root.add(r); }
+  const SP=new THREE.Group(); root.add(SP); SP.add(cylX(10,460,MAT.shaft)); SP.children[0].position.x=30;
+  const thr={}; for(const P of [5,10]){ thr[P]=helixTube(-170,250,11.4,P,1,P*.27,MAT.dark); SP.add(thr[P]); }
+  const mk=boxM(6,6,24,MAT.hot); mk.position.set(-186,12,0); SP.add(mk);
+  for(const x of [-178,258]){ const b=boxM(26,58,56,MAT.dark); b.position.set(x,-13,0); root.add(b); }
+  const TB=new THREE.Group(); root.add(TB);
+  const plate=boxM(170,26,160,MAT.dark); plate.position.y=40; TB.add(plate);
+  for(const z of [-45,0,45]){ const sl=boxM(172,4,12,MAT.rubber); sl.position.set(0,52,z); TB.add(sl); }
+  for(const z of [-62,62]){ const sa=boxM(170,16,34,MAT.steel); sa.position.set(0,-20,z); TB.add(sa); const cn=boxM(170,40,12,MAT.dark); cn.position.set(0,8,z*.82); TB.add(cn); }
+  const nut=boxM(60,46,42,MAT.bronze); nut.position.y=4; TB.add(nut);
+  const wp=boxM(90,36,70,new THREE.MeshStandardMaterial({color:0xaab7c4,metalness:.8,roughness:.4})); wp.position.y=71; TB.add(wp);
+  const head=boxM(90,70,90,MAT.paint); head.position.set(40,205,0); root.add(head);
+  const col=boxM(70,300,70,MAT.paint); col.position.set(40,100,-150); root.add(col); const arm=boxM(70,50,160,MAT.paint); arm.position.set(40,215,-80); root.add(arm);
+  const CT=new THREE.Group(); CT.position.set(40,150,0); root.add(CT); const cc=new THREE.Mesh(new THREE.CylinderGeometry(9,9,50,20),MAT.shaft); CT.add(cc);
+  for(let k=0;k<2;k++){ const pts=[]; for(let q=0;q<=40;q++){ const a=q/40*TAU*1.4+k*Math.PI; pts.push(new THREE.Vector3(9.5*Math.cos(a),-25+50*q/40,9.5*Math.sin(a))); } CT.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),40,2.2,6,false),MAT.hot)); }
+  const M=motorG(32,100); const MW=new THREE.Group(); MW.rotation.y=-Math.PI/2; MW.add(M.g); MW.position.set(-200-M.tip,0,0); root.add(MW);
+  const cp=coupX(18); cp.position.x=-200; root.add(cp);
+  const xA=-85, xB=165; let P=5, xt=xA, dir=1, ph=0, rev=0;
+  ui(host,{ P:x=>{ P=+x; }, slow:on=>V.slow=on });
+  const tag=tagsAt(V,host,[at(MW,0,M.r+28,0),at(SP,-140,16,0),at(TB,0,4,-24),at(TB,40,90,0)]);
+  tag(0,'<b>Motor</b>n = 600 /min');
+  V.update=(dt,t)=>{ const w=30, v=w/TAU*P; ph+=dir*w*dt; xt+=dir*v*dt; rev+=w*dt/TAU;
+    if(xt>xB){ xt=xB; dir=-1; rev=0; } if(xt<xA){ xt=xA; dir=1; rev=0; }
+    SP.rotation.x=ph; cp.rotation.x=ph; M.sh.rotation.z=-ph; TB.position.x=xt; CT.rotation.y=t*14;
+    thr[5].visible=P===5; thr[10].visible=P===10;
+    tag(1,'<b>Gewindespindel</b>Tr 24 × '+P); tag(2,'<b>Mutter</b>Bronze, sitzt am Tisch'); tag(3,'<b>Tisch</b>'+(dir>0?'▶ ':'◀ ')+'v = n·P = '+(600*P/1000).toFixed(0)+' m/min');
+    V.say('<b>1 Umdrehung = 1 Steigung.</b> '+rev.toFixed(1).replace('.',',')+' U × '+P+' mm = <b>'+(rev*P).toFixed(0)+' mm</b> Weg. Doppelte Steigung → doppelt so schnell.');
+  };
+})();
+
+/* ================= Schieberadgetriebe (Kap. 14) ================= */
+(function(){ const s=scene3('shift3d',{cam:[430,200,580],target:[0,-10,60],spin:.35,minD:240,maxD:1400}); if(!s) return; const {host,V,S}=s;
+  const m=3, zin=[20,28,36], zout=[40,32,24], a=m*(zin[0]+zout[0])/2, yin=a/2, yout=-a/2, inPos=[-90,0,90], rel=[-25,0,25], dT=inPos.map((p,k)=>p-rel[k]);
+  const root=new THREE.Group(); S.add(root); floorAt(S,-150,800);
+  const GI=new THREE.Group(); GI.position.y=yin; root.add(GI); GI.add(cylZ(7,300,MAT.shaft)); GI.children[0].position.z=-10;
+  zin.forEach((z,k)=>{ const g=new THREE.Mesh(gearGeo(z,m,18,{bore:5}),MAT.hot); g.position.z=inPos[k]; GI.add(g); });
+  const GO=new THREE.Group(); GO.position.y=yout; root.add(GO); const os=cylZ(9,420,MAT.shaft); os.position.z=60; GO.add(os);
+  for(let k=0;k<6;k++){ const a6=k/6*TAU, sp=boxM(3,3,300,MAT.dark); sp.position.set(9*Math.cos(a6),9*Math.sin(a6),10); GO.add(sp); }
+  const BL=new THREE.Group(); GO.add(BL); zout.forEach((z,k)=>{ const g=new THREE.Mesh(gearGeo(z,m,18,{bore:6}),MAT.steel); g.position.z=rel[k]; BL.add(g); });
+  const hub=cylZ(14,80,MAT.dark); hub.position.z=15; BL.add(hub); for(const zz of [43,57]){ const d=cylZ(24,4,MAT.dark); d.position.z=zz; BL.add(d); } const gr=cylZ(18,10,MAT.dark); gr.position.z=50; BL.add(gr);
+  const chuck=new THREE.Group(); chuck.position.z=260; GO.add(chuck); chuck.add(cylZ(42,40,MAT.dark,40));
+  for(let k=0;k<3;k++){ const a3=k/3*TAU, j=boxM(12,18,18,MAT.steel); j.position.set(24*Math.cos(a3),24*Math.sin(a3),28); j.rotation.z=a3; chuck.add(j); }
+  const wk=cylZ(10,70,new THREE.MeshStandardMaterial({color:0xb8c2cc,metalness:.85,roughness:.35})); wk.position.z=60; chuck.add(wk); const cm=boxM(6,30,4,MAT.hot); cm.position.set(0,26,21); chuck.add(cm);
+  const rod=cylZ(5,300,MAT.shaft); rod.position.set(0,yout-62,40); root.add(rod);
+  const FK=new THREE.Group(); FK.position.set(0,yout,0); root.add(FK); const fm=new THREE.MeshStandardMaterial({color:0x5aa9ff,metalness:.6,roughness:.3,emissive:0x0a2440,emissiveIntensity:.5});
+  const fa=boxM(9,42,9,fm); fa.position.y=-41; FK.add(fa); const fr=new THREE.Mesh(new THREE.TorusGeometry(20,3,8,24,Math.PI),fm); fr.rotation.z=Math.PI; FK.add(fr); const fc=boxM(16,16,20,fm); fc.position.y=-62; FK.add(fc);
+  const hous=boxM(200,260,280,MAT.glass); hous.position.set(0,0,10); hous.add(new THREE.LineSegments(new THREE.EdgesGeometry(hous.geometry),new THREE.LineBasicMaterial({color:0x6fb1ff,transparent:true,opacity:.4}))); root.add(hous);
+  const M=motorG(34,110); const MW=new THREE.Group(); MW.rotation.y=Math.PI; MW.add(M.g); MW.position.set(0,yin,-150-M.tip); root.add(MW);
+  const cp=coupZ(20); cp.position.set(0,yin,-150); root.add(cp);
+  const stand=boxM(90,yin-34-10+150,110,MAT.paint); stand.position.set(0,(-150+yin-44)/2,MW.position.z); root.add(stand);
+  const phase=(q,za,zb,th)=>th+Math.PI-Math.PI/zb-(q-th)*za/zb;
+  let k=0, kT=0, d=dT[0], mode='run', w=5, qin=0, qout=0, offK=0, sp=0, s0=0, o0=0, tgt=0, auto=true, tt=0, ai=0;
+  const go=x=>{ kT=+x; if(kT!==k||mode==='run') mode='brake'; };
+  const setG=ui(host,{ gang:(x,user)=>{ auto=false; go(x); }, slow:on=>V.slow=on });
+  const tag=tagsAt(V,host,[at(MW,0,M.r+28,0),()=>new THREE.Vector3(48,0,inPos[k]),at(chuck,30,40,20),at(FK,0,-62,0)]);
+  tag(0,'<b>Motor</b>1400 /min'); tag(3,'<b>Schaltgabel</b>schiebt den Räderblock');
+  V.update=(dt,t)=>{
+    if(auto&&mode==='run'){ tt+=dt; if(tt>5){ tt=0; ai=(ai+1)%4; const nk=[0,1,2,1][ai]; setG('gang',nk); go(nk); } }
+    if(mode==='brake'){ w=Math.max(0,w-dt*9); if(w===0){ if(kT===k){ mode='start'; } else { mode='slide'; sp=0; s0=d; o0=qout; k=kT; const raw=phase(qin,zin[k],zout[k],-Math.PI/2), p=TAU/zout[k]; offK=Math.round((o0-raw)/p)*p; tgt=raw+offK; } } }
+    else if(mode==='slide'){ sp=Math.min(1,sp+dt*1.2); const e=ease(sp); d=s0+(dT[k]-s0)*e; qout=o0+(tgt-o0)*e; if(sp===1) mode='start'; }
+    else { w=Math.min(5,w+dt*7); if(mode==='start'&&w===5) mode='run'; }
+    qin+=w*dt; if(mode!=='slide') qout=phase(qin,zin[k],zout[k],-Math.PI/2)+offK;
+    GI.rotation.z=qin; GO.rotation.z=qout; BL.position.z=d; FK.position.z=d+50; cp.rotation.z=qin; M.sh.rotation.z=-qin;
+    const i=zout[k]/zin[k], n=1400/i;
+    tag(1,'<b>'+(k+1)+'. Gang greift</b>'+zin[k]+' → '+zout[k]+' Zähne · i = '+i.toFixed(2).replace('.',','));
+    tag(2,'<b>Abtrieb</b>n₂ = '+n.toFixed(0)+' /min');
+    if(mode==='run'||mode==='start') V.say('<b>'+(k+1)+'. Gang:</b> i = z₂/z₁ = '+zout[k]+'/'+zin[k]+' = '+i.toFixed(2).replace('.',',')+' → n₂ = 1400/i = <b>'+n.toFixed(0)+' /min</b>'+(k===0?' (langsam, viel Drehmoment)':k===2?' (ins Schnelle übersetzt)':'')+'. Alle Paare haben denselben Achsabstand: z₁ + z₂ = 60.');
+    else V.say('<b>Schalten:</b> Erst den Motor stoppen, dann schiebt die Schaltgabel den Räderblock, bis das nächste Paar greift. Schieberäder nur im <b>Stillstand</b> schalten!');
+  };
+})();
+
+/* ================= Riementrieb an einer Kreissäge (Kap. 15) ================= */
+(function(){ const s=scene3('belt3d',{cam:[-320,280,600],target:[150,40,70],spin:.3,minD:280,maxD:1500}); if(!s) return; const {host,V,S}=s;
+  const root=new THREE.Group(); S.add(root); floorAt(S,-160,900);
+  const C1=new THREE.Vector2(0,0), C2=new THREE.Vector2(300,90), r1=40, r2=100;
+  function path(q1,q2){ const dv=C2.clone().sub(C1), a=dv.length(), u=dv.divideScalar(a), up=new THREE.Vector2(-u.y,u.x), sb=(q2-q1)/a, cb=Math.sqrt(1-sb*sb), b=Math.asin(sb);
+    const nU=u.clone().multiplyScalar(-sb).add(up.clone().multiplyScalar(cb)), nL=u.clone().multiplyScalar(-sb).add(up.clone().multiplyScalar(-cb)), pts=[], P=(c,r,an)=>new THREE.Vector3(c.x+r*Math.cos(an),c.y+r*Math.sin(an),0);
+    const aU=Math.atan2(nU.y,nU.x), aL=Math.atan2(nL.y,nL.x);
+    for(let k=0;k<24;k++){ const f=k/24; pts.push(P(C1,q1,aU).lerp(P(C2,q2,aU),f)); }
+    for(let k=0;k<48;k++) pts.push(P(C2,q2,aU-(Math.PI+2*b)*k/48));
+    for(let k=0;k<24;k++){ const f=k/24; pts.push(P(C2,q2,aL).lerp(P(C1,q1,aL),f)); }
+    for(let k=0;k<36;k++) pts.push(P(C1,q1,aL-(Math.PI-2*b)*k/36));
+    return new THREE.CatmullRomCurve3(pts,true,'centripetal'); }
+  const beltMat=new THREE.MeshStandardMaterial({color:0x22262c,metalness:.1,roughness:.8,emissive:0xff3b1a,emissiveIntensity:0});
+  const cV=path(r1,r2), cZ=path(r1+6,r2+6);
+  const bV=new THREE.Mesh(new THREE.TubeGeometry(cV,300,6.5,8,true),beltMat); root.add(bV);
+  const bZ=new THREE.Mesh(new THREE.TubeGeometry(cZ,300,3,8,true),beltMat); bZ.scale.z=4.5; root.add(bZ);
+  const NM=44, mkV=[], mkZ=[]; const mm=new THREE.MeshStandardMaterial({color:0xff8a3d,emissive:0x5a2000,emissiveIntensity:.6,roughness:.5});
+  for(let k=0;k<NM;k++){ const a1=boxM(9,14.5,14.5,mm); root.add(a1); mkV.push(a1); } for(let k=0;k<NM*2;k++){ const a1=boxM(5,6,27,MAT.rubber); root.add(a1); mkZ.push(a1); }
+  function pulV(r){ const pr=[[8,-14],[r+9,-14],[r+9,-9],[r-5,-2.5],[r-5,2.5],[r+9,9],[r+9,14],[8,14]].map(p=>new THREE.Vector2(p[0],p[1]));
+    const g=new THREE.Group(); g.add(new THREE.Mesh(new THREE.LatheGeometry(pr,56).rotateX(Math.PI/2),MAT.steel)); const k=boxM(r*.35,5,4,MAT.hot); k.position.set(r*.5,0,15); g.add(k); return g; }
+  function pulZ(z,r){ const g=new THREE.Group(); g.add(new THREE.Mesh(gearGeo(z,4,26,{bore:8}),MAT.steel)); for(const dz of [-15,15]){ const f=cylZ(r+14,3,MAT.dark,48); f.position.z=dz; g.add(f); } const k=boxM(r*.35,5,4,MAT.hot); k.position.set(r*.5,0,17); g.add(k); return g; }
+  const P1=new THREE.Group(), P2=new THREE.Group(); P2.position.set(C2.x,C2.y,0); root.add(P1,P2);
+  const p1V=pulV(r1), p2V=pulV(r2), p1Z=pulZ(20,r1), p2Z=pulZ(50,r2); P1.add(p1V,p1Z); P2.add(p2V,p2Z);
+  const arb=cylZ(10,230,MAT.shaft); arb.position.z=55; P2.add(arb);
+  const bs=new THREE.Shape(), NT=44, RB=118; for(let k=0;k<NT;k++){ const a0=k/NT*TAU, a1=(k+.7)/NT*TAU; bs.lineTo(RB*Math.cos(a0),RB*Math.sin(a0)); bs.lineTo((RB+12)*Math.cos(a1),(RB+12)*Math.sin(a1)); } bs.closePath();
+  const hole=new THREE.Path(); hole.absarc(0,0,10,0,TAU,true); bs.holes.push(hole);
+  const blade=new THREE.Mesh(new THREE.ExtrudeGeometry(bs,{depth:3,bevelEnabled:false}),new THREE.MeshStandardMaterial({color:0xdfe5ec,metalness:1,roughness:.2})); blade.position.z=150; P2.add(blade);
+  const wa=cylZ(34,6,MAT.hot); wa.position.z=156; P2.add(wa);
+  const colB=boxM(50,250,30,MAT.paint); colB.position.set(300,-35,-42); root.add(colB);
+  const tbl=boxM(560,12,200,new THREE.MeshStandardMaterial({color:0x8fb8e8,metalness:.3,roughness:.2,transparent:true,opacity:.16,depthWrite:false})); tbl.position.set(300,180,160); root.add(tbl);
+  tbl.add(new THREE.LineSegments(new THREE.EdgesGeometry(tbl.geometry),new THREE.LineBasicMaterial({color:0x6fb1ff,transparent:true,opacity:.5})));
+  const wood=new THREE.MeshStandardMaterial({color:0xc89a5c,roughness:.8,metalness:0}); const board=boxM(220,22,90,wood); root.add(board);
+  const M=motorG(38,110); const MW=new THREE.Group(); MW.rotation.y=Math.PI; MW.add(M.g); MW.position.set(0,0,22-M.tip); root.add(MW);
+  const stand=boxM(96,116,110,MAT.paint); stand.position.set(0,-102,MW.position.z); root.add(stand);
+  let typ='v', last=false, q1=0, q2=0, sBelt=0, slip=0, bx=0;
+  ui(host,{ typ:x=>typ=x, last:on=>last=on, slow:on=>V.slow=on });
+  const tag=tagsAt(V,host,[at(P1,-20,r1+26,0),at(P2,-30,r2+30,0),()=>new THREE.Vector3(150,C2.y/2+62,0),at(board,0,16,0)]);
+  V.update=(dt,t)=>{ const Z=typ==='z'; const w1=(last&&Z)?7.6:9; const sT=Z?0:(last?.45:.02); slip+=(sT-slip)*Math.min(1,dt*5);
+    q1-=w1*dt; const v=w1*r1*(1-slip); sBelt+=v*dt; q2-=v/r2*dt; P1.rotation.z=q1; P2.rotation.z=q2; M.sh.rotation.z=-q1;
+    const cur=Z?cZ:cV, Lc=cur.getLength(), list=Z?mkZ:mkV; (Z?mkV:mkZ).forEach(o=>o.visible=false);
+    list.forEach((o,k)=>{ o.visible=true; const u=((k/list.length+sBelt/Lc)%1+1)%1, p=cur.getPointAt(u), tg=cur.getTangentAt(u); o.position.copy(p); o.rotation.z=Math.atan2(tg.y,tg.x); if(Z){ o.position.x-=tg.y*-5; o.position.y-=tg.x*5; } });
+    bV.visible=p1V.visible=p2V.visible=!Z; bZ.visible=p1Z.visible=p2Z.visible=Z;
+    beltMat.emissiveIntensity=(!Z&&last)?.35+.25*Math.sin(t*20):0;
+    bx+= (last?12:45)*dt; const span=460; board.position.set(300-230+((bx%span)+span)%span-40,186+11+(last?6:0),150); board.scale.y=last?1.6:1;
+    const n1=2800, n2=n1*r1/r2*(1-slip);
+    tag(0,'<b>Motorscheibe</b>'+(Z?'z₁ = 20':'d₁ = 80 mm')+' · '+(n1*w1/9).toFixed(0)+' /min'); tag(1,'<b>Sägescheibe</b>'+(Z?'z₂ = 50':'d₂ = 200 mm')+' → n₂ = '+n2.toFixed(0)+' /min');
+    tag(2,'<b>'+(Z?'Zahnriemen':'Keilriemen')+'</b>'+(slip>.1?'Schlupf '+(slip*100).toFixed(0)+' %':'v = π·d₁·n₁ ≈ 11,7 m/s')); tag(3,'<b>Brett</b>'+(last?'dick → Überlast':'normaler Schnitt'));
+    if(!Z&&!last) V.say('<b>Keilriemen (kraftschlüssig):</b> Reibung in der Keilrille überträgt die Kraft. i = d₂/d₁ = 200/80 = 2,5 → n₂ = 2800/2,5 = 1120 /min. Etwas Schlupf ist normal.');
+    else if(!Z) V.say('<b>Überlast:</b> Der Keilriemen <b>rutscht durch</b> (Schlupf). Die Säge wird langsamer, aber Motor und Lager werden geschützt, wie bei einer Rutschkupplung.');
+    else if(!last) V.say('<b>Zahnriemen (formschlüssig):</b> Zähne greifen in die Scheibe → <b>kein Schlupf</b>, die Übersetzung stimmt exakt: i = z₂/z₁ = 50/20 = 2,5.');
+    else V.say('<b>Überlast mit Zahnriemen:</b> Nichts rutscht. Die volle Last geht auf den Motor, der wird langsamer und muss durchziehen. Kein Überlastschutz!');
+  };
+})();
+
+/* ================= Steinbrecher: Kupplungen im Einsatz (Kap. 16) ================= */
+(function(){ const s=scene3('kup3d',{cam:[160,300,720],target:[-20,20,0],spin:.3,minD:260,maxD:1500}); if(!s) return; const {host,V,S}=s;
+  const root=new THREE.Group(); S.add(root); floorAt(S,-106,900);
+  const paint=MAT.paint.clone(); paint.emissive=new THREE.Color(0xff2a10); paint.emissiveIntensity=0;
+  const M=motorG(36,110,paint); const MW=new THREE.Group(); MW.rotation.y=-Math.PI/2; MW.add(M.g); const xc=-150; MW.position.set(xc-30-M.tip,0,0); root.add(MW);
+  const stand=boxM(110,44,90,MAT.paint); stand.position.set(MW.position.x,-68,0); root.add(stand);
+  const base=boxM(660,16,210,MAT.paint); base.position.set(-40,-98,0); root.add(base);
+  const cMat=MAT.dark.clone(); cMat.emissive=new THREE.Color(0xff2a10); cMat.emissiveIntensity=0;
+  const rub=new THREE.MeshStandardMaterial({color:0xc2362b,roughness:.7,metalness:.05});
+  const lin=new THREE.MeshStandardMaterial({color:0x6b4a2e,roughness:.9,metalness:.1,emissive:0xff5a10,emissiveIntensity:0});
+  const L=new THREE.Group(), Rr=new THREE.Group(), Mid=new THREE.Group(); const CG=new THREE.Group(); CG.position.x=xc; CG.add(L,Rr,Mid); root.add(CG);
+  const T={s:{L:new THREE.Group(),R:new THREE.Group(),M:new THREE.Group()},e:{L:new THREE.Group(),R:new THREE.Group(),M:new THREE.Group()},r:{L:new THREE.Group(),R:new THREE.Group(),M:new THREE.Group()}};
+  for(const k in T){ L.add(T[k].L); Rr.add(T[k].R); Mid.add(T[k].M); }
+  { const f=cylX(44,14,cMat,40); f.position.x=-8; const h=cylX(22,26,cMat); h.position.x=-27; T.s.L.add(f,h);
+    const f2=cylX(44,14,cMat,40); f2.position.x=8; const h2=cylX(22,26,cMat); h2.position.x=27; T.s.R.add(f2,h2);
+    for(let k=0;k<6;k++){ const a=k/6*TAU, b=cylX(3.5,40,MAT.shaft,10); b.position.set(0,34*Math.cos(a),34*Math.sin(a)); T.s.R.add(b); const n=cylX(6,6,MAT.shaft,6); n.position.set(18,34*Math.cos(a),34*Math.sin(a)); T.s.R.add(n); } }
+  { const h=cylX(32,28,cMat,40); h.position.x=-30; T.e.L.add(h); const h2=cylX(32,28,cMat,40); h2.position.x=30; T.e.R.add(h2);
+    for(let k=0;k<3;k++){ for(const [grp,a0,x0] of [[T.e.L,0,-6],[T.e.R,Math.PI/3,6]]){ const a=a0+k*TAU/3, c=boxM(22,20,14,cMat); c.position.set(x0,21*Math.cos(a),21*Math.sin(a)); c.rotation.x=a; grp.add(c); } }
+    T.e.M.add(cylX(11,22,rub)); for(let k=0;k<6;k++){ const a=Math.PI/6+k*Math.PI/3, ar=boxM(20,22,8,rub); ar.position.set(0,20*Math.cos(a),20*Math.sin(a)); ar.rotation.x=a; T.e.M.add(ar); } }
+  { const f=cylX(46,10,cMat,40); f.position.x=-12; const h=cylX(22,26,cMat); h.position.x=-30; T.r.L.add(f,h);
+    const f2=cylX(46,10,cMat,40); f2.position.x=12; const h2=cylX(22,26,cMat); h2.position.x=30; T.r.R.add(f2,h2);
+    for(let k=0;k<4;k++){ const a=Math.PI/4+k*Math.PI/2; const b=cylX(3,50,MAT.shaft,10); b.position.set(8,36*Math.cos(a),36*Math.sin(a)); T.r.R.add(b);
+      const pts=[]; for(let q=0;q<=60;q++){ const th=q/60*TAU*5; pts.push(new THREE.Vector3(20+q/60*20,36*Math.cos(a)+6*Math.cos(th),36*Math.sin(a)+6*Math.sin(th))); } T.r.R.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),60,1.3,6,false),MAT.hot)); }
+    T.r.M.add(cylX(42,7,lin,40)); }
+  const AS=new THREE.Group(); root.add(AS); const as=cylX(10,380,MAT.shaft); as.position.x=70; AS.add(as);
+  const RO=new THREE.Group(); RO.position.x=140; AS.add(RO); RO.add(cylX(46,160,MAT.dark,40));
+  for(let k=0;k<10;k++){ const a=k/10*TAU, rb=boxM(160,12,12,MAT.steel); rb.position.set(0,48*Math.cos(a),48*Math.sin(a)); rb.rotation.x=a; RO.add(rb); }
+  for(const x of [40,240]){ const p=boxM(30,80,60,MAT.dark); p.position.set(x,-50,0); root.add(p); }
+  const hop=new THREE.MeshStandardMaterial({color:0x5aa9ff,metalness:.4,roughness:.3,transparent:true,opacity:.28,depthWrite:false,side:THREE.DoubleSide}); const plate=boxM(175,8,120,hop); plate.position.set(140,70,-62); plate.rotation.x=.75; root.add(plate);
+  const plate2=boxM(175,8,90,hop); plate2.position.set(140,120,70); plate2.rotation.x=-.8; root.add(plate2);
+  const hous=boxM(210,130,200,MAT.glass); hous.position.set(140,-20,0); hous.add(new THREE.LineSegments(new THREE.EdgesGeometry(hous.geometry),new THREE.LineBasicMaterial({color:0x6fb1ff,transparent:true,opacity:.35}))); root.add(hous);
+  const rockM=new THREE.MeshStandardMaterial({color:0xa39b8e,roughness:.95,metalness:0,flatShading:true}); const rock=new THREE.Mesh(new THREE.DodecahedronGeometry(30,0),rockM); rock.visible=false; root.add(rock);
+  const frags=[]; for(let k=0;k<8;k++){ const f=new THREE.Mesh(new THREE.TetrahedronGeometry(8+Math.random()*5,0),rockM); f.visible=false; root.add(f); frags.push({f,v:new THREE.Vector3()}); }
+  const NAME={s:'Starre Scheibenkupplung',e:'Elastische Klauenkupplung',r:'Rutschkupplung'};
+  const INFO={s:'<b>Starre Scheibenkupplung:</b> Zwei Flansche, fest verschraubt. Die Wellen müssen genau fluchten. Stöße gehen ungedämpft durch.',
+    e:'<b>Elastische Klauenkupplung:</b> Ein Gummistern sitzt zwischen den Klauen. Er gleicht kleinen Versatz aus und <b>dämpft Stöße</b>.',
+    r:'<b>Rutschkupplung (Sicherheitskupplung):</b> Federn pressen die Reibbeläge zusammen. Wird das Drehmoment zu groß, <b>rutscht sie durch</b>.'};
+  const JAM={s:'<b>Stein blockiert!</b> Der Schlag geht voll auf Motor, Wellen und Lager → <b>Bruchgefahr</b>. Starre Kupplungen nur bei stoßfreiem Betrieb.',
+    e:'<b>Stein blockiert!</b> Der Gummistern wird zusammengedrückt und fängt die Spitze ab → Antrieb geschont.',
+    r:'<b>Stein blockiert!</b> Die Kupplung rutscht durch (Beläge werden heiß), der Motor läuft weiter → <b>nichts geht kaputt</b>.'};
+  let typ='s', autoT=true, st='idle', tt=0, jt=0, pm=0, pa=0, wm=4, wa=4, del=0, ex=0, exT=0, flash=0, shake=0, ry=0, rv=0, cycle=0;
+  const w0=4, rest=new THREE.Vector3(140,90,-24);
+  const drop=()=>{ if(st!=='idle') return; st='fall'; ry=330; rv=0; rock.visible=true; rock.position.set(rest.x,ry,rest.z); };
+  const setG=ui(host,{ typ:x=>{ autoT=false; typ=x; }, rock:()=>{ tt=0; drop(); }, exp:on=>exT=on?1:0, slow:on=>V.slow=on });
+  const tag=tagsAt(V,host,[at(MW,0,M.r+28,0),()=>new THREE.Vector3(xc,62,0),at(RO,40,70,40)]);
+  tag(0,'<b>Motor</b>treibt an'); tag(2,'<b>Brecher</b>Arbeitsmaschine');
+  V.update=(dt,t)=>{
+    if(st==='idle'){ tt+=dt; if(tt>4){ tt=0; if(autoT){ typ=['s','e','r'][cycle%3]; setG('typ',typ); } drop(); } wm+=(w0-wm)*Math.min(1,dt*3); wa=wm; }
+    if(st==='fall'){ rv+=900*dt; ry-=rv*dt; rock.rotation.x+=dt*3; rock.position.y=Math.max(rest.y,ry); wm+=(w0-wm)*Math.min(1,dt*3); wa=wm;
+      if(ry<=rest.y){ st='jam'; jt=0; wa=0; if(typ==='s'){ wm=0; flash=1; shake=.45; } else if(typ==='e'){ shake=.12; } else shake=.05; } }
+    else if(st==='jam'){ jt+=dt; wa=0;
+      if(typ==='s') wm=0; else if(typ==='e'){ wm=0; const dm=.19*(1-Math.exp(-7*jt)*Math.cos(16*jt)); pm=pa+dm; } else wm=w0;
+      if(jt>1.8){ st='crush'; jt=0; rock.visible=false; frags.forEach((o,k)=>{ o.f.visible=true; o.f.position.copy(rest); const a=k/8*TAU; o.v.set(60*Math.cos(a),120+Math.random()*80,60*Math.sin(a)); }); } }
+    else if(st==='crush'){ jt+=dt; frags.forEach(o=>{ o.v.y-=500*dt; o.f.position.addScaledVector(o.v,dt); o.f.rotation.x+=dt*6; if(jt>.9) o.f.visible=false; });
+      wm+=(w0-wm)*Math.min(1,dt*3); wa=typ==='s'?wm:wa+(wm-wa)*Math.min(1,dt*4); if(jt>1){ st='idle'; tt=0; cycle++; } }
+    if(!(st==='jam'&&typ==='e')){ pm+=wm*dt; if(typ==='s') pa=pm-0; else if(typ==='e'){ del=(pm-pa); const dd=del*Math.exp(-6*dt); pa=pm-dd; } else pa+=wa*dt; }
+    if(typ==='s') pa=pm;
+    L.rotation.x=pm; M.sh.rotation.z=-pm; Rr.rotation.x=pa; AS.rotation.x=pa; Mid.rotation.x=typ==='e'?(pm+pa)/2:pa;
+    for(const k in T){ const on=k===typ; T[k].L.visible=T[k].R.visible=T[k].M.visible=on; }
+    ex+=(exT-ex)*Math.min(1,dt*4); L.position.x=-ex*40; Rr.position.x=ex*40;
+    flash=Math.max(0,flash-dt*1.2); paint.emissiveIntensity=flash*.9; cMat.emissiveIntensity=flash*1.2;
+    lin.emissiveIntensity=(st==='jam'&&typ==='r')?.7+.4*Math.sin(t*30):Math.max(0,lin.emissiveIntensity-dt);
+    shake=Math.max(0,shake-dt); root.position.set(shake>0?(Math.random()-.5)*shake*16:0,shake>0?(Math.random()-.5)*shake*10:0,0);
+    tag(1,'<b>'+NAME[typ]+'</b>'+(st==='jam'?(typ==='s'?'Schlag geht durch!':typ==='e'?'Gummi federt':'rutscht durch'):'verbindet Motor und Maschine'));
+    V.say(st==='jam'?JAM[typ]:INFO[typ]);
+  };
+})();
 </script>
 
 </body>
