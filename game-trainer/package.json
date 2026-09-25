@@ -1,0 +1,32 @@
+{
+  "name": "game-trainer",
+  "productName": "Game Trainer",
+  "version": "0.1.0",
+  "description": "Trainer-Menü im WeMod-Stil: erkennt laufende Spiele und schaltet passende Cheats frei.",
+  "main": "main.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js",
+    "fake-studio": "node tools/fake-studio.js",
+    "dist": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "local.gametrainer",
+    "productName": "Game Trainer",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**",
+      "src/**"
+    ],
+    "win": {
+      "target": "portable"
+    }
+  }
+}
