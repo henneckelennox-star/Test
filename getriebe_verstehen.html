@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getriebe verstehen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#edf0f2; --panel:#ffffff; --panel2:#f4f6f8; --ink:#16202b; --muted:#5a6673; --line:#d4dae0; --line2:#bfc8d1;
+  --acc:#e4570f; --acc-ink:#ffffff; --acc-soft:#fde5d6; --steel:#2e5f8a; --steel-soft:#e0ebf5;
+  --ok:#1e8a4b; --ok-soft:#dcf2e5; --bad:#c83a2a; --bad-soft:#fbe3df; --warn:#b67a00; --warn-soft:#fbefd4;
+  --grid:rgba(22,32,43,.055); --gear1:#fde5d6; --gear2:#e0ebf5; --gear3:#fbefd4;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"Barlow","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#10151a; --panel:#171e25; --panel2:#1e2730; --ink:#e5eaef; --muted:#97a2ae; --line:#2b353f; --line2:#3a4652;
+  --acc:#ff7a33; --acc-ink:#1b1006; --acc-soft:#3b2416; --steel:#86b4de; --steel-soft:#1b2b3b;
+  --ok:#4cc27d; --ok-soft:#153222; --bad:#ff6b5c; --bad-soft:#3a1b18; --warn:#e8b24a; --warn-soft:#3a2c12;
+  --grid:rgba(230,236,242,.05); --gear1:#3b2416; --gear2:#1b2b3b; --gear3:#3a2c12; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#10151a; --panel:#171e25; --panel2:#1e2730; --ink:#e5eaef; --muted:#97a2ae; --line:#2b353f; --line2:#3a4652;
+  --acc:#ff7a33; --acc-ink:#1b1006; --acc-soft:#3b2416; --steel:#86b4de; --steel-soft:#1b2b3b;
+  --ok:#4cc27d; --ok-soft:#153222; --bad:#ff6b5c; --bad-soft:#3a1b18; --warn:#e8b24a; --warn-soft:#3a2c12;
+  --grid:rgba(230,236,242,.05); --gear1:#3b2416; --gear2:#1b2b3b; --gear3:#3a2c12; color-scheme:dark; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px}
+a{color:var(--steel)}
+b,strong{font-weight:700}
+.m{font-style:italic;font-family:Georgia,"Times New Roman",serif}
+/* Hero */
+.hero{padding-block:26px 10px}
+.hero-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:end}
+@media (max-width:760px){.hero-top{grid-template-columns:1fr}}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,8vw,4.8rem);line-height:.92;margin:.12em 0 .18em;letter-spacing:-.005em;text-wrap:balance}
+h1 span{color:var(--acc)}
+.lead{max-width:60ch;margin:0;color:var(--muted);font-size:1.08rem}
+.sf{border:2px solid var(--ink);background:var(--panel);font-size:.78rem;min-width:270px;border-collapse:collapse}
+.sf td{border:1px solid var(--ink);padding:4px 8px;vertical-align:top}
+.sf td small{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sf td b{font-family:var(--display);font-size:1.05rem}
+.faden{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px;margin:18px 0 6px}
+.faden div{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:10px;padding:12px 14px}
+.faden div:nth-child(2){border-top-color:var(--steel)}
+.faden div:nth-child(3){border-top-color:var(--ok)}
+.faden b{display:block;font-family:var(--display);font-size:1.25rem;line-height:1.1;margin-bottom:4px}
+.faden p{margin:0;font-size:.95rem;color:var(--muted)}
+.faden .f{margin-top:6px}
+/* Nav */
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-block:7px}
+nav.toc .wrap::-webkit-scrollbar{display:none}
+nav.toc a{flex:none;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.88rem;padding:6px 10px 6px 6px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+nav.toc a:hover,nav.toc a.on{border-color:var(--line2);background:var(--panel)}
+nav.toc a .p{width:22px;height:22px;border-radius:50%;border:1.5px solid currentColor;display:grid;place-items:center;font-family:var(--mono);font-size:.68rem}
+nav.toc a.on .p{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+nav.toc .sep{flex:none;align-self:center;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--muted);padding:0 4px 0 10px;text-transform:uppercase}
+/* Teile & Kapitel */
+.teil{margin:54px 0 0;display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.teil .tl{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.teil h2{font-family:var(--display);font-size:clamp(1.7rem,4.5vw,2.4rem);margin:0;line-height:1}
+section.ch{margin:36px 0 0;scroll-margin-top:60px}
+.chh{display:flex;gap:14px;align-items:center;margin-bottom:10px}
+.pos{flex:none;width:48px;height:48px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.45rem;background:var(--panel);position:relative}
+.pos::after{content:"";position:absolute;left:100%;top:50%;width:14px;border-top:2px solid var(--ink)}
+.chh h3{font-family:var(--display);font-weight:700;font-size:clamp(1.55rem,4vw,2.1rem);line-height:1.02;margin:0 0 0 12px;text-wrap:balance}
+.kurz{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:0 10px 10px 0;padding:11px 14px;margin:0 0 14px;max-width:880px;font-size:1.04rem}
+.kurz b:first-child{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:2px}
+/* Versuchsstand */
+.bench{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 30px -18px rgba(0,0,0,.35)}
+.btop{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btop .live{color:var(--ok)}
+canvas{display:block;width:100%;background:var(--panel2)}
+.cv{height:340px}.cv-s{height:260px}.cv-l{height:420px}
+@media (max-width:600px){.cv{height:300px}.cv-l{height:360px}}
+.cap{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--line);background:var(--panel)}
+.tp{width:40px;height:40px;border-radius:50%;border:0;background:var(--acc);color:var(--acc-ink);font-size:.95rem;cursor:pointer;flex:none}
+.ctext{margin:0;min-height:3em;font-size:1.02rem;transition:opacity .18s}
+.ctext.fade{opacity:0}
+.dots{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.dots i{width:18px;height:5px;border-radius:3px;background:var(--line2);cursor:pointer}
+.dots i.past{background:color-mix(in srgb,var(--acc) 45%,var(--line2))}
+.dots i.on{background:var(--acc)}
+.manualhint{display:none;font-size:.85rem;color:var(--muted);margin-top:4px}
+.bench.manual .manualhint{display:block}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 14px;border-top:1px dashed var(--line);background:var(--panel)}
+.ctrls label{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
+.ctrls label b{color:var(--ink);font-family:var(--mono);font-size:.85rem;min-width:3.2em}
+input[type=range]{accent-color:var(--acc);width:150px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line2);border-radius:9px;overflow:hidden;max-width:100%}
+.seg button{font:600 .88rem var(--body);border:0;background:var(--panel2);color:var(--ink);padding:7px 11px;cursor:pointer;border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--steel);color:#fff}
+.btn{font:600 .9rem var(--body);border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:9px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--acc)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.outs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));border-top:1px solid var(--line);background:var(--panel)}
+.outs div{padding:8px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.outs span{display:block;font-size:.74rem;color:var(--muted)}
+.outs b{font-family:var(--mono);font-size:.95rem;font-variant-numeric:tabular-nums}
+select{font:inherit;padding:6px 9px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--ink)}
+/* Text */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:10px 26px;margin-top:18px}
+.txt p{margin:0 0 10px;max-width:66ch}
+.txt h4{font-family:var(--display);font-size:1.3rem;margin:14px 0 6px;line-height:1.1}
+.txt h4:first-child{margin-top:0}
+.txt ul,.txt ol{margin:0 0 10px;padding-left:1.25em;max-width:66ch}
+.txt li{margin:4px 0}
+.key{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:0 0 12px}
+.key .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+.f{font-family:var(--mono);font-size:.95rem;overflow-x:auto;white-space:nowrap;font-variant-numeric:tabular-nums;padding:2px 0}
+.f.big{font-size:1.1rem;font-weight:700}
+.hint{font-size:.9rem;color:var(--muted);margin-top:4px}
+.warn{background:var(--bad-soft);border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:.96rem}
+.warn::before{content:"Typische Falle";display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bad);margin-bottom:2px}
+.merk{background:var(--warn-soft);border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:.96rem}
+.merk::before{content:"Eselsbrücke";display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warn);margin-bottom:2px}
+.analog{background:var(--ok-soft);border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:.96rem}
+.analog::before{content:"Stell dir vor";display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ok);margin-bottom:2px}
+details.blatt{background:var(--panel);border:1px dashed var(--line2);border-radius:10px;margin:0 0 10px}
+details.blatt summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style:none}
+details.blatt summary::-webkit-details-marker{display:none}
+details.blatt summary::before{content:"📄 Aus deinen Blättern · ";font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+details.blatt[open] summary{border-bottom:1px dashed var(--line2)}
+details.blatt .in{padding:10px 14px}
+details.blatt .in p{margin:0 0 6px}
+.res{color:var(--ok);font-weight:700}
+.tw{overflow-x:auto;margin:0 0 12px}
+table.t{border-collapse:collapse;width:100%;font-size:.92rem;background:var(--panel)}
+table.t th,table.t td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.t th{background:var(--panel2);font-size:.78rem;letter-spacing:.03em}
+table.t td.y{color:var(--ok);font-weight:700;text-align:center}
+table.t td.n{color:var(--muted);text-align:center}
+table.t th.v{writing-mode:vertical-rl;transform:rotate(180deg);text-align:left;white-space:nowrap;padding:8px 4px}
+/* Designer */
+.dz{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:14px;border-top:1px solid var(--line)}
+.dz label{display:block;font-size:.82rem;color:var(--muted)}
+.dz input{width:100%;font:600 .98rem var(--mono);padding:7px 9px;border-radius:8px;border:1px solid var(--line2);background:var(--panel2);color:var(--ink)}
+.chain{display:flex;gap:0;align-items:stretch;overflow-x:auto;padding:14px;border-top:1px solid var(--line)}
+.chain .box{flex:1 0 150px;background:var(--panel2);border:1.5px solid var(--line2);border-radius:10px;padding:10px 12px;font-size:.88rem}
+.chain .box b{display:block;font-family:var(--display);font-size:1.15rem}
+.chain .box .v{font-family:var(--mono);font-size:.82rem;display:block}
+.chain .ar{flex:none;align-self:center;padding:0 6px;color:var(--acc);font-weight:800;font-size:1.3rem}
+ol.sol{margin:0;padding:14px 14px 14px 2.2em;border-top:1px solid var(--line)}
+ol.sol li{margin:0 0 8px}
+ol.sol .f{display:block}
+/* Quiz */
+.qz{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 10px}
+.qz b.q{display:block;margin-bottom:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:500 .95rem var(--body);text-align:left;border:1px solid var(--line2);background:var(--panel2);color:var(--ink);border-radius:9px;padding:8px 12px;cursor:pointer}
+.opt.r{background:var(--ok-soft);border-color:var(--ok)}
+.opt.w{background:var(--bad-soft);border-color:var(--bad)}
+.ex{margin-top:8px;font-size:.93rem;color:var(--muted);display:none}
+.ex.s{display:block}
+footer{margin-top:60px;border-top:2px solid var(--ink);padding-block:16px 50px;color:var(--muted);font-size:.88rem}
+.theme{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;border:1px solid var(--line2);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;font:600 .82rem var(--body);cursor:pointer;box-shadow:0 6px 20px -10px rgba(0,0,0,.5)}
+@media (max-width:600px){.theme{padding:8px 11px;font-size:0}.theme::before{content:"◐";font-size:1rem}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap hero">
+  <div class="hero-top">
+    <div>
+      <div class="eyebrow">LK Technik Q3 · Industriemechanik LF 13 · Funktionssysteme</div>
+      <h1>Getriebe <span>verstehen</span></h1>
+      <p class="lead">Vom Motor bis zur Maschine: Hier siehst du, warum ein Getriebe funktioniert. Wer die drei Grundsätze unten verstanden hat, kann fast jede Aufgabe herleiten, statt sie auswendig zu lernen. Jede Animation erklärt sich selbst. Sobald du einen Regler anfasst, übernimmst du.</p>
+    </div>
+    <table class="sf" aria-label="Schriftfeld">
+      <tr><td colspan="2"><small>Benennung</small><b>Getriebe verstehen</b></td></tr>
+      <tr><td><small>Umfang</small><b>18 Kapitel</b></td><td><small>Teile</small><b>A bis E</b></td></tr>
+      <tr><td><small>Grundlage</small>Heft „1 Getriebe“, Übungsblätter</td><td><small>Hilfsmittel</small>Tabellenbuch Metall</td></tr>
+    </table>
+  </div>
+
+  <div class="bench" id="bHero" style="margin-top:20px">
+    <div class="btop"><span>Antriebsstrang eines Förderbandes · Motor → Kupplung → Getriebe → Trommel</span><span class="live">● live</span></div>
+    <canvas id="cvHero" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><label>Übersetzung i <input type="range" id="heI" min="1" max="6" step="0.1" value="4.9"><b id="heIv">4,9</b></label></div>
+    <div class="outs" id="heOut"></div>
+  </div>
+
+  <div class="faden" aria-label="Der rote Faden">
+    <div><b>1 · Gleich schnell am Berührpunkt</b><p>Die Zähne rutschen nicht. Beide Teilkreise bewegen sich am Berührpunkt gleich schnell. Daraus folgt die Übersetzung.</p><div class="f">π·d₁·n₁ = π·d₂·n₂ ⇒ i = n₁/n₂ = d₂/d₁ = z₂/z₁</div></div>
+    <div><b>2 · Gleiche Kraft, anderer Hebel</b><p>Die Zähne drücken mit derselben Kraft aufeinander. Das große Rad hat den längeren Hebel und deshalb mehr Drehmoment.</p><div class="f">M = F_u · d/2 ⇒ M₂ = M₁ · i · η</div></div>
+    <div><b>3 · Die Leistung fließt durch</b><p>Ein Getriebe erzeugt keine Energie. Es tauscht Drehzahl gegen Drehmoment, nur ein kleiner Teil geht als Wärme verloren.</p><div class="f">P = 2π·n·M ⇒ P₂ = P₁ · η</div></div>
+  </div>
+</div>
+
+<nav class="toc" aria-label="Kapitel"><div class="wrap" id="toc"></div></nav>
+
+<main class="wrap">
+
+<!-- ===================== TEIL A ===================== -->
+<div class="teil" id="tA"><span class="tl">Teil A</span><h2>Das Prinzip</h2></div>
+
+<section class="ch" id="k1" data-t="Warum?">
+  <div class="chh"><span class="pos">1</span><h3>Warum braucht man überhaupt ein Getriebe?</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Motoren drehen schnell, haben aber wenig Drehmoment. Maschinen wollen oft langsam laufen, brauchen dafür aber viel Drehmoment. Das Getriebe passt beides aneinander an, bei (fast) gleicher Leistung.</p>
+  <div class="bench" id="b1">
+    <div class="btop"><span>Drehmoment über Drehzahl · Linie gleicher Leistung P = 4 kW</span><span class="live">● live</span></div>
+    <canvas id="cvMN" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><label>Übersetzung i <input type="range" id="mnI" min="1" max="6" step="0.05" value="1"><b id="mnIv">1</b></label></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Das Problem</h4>
+      <p>Ein Drehstrommotor läuft am besten bei etwa 1400 oder 2900 Umdrehungen pro Minute. Die Trommel eines Förderbandes braucht aber nur rund 290/min, die Seiltrommel einer Winde 45/min und die Antriebsscheibe eines Skilifts nur 23/min. Gleichzeitig brauchen diese Maschinen ein großes Drehmoment.</p>
+      <p>Schließt man den Motor direkt an, läuft die Maschine viel zu schnell, und der Motor hat nicht genug Drehmoment, um die Last überhaupt zu bewegen.</p>
+      <div class="analog">Du fährst mit dem Fahrrad einen steilen Berg hoch und schaltest in den kleinsten Gang. Du trittst schnell, das Hinterrad dreht langsam, aber mit viel Kraft. Genau das macht ein Getriebe.</div>
+      <h4>Die vier Aufgaben eines Getriebes</h4>
+      <ol>
+        <li><b>Übertragen</b> von Leistung und Drehbewegung (und Kräften)</li>
+        <li><b>Wandeln</b> von Drehzahl und Drehmoment</li>
+        <li><b>Drehrichtung</b> festlegen oder umkehren</li>
+        <li><b>Wellenlage</b> (Achsrichtung) festlegen: parallel, rechtwinklig, versetzt</li>
+      </ol>
+      <div class="merk">„Ü-W-D-W“: Übertragen, Wandeln, Drehrichtung, Wellenlage.</div>
+    </div>
+    <div class="txt">
+      <h4>Was das Diagramm zeigt</h4>
+      <p>Die Kurve verbindet alle Punkte mit der gleichen Leistung. Leistung ist Drehzahl mal Drehmoment (mal 2π). Im Diagramm ist das die <b>Fläche des Rechtecks</b> unter einem Punkt.</p>
+      <p>Das Getriebe schiebt den Arbeitspunkt auf der Kurve entlang: weniger Drehzahl, dafür mehr Drehmoment. Die Rechteckfläche bleibt fast gleich. Nur der kleine Verlust η (hier 95 %) macht sie etwas kleiner.</p>
+      <h4>Anforderungen an ein Getriebe</h4>
+      <p>hoher Wirkungsgrad, lange Lebensdauer, wenig Geräusch, wartungsfreundlich, geringe Ausfallquote.</p>
+      <div class="key"><span class="lbl">Einteilung (Blatt „Getriebe“)</span>
+        <p style="margin:0">Die Übertragung erfolgt <b>formschlüssig</b> (Zahnräder, Zahnriemen, Ketten) oder <b>kraftschlüssig</b> (Riemen, Reibräder). Getriebe sind <b>nicht schaltbar</b> (feste Übersetzung) oder <b>schaltbar</b> (gestuft oder stufenlos). Mehr dazu in Kapitel 14.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k2" data-t="Zahnradpaar">
+  <div class="chh"><span class="pos">2</span><h3>Das Zahnradpaar: Hier steckt alles drin</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Am Berührpunkt sind beide Räder gleich schnell und drücken mit gleicher Kraft aufeinander. Aus diesen zwei Sätzen folgen Übersetzung, Drehzahl, Drehmoment und Leistung.</p>
+  <div class="bench" id="b2">
+    <div class="btop"><span>Stirnradpaar · Modul m = 3 mm · n₁ = 1400/min · M₁ = 20 Nm</span><span class="live">● live</span></div>
+    <canvas id="cvPair" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <label>z₁ (treibend) <input type="range" id="pZ1" min="12" max="60" step="1" value="17"><b id="pZ1v">17</b></label>
+      <label>z₂ (getrieben) <input type="range" id="pZ2" min="12" max="80" step="1" value="34"><b id="pZ2v">34</b></label>
+      <span class="seg" role="group" aria-label="Anzeige"><button type="button" data-pm="v" aria-pressed="true">Geschwindigkeit</button><button type="button" data-pm="F" aria-pressed="false">Kraft</button><button type="button" data-pm="P" aria-pressed="false">Leistung</button></span>
+    </div>
+    <div class="outs" id="pOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Satz 1: gleich schnell → Übersetzung</h4>
+      <p>Die Zähne greifen ineinander und können nicht rutschen. Am Berührpunkt (Wälzpunkt) legen beide Teilkreise in derselben Zeit denselben Weg zurück. Ihre Umfangsgeschwindigkeit ist gleich:</p>
+      <div class="key"><span class="lbl">Umfangsgeschwindigkeit</span><div class="f">v = π·d₁·n₁ = π·d₂·n₂</div><div class="f big">i = n₁/n₂ = d₂/d₁ = z₂/z₁</div><div class="hint">Index 1 = Antrieb (treibend), Index 2 = Abtrieb (getrieben). Weil d = m·z, darf man statt der Durchmesser auch die Zähnezahlen nehmen.</div></div>
+      <h4>Satz 2: gleiche Kraft → Drehmoment</h4>
+      <p>Der Zahn des kleinen Rades drückt mit der Umfangskraft F_u auf den Zahn des großen Rades, und der drückt genauso stark zurück (actio = reactio). Drehmoment ist Kraft mal Hebelarm. Das große Rad hat den längeren Hebel d₂/2:</p>
+      <div class="key"><span class="lbl">Drehmoment</span><div class="f">F_u = 2·M₁/d₁ = 2·M₂/d₂</div><div class="f big">M₂ = M₁ · i &nbsp;(real: M₂ = M₁ · i · η)</div></div>
+      <h4>Satz 3: Leistung fließt durch</h4>
+      <div class="key"><span class="lbl">Leistung</span><div class="f">P = F_u · v = 2π · n · M</div><div class="hint">F_u und v sind für beide Räder gleich, also ist auch die Leistung gleich. In P = 2π·n·M muss n in 1/s eingesetzt werden!</div></div>
+    </div>
+    <div class="txt">
+      <h4>Ins Langsame, ins Schnelle</h4>
+      <div class="tw"><table class="t"><tr><th>i</th><th>heißt</th><th>Abtrieb</th><th>Drehmoment</th></tr>
+        <tr><td><b>i &gt; 1</b>, z. B. 5 : 1 = 5</td><td>Übersetzung ins Langsame</td><td>5-mal langsamer</td><td>5-mal größer</td></tr>
+        <tr><td><b>i = 1</b></td><td>keine Drehzahländerung</td><td>gleich schnell</td><td>gleich</td></tr>
+        <tr><td><b>i &lt; 1</b>, z. B. 1 : 5 = 0,2</td><td>Übersetzung ins Schnelle</td><td>5-mal schneller</td><td>nur ⅕</td></tr></table></div>
+      <div class="merk">Bei den Drehzahlen steht der <b>Antrieb</b> oben (n₁/n₂), bei Zähnen und Durchmessern der <b>Abtrieb</b> (z₂/z₁). Denn: Je größer ein Rad, desto langsamer dreht es.</div>
+      <div class="warn">„i = z₁/z₂“ ist falsch herum. Prüfe immer mit gesundem Menschenverstand: Treibt ein kleines Rad ein großes, muss i &gt; 1 herauskommen.</div>
+      <details class="blatt"><summary>Pkw-Dieselmotor (Funktionseinheiten)</summary><div class="in">
+        <p>a) P = 105 kW bei 4200/min: M = P/(2π·n) = 105 000 W / (2π · 70 1/s) = <span class="res">239 Nm</span></p>
+        <p>b) M = 315 Nm bei 2200/min: P = 2π · 36,67 1/s · 315 Nm = <span class="res">72,6 kW</span></p>
+        <p>c) Am Rad: M = 300 Nm · 13,515 · 0,9 = 3649 Nm. F = M/r = 3649 Nm / 0,308 m = <span class="res">11,8 kN</span></p></div></details>
+      <details class="blatt"><summary>Hubwerk (Stirnverzahnungen_3, Aufgabe 6)</summary><div class="in">
+        <p>i = (57/17) · (65/21) = 10,38. Seiltrommel: n = 550/min / 10,38 = <span class="res">53,0 /min</span></p>
+        <p>Hubgeschwindigkeit v = π · 0,2 m · 53,0/60 1/s = <span class="res">0,555 m/s</span></p>
+        <p>Trommel: M = F·r = 3000 N · 0,1 m = <span class="res">300 Nm</span>. Motor (ohne Verluste): 300 Nm / 10,38 = <span class="res">28,9 Nm</span></p>
+        <p>Zweistufig, weil i = 10,4 in einer Stufe ein Rad mit 177 Zähnen bräuchte (→ Kapitel 4).</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k3" data-t="Drehrichtung">
+  <div class="chh"><span class="pos">3</span><h3>Drehrichtung, Zwischenrad und Innenverzahnung</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Jeder Außeneingriff kehrt die Drehrichtung um. Ein Innenrad (Hohlrad) dreht in die gleiche Richtung. Ein Zwischenrad kehrt die Richtung nochmal um, ändert die Übersetzung aber nicht.</p>
+  <div class="bench" id="b3">
+    <div class="btop"><span>Drehrichtung bei Stirnrädern</span><span class="live">● live</span></div>
+    <canvas id="cvDir" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <span class="seg" role="group" aria-label="Anordnung"><button type="button" data-dm="a" aria-pressed="true">Außen</button><button type="button" data-dm="z" aria-pressed="false">mit Zwischenrad</button><button type="button" data-dm="i" aria-pressed="false">Innen (Hohlrad)</button></span>
+      <label>Zwischenrad z <input type="range" id="dZi" min="10" max="44" step="1" value="16"><b id="dZiv">16</b></label>
+    </div>
+    <div class="outs" id="dOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Die Regel</h4>
+      <ul>
+        <li><b>Außenverzahnung:</b> Die Räder drehen <b>gegenläufig</b>.</li>
+        <li><b>Innenverzahnung:</b> Ritzel und Hohlrad drehen <b>gleichsinnig</b>. Außerdem ist der Achsabstand klein: a = (d₂ − d₁)/2.</li>
+        <li><b>Mehrere Eingriffe:</b> Zähle die Außeneingriffe. Ungerade Zahl: Abtrieb dreht andersherum. Gerade Zahl: gleiche Richtung.</li>
+      </ul>
+      <h4>Warum das Zwischenrad die Übersetzung nicht ändert</h4>
+      <div class="key"><span class="lbl">Zwischenrad z₂ kürzt sich heraus</span><div class="f">i_ges = (z₂/z₁) · (z₃/z₂) = z₃/z₁</div></div>
+      <p>Das Zwischenrad nimmt die Umfangsgeschwindigkeit vom ersten Rad auf und gibt sie unverändert an das dritte weiter, egal wie groß es ist. Man braucht es, um einen <b>Abstand zu überbrücken</b> oder die <b>Drehrichtung umzukehren</b>.</p>
+    </div>
+    <div class="txt">
+      <div class="analog">Drei Leute stehen im Kreis und geben sich ein Seil weiter. Wie schnell das Seil läuft, hängt nicht davon ab, wie groß der Mittlere ist. Er gibt es nur weiter.</div>
+      <p>Beim Riementrieb gilt dasselbe Prinzip: Offener Riemen, gleiche Drehrichtung. Gekreuzter Riemen, entgegengesetzt (Kapitel 15).</p>
+      <details class="blatt"><summary>Zahnradtrieb (Stirnverzahnungen_3, 1/3, Aufgabe 1)</summary><div class="in">
+        <p>z₁ = 64, z₂ = 24, z₃ = 40, m = 2 mm</p>
+        <p>a) a₁ = m·(z₁+z₂)/2 = 2 · 88/2 = <span class="res">88 mm</span>, a₂ = 2 · 64/2 = <span class="res">64 mm</span></p>
+        <p>b) Der Modul ist die Größe der Zähne (d = m·z). Nur Räder mit gleichem Modul passen zusammen (→ Kapitel 6).</p>
+        <p>c) i_ges = z₃/z₁ = 40/64 = <span class="res">0,625</span> (ins Schnelle)</p>
+        <p>d) z₂ ist ein Zwischenrad: Es ändert nur die Drehrichtung und den Abstand. Ohne z₂: a = 2 · (64+40)/2 = <span class="res">104 mm</span>, z₃ dreht andersherum, i bleibt 0,625.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k4" data-t="Mehrstufig">
+  <div class="chh"><span class="pos">4</span><h3>Mehrstufige Getriebe: klein bleiben trotz großer Übersetzung</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Eine große Übersetzung in nur einer Stufe braucht ein riesiges Rad. Teilt man sie auf mehrere Stufen auf, werden die Einzelübersetzungen multipliziert und die Räder bleiben klein.</p>
+  <div class="bench" id="b4">
+    <div class="btop"><span>Gleiche Gesamtübersetzung · Modul m = 6 mm · Ritzel mindestens 18 Zähne · Maße in mm</span><span class="live">● live</span></div>
+    <canvas id="cvStage" class="cv-l"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><label>Gesamtübersetzung i <input type="range" id="stI" min="2" max="10" step="0.5" value="5"><b id="stIv">5</b></label></div>
+    <div class="outs" id="stOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="key"><span class="lbl">Gesamtübersetzung</span><div class="f big">i_ges = i₁ · i₂ · i₃ …</div><div class="f">n_Ende = n_Anfang / i_ges</div><div class="f">i₁ = z₂/z₁, &nbsp;i₂ = z₄/z₃, …</div></div>
+      <h4>Warum nicht alles in einer Stufe?</h4>
+      <ul>
+        <li>Das Ritzel braucht mindestens etwa <b>17 Zähne</b>. Bei weniger Zähnen schneidet das Fräswerkzeug den Zahnfuß frei (<b>Unterschnitt</b>), und der Zahn wird geschwächt.</li>
+        <li>Also wächst bei großem i das große Rad: z₂ = i · 17. Bei i = 10 wären das 170 Zähne, mit m = 6 mm über 1 m Durchmesser.</li>
+        <li>Das bedeutet großes Gehäuse, viel Gewicht, hohe Kosten.</li>
+        <li>Faustregel: pro Stirnradstufe bis etwa <b>i = 5</b> (ins Langsame).</li>
+      </ul>
+      <h4>Wie man aufteilt</h4>
+      <p>Am einfachsten gleichmäßig: Bei zwei Stufen i₁ = i₂ = √i, bei drei Stufen i₁ = i₂ = i₃ = ∛i. Beispiel Skilift: i = 64 = 4 · 4 · 4.</p>
+    </div>
+    <div class="txt">
+      <div class="warn">Die Übersetzungen werden <b>multipliziert</b>, nicht addiert. i₁ = 3 und i₂ = 4 ergeben i_ges = 12, nicht 7.</div>
+      <p>Bei jeder Stufe steigt das Drehmoment. Deshalb sind in der letzten Stufe Zahnbreite und Wellendurchmesser größer (Projektaufgabe Kegelstirnradgetriebe, Frage 13).</p>
+      <details class="blatt"><summary>Antriebsstation 3c: mehrstufig statt einstufig</summary><div class="in">
+        <p>Einstufig: a = 378 mm, m = 6 mm → z₁ + z₂ = 126 → z₁ = 21, z₂ = 105. Das große Rad hat d_a = 642 mm, der Kasten ist über 1000 mm hoch.</p>
+        <p>Zweistufig koaxial: 18/45 (i₁ = 2,5) und 21/42 (i₂ = 2), beide a = 189 mm, i_ges = <span class="res">5</span>. Das größte Rad hat nur noch d_a = 282 mm. Die Bauhöhe sinkt etwa auf die Hälfte.</p>
+        <p>Lagerung: drei Wellen mit je zwei Wälzlagern (Fest- und Loslager).</p></div></details>
+      <details class="blatt"><summary>Handbohrmaschine (Übersetzungsverhältnisse)</summary><div class="in">
+        <p>Erste Stufe z₁/z₂ = 52/10 = <span class="res">5,2</span>. Zweite Stufe wahlweise z₃/z₄ = 36/24 = <span class="res">1,5</span> oder z₅/z₆ = 44/16 = <span class="res">2,75</span>.</p>
+        <p>n_max = 6000 / (5,2 · 1,5) = <span class="res">769 /min</span> · n_min = 6000 / (5,2 · 2,75) = <span class="res">420 /min</span></p></div></details>
+      <details class="blatt"><summary>Tischantrieb 1 (vier Wechselräder)</summary><div class="in">
+        <p>i₂ = 136/34 = 4 fest. Wechselräder: 130/26 = 5, 120/40 = 3, 110/44 = 2,5, 104/52 = 2.</p>
+        <p>i_ges = 20, 12, 10, 8 → n = 6000 / i_ges = <span class="res">300, 500, 600, 750 /min</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k5" data-t="Leistung">
+  <div class="chh"><span class="pos">5</span><h3>Leistung und Wirkungsgrad: Wo die Energie bleibt</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>In jedem Glied des Antriebs geht ein Teil der Leistung als Wärme verloren. Die Wirkungsgrade werden multipliziert. Um den Motor auszulegen, rechnet man von der Maschine rückwärts: P_Motor = P_nutz / η_ges.</p>
+  <div class="bench" id="b5">
+    <div class="btop"><span>Leistungsfluss (Sankey-Diagramm) · Breite = Leistung</span><span class="live">● live</span></div>
+    <canvas id="cvFlow" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <label>η Motor <input type="range" id="flM" min="0.5" max="1" step="0.01" value="0.89"><b id="flMv">0,89</b></label>
+      <label>η Getriebe <input type="range" id="flG" min="0.3" max="1" step="0.01" value="0.93"><b id="flGv">0,93</b></label>
+      <label>η Maschine <input type="range" id="flA" min="0.3" max="1" step="0.01" value="0.67"><b id="flAv">0,67</b></label>
+      <label>P_nutz in kW <input type="range" id="flP" min="1" max="100" step="0.5" value="73.5"><b id="flPv">73,5</b></label>
+    </div>
+    <div class="ctrls" style="border-top:0;padding-top:0"><span style="font-size:.85rem;color:var(--muted)">Beispiele:</span>
+      <button class="btn" type="button" data-fp="0.89,0.93,0.67,73.5">Förderband</button>
+      <button class="btn" type="button" data-fp="0.85,1,0.75,33">Kreiselpumpe</button>
+      <button class="btn" type="button" data-fp="0.86,0.8,1,1.23">Seilwinde (Schnecke)</button>
+      <button class="btn" type="button" data-fp="0.88,0.84,1,29.2">Schlepplift</button></div>
+    <div class="outs" id="flOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="key"><span class="lbl">Leistung</span>
+        <div class="f">geradlinig: P = F · v &nbsp;·&nbsp; heben: F = m · g</div>
+        <div class="f">drehend: P = 2π · n · M &nbsp;(n in 1/s)</div>
+        <div class="f">Zahlenwertgleichung: M = 9550 · P / n &nbsp;(M in Nm, P in kW, n in 1/min)</div></div>
+      <div class="key"><span class="lbl">Wirkungsgrad</span>
+        <div class="f">η = P_ab / P_zu &nbsp;(immer kleiner als 1)</div>
+        <div class="f big">η_ges = η₁ · η₂ · η₃</div>
+        <div class="f">P_zu = P_nutz / η_ges</div></div>
+      <h4>Rückwärts rechnen: der Standardweg</h4>
+      <ol>
+        <li>Was braucht die Maschine? P_nutz = F·v (oder m·g·v beim Heben).</li>
+        <li>Rückwärts durch jedes Glied teilen: durch η der Maschine, durch η des Getriebes, durch η des Motors.</li>
+        <li>Das Ergebnis ist die Leistung, die der Motor aus dem Netz aufnimmt.</li>
+      </ol>
+    </div>
+    <div class="txt">
+      <div class="warn">n in 1/min in P = 2π·n·M einsetzen. Dann ist das Ergebnis 60-mal zu groß. Erst durch 60 teilen oder M = 9550·P/n benutzen.</div>
+      <div class="warn">Abgegebene und aufgenommene Motorleistung verwechseln. Auf dem Typenschild steht die <b>abgegebene</b> Leistung an der Welle.</div>
+      <details class="blatt"><summary>Kreiselpumpe (Funktionseinheiten)</summary><div class="in">
+        <p>66 L Wasser = 66 kg pro Sekunde auf 51 m Höhe.</p>
+        <p>a) P = m·g·h/t = 66 · 9,81 · 51 W = <span class="res">33,0 kW</span> · b) 33,0/0,75 = <span class="res">44,0 kW</span> · c) 44,0/0,85 = <span class="res">51,8 kW</span> · d) η = 0,75 · 0,85 = <span class="res">0,64</span></p></div></details>
+      <details class="blatt"><summary>Seilwinde 5 t (Funktionseinheiten)</summary><div class="in">
+        <p>v = 1,5 m/min = 0,025 m/s. P_nutz = 5000 · 9,81 · 0,025 = 1226 W. P_auf = 1226 W / (0,80 · 0,86) = <span class="res">1,78 kW</span></p></div></details>
+      <details class="blatt"><summary>Antriebsstation 1 (Förderband Hochofen)</summary><div class="in">
+        <p>Trommel: n = v/(π·d) = 3 / (π · 0,2) 1/s = 286,5/min → i = 1400/286,5 = <span class="res">4,89</span></p>
+        <p>P_nutz = 2500 kg · 9,81 · 3 m/s = 73,6 kW (Last als Gewichtskraft angesetzt). η_ges = 0,67 · 0,93 · 0,89 = 0,555 → P_auf = <span class="res">132,7 kW</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEIL B ===================== -->
+<div class="teil" id="tB"><span class="tl">Teil B</span><h2>Das Zahnrad selbst</h2></div>
+
+<section class="ch" id="k6" data-t="Modul">
+  <div class="chh"><span class="pos">6</span><h3>Modul und Zahnradmaße</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Der Modul m sagt, wie groß die Zähne sind. Alle Maße eines Zahnrades sind Vielfache davon. Nur Räder mit gleichem Modul passen zusammen.</p>
+  <div class="bench" id="b6">
+    <div class="btop"><span>Zahnrad und Bezugsprofil (Zahnstange) · stark vergrößert</span><span class="live">● live</span></div>
+    <canvas id="cvTooth" class="cv-l"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <label>Modul m <input type="range" id="toM" min="1" max="6" step="0.25" value="3"><b id="toMv">3</b></label>
+      <label>Zähnezahl z <input type="range" id="toZ" min="12" max="80" step="1" value="30"><b id="toZv">30</b></label>
+      <label>Kopfspiel c = k·m, k <input type="range" id="toC" min="0.1" max="0.3" step="0.01" value="0.25"><b id="toCv">0,25</b></label>
+    </div>
+    <div class="outs" id="toOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Woher kommt der Modul?</h4>
+      <p>Auf dem Teilkreis sitzen z Zähne im Abstand der Teilung p. Der Umfang ist also z·p = π·d. Damit wäre d = z·p/π, eine unpraktische Zahl mit π. Deshalb definiert man den Modul:</p>
+      <div class="key"><span class="lbl">Modul</span><div class="f big">m = p/π = d/z</div><div class="hint">Der Modul ist genormt (Modulreihe DIN 780: … 1; 1,25; 1,5; 2; 2,5; 3; 4; 5; 6; 8 …). So braucht man weniger Fräswerkzeuge.</div></div>
+      <div class="key"><span class="lbl">Maße (Außenverzahnung, gerade)</span>
+        <div class="f">Teilkreis &nbsp;&nbsp;d = m · z</div>
+        <div class="f">Teilung &nbsp;&nbsp;&nbsp;&nbsp;p = π · m &nbsp;(Zahndicke s = Lücke e = p/2)</div>
+        <div class="f">Kopfhöhe &nbsp;&nbsp;h_a = m</div>
+        <div class="f">Kopfspiel &nbsp;c = (0,1 … 0,3) · m &nbsp;(oft 0,167·m oder 0,25·m)</div>
+        <div class="f">Fußhöhe &nbsp;&nbsp;&nbsp;h_f = m + c</div>
+        <div class="f">Zahnhöhe &nbsp;&nbsp;h = 2m + c</div>
+        <div class="f">Kopfkreis &nbsp;d_a = d + 2m = m · (z + 2)</div>
+        <div class="f">Fußkreis &nbsp;&nbsp;d_f = d − 2 · (m + c)</div>
+        <div class="f">Achsabstand a = (d₁ + d₂)/2 = m · (z₁ + z₂)/2</div></div>
+    </div>
+    <div class="txt">
+      <h4>Wozu das Kopfspiel?</h4>
+      <p>Der Kopf des einen Zahnes darf nicht im Grund der Gegenlücke aufsitzen. Sonst klemmen die Räder. Das Kopfspiel c lässt außerdem Platz für Öl, Schmutz und Wärmeausdehnung.</p>
+      <div class="key"><span class="lbl">Innenverzahnung (Hohlrad)</span><div class="f">d_a = d − 2m &nbsp;(Kopfkreis innen!)</div><div class="f">d_f = d + 2 · (m + c)</div><div class="f">a = (d₂ − d₁)/2</div></div>
+      <div class="merk">Kopf nach außen: +2 Module. Fuß nach innen: −2·(m + c). Beim Hohlrad ist alles gespiegelt.</div>
+      <details class="blatt"><summary>Außenverzahntes Stirnrad (Stirnverzahnungen_3, Aufgabe 2)</summary><div class="in">
+        <p>m = 1,5 mm, z = 50, c = 0,167·m: d = <span class="res">75 mm</span>, d_a = 1,5 · 52 = <span class="res">78 mm</span>, h = 2 · 1,5 + 0,25 = <span class="res">3,25 mm</span></p>
+        <p>F_u = 2M/d = 2 · 160 Nm / 0,075 m = <span class="res">4267 N</span></p></div></details>
+      <details class="blatt"><summary>Zahnradpumpe (Aufgabe 3)</summary><div class="in">
+        <p>d_a = m·(z + 2) → m = 32,5 / 13 = 2,5 mm. d = 2,5 · 11 = 27,5 mm. Zwei gleiche Räder: a = d = <span class="res">27,5 mm</span></p></div></details>
+      <details class="blatt"><summary>Innenverzahnung (Aufgabe 7)</summary><div class="in">
+        <p>m = 1,5 mm, c = 0,25·m = 0,375 mm, z₁ = 28, z₂ = 80.</p>
+        <p>d₁ = <span class="res">42 mm</span>, d₂ = <span class="res">120 mm</span> · d_a1 = 45 mm, d_a2 = 120 − 3 = <span class="res">117 mm</span> · d_f1 = 42 − 3,75 = <span class="res">38,25 mm</span>, d_f2 = 120 + 3,75 = <span class="res">123,75 mm</span> · h = <span class="res">3,375 mm</span> · a = (120 − 42)/2 = <span class="res">39 mm</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k7" data-t="Evolvente">
+  <div class="chh"><span class="pos">7</span><h3>Die Evolvente: Warum Zähne so geformt sind</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Die Zahnflanke ist eine Evolvente. Dadurch wälzen die Zähne aufeinander ab, statt zu gleiten, und die Übersetzung ist in jedem Augenblick exakt gleich. Das Getriebe läuft ruhig.</p>
+  <div class="bench" id="b7">
+    <div class="btop"><span>Evolvente · Entstehung und Eingriff</span><span class="live">● live</span></div>
+    <canvas id="cvInv" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><span class="seg" role="group" aria-label="Ansicht"><button type="button" data-im="e" aria-pressed="true">Entstehung</button><button type="button" data-im="g" aria-pressed="false">Eingriff</button></span></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>So entsteht eine Evolvente</h4>
+      <p>Wickle einen straffen Faden von einer Rolle (dem <b>Grundkreis</b>) ab. Der Stift am Fadenende zeichnet eine Kurve: die Evolvente. Genau diese Form hat die Zahnflanke.</p>
+      <h4>Was das bringt</h4>
+      <ul>
+        <li>Der Berührpunkt der Zähne wandert auf einer <b>geraden Linie</b>, der Eingriffslinie (unter 20°, dem Eingriffswinkel).</li>
+        <li>Die Kraft wirkt immer in dieselbe Richtung. Die Übersetzung schwankt nicht: <b>ruhiger, gleichmäßiger Lauf</b>.</li>
+        <li>Die Flanken <b>wälzen</b> aufeinander ab und gleiten nur wenig: wenig Verschleiß, wenig Wärme.</li>
+        <li>Kleine Fehler im Achsabstand ändern die Übersetzung nicht.</li>
+        <li>Einfach herzustellen: Das Werkzeug (Zahnstangenprofil) hat gerade Flanken.</li>
+      </ul>
+    </div>
+    <div class="txt">
+      <div class="key"><span class="lbl">Merke (Heft S. 7)</span><p style="margin:0">Im Maschinenbau wird fast ausschließlich die <b>Evolventenverzahnung</b> verwendet.</p></div>
+      <div class="analog">Du rollst zwei Walzen aufeinander ab, statt sie aneinander zu reiben. Beim Abrollen gibt es kaum Reibung. Die Evolvente sorgt dafür, dass die Zähne sich so ähnlich verhalten.</div>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k8" data-t="Verzahnung">
+  <div class="chh"><span class="pos">8</span><h3>Gerade, schräg oder pfeilverzahnt?</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Geradverzahnt ist einfach und ohne Axialkraft. Schrägverzahnt läuft leiser und trägt mehr, weil immer mehr Zähne gleichzeitig greifen, drückt aber die Welle zur Seite (Axialkraft). Pfeil- und Doppelschrägverzahnung heben diese Axialkraft auf.</p>
+  <div class="bench" id="b8">
+    <div class="btop"><span>Blick auf die Zahnbreite · grün = Zähne im Eingriff · Umfangskraft F_u = 1000 N</span><span class="live">● live</span></div>
+    <canvas id="cvHelix" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <span class="seg" role="group" aria-label="Verzahnung"><button type="button" data-hm="g" aria-pressed="false">gerade</button><button type="button" data-hm="s" aria-pressed="true">schräg</button><button type="button" data-hm="p" aria-pressed="false">pfeil</button></span>
+      <label>Schrägungswinkel β <input type="range" id="hxB" min="0" max="35" step="1" value="20"><b id="hxBv">20°</b></label>
+    </div>
+    <div class="outs" id="hxOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Was die Animation zeigt</h4>
+      <p>Der grüne Streifen ist die Zone, in der sich die Zähne berühren. Bei <b>Geradverzahnung</b> greift ein Zahn schlagartig über die ganze Breite ein: kleiner Stoß bei jedem Zahn, lauter. Bei <b>Schrägverzahnung</b> läuft jeder Zahn allmählich ein und aus, und es tragen mehr Zähne gleichzeitig.</p>
+      <div class="tw"><table class="t">
+        <tr><th>Eigenschaft</th><th>gerade</th><th>schräg</th><th>pfeil</th></tr>
+        <tr><td>Hohe Laufruhe</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Geringerer Wirkungsgrad</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Hohe Drehzahlen möglich</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Axialkräfte werden ausgeglichen</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td></tr>
+        <tr><td>Anwendung Fahrzeuggetriebe</td><td class="n">–</td><td class="y">✓</td><td class="n">(✓)</td></tr>
+        <tr><td>Anwendung Flugzeugturbinen</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td></tr></table></div>
+      <p class="hint">Lösung zum Blatt „Grundformen 2“, Verzahnungsarten. Geradverzahnung bekommt hier kein Kreuz. Ihre Stärken sind andere: einfach, günstig, keine Axialkraft, verschiebbar im Schieberadgetriebe. Pfeilverzahnung wird laut Heft S. 7 auch in Kfz-Getrieben eingesetzt.</p>
+    </div>
+    <div class="txt">
+      <div class="key"><span class="lbl">Schrägverzahnung</span>
+        <div class="f big">F_a = F_u · tan β</div>
+        <div class="f">Stirnmodul m_t = m_n / cos β</div>
+        <div class="f">d = z · m_n / cos β &nbsp;·&nbsp; d_a = d + 2·m_n</div>
+        <div class="f">a = m_n · (z₁ + z₂) / (2 · cos β)</div>
+        <div class="hint">m_n = Normalmodul (senkrecht zum Zahn, genormt). Gepaart werden Räder mit gleichem β, aber <b>gegensinniger</b> Steigung (rechts mit links).</div></div>
+      <div class="warn">Bei Schrägverzahnung d = z·m_n rechnen. Das ist zu klein, man muss durch cos β teilen.</div>
+      <details class="blatt"><summary>Schrägverzahntes Radpaar (Aufgabe 4)</summary><div class="in">
+        <p>z₁ = 17, z₂ = 81, m_n = 4 mm, β = 25°, c = 0,2·m_n. m_t = 4/cos 25° = 4,414 mm.</p>
+        <p>d₁ = 75,03 mm, d₂ = 357,49 mm → a) d_a1 = <span class="res">83,03 mm</span>, d_a2 = <span class="res">365,49 mm</span></p>
+        <p>b) p_t = π·m_t = <span class="res">13,87 mm</span> · c) h = 2 · 4 + 0,8 = <span class="res">8,8 mm</span></p>
+        <p>d) F_u = 2 · 150 Nm / 0,07503 m = <span class="res">3998 N</span>, M₂ = 150 · 81/17 = <span class="res">714,7 Nm</span></p></div></details>
+      <details class="blatt"><summary>Tischantrieb (Aufgabe 5)</summary><div class="in">
+        <p>a₁ = 1,75 · (26 + 130) / (2 · cos 10°) = <span class="res">138,6 mm</span> · a₂ = 2,75 · (34 + 136) / (2 · cos 10°) = <span class="res">237,4 mm</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEIL C ===================== -->
+<div class="teil" id="tC"><span class="tl">Teil C</span><h2>Die Getriebearten</h2></div>
+
+<section class="ch" id="k9" data-t="Wellenlage">
+  <div class="chh"><span class="pos">9</span><h3>Die Grundformen: Wie liegen die Wellen?</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Die erste Frage ist immer: Wie liegen An- und Abtriebswelle zueinander? Parallel → Stirnrad. Sie schneiden sich → Kegelrad. Sie kreuzen sich → Schnecke oder Schraubenrad. Aus Drehen wird Schieben → Zahnstange.</p>
+  <div class="bench" id="b9">
+    <div class="btop"><span>Lage der Wellen im Raum</span><span class="live">● live</span></div>
+    <canvas id="cvAxes" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><span class="seg" role="group" aria-label="Getriebeart"><button type="button" data-am="st" aria-pressed="true">Stirnrad</button><button type="button" data-am="in" aria-pressed="false">Hohlrad</button><button type="button" data-am="ke" aria-pressed="false">Kegelrad</button><button type="button" data-am="sn" aria-pressed="false">Schnecke</button><button type="button" data-am="za" aria-pressed="false">Zahnstange</button></span></div>
+  </div>
+  <div class="cols">
+    <div class="txt" style="grid-column:1/-1">
+      <h4>Lösung zum Blatt „Grundformen 2“</h4>
+      <div class="tw"><table class="t">
+        <tr><th>Eigenschaft</th><th>Stirnrad außen</th><th>Stirnrad innen</th><th>Zahnstange</th><th>Schnecke</th><th>Schraubenrad</th><th>Kegelrad</th><th>Begründung</th></tr>
+        <tr><td>Wellen kreuzen sich</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td><td class="n">–</td><td>Achsen liegen in verschiedenen Ebenen und laufen aneinander vorbei</td></tr>
+        <tr><td>Wellen schneiden sich</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td>Kegelspitzen treffen sich in einem Punkt</td></tr>
+        <tr><td>Wellen parallel</td><td class="y">✓</td><td class="y">✓</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td>Stirnräder sitzen auf parallelen Wellen</td></tr>
+        <tr><td>gleiche Drehrichtung</td><td class="n">–</td><td class="y">✓</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td>nur beim Hohlrad; außen dreht es um (Kapitel 3)</td></tr>
+        <tr><td>sehr geringer Wirkungsgrad</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td><td class="n">–</td><td>viel Gleitreibung (Schraubbewegung), η etwa 0,3 … 0,9</td></tr>
+        <tr><td>sehr hoher Wirkungsgrad</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td>Zähne wälzen ab, η etwa 0,95 … 0,99 je Stufe</td></tr>
+        <tr><td>sehr große Übersetzung bei kleinem Bauraum</td><td class="n">–</td><td class="n">(✓)</td><td class="n">–</td><td class="y">✓</td><td class="n">–</td><td class="n">–</td><td>Schnecke: i = z₂/z₁, z. B. 60 : 1 in einer Stufe. Hohlrad: kompakt im Planetengetriebe</td></tr>
+        <tr><td>Selbsthemmung in einer Drehrichtung</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="n">–</td><td class="n">–</td><td>bei kleinem Steigungswinkel (Kapitel 10)</td></tr>
+      </table></div>
+      <p class="hint">Auf deinem Foto sind die Kreuze durch den Blickwinkel etwas verrutscht. Vergleiche Zeile für Zeile. Achte besonders darauf, dass auch das <b>Kegelrad</b> einen sehr hohen Wirkungsgrad hat und dass <b>Schraubenradgetriebe</b> keine großen Übersetzungen machen.</p>
+    </div>
+    <div class="txt">
+      <h4>Getriebemotoren am Aussehen erkennen (Rätsel Getriebe)</h4>
+      <p>Schau, wo die <b>Abtriebswelle</b> herauskommt, verglichen mit der Motorachse:</p>
+      <ul>
+        <li><b>In einer Linie mit dem Motor</b> (koaxial): Stirnradgetriebe (oder Planetengetriebe)</li>
+        <li><b>Parallel, aber seitlich versetzt:</b> Flachgetriebe (Stirnräder), oft mit Hohlwelle</li>
+        <li><b>Rechtwinklig zur Motorachse:</b> Kegelradgetriebe (größer, hoher Wirkungsgrad) oder Schneckengetriebe (kompakter Würfel, Welle seitlich versetzt)</li>
+      </ul>
+    </div>
+    <div class="txt">
+      <h4>Weitere Bauformen (Blatt „Getriebe“)</h4>
+      <ul>
+        <li><b>Kronenradgetriebe:</b> Stirnritzel greift in ein Rad mit Zähnen auf der Stirnseite, Achsen schneiden sich (90°).</li>
+        <li><b>Schraubenradgetriebe:</b> zwei schrägverzahnte Räder auf gekreuzten Wellen, Punktberührung, geringe Belastbarkeit.</li>
+        <li><b>Harmonic Drive:</b> ein elastischer Stahlring wird von einer ovalen Scheibe verformt. Riesige Übersetzung (bis etwa 300 : 1) in einer Stufe, spielfrei, für Roboter.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k10" data-t="Schnecke">
+  <div class="chh"><span class="pos">10</span><h3>Das Schneckengetriebe: riesige Übersetzung, die festhält</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Die Schnecke ist eine Schraube, die das Rad weiterschiebt. Pro Umdrehung rückt das Rad nur um so viele Zähne weiter, wie die Schnecke Gänge hat. So entsteht eine riesige Übersetzung in einer Stufe. Dafür gibt es viel Reibung, und bei kleinem Steigungswinkel hält das Getriebe die Last von selbst.</p>
+  <div class="bench" id="b10">
+    <div class="btop"><span>Schneckengetriebe · Schneckenrad z₂ = 40</span><span class="live">● live</span></div>
+    <canvas id="cvWorm" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <span class="seg" role="group" aria-label="Gangzahl"><button type="button" data-wz="1" aria-pressed="true">eingängig</button><button type="button" data-wz="2" aria-pressed="false">zweigängig</button><button type="button" data-wz="3" aria-pressed="false">dreigängig</button></span>
+      <span class="seg" role="group" aria-label="Antrieb"><button type="button" data-wb="0" aria-pressed="true">Motor treibt Schnecke</button><button type="button" data-wb="1" aria-pressed="false">Last zieht am Rad</button></span>
+    </div>
+    <div class="outs" id="wmOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="key"><span class="lbl">Übersetzung</span><div class="f big">i = z₂ / z₁ &nbsp;(z₁ = Gangzahl der Schnecke)</div><div class="hint">Beweis (Frage 20): Eine Schneckenumdrehung schiebt das Rad um z₁ Zähne weiter. Für eine volle Radumdrehung (z₂ Zähne) braucht es z₂/z₁ Schneckenumdrehungen. Also i = n₁/n₂ = z₂/z₁.</div></div>
+      <h4>Selbsthemmung</h4>
+      <p>Der Gewindegang der Schnecke ist eine schiefe Ebene mit dem <b>Steigungswinkel γ</b>. Ist γ kleiner als der Reibwinkel (etwa 5°), kann das Rad die Schnecke nicht zurückdrehen, egal wie stark die Last zieht. Wie eine Schraube, die sich unter Last nicht von selbst löst.</p>
+      <ul><li>Vorteil: Eine Winde, ein Tor oder ein Aufzug hält die Last, auch wenn der Motor aus ist.</li><li>Achtung: Für Personen reicht das nicht als Sicherung, dort ist trotzdem eine Bremse Pflicht.</li></ul>
+    </div>
+    <div class="txt">
+      <div class="key"><span class="lbl">Wirkungsgrad</span><div class="f">η = tan γ / tan(γ + ρ)</div><div class="hint">Ein selbsthemmendes Schneckengetriebe hat immer <b>η &lt; 50 %</b>. Mehr Gänge: größeres γ, besserer Wirkungsgrad, keine Selbsthemmung mehr.</div></div>
+      <h4>Warum Bronze oder Grauguss?</h4>
+      <p>Die Schnecke gleitet am Rad entlang (Schraubbewegung). Das erzeugt Wärme und Verschleiß. Die Paarung <b>gehärteter Stahl (Schnecke) auf Bronze CuSn oder Grauguss (Rad)</b> gleitet gut und hat Notlaufeigenschaften. Der Radsatz läuft im Ölbad.</p>
+      <details class="blatt"><summary>Stirnverzahnungen_3, 3/3, Aufgaben 7 und 8</summary><div class="in">
+        <p>7: Riemen 4200 · 240/600 = 1680/min → Kegelräder · 20/70 = 480/min → eingängige Schnecke / 60 = 8/min = <span class="res">0,133 Umdrehungen pro Sekunde</span></p>
+        <p>8: Ritzel d = 20 mm, n = 15,7 m/min / (π · 0,02 m) = 250/min. Schnecke eingängig, z₂ = 60: n_A = 250 · 60 = <span class="res">15 000 /min</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k11" data-t="Kegelrad">
+  <div class="chh"><span class="pos">11</span><h3>Das Kegelradgetriebe: um die Ecke</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Kegelräder verbinden Wellen, die sich schneiden, meist unter 90°. Die Räder sind Kegelstümpfe, deren Spitzen im selben Punkt liegen. Dort schneiden sich auch die Wellen.</p>
+  <div class="bench" id="b11">
+    <div class="btop"><span>Kegelradpaar im Schnitt · z₁ = 20 · m = 4 mm</span><span class="live">● live</span></div>
+    <canvas id="cvBevel" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <label>Achsenwinkel Σ <input type="range" id="bvS" min="45" max="120" step="1" value="90"><b id="bvSv">90°</b></label>
+      <label>Übersetzung i <input type="range" id="bvI" min="1" max="3" step="0.05" value="1.5"><b id="bvIv">1,5</b></label>
+    </div>
+    <div class="outs" id="bvOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="key"><span class="lbl">Teilkegelwinkel</span>
+        <div class="f">Σ = δ₁ + δ₂</div>
+        <div class="f big">Σ = 90°: tan δ₁ = z₁/z₂ = 1/i</div>
+        <div class="f">allgemein: tan δ₁ = sin Σ / (i + cos Σ)</div></div>
+      <div class="key"><span class="lbl">Maße (am äußeren Ende)</span>
+        <div class="f">d = m · z &nbsp;·&nbsp; d_a = d + 2m · cos δ</div>
+        <div class="f">äußere Teilkegellänge R_e = d / (2 · sin δ)</div>
+        <div class="f">Kopfwinkel tan κ_a = h_a / R_e &nbsp;·&nbsp; Kopfkegelwinkel δ_a = δ + κ_a</div>
+        <div class="f">h_a = m &nbsp;·&nbsp; h = 2m + c</div></div>
+    </div>
+    <div class="txt">
+      <h4>Eigenschaften und Montage</h4>
+      <ul>
+        <li>Übersetzung, Drehrichtungsänderung und <b>Kraftumlenkung</b> um einen Winkel</li>
+        <li>gerad-, schräg- oder bogenverzahnt; hoher Wirkungsgrad (etwa 0,95 … 0,98)</li>
+        <li>Die Kegelspitzen müssen genau zusammenfallen. Deshalb Einstellen mit Passscheiben und <b>Tragbild prüfen</b>.</li>
+        <li>Empfindlich gegen Achsverlagerung, deshalb <b>nur paarweise austauschen</b>.</li>
+        <li>Anwendung: Differenzialgetriebe, Winkelgetriebe, Kegelstirnradgetriebe</li>
+      </ul>
+      <details class="blatt"><summary>Kegelrad-Nullgetriebe Σ = 75° (Aufgabe 4)</summary><div class="in">
+        <p>z₁ = 22, i = 1,5 → z₂ = 33, m = 3,5 mm. tan δ₁ = sin 75°/(1,5 + cos 75°) → δ₁ = <span class="res">28,78°</span>, δ₂ = <span class="res">46,22°</span></p>
+        <p>d₁ = 77 mm, d₂ = 115,5 mm · d_a1 = <span class="res">83,14 mm</span>, d_a2 = <span class="res">120,34 mm</span> · R_e = 79,98 mm, κ_a = 2,51° → δ_a1 = <span class="res">31,28°</span>, δ_a2 = <span class="res">48,73°</span> · h_a = 3,5 mm, c = 0,7 mm (0,2·m), h = 7,7 mm</p></div></details>
+      <details class="blatt"><summary>Transportband Σ = 90° (Aufgabe 5)</summary><div class="in">
+        <p>z₁ = 12, i = 1,25 → z₂ = <span class="res">15</span>, m = 6 mm. tan δ₁ = 12/15 → δ₁ = <span class="res">38,66°</span>, δ₂ = <span class="res">51,34°</span></p>
+        <p>d₁ = 72 mm, d₂ = 90 mm · d_a1 = <span class="res">81,37 mm</span>, d_a2 = <span class="res">97,50 mm</span> · κ_a = 5,94° → δ_a1 = <span class="res">44,60°</span>, δ_a2 = <span class="res">57,28°</span> · h_a = 6 mm, c = 1,2 mm, h = 13,2 mm</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k12" data-t="Planeten">
+  <div class="chh"><span class="pos">12</span><h3>Das Planetengetriebe: alles auf einer Achse</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Sonnenrad in der Mitte, Planetenräder auf einem Träger (Steg) drumherum, außen das Hohlrad. Hält man eines der drei Teile fest, treibt ein zweites und das dritte ist Abtrieb. Je nach Kombination entstehen sechs verschiedene Übersetzungen.</p>
+  <div class="bench" id="b12">
+    <div class="btop"><span>Planetengetriebe · Sonne z = 24 · Hohlrad z = 72</span><span class="live">● live</span></div>
+    <canvas id="cvPlan" class="cv-l"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><label>Kombination <select id="plMode"></select></label></div>
+    <div class="outs" id="plOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="tw"><table class="t"><tr><th>fest</th><th>Antrieb</th><th>Abtrieb</th><th>i (Beispiel)</th><th>Richtung</th></tr>
+        <tr><td>Hohlrad</td><td>Sonne</td><td>Planetenträger</td><td>1 + z_H/z_S = 4</td><td>gleich, ins Langsame</td></tr>
+        <tr><td>Hohlrad</td><td>Planetenträger</td><td>Sonne</td><td>0,25</td><td>gleich, ins Schnelle</td></tr>
+        <tr><td>Sonne</td><td>Hohlrad</td><td>Planetenträger</td><td>1,33</td><td>gleich, ins Langsame</td></tr>
+        <tr><td>Sonne</td><td>Planetenträger</td><td>Hohlrad</td><td>0,75</td><td>gleich, ins Schnelle</td></tr>
+        <tr><td>Planetenträger</td><td>Sonne</td><td>Hohlrad</td><td>−3</td><td><b>umgekehrt</b>, ins Langsame</td></tr>
+        <tr><td>Planetenträger</td><td>Hohlrad</td><td>Sonne</td><td>−0,33</td><td><b>umgekehrt</b>, ins Schnelle</td></tr></table></div>
+      <div class="merk">Nur wenn der <b>Planetenträger fest</b> steht, kehrt sich die Drehrichtung um. Dann ist es ein ganz normales Stirnradgetriebe mit Zwischenrad (Planet) und Hohlrad.</div>
+    </div>
+    <div class="txt">
+      <h4>Vorteile</h4>
+      <ul>
+        <li>sehr kompakt, An- und Abtrieb liegen auf <b>einer Achse</b></li>
+        <li>die Last verteilt sich auf mehrere Planeten: große Drehmomente auf kleinem Raum</li>
+        <li>schaltbar, ohne Zahnräder ein- oder auszurücken: Man hält einfach ein anderes Teil fest (Automatikgetriebe)</li>
+      </ul>
+      <p>Anwendung: Roboterachsen, Rundschalttische, Werkzeugwechsler, Lkw, Windkraft, Hebezeuge.</p>
+      <p><b>Frage 22 (Bild 3):</b> Hohlrad fest, Sonne treibt im Uhrzeigersinn → der Planetenträger dreht ebenfalls <b>im Uhrzeigersinn</b>, langsamer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k13" data-t="Zahnstange">
+  <div class="chh"><span class="pos">13</span><h3>Zahnstange und Gewindespindel: aus Drehen wird Schieben</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Ein Ritzel auf einer Zahnstange rollt ab wie ein Rad auf der Straße. Pro Umdrehung bewegt sich die Zahnstange um den Teilkreisumfang π·d. Eine Gewindespindel schiebt ihre Mutter pro Umdrehung um die Steigung P.</p>
+  <div class="bench" id="b13">
+    <div class="btop"><span>Drehbewegung → Längsbewegung</span><span class="live">● live</span></div>
+    <canvas id="cvRack" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <span class="seg" role="group" aria-label="Art"><button type="button" data-rm="r" aria-pressed="true">Zahnstange</button><button type="button" data-rm="s" aria-pressed="false">Gewindespindel</button></span>
+      <label>Ritzel z (m = 2 mm) <input type="range" id="rkZ" min="10" max="40" step="1" value="18"><b id="rkZv">18</b></label>
+      <label>Steigung P <input type="range" id="rkP" min="1" max="10" step="0.5" value="5"><b id="rkPv">5 mm</b></label>
+    </div>
+    <div class="outs" id="rkOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="key"><span class="lbl">Zahnstange</span><div class="f big">s = N · π · d &nbsp;·&nbsp; v = π · d · n</div><div class="f">Drehwinkel φ = s / (π·d) · 360°</div></div>
+      <div class="key"><span class="lbl">Gewindespindel</span><div class="f big">s = N · P &nbsp;·&nbsp; v = n · P</div><div class="hint">P = Steigung (bei eingängigem Gewinde gleich der Teilung).</div></div>
+      <p>Anwendungen: Vorschub an Drehmaschinen, Pinole der Säulenbohrmaschine, Lenkung im Auto, Frästisch.</p>
+    </div>
+    <div class="txt">
+      <details class="blatt"><summary>Bohrspindel</summary><div class="in">
+        <p>a) d = 4 · 18 = <span class="res">72 mm</span>, n = v_f/(π·d) = 162 / (π · 72) = <span class="res">0,716 /min</span></p>
+        <p>b) s = 162 mm/min · 0,6 min = <span class="res">97,2 mm</span> · c) φ = 97,2 / (π · 72) · 360° = <span class="res">154,7°</span></p></div></details>
+      <details class="blatt"><summary>Tischantrieb 2 (Gewindespindel P = 5 mm)</summary><div class="in">
+        <p>a) Zahnriemen: n_Spindel = 600 · 16/40 = 240/min → v = 240 · 5 mm = 1200 mm/min → t = 200/1200 min = <span class="res">10 s</span></p>
+        <p>b) 200 mm / 5 mm = 40 Spindelumdrehungen · Räderpaar 60/30 → <span class="res">80 Kurbelumdrehungen</span></p></div></details>
+      <details class="blatt"><summary>Stirnverzahnungen_3, 3/3, Aufgabe 6</summary><div class="in">
+        <p>z₂ dreht 90 · 18/45 = 36-mal → Schneckenrad 36 · 3/30 = 3,6-mal → Ritzel d₅ = 40 mm → s = 3,6 · π · 40 mm = <span class="res">452 mm</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k14" data-t="Schaltgetriebe">
+  <div class="chh"><span class="pos">14</span><h3>Schaltbare Getriebe: mehrere Gänge</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Wenn eine feste Übersetzung nicht reicht (Auto, Werkzeugmaschine), schaltet man zwischen verschiedenen Zahnradpaaren. Die Kraft nimmt dann einen anderen Weg durch das Getriebe, den Energiefluss.</p>
+  <div class="bench" id="b14">
+    <div class="btop"><span>Gestuftes Schaltgetriebe vom Übungsblatt · n_A = 900/min · alle Stufen a = 25·m</span><span class="live">● live</span></div>
+    <canvas id="cvShift" class="cv-l"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><span style="font-size:.9rem;color:var(--muted)">Schaltstufe:</span><span class="seg" role="group" aria-label="Schaltstufe" id="shSeg"></span></div>
+    <div class="outs" id="shOut"></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Lösung zum Übungsblatt</h4>
+      <div class="tw"><table class="t" id="shTable"></table></div>
+      <p class="hint">Welle I trägt z₁ = 25 und z₃ = 17, Welle II z₂ = 25 und z₄ = 33 sowie z₅, z₇, z₉, Welle III z₆, z₈, z₁₀. Aus 2 · 3 Radpaaren ergeben sich 6 Schaltstufen.</p>
+    </div>
+    <div class="txt">
+      <h4>Einteilung</h4>
+      <ul>
+        <li><b>Nicht schaltbar:</b> feste Übersetzung. Stirnrad-, Schnecken-, Kegelrad-, Kronenrad-, Schraubenrad-, Planetengetriebe, Harmonic Drive. Für große Drehmomente bei kleinen Drehzahlen.</li>
+        <li><b>Schaltbar, gestuft:</b> <b>Schieberadgetriebe</b> (ein Räderblock wird auf der Welle verschoben, nur im Stillstand schaltbar, deshalb geradverzahnt) und <b>Kupplungsgetriebe</b> (Räder sind immer im Eingriff, Kupplungen verbinden das gewünschte Rad mit der Welle, auch schrägverzahnt, Kfz).</li>
+        <li><b>Schaltbar, stufenlos:</b> Kegelringgetriebe, Reibradgetriebe, <b>CVT</b>. Beim CVT verstellen zwei Kegelscheibenpaare den Laufradius eines Umschlingungsbandes. So ändert sich i = d₂/d₁ gleitend.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEIL D ===================== -->
+<div class="teil" id="tD"><span class="tl">Teil D</span><h2>Zugmittel und Kupplungen</h2></div>
+
+<section class="ch" id="k15" data-t="Riemen & Kette">
+  <div class="chh"><span class="pos">15</span><h3>Riemen und Ketten: über große Abstände</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Zugmittel überbrücken große Achsabstände. Flach- und Keilriemen übertragen durch Reibung (kraftschlüssig). Sie haben Schlupf, dämpfen aber Stöße. Zahnriemen und Ketten übertragen durch Formschluss, ohne Schlupf.</p>
+  <div class="bench" id="b15">
+    <div class="btop"><span>Riementrieb · kleine Scheibe d = 140 mm</span><span class="live">● live</span></div>
+    <canvas id="cvBelt" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls">
+      <label><input type="checkbox" id="bCross"> gekreuzt</label>
+      <label>große Scheibe d <input type="range" id="bD" min="140" max="320" step="2" value="224"><b id="bDv">224</b></label>
+      <label>Achsabstand a <input type="range" id="bA" min="260" max="700" step="5" value="420"><b id="bAv">420</b></label>
+    </div>
+    <div class="outs" id="bOut"></div>
+  </div>
+  <div class="bench" id="b15b" style="margin-top:14px">
+    <div class="btop"><span>Keilwirkung · Schnitt durch die Rille</span><span class="live">● live</span></div>
+    <canvas id="cvWedge" class="cv-s"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><label>Rillenwinkel α <input type="range" id="wgA" min="30" max="40" step="1" value="38"><b id="wgAv">38°</b></label></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <div class="key"><span class="lbl">Riementrieb</span>
+        <div class="f big">i = n₁/n₂ = d₂/d₁</div>
+        <div class="f">Keilriemen: Wirkdurchmesser d_w einsetzen</div>
+        <div class="f">Riemenlänge ≈ 2a + π/2·(d₁+d₂) + (d₂−d₁)²/(4a)</div>
+        <div class="f">Keilwirkung: F_N = F / (2·sin(α/2))</div></div>
+      <h4>Was die Kraft bestimmt</h4>
+      <p>Wie viel ein Riemen überträgt, hängt von drei Dingen ab: <b>Reibwert</b>, <b>Normalkraft</b> (Vorspannung, Keilwirkung) und <b>Umschlingungswinkel</b>. Wird die große Scheibe größer, sinkt der Umschlingungswinkel an der kleinen, und sie rutscht zuerst.</p>
+      <h4>Schlupf</h4>
+      <p>Unter Last ist das Zugtrum stärker gedehnt als das Leertrum. Der Riemen kriecht deshalb etwas über die Scheibe (1–2 %). Die Übersetzung ist nicht exakt. Bei Überlast rutscht er durch. Das schützt die Maschine, erzeugt aber Wärme.</p>
+      <h4>Vorspannung und Spannrolle</h4>
+      <p>Vorspannen mit Spannschiene, Wippe, Spannschlitten oder Spannrolle. Die Spannrolle sitzt immer am <b>Leertrum</b>. Prüfen über die Durchbiegung oder die Eigenfrequenz des Trums.</p>
+    </div>
+    <div class="txt">
+      <div class="tw"><table class="t"><tr><th></th><th>Flach</th><th>Keil</th><th>Zahnriemen</th><th>Kette</th></tr>
+        <tr><td>Prinzip</td><td>Kraft</td><td>Kraft</td><td>Form</td><td>Form</td></tr>
+        <tr><td>Schlupf</td><td>ja</td><td>ja</td><td>nein</td><td>nein</td></tr>
+        <tr><td>Stoßdämpfung</td><td>ja</td><td>ja</td><td>ja</td><td>nein</td></tr>
+        <tr><td>Wartung</td><td colspan="3">Vorspannung prüfen</td><td>schmieren</td></tr>
+        <tr><td>Umwelt</td><td colspan="3">empfindlich gegen Temperatur, keine aggressiven Medien</td><td>raue Bedingungen, Hitze</td></tr></table></div>
+      <h4>Kettentriebe</h4>
+      <ul>
+        <li><b>Bolzenkette</b> (Gall-, Flyerkette): einfach und günstig. Flyerkette als Lastkette im Hubmast des Gabelstaplers.</li>
+        <li><b>Buchsenkette:</b> Innenlaschen auf Buchsen gepresst, weniger Flächenpressung, längere Lebensdauer.</li>
+        <li><b>Rollenkette:</b> drehbare Rolle auf der Buchse, kaum Reibung beim Einlauf, fast überall einsetzbar.</li>
+        <li>Spannrad oder Spannschiene am Leertrum gleicht die Kettenlängung aus und verhindert Überspringen und Schwingungen.</li>
+      </ul>
+      <details class="blatt"><summary>Frage 31: Länge des Flachriemens</summary><div class="in">
+        <p>d₁ = 224 mm, d₂ = 140 mm, a = 420 mm: L ≈ 840 + 571,8 + 4,2 = <span class="res">1416 mm</span></p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="k16" data-t="Kupplungen">
+  <div class="chh"><span class="pos">16</span><h3>Kupplungen: das Bindeglied</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Die Kupplung verbindet Motor und Getriebe (oder Getriebe und Maschine). Je nach Bauart gleicht sie Versatz aus, dämpft Stöße, schaltet oder schützt vor Überlast.</p>
+  <div class="bench" id="b16">
+    <div class="btop"><span>Drehmoment am Getriebe, wenn Steine auf das Band fallen</span><span class="live">● live</span></div>
+    <canvas id="cvShock" class="cv"></canvas>
+    <div class="cap"><button class="tp" type="button" aria-label="Erklärung pausieren">❚❚</button><div><p class="ctext"></p><div class="dots"></div><div class="manualhint">Du steuerst selbst. ▶ setzt die Erklärung fort.</div></div></div>
+    <div class="ctrls"><span class="seg" role="group" aria-label="Kupplung"><button type="button" data-km="s" aria-pressed="true">starr</button><button type="button" data-km="e" aria-pressed="false">elastisch</button><button type="button" data-km="r" aria-pressed="false">Rutschkupplung</button></span></div>
+  </div>
+  <div class="cols">
+    <div class="txt">
+      <h4>Aufgaben von Kupplungen</h4>
+      <ol><li>Antrieb und Abtrieb verbinden</li><li>Drehmoment unterbrechen (Kfz)</li><li>Getriebestufen schalten</li><li>vor Überlast schützen (CNC)</li><li>Stöße dämpfen (Förderanlagen)</li><li>Wellenversatz ausgleichen (Gelenkkupplung)</li></ol>
+      <div class="merk">„Viele Unfälle Sind Schnell Da, Achtung!“: Verbinden, Unterbrechen, Schalten, Schützen, Dämpfen, Ausgleichen.</div>
+      <h4>Einteilung</h4>
+      <ul>
+        <li><b>Nicht schaltbar:</b> starr (Scheiben-, Schalenkupplung), drehstarr (Bogenzahn-, Gelenkkupplung, Gelenkwelle, gleichen Versatz aus), elastisch (Gummihülsen-, Metallfeder-, Metallbalgkupplung, dämpfen Stöße), Strömungskupplung</li>
+        <li><b>Schaltbar:</b> formschlüssig (Klauen-, Zahnkupplung), kraftschlüssig (Ein- und Mehrscheiben-, Kegel-, Fliehkraftkupplung), magnetisch</li>
+        <li><b>Sonderkupplungen:</b> Sicherheitskupplungen (Abscherstift, Brechbolzen, Rutsch-, Durchrastkupplung), Anlauf- und Freilaufkupplungen</li>
+      </ul>
+    </div>
+    <div class="txt">
+      <h4>So wählst du die Kupplung aus</h4>
+      <div class="tw"><table class="t"><tr><th>Frage</th><th>Wenn ja</th></tr>
+        <tr><td>Fluchten die Wellen genau, keine Stöße?</td><td>starre Kupplung (Scheibenkupplung)</td></tr>
+        <tr><td>Wellen leicht versetzt oder winklig?</td><td>drehstarre Ausgleichskupplung (Bogenzahn, Gelenk)</td></tr>
+        <tr><td>Stöße oder Schwingungen?</td><td>elastische Kupplung</td></tr>
+        <tr><td>Muss im Betrieb getrennt werden?</td><td>schaltbare Kupplung</td></tr>
+        <tr><td>Gefahr von Blockieren und Überlast?</td><td>Sicherheits- oder Rutschkupplung</td></tr></table></div>
+      <div class="key"><span class="lbl">Scheibenkupplung (Reibschluss)</span>
+        <div class="f">Schrauben pressen die Scheiben mit F_N zusammen</div>
+        <div class="f">F_R = μ · F_N &nbsp;·&nbsp; M = F_R · r · Anzahl Schrauben</div>
+        <div class="f">Auslegung: M_erf = ν · M_Motor → Größe aus der Tabelle</div></div>
+      <details class="blatt"><summary>Antriebsstation 2 und 3</summary><div class="in">
+        <p>2: Wellen fluchten, keine Stöße → <b>starre Scheibenkupplung</b>: einfach, günstig, spielfrei, wartungsfrei.</p>
+        <p>3: Steine aus 80 cm erzeugen Stöße, die starr ins Getriebe gehen → Zahnbrüche, Lagerschäden. Lösung: <b>elastische Kupplung</b> (dämpft) und eventuell eine Rutschkupplung gegen Blockieren.</p></div></details>
+      <details class="blatt"><summary>Skilift 4 bis 6 (Scheibenkupplung)</summary><div class="in">
+        <p>M_Motor = 11 000 W / (2π · 24,33 1/s) = 71,9 Nm → mit ν = 3: 216 Nm → <span class="res">Größe 40</span> (236 Nm, 4100/min ≥ 1460/min)</p>
+        <p>Spannkraft: Reibung am Lochkreis r = 50 mm, 3 Schrauben, μ = 0,15 (Annahme, Tabellenbuch): F_u = 216/0,05 = 4317 N → F_S = 4317/(3 · 0,15) ≈ <span class="res">9,6 kN</span> pro Schraube</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEIL E ===================== -->
+<div class="teil" id="tE"><span class="tl">Teil E</span><h2>Alles zusammen</h2></div>
+
+<section class="ch" id="k17" data-t="Antrieb auslegen">
+  <div class="chh"><span class="pos">17</span><h3>Einen Antrieb auslegen: der rote Faden als Rechenweg</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>Fast jede Aufgabe auf deinen Blättern ist derselbe Weg: von der Maschine zurück zum Motor. Gib die Daten ein oder wähle ein Beispiel. Der Rechenweg erscheint Schritt für Schritt.</p>
+  <div class="bench" id="b17">
+    <div class="btop"><span>Antriebs-Rechner · von der Maschine zum Motor</span><span class="live">● rechnet live</span></div>
+    <div class="ctrls"><span style="font-size:.9rem;color:var(--muted)">Beispiel laden:</span><span id="dsPre" style="display:flex;flex-wrap:wrap;gap:8px"></span></div>
+    <div class="dz">
+      <div><label for="dsF">Kraft an der Trommel F in N</label><input id="dsF" type="number" step="any" inputmode="decimal"></div>
+      <div><label for="dsV">Geschwindigkeit v in m/s</label><input id="dsV" type="number" step="any" inputmode="decimal"></div>
+      <div><label for="dsD">Trommeldurchmesser d in mm</label><input id="dsD" type="number" step="any" inputmode="decimal"></div>
+      <div><label for="dsN">Motordrehzahl n in 1/min</label><input id="dsN" type="number" step="any" inputmode="decimal"></div>
+      <div><label for="dsEA">η Maschine</label><input id="dsEA" type="number" step="0.01" inputmode="decimal"></div>
+      <div><label for="dsEG">η Getriebe</label><input id="dsEG" type="number" step="0.01" inputmode="decimal"></div>
+      <div><label for="dsEM">η Motor</label><input id="dsEM" type="number" step="0.01" inputmode="decimal"></div>
+      <div><label for="dsNu">Sicherheit Kupplung ν</label><input id="dsNu" type="number" step="0.1" inputmode="decimal"></div>
+      <div><label for="dsM">Modul m in mm</label><input id="dsM" type="number" step="0.25" inputmode="decimal"></div>
+      <div><label for="dsZ">Ritzel mindestens z</label><input id="dsZ" type="number" step="1" inputmode="numeric"></div>
+    </div>
+    <div class="chain" id="dsChain"></div>
+    <ol class="sol" id="dsSol"></ol>
+  </div>
+</section>
+
+<section class="ch" id="k18" data-t="Selbsttest">
+  <div class="chh"><span class="pos">18</span><h3>Selbsttest: Hast du es verstanden?</h3></div>
+  <p class="kurz"><b>Kurz gesagt</b>14 Verständnisfragen. Zu jeder gibt es die Begründung. Die 44 Fragen aus dem Heft übst du mit dem <a href="https://claude.ai/artifact/95ooJiJGhxh3bjsvaBoWaH" target="_blank" rel="noopener">Getriebe-Trainer</a> (Karteikarten).</p>
+  <div id="quiz"></div>
+  <p style="font-family:var(--mono);font-size:.9rem" id="qScore"></p>
+</section>
+
+</main>
+<footer><div class="wrap">Getriebe verstehen · erstellt aus deinem Heft „1 Getriebe“ und den Übungsblättern der Beruflichen Schulen Bebra. Formeln und Normwerte immer mit dem Tabellenbuch Metall abgleichen. Wo ich Annahmen getroffen habe, steht es dabei.</div></footer>
+<button class="theme" id="themeBtn" type="button">◐ Hell/Dunkel</button>
+
+<script>
+/* ================= Grundlagen ================= */
+const $=id=>document.getElementById(id);
+const fmt=(v,d=2)=>isFinite(v)?(Math.round(v*10**d)/10**d).toLocaleString('de-DE',{maximumFractionDigits:d}):'–';
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TAU=Math.PI*2, DEG=Math.PI/180;
+const C={};
+function readC(){ const cs=getComputedStyle(document.documentElement);
+  for(const k of ['bg','panel','panel2','ink','muted','line','line2','acc','acc-soft','steel','steel-soft','ok','ok-soft','bad','bad-soft','warn','warn-soft','gear1','gear2','gear3'])
+    C[k.replace(/-(\w)/,(m,a)=>a.toUpperCase())]=cs.getPropertyValue('--'+k).trim(); }
+readC();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',readC);
+new MutationObserver(readC).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+(function(){ const b=$('themeBtn'); let t=null; try{ t=localStorage.getItem('gv-theme'); }catch(e){} if(t) document.documentElement.setAttribute('data-theme',t);
+  b.onclick=()=>{ const dark=document.documentElement.getAttribute('data-theme')?document.documentElement.getAttribute('data-theme')==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    const n=dark?'light':'dark'; document.documentElement.setAttribute('data-theme',n); try{ localStorage.setItem('gv-theme',n); }catch(e){} }; })();
+
+function fit(cv){ const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2), w=Math.max(1,Math.round(r.width)), h=Math.max(1,Math.round(r.height));
+  if(cv.width!==w*dpr||cv.height!==h*dpr){ cv.width=w*dpr; cv.height=h*dpr; } const c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,w,h); c.lineCap='round'; c.lineJoin='round'; return [c,w,h]; }
+function txt(c,t,x,y,col,size=13,al='center',wt='600',mono=false){ c.font=wt+' '+size+'px '+(mono?'"JetBrains Mono",ui-monospace,monospace':'Barlow,"Segoe UI",Arial,sans-serif'); c.fillStyle=col; c.textAlign=al; c.textBaseline='alphabetic'; c.fillText(t,x,y); }
+function tag(c,t,x,y,col,size=12,al='center'){ c.font='600 '+size+'px Barlow,Arial,sans-serif'; const w=c.measureText(t).width+10, h=size+8; let x0=al==='center'?x-w/2:al==='right'?x-w:x;
+  c.fillStyle=C.panel; c.globalAlpha=.9; c.beginPath(); c.roundRect(x0,y-h+4,w,h,5); c.fill(); c.globalAlpha=1; c.strokeStyle=col; c.lineWidth=1; c.stroke(); txt(c,t,x0+w/2,y,col,size); }
+function line(c,x1,y1,x2,y2,col,lw=2,dash){ c.strokeStyle=col; c.lineWidth=lw; if(dash) c.setLineDash(dash); c.beginPath(); c.moveTo(x1,y1); c.lineTo(x2,y2); c.stroke(); if(dash) c.setLineDash([]); }
+function arrow(c,x1,y1,x2,y2,col,lw=2.5,hd=9){ line(c,x1,y1,x2,y2,col,lw); const a=Math.atan2(y2-y1,x2-x1); c.fillStyle=col; c.beginPath(); c.moveTo(x2,y2); c.lineTo(x2-hd*Math.cos(a-.42),y2-hd*Math.sin(a-.42)); c.lineTo(x2-hd*Math.cos(a+.42),y2-hd*Math.sin(a+.42)); c.closePath(); c.fill(); }
+function dimV(c,x,y1,y2,col,label,lw=1.3){ line(c,x,y1,x,y2,col,lw); for(const [y,s] of [[y1,1],[y2,-1]]){ c.fillStyle=col; c.beginPath(); c.moveTo(x,y); c.lineTo(x-3.5,y+7*s*(y2>y1?1:-1)); c.lineTo(x+3.5,y+7*s*(y2>y1?1:-1)); c.closePath(); c.fill(); } }
+function rotArrow(c,x,y,r,dir,col,lw=3){ const a0=-Math.PI*.8, a1=-Math.PI*.2; c.strokeStyle=col; c.lineWidth=lw; c.beginPath(); c.arc(x,y,r,a0,a1); c.stroke();
+  const ae=dir>0?a1:a0, tx=x+r*Math.cos(ae), ty=y+r*Math.sin(ae), tg=ae+(dir>0?Math.PI/2:-Math.PI/2); c.fillStyle=col; c.beginPath();
+  c.moveTo(tx+9*Math.cos(tg),ty+9*Math.sin(tg)); c.lineTo(tx+7*Math.cos(tg+2.3),ty+7*Math.sin(tg+2.3)); c.lineTo(tx+7*Math.cos(tg-2.3),ty+7*Math.sin(tg-2.3)); c.closePath(); c.fill(); }
+// Zahnrad (Außenverzahnung), r = Teilkreisradius
+function gearPath(c,x,y,r,z,ang){ const m=2*r/z, ra=r+m, rf=Math.max(r-1.25*m,r*.25), p=TAU/z; c.beginPath();
+  for(let k=0;k<z;k++){ const a=ang+k*p; const pts=[[rf,a-p*.3],[ra,a-p*.13],[ra,a+p*.13],[rf,a+p*.3]];
+    pts.forEach(([rr,aa],j)=>{ const px=x+rr*Math.cos(aa), py=y+rr*Math.sin(aa); (k===0&&j===0)?c.moveTo(px,py):c.lineTo(px,py); });
+    c.arc(x,y,rf,a+p*.3,a+p*.7); }
+  c.closePath(); }
+function gear(c,x,y,r,z,ang,fill,stroke,o={}){ gearPath(c,x,y,r,z,ang); c.fillStyle=fill; c.fill(); c.strokeStyle=stroke; c.lineWidth=o.lw||1.4; c.stroke();
+  if(o.pitch){ c.setLineDash([7,3,2,3]); c.strokeStyle=stroke; c.lineWidth=1; c.beginPath(); c.arc(x,y,r,0,TAU); c.stroke(); c.setLineDash([]); }
+  const hr=Math.max(4,r*.16); c.beginPath(); c.arc(x,y,hr,0,TAU); c.fillStyle=C.panel; c.fill(); c.strokeStyle=stroke; c.lineWidth=1.4; c.stroke();
+  if(o.spoke!==false){ c.strokeStyle=stroke; c.lineWidth=2.4; c.beginPath(); c.moveTo(x+hr*Math.cos(ang),y+hr*Math.sin(ang)); c.lineTo(x+(r-2.2*r/z)*Math.cos(ang),y+(r-2.2*r/z)*Math.sin(ang)); c.stroke(); } }
+// Hohlrad (Innenverzahnung)
+function ring(c,x,y,r,z,ang,fill,stroke){ const m=2*r/z, rt=r-m, rr=r+1.25*m, p=TAU/z, Ro=r+3*m; c.beginPath(); c.arc(x,y,Ro,0,TAU);
+  for(let k=0;k<z;k++){ const a=ang+k*p; const pts=[[rr,a-p*.3],[rt,a-p*.13],[rt,a+p*.13],[rr,a+p*.3]];
+    pts.forEach(([q,aa],j)=>{ const px=x+q*Math.cos(aa), py=y+q*Math.sin(aa); (k===0&&j===0)?c.moveTo(px,py):c.lineTo(px,py); }); c.arc(x,y,rr,a+p*.3,a+p*.7); }
+  c.closePath(); c.fillStyle=fill; c.fill('evenodd'); c.strokeStyle=stroke; c.lineWidth=1.4; c.stroke();
+  c.strokeStyle=stroke; c.lineWidth=4; c.beginPath(); c.moveTo(x+(Ro-1)*Math.cos(ang),y+(Ro-1)*Math.sin(ang)); c.lineTo(x+(rr+2)*Math.cos(ang),y+(rr+2)*Math.sin(ang)); c.stroke(); }
+const meshExt=(a1,z1,z2,th)=>th+Math.PI-Math.PI/z2-(a1-th)*z1/z2;
+const meshInt=(a1,z1,zr,th)=>th-Math.PI/zr+(a1-th)*z1/zr;
+
+/* ================= Register: nur sichtbare Canvas zeichnen ================= */
+const sims=[];
+function sim(id,draw){ const cv=$(id); const s={cv,draw,vis:false}; sims.push(s); new IntersectionObserver(e=>{ s.vis=e[0].isIntersecting; },{rootMargin:'120px'}).observe(cv); return s; }
+function bindV(id,f){ const el=$(id), out=$(id+'v'); const u=()=>{ if(out) out.textContent=f(+el.value); }; el.addEventListener('input',u); u(); return el; }
+function seg(attr,cb,init){ const bs=[...document.querySelectorAll('['+attr+']')]; const set=v=>{ v=String(v); bs.forEach(b=>b.setAttribute('aria-pressed',b.getAttribute(attr)===v?'true':'false')); cb(v); };
+  bs.forEach(b=>b.addEventListener('click',()=>set(b.getAttribute(attr)))); set(init); return set; }
+const outCache={};
+function outs(id,arr){ const h=arr.map(([a,b])=>'<div><span>'+a+'</span><b>'+b+'</b></div>').join(''); if(outCache[id]!==h){ outCache[id]=h; $(id).innerHTML=h; } }
+
+/* ================= Selbsterklärende Touren ================= */
+const tours=[];
+function tour(benchId,steps){ const b=$(benchId), cap=b.querySelector('.cap'), tx=cap.querySelector('.ctext'), btn=cap.querySelector('.tp'), dots=cap.querySelector('.dots');
+  const T={b,steps,i:-1,t:0,paused:false,vis:false,from:{},tx,btn,dots};
+  dots.innerHTML=steps.map((s,k)=>'<i title="Schritt '+(k+1)+'"></i>').join('');
+  [...dots.children].forEach((d,k)=>d.onclick=()=>{ T.paused=false; go(T,k); });
+  btn.onclick=()=>{ T.paused=!T.paused; if(!T.paused&&T.i<0) go(T,0); ui(T); };
+  b.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',e=>{ if(e.isTrusted) hold(T); }));
+  b.querySelectorAll('.ctrls button, .ctrls input[type=checkbox]').forEach(el=>el.addEventListener('click',e=>{ if(e.isTrusted) hold(T); }));
+  new IntersectionObserver(es=>{ T.vis=es[0].isIntersecting; if(T.vis&&T.i<0&&!T.paused) go(T,0); },{threshold:.3}).observe(b);
+  tours.push(T); return T; }
+function go(T,i){ T.i=((i%T.steps.length)+T.steps.length)%T.steps.length; T.t=0; const s=T.steps[T.i]; T.from={};
+  for(const id in (s.set||{})){ const el=$(id); T.from[id]=el.type==='checkbox'?0:+el.value; }
+  if(s.on) s.on(); T.tx.classList.add('fade'); setTimeout(()=>{ T.tx.innerHTML=s.cap; T.tx.classList.remove('fade'); },160); ui(T); }
+function hold(T){ if(T.paused) return; T.paused=true; ui(T); }
+function ui(T){ T.btn.textContent=T.paused?'▶':'❚❚'; T.btn.setAttribute('aria-label',T.paused?'Erklärung fortsetzen':'Erklärung pausieren');
+  [...T.dots.children].forEach((d,k)=>d.className=k===T.i?'on':k<T.i?'past':''); T.b.classList.toggle('manual',T.paused&&T.i>=0); }
+function tourTick(dt){ for(const T of tours){ if(!T.vis||T.paused||T.i<0) continue; const s=T.steps[T.i], tw=s.tw||1.4; const prev=T.t; T.t+=dt;
+    if(s.set&&prev<tw){ const p=Math.min(1,T.t/tw), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      for(const id in s.set){ const el=$(id); if(el.type==='checkbox'){ if(p>=1&&el.checked!==!!s.set[id]){ el.checked=!!s.set[id]; el.dispatchEvent(new Event('input')); } continue; }
+        const st=+el.step||1, v=T.from[id]+(s.set[id]-T.from[id])*e; el.value=p>=1?s.set[id]:Math.round(v/st)*st; el.dispatchEvent(new Event('input')); } }
+    if(T.t>=(s.dur||7)) go(T,T.i+1); } }
+
+/* ================= HERO: Antriebsstrang ================= */
+bindV('heI',v=>fmt(v,1));
+const HE_P=4000, HE_N=1400, HE_ETA=.95;
+sim('cvHero',(dt,t)=>{ const [c,W,H]=fit($('cvHero')); const z1=17, z2=Math.round(17*+$('heI').value), i=z2/z1;
+  const cy=H*.3, mx=Math.max(10,W*.025), mw=Math.min(W*.19,170), mh=Math.min(H*.26,80);
+  const r1=Math.max(8,Math.min(18,(H-26-cy)/13.4,W*.4/14)), r2=r1*i, r2max=r1*6, y2=cy+r1+r2;
+  const xc=mx+mw+Math.max(12,W*.035), xg=xc+22+r2max*.55+12, rd=Math.min(38,H*.11), xd=Math.max(xg+r2max+rd+20,W*.74);
+  const a1=-t*2.1, a2=meshExt(a1,z1,z2,Math.PI/2);
+  // Motor
+  c.fillStyle=C.panel; c.strokeStyle=C.ink; c.lineWidth=1.6; c.beginPath(); c.roundRect(mx,cy-mh/2,mw,mh,8); c.fill(); c.stroke();
+  for(let k=1;k<7;k++){ const x=mx+mw*.12+k*(mw*.7/7); line(c,x,cy-mh/2+6,x,cy+mh/2-6,C.line2,1.2); }
+  c.fillStyle=C.accSoft; c.beginPath(); c.roundRect(mx+mw*.03,cy-mh*.38,mw*.1,mh*.76,4); c.fill();
+  txt(c,'Motor',mx+mw/2,cy+mh/2+17,C.ink,13); txt(c,'1400/min',mx+mw/2,cy+mh/2+32,C.muted,11,'center','500',true);
+  // Wellen + Kupplung
+  line(c,mx+mw,cy,xg,cy,C.ink,5);
+  c.fillStyle=C.steelSoft; c.strokeStyle=C.steel; c.lineWidth=1.4; for(const dx of [-7,1]){ c.beginPath(); c.roundRect(xc+dx,cy-15,6,30,2); c.fill(); c.stroke(); }
+  txt(c,'Kupplung',xc,cy-22,C.muted,11);
+  // Gehäuse
+  const hx0=xg-Math.max(r1,r2)-12, hx1=xg+Math.max(r1,r2)+12;
+  c.fillStyle=C.panel; c.globalAlpha=.55; c.beginPath(); c.roundRect(hx0,cy-r1-14,hx1-hx0,y2+r2-(cy-r1)+26,10); c.fill(); c.globalAlpha=1; c.strokeStyle=C.line2; c.setLineDash([5,4]); c.lineWidth=1.3; c.stroke(); c.setLineDash([]);
+  txt(c,'Getriebe',xg,cy-r1-20,C.muted,11);
+  line(c,xg,y2,xd,y2,C.ink,5);
+  gear(c,xg,y2,r2,z2,a2,C.gear2,C.steel); gear(c,xg,cy,r1,z1,a1,C.gear1,C.acc);
+  // Trommel + Band
+  const ad=a2; c.beginPath(); c.arc(xd,y2,rd,0,TAU); c.fillStyle=C.panel2; c.fill(); c.strokeStyle=C.ink; c.lineWidth=2; c.stroke();
+  for(let k=0;k<3;k++){ const a=ad+k*TAU/3; line(c,xd,y2,xd+rd*.85*Math.cos(a),y2+rd*.85*Math.sin(a),C.muted,2); }
+  const bx1=W-8; line(c,xd,y2-rd,bx1,y2-rd,C.ink,3); line(c,xd,y2+rd,bx1,y2+rd,C.ink,3);
+  const vpx=rd*2.1/i, off=(t*vpx)%70;
+  for(let x=xd+10+off-70;x<bx1-26;x+=70){ if(x<xd+6) continue; c.fillStyle=C.warnSoft; c.strokeStyle=C.warn; c.lineWidth=1.3; c.beginPath(); c.roundRect(x,y2-rd-20,24,18,3); c.fill(); c.stroke(); }
+  txt(c,'Trommel',xd,y2+rd+17,C.ink,13); txt(c,fmt(HE_N/i,0)+'/min',xd,y2+rd+32,C.muted,11,'center','500',true);
+  rotArrow(c,xg,cy,r1+10,-1,C.acc,2.4); rotArrow(c,xg,y2,Math.max(r2*.55,14),1,C.steel,2.6);
+  const M1=HE_P/(TAU*HE_N/60), n2=HE_N/i, M2=M1*i*HE_ETA, P2=HE_P*HE_ETA;
+  outs('heOut',[['Motor n₁',fmt(HE_N,0)+' /min'],['Motor M₁',fmt(M1,1)+' Nm'],['Motor P₁',fmt(HE_P/1000,2)+' kW'],['Übersetzung i = z₂/z₁',z2+'/'+z1+' = '+fmt(i,2)],['Trommel n₂ = n₁/i',fmt(n2,0)+' /min'],['Trommel M₂ = M₁·i·η',fmt(M2,1)+' Nm'],['Trommel P₂ = P₁·η',fmt(P2/1000,2)+' kW'],['Bandgeschw. (d = 200 mm)',fmt(Math.PI*.2*n2/60,2)+' m/s']]);
+});
+tour('bHero',[
+ {set:{heI:4.9},dur:8,cap:'Der Motor dreht schnell, 1400-mal pro Minute, aber mit wenig Drehmoment (27 Nm). Die Trommel des Förderbandes braucht nur etwa 290/min, dafür viel mehr Drehmoment.'},
+ {dur:8,cap:'Das Getriebe dazwischen macht aus <b>schnell und schwach</b> ein <b>langsam und stark</b>. Hier dreht die Trommel 4,9-mal langsamer und hat fast 4,9-mal so viel Drehmoment.'},
+ {set:{heI:2},dur:8,cap:'Kleinere Übersetzung: Das Band läuft schneller, das Drehmoment ist kleiner. Die Leistung bleibt fast gleich, nur 5 % gehen im Getriebe als Wärme verloren.'},
+ {set:{heI:6},dur:8,cap:'Große Übersetzung: langsam und kräftig. Dabei wird das große Rad immer größer. Wie man das vermeidet, zeigt Kapitel 4.'},
+ {set:{heI:4.9},dur:8,cap:'<b>Merke:</b> Ein Getriebe tauscht Drehzahl gegen Drehmoment. Leistung erzeugt es nicht. Die Tabelle unten zeigt alle Werte live.'}]);
+
+/* ================= K1: Drehmoment-Drehzahl-Diagramm ================= */
+bindV('mnI',v=>fmt(v,2));
+sim('cvMN',()=>{ const [c,W,H]=fit($('cvMN')); const i=+$('mnI').value, P=4000, n1=1400, M1=P/(TAU*n1/60), eta=.95;
+  const L=54, R=18, T=18, B=40, nMax=1600, MMax=M1*6.6, X=n=>L+(W-L-R)*n/nMax, Y=M=>H-B-(H-B-T)*M/MMax;
+  c.strokeStyle=C.line; c.lineWidth=1; for(let n=0;n<=nMax;n+=200){ line(c,X(n),T,X(n),H-B,C.line,1); txt(c,String(n),X(n),H-B+15,C.muted,10,'center','500',true); }
+  for(let M=0;M<=MMax;M+=25){ line(c,L,Y(M),W-R,Y(M),C.line,1); txt(c,String(M),L-6,Y(M)+4,C.muted,10,'right','500',true); }
+  txt(c,'Drehzahl n in 1/min →',W-R,H-8,C.muted,11,'right'); txt(c,'Drehmoment M in Nm',L+4,T+10,C.muted,11,'left');
+  const curve=(k,col,dash)=>{ c.strokeStyle=col; c.lineWidth=2.5; if(dash) c.setLineDash(dash); c.beginPath(); let f=true; for(let n=180;n<=nMax;n+=6){ const M=k*P/(TAU*n/60); if(M>MMax) continue; f?c.moveTo(X(n),Y(M)):c.lineTo(X(n),Y(M)); f=false; } c.stroke(); c.setLineDash([]); };
+  curve(1,C.ink); curve(eta,C.muted,[6,5]);
+  const n2=n1/i, M2=M1*i*eta;
+  const rect=(n,M,col,soft)=>{ c.fillStyle=soft; c.globalAlpha=.55; c.fillRect(X(0),Y(M),X(n)-X(0),Y(0)-Y(M)); c.globalAlpha=1; c.strokeStyle=col; c.lineWidth=1.5; c.strokeRect(X(0),Y(M),X(n)-X(0),Y(0)-Y(M)); };
+  rect(n1,M1,C.acc,C.accSoft); if(i>1.02) rect(n2,M2,C.steel,C.steelSoft);
+  for(const [n,M,col,l] of [[n1,M1,C.acc,'Motor'],[n2,M2,C.steel,'Abtrieb']]){ if(l==='Abtrieb'&&i<=1.02) continue; c.beginPath(); c.arc(X(n),Y(M),6,0,TAU); c.fillStyle=col; c.fill(); tag(c,l+': '+fmt(n,0)+'/min · '+fmt(M,1)+' Nm',Math.min(X(n)+8,W-190),Y(M)-12,col,12,'left'); }
+  txt(c,'P = 4 kW',X(330),Y(4000/(TAU*330/60))-8,C.ink,12,'left'); txt(c,'mit η = 0,95',X(560),Y(3800/(TAU*560/60))+18,C.muted,11,'left');
+});
+tour('b1',[
+ {set:{mnI:1},dur:8,cap:'Der orange Punkt ist der Motor: 1400/min und 27 Nm. Die Fläche des orangen Rechtecks entspricht seiner Leistung (4 kW).'},
+ {set:{mnI:3},dur:8,cap:'Mit einem Getriebe i = 3: Drehzahl geteilt durch 3, Drehmoment mal 3. Der Punkt wandert auf der Kurve gleicher Leistung nach links oben.'},
+ {dur:8,cap:'Die beiden Rechtecke sind fast gleich groß. Die Leistung bleibt, nur ihre „Form“ ändert sich. Der kleine Unterschied ist der Verlust (η = 0,95, gestrichelte Kurve).'},
+ {set:{mnI:6},dur:8,cap:'i = 6: nur noch 233/min, dafür 156 Nm. So bekommt eine langsame Maschine das nötige Drehmoment aus einem schnellen Motor.'},
+ {set:{mnI:1},dur:6,cap:'Das ist der Grund für jedes Getriebe: Motor und Maschine sollen beide in ihrem besten Bereich arbeiten.'}]);
+
+/* ================= K2: Zahnradpaar ================= */
+bindV('pZ1',v=>v); bindV('pZ2',v=>v);
+let PM='v'; const setPM=seg('data-pm',v=>PM=v,'v');
+sim('cvPair',(dt,t)=>{ const [c,W,H]=fit($('cvPair')); const z1=+$('pZ1').value, z2=+$('pZ2').value;
+  const k=Math.min((W-60)/(z1+z2+4),(H-70)/(Math.max(z1,z2)+2.6)), r1=z1*k/2, r2=z2*k/2, cy=H/2+8, x1=W/2-r2, x2=W/2+r1, px=x1+r1;
+  const a1=t*1.1, a2=meshExt(a1,z1,z2,0);
+  gear(c,x1,cy,r1,z1,a1,C.gear1,C.acc,{pitch:true}); gear(c,x2,cy,r2,z2,a2,C.gear2,C.steel,{pitch:true});
+  rotArrow(c,x1,cy,Math.max(r1*.5,12),1,C.acc,2.6); rotArrow(c,x2,cy,Math.max(r2*.5,12),-1,C.steel,2.6);
+  if(PM==='v'||PM==='P'){ const S=TAU*Math.min(r1,r2), s=(a1*r1)%S, p1=s/r1, p2=s/r2;
+    c.lineWidth=5; c.strokeStyle=C.acc; c.beginPath(); c.arc(x1,cy,r1,0,p1); c.stroke(); c.strokeStyle=C.steel; c.beginPath(); c.arc(x2,cy,r2,Math.PI-p2,Math.PI); c.stroke();
+    for(const [x,r,a,col] of [[x1,r1,p1,C.acc],[x2,r2,Math.PI-p2,C.steel]]){ c.beginPath(); c.arc(x+r*Math.cos(a),cy+r*Math.sin(a),5.5,0,TAU); c.fillStyle=col; c.fill(); }
+    arrow(c,px,cy-4,px,cy+42,C.ok,3); tag(c,'v₁ = v₂',px,cy+62,C.ok,13);
+    txt(c,'Weg am Teilkreis: gleich lang',W/2,22,C.ink,13); }
+  if(PM==='F'||PM==='P'){ line(c,x1,cy,px,cy,C.acc,3); line(c,x2,cy,px,cy,C.steel,3);
+    tag(c,'Hebel r₁',x1+r1/2,cy+24,C.acc,12); tag(c,'Hebel r₂ = '+fmt(z2/z1,2)+' · r₁',x2-r2*.45,cy-12,C.steel,12);
+    arrow(c,px+4,cy-2,px+4,cy+46,C.steel,3.5); arrow(c,px-4,cy+2,px-4,cy-46,C.acc,3.5);
+    txt(c,'F_u',px+10,cy+40,C.steel,13,'left','700'); txt(c,'F_u',px-10,cy-36,C.acc,13,'right','700');
+    txt(c,'M₁ = F_u · r₁',x1,cy+r1+30,C.acc,13); txt(c,'M₂ = F_u · r₂',x2,cy+r2+22>H-6?H-6:cy+r2+22,C.steel,13); }
+  if(PM==='P') txt(c,'P = F_u · v  ist für beide Räder gleich',W/2,H-10,C.ink,13);
+  const m=3, d1=m*z1, d2=m*z2, n1=1400, n2=n1*z1/z2, i=z2/z1, v=Math.PI*d1/1000*n1/60, M1=20, Fu=2*M1/(d1/1000), M2=Fu*d2/2000;
+  outs('pOut',[['i = z₂/z₁',fmt(i,3)+(i>1?' (ins Langsame)':i<1?' (ins Schnelle)':'')],['d₁ / d₂',d1+' / '+d2+' mm'],['n₂ = n₁/i',fmt(n2,1)+' /min'],['v am Teilkreis',fmt(v,2)+' m/s'],['F_u = 2M₁/d₁',fmt(Fu,0)+' N'],['M₂ = M₁ · i',fmt(M2,1)+' Nm'],['P₁ = 2π·n₁·M₁',fmt(TAU*n1/60*M1/1000,2)+' kW'],['P₂ = 2π·n₂·M₂',fmt(TAU*n2/60*M2/1000,2)+' kW']]);
+});
+tour('b2',[
+ {set:{pZ1:17,pZ2:34},on:()=>setPM('v'),dur:8,cap:'Zwei Zahnräder greifen ineinander. Am Berührpunkt können die Zähne nicht rutschen. Deshalb bewegen sich beide Teilkreise dort <b>gleich schnell</b> (grüner Pfeil).'},
+ {dur:9,cap:'Die farbigen Bögen sind immer gleich lang: Beide Räder legen am Teilkreis denselben Weg zurück. Das kleine Rad muss sich dafür doppelt so weit drehen.'},
+ {dur:9,cap:'Daraus folgt die wichtigste Formel: π·d₁·n₁ = π·d₂·n₂, also <b>i = n₁/n₂ = d₂/d₁ = z₂/z₁</b> = 34/17 = 2.'},
+ {set:{pZ2:68},dur:8,cap:'Das große Rad bekommt doppelt so viele Zähne. Jetzt dreht es viermal langsamer als das Ritzel: i = 68/17 = 4.'},
+ {set:{pZ2:51},on:()=>setPM('F'),dur:9,cap:'Jetzt die Kräfte: Der Zahn des Ritzels drückt mit der Umfangskraft F_u auf das große Rad. Das große Rad drückt genauso stark zurück.'},
+ {dur:9,cap:'Gleiche Kraft, aber das große Rad hat den dreimal längeren Hebel r₂. Drehmoment = Kraft × Hebel. Deshalb <b>M₂ = M₁ · i</b>: dreimal langsamer, dreimal so viel Drehmoment.'},
+ {on:()=>setPM('P'),dur:9,cap:'Leistung = Kraft × Geschwindigkeit. Beide sind am Berührpunkt für beide Räder gleich. Also ist auch die Leistung gleich (siehe P₁ und P₂ unten).'},
+ {set:{pZ1:40,pZ2:20},on:()=>setPM('v'),dur:9,cap:'Umgekehrt: Das große Rad treibt das kleine. Jetzt geht es <b>ins Schnelle</b>, i = 20/40 = 0,5. Doppelt so schnell, aber nur das halbe Drehmoment.'},
+ {set:{pZ1:17,pZ2:34},dur:8,cap:'Der rote Faden: <b>gleich schnell</b> → Übersetzung. <b>Gleiche Kraft</b> → Drehmoment. <b>Leistung bleibt</b>. Alles Weitere baut darauf auf.'}]);
+
+/* ================= K3: Drehrichtung ================= */
+bindV('dZi',v=>v);
+let DM='a'; const setDM=seg('data-dm',v=>DM=v,'a');
+sim('cvDir',(dt,t)=>{ const [c,W,H]=fit($('cvDir')); const cy=H/2+4, w=t*1.1; const lab=(x,y,dir,col,name)=>{ txt(c,name,x,y,col,13); txt(c,dir>0?'↻ im Uhrzeigersinn':'↺ gegen den Uhrzeigersinn',x,y+16,C.muted,11); };
+  if(DM==='a'){ const z1=24,z2=36,k=Math.min((W-60)/(z1+z2+4),(H-80)/(z2+2.6)), r1=z1*k/2, r2=z2*k/2, x1=W/2-r2, x2=W/2+r1;
+    const a1=w, a2=meshExt(a1,z1,z2,0); gear(c,x1,cy,r1,z1,a1,C.gear1,C.acc); gear(c,x2,cy,r2,z2,a2,C.gear2,C.steel);
+    rotArrow(c,x1,cy,r1*.5,1,C.acc); rotArrow(c,x2,cy,r2*.5,-1,C.steel); lab(x1,cy+r1+26,1,C.acc,'Antrieb'); lab(x2,Math.min(H-22,cy+r2+22),-1,C.steel,'Abtrieb');
+    txt(c,'1 Außeneingriff → Drehrichtung kehrt sich um',W/2,22,C.ink,14);
+    outs('dOut',[['Antrieb z₁ = 24','1400 /min ↻'],['Abtrieb z₂ = 36',fmt(1400*24/36,1)+' /min ↺'],['i = z₂/z₁','1,5'],['Richtung','entgegengesetzt']]); }
+  else if(DM==='z'){ const z1=20,zi=+$('dZi').value,z3=30,k=Math.min((W-50)/(z1+2*zi+z3+4),(H-80)/(Math.max(z3,zi)+2.6)), r1=z1*k/2, ri=zi*k/2, r3=z3*k/2;
+    const tot=2*r1+2*ri+2*r3, x1=W/2-tot/2+r1, xi=x1+r1+ri, x3=xi+ri+r3;
+    const a1=w, ai=meshExt(a1,z1,zi,0), a3=meshExt(ai,zi,z3,0);
+    gear(c,x1,cy,r1,z1,a1,C.gear1,C.acc); gear(c,xi,cy,ri,zi,ai,C.gear3,C.warn); gear(c,x3,cy,r3,z3,a3,C.gear2,C.steel);
+    rotArrow(c,x1,cy,r1*.5,1,C.acc); rotArrow(c,xi,cy,Math.max(ri*.5,10),-1,C.warn); rotArrow(c,x3,cy,r3*.5,1,C.steel);
+    lab(x1,cy+r1+26,1,C.acc,'Antrieb z₁ = 20'); lab(xi,cy+ri+26,-1,C.warn,'Zwischenrad z = '+zi); lab(x3,cy+r3+26,1,C.steel,'Abtrieb z₃ = 30');
+    txt(c,'2 Außeneingriffe → gleiche Drehrichtung wie der Antrieb',W/2,22,C.ink,14);
+    outs('dOut',[['Antrieb z₁ = 20','1400 /min ↻'],['Zwischenrad z = '+zi,fmt(1400*20/zi,1)+' /min ↺'],['Abtrieb z₃ = 30',fmt(1400*20/30,1)+' /min ↻'],['i = (z/z₁)·(z₃/z) = z₃/z₁','30/20 = 1,5 (unabhängig von z)']]); }
+  else { const zr=60,z1=20,Rr=Math.min(W*.36,(H-50)/2)/(1+3/zr*2)*1, rr=Rr, r1=rr*z1/zr, cx=W/2, e=rr-r1, px=cx-e;
+    const a1=w, ar=meshInt(a1,z1,zr,Math.PI); ring(c,cx,cy,rr,zr,ar,C.gear2,C.steel); gear(c,px,cy,r1,z1,a1,C.gear1,C.acc);
+    rotArrow(c,px,cy,r1*.5,1,C.acc); rotArrow(c,cx,cy,rr*.78,1,C.steel);
+    tag(c,'Ritzel z = 20 ↻',px,cy+r1+22,C.acc,12); tag(c,'Hohlrad z = 60 ↻',cx+rr*.35,cy-rr*.35,C.steel,12);
+    txt(c,'Innenverzahnung → gleiche Drehrichtung, kleiner Achsabstand',W/2,18,C.ink,14);
+    outs('dOut',[['Ritzel z₁ = 20','1400 /min ↻'],['Hohlrad z₂ = 60',fmt(1400/3,1)+' /min ↻'],['i = z₂/z₁','3'],['Achsabstand a = (d₂−d₁)/2','klein: 20·m statt 40·m']]); }
+});
+tour('b3',[
+ {on:()=>setDM('a'),dur:7,cap:'Zwei außenverzahnte Räder drehen immer <b>gegenläufig</b>: Das eine rechts herum, das andere links herum.'},
+ {on:()=>setDM('z'),set:{dZi:16},dur:8,cap:'Ein <b>Zwischenrad</b> dazwischen: Jetzt gibt es zwei Außeneingriffe, und Antrieb und Abtrieb drehen in dieselbe Richtung.'},
+ {set:{dZi:40},dur:9,cap:'Das Zwischenrad wird größer, aber die Drehzahl des letzten Rades bleibt genau gleich. Die Zähnezahl des Zwischenrades kürzt sich heraus: i = z₃/z₁.'},
+ {set:{dZi:11},dur:8,cap:'Auch ein kleines Zwischenrad ändert nichts an der Übersetzung. Es überbrückt nur den Abstand und dreht die Richtung um.'},
+ {on:()=>setDM('i'),dur:9,cap:'<b>Innenverzahnung:</b> Das Ritzel läuft im Hohlrad. Beide drehen in dieselbe Richtung, und der Achsabstand ist klein. Das ist die Grundlage des Planetengetriebes.'}]);
+
+/* ================= K4: einstufig vs. zweistufig ================= */
+bindV('stI',v=>fmt(v,1));
+let stCache={};
+function stageDesign(i){ const key=i.toFixed(2); if(stCache[key]) return stCache[key]; const zmin=18; let best=null;
+  for(let z1=zmin;z1<=zmin+5;z1++) for(let z2=z1;z2<=5*z1;z2++){ const S=z1+z2; for(let z3=zmin;z3<=S/2;z3++){ const z4=S-z3; if(z4/z3>5.2||z2/z1>5.2) continue; const ia=z2/z1*z4/z3; const sc=Math.abs(ia-i)/i*100+S*.02+Math.max(z2,z4)*.01;
+      if(!best||sc<best.sc) best={z1,z2,z3,z4,ia,sc}; } }
+  return stCache[key]=best; }
+sim('cvStage',()=>{ const [c,W,H]=fit($('cvStage')); const i=+$('stI').value, m=6, wall=30;
+  const o1={z1:18,z2:Math.round(18*i)}; o1.ia=o1.z2/18; const a1=m*(o1.z1+o1.z2)/2, da1=m*(o1.z1+2), da2=m*(o1.z2+2);
+  const H1=da1/2+a1+da2/2+2*wall; const t=stageDesign(i), a2=m*(t.z1+t.z2)/2, d=z=>m*(z+2);
+  const top2=Math.max(d(t.z1),d(t.z4))/2, bot2=Math.max(d(t.z2),d(t.z3))/2, H2=top2+a2+bot2+2*wall;
+  const s=(H-90)/Math.max(H1,H2), mid=W/2, yb=H-34;
+  const drawBox=(x0,x1,h,label,col)=>{ const y0=yb-h*s; c.fillStyle=C.panel; c.globalAlpha=.6; c.fillRect(x0,y0,x1-x0,h*s); c.globalAlpha=1; c.strokeStyle=C.ink; c.lineWidth=2; c.strokeRect(x0,y0,x1-x0,h*s);
+    dimV(c,x1+14,y0,yb,col,''); tag(c,'Bauhöhe ≈ '+fmt(h,0)+' mm',Math.min(x1+14,W-6),y0-6,col,12,x1+80>W?'right':'center'); txt(c,label,(x0+x1)/2,yb+20,C.ink,14); return y0; };
+  const gr=(x,y,z,col,soft,lab)=>{ const hh=d(z)*s; c.fillStyle=soft; c.strokeStyle=col; c.lineWidth=1.8; c.fillRect(x-7,y-hh/2,14,hh); c.strokeRect(x-7,y-hh/2,14,hh); line(c,x-12,y-z*m*s/2,x+12,y-z*m*s/2,col,1,[3,2]); line(c,x-12,y+z*m*s/2,x+12,y+z*m*s/2,col,1,[3,2]); txt(c,'z='+z,x+12,y+4,col,11,'left'); };
+  // links einstufig
+  const w1=Math.min(W*.3,200), x0a=mid*.5-w1/2-10, x1a=x0a+w1; const y0a=drawBox(x0a,x1a,H1,'einstufig · i = '+fmt(o1.ia,2),C.acc);
+  const ys1=y0a+(wall+da1/2)*s, ys2=ys1+a1*s, gx=(x0a+x1a)/2;
+  line(c,x0a-18,ys1,gx,ys1,C.ink,3); line(c,gx,ys2,x1a+2,ys2,C.ink,3); gr(gx,ys1,o1.z1,C.acc,C.gear1); gr(gx,ys2,o1.z2,C.steel,C.gear2);
+  txt(c,'An',x0a-18,ys1-6,C.muted,11,'left'); txt(c,'Ab',x1a-18,ys2-6,C.muted,11,'left');
+  // rechts zweistufig koaxial
+  const w2=Math.min(W*.34,230), x0b=mid+mid*.5-w2/2-10, x1b=x0b+w2; const y0b=drawBox(x0b,x1b,H2,'zweistufig · i = '+fmt(t.ia,2),C.ok);
+  const yI=y0b+(wall+top2)*s, yII=yI+a2*s, gx1=x0b+w2*.3, gx2=x0b+w2*.7;
+  line(c,x0b-18,yI,gx1+10,yI,C.ink,3); line(c,gx1-10,yII,gx2+10,yII,C.ink,3); line(c,gx2-10,yI,x1b+2,yI,C.ink,3);
+  gr(gx1,yI,t.z1,C.acc,C.gear1); gr(gx1,yII,t.z2,C.steel,C.gear2); gr(gx2,yII,t.z3,C.acc,C.gear1); gr(gx2,yI,t.z4,C.steel,C.gear2);
+  txt(c,'An',x0b-18,yI-6,C.muted,11,'left'); txt(c,'Ab',x1b-18,yI-6,C.muted,11,'left');
+  if(W>560) txt(c,'Getriebeplan (Schnitt): Rechtecke = Zahnräder (Höhe = d_a), Linien = Wellen',W/2,18,C.muted,12);
+  outs('stOut',[['einstufig',o1.z1+'/'+o1.z2+' · a = '+fmt(a1,0)+' mm'],['größtes Rad einstufig','d_a = '+fmt(da2,0)+' mm'],['zweistufig koaxial',t.z1+'/'+t.z2+' und '+t.z3+'/'+t.z4],['i₁ · i₂',fmt(t.z2/t.z1,2)+' · '+fmt(t.z4/t.z3,2)+' = '+fmt(t.ia,2)],['größtes Rad zweistufig','d_a = '+fmt(Math.max(d(t.z2),d(t.z4)),0)+' mm'],['Bauhöhe gespart',fmt((1-H2/H1)*100,0)+' %']]);
+});
+tour('b4',[
+ {set:{stI:5},dur:9,cap:'Gleiche Gesamtübersetzung i = 5. Links in <b>einer</b> Stufe: Das Ritzel braucht mindestens 18 Zähne, also bekommt das große Rad 90 Zähne.'},
+ {dur:9,cap:'Rechts in <b>zwei</b> Stufen: i₁ · i₂ ≈ 5. Beide großen Räder bleiben klein, das Gehäuse ist deutlich niedriger. An- und Abtrieb liegen sogar auf einer Linie (koaxial).'},
+ {set:{stI:10},dur:9,cap:'Bei i = 10 wird das einstufige Getriebe riesig. Das große Rad hätte 180 Zähne und über einen Meter Durchmesser. Zweistufig bleibt es kompakt.'},
+ {set:{stI:2.5},dur:8,cap:'Bei kleinen Übersetzungen lohnt sich eine zweite Stufe kaum. Faustregel: Bis etwa i = 5 reicht eine Stirnradstufe.'},
+ {set:{stI:5},dur:7,cap:'<b>Merke:</b> Die Einzelübersetzungen werden multipliziert: i_ges = i₁ · i₂. Mehr Stufen heißt kleinere Räder, aber mehr Bauteile und etwas mehr Verlust.'}]);
+
+/* ================= K5: Leistungsfluss ================= */
+bindV('flM',v=>fmt(v,2)); bindV('flG',v=>fmt(v,2)); bindV('flA',v=>fmt(v,2)); bindV('flP',v=>fmt(v,1));
+function flSet(s){ const [a,b,cc,p]=s.split(',').map(Number); [['flM',a],['flG',b],['flA',cc],['flP',p]].forEach(([id,v])=>{ $(id).value=v; $(id).dispatchEvent(new Event('input')); }); }
+document.querySelectorAll('[data-fp]').forEach(b=>b.addEventListener('click',()=>flSet(b.dataset.fp)));
+sim('cvFlow',(dt,t)=>{ const [c,W,H]=fit($('cvFlow')); const e=[+$('flM').value,+$('flG').value,+$('flA').value], Pn=+$('flP').value, eg=e[0]*e[1]*e[2], Pz=Pn/eg;
+  const lv=[1,e[0],e[0]*e[1],eg], T=Math.min(H*.36,120), y0=H*.2, bw=Math.min(W*.13,110), xs=[W*.22,W*.5,W*.78], names=['Motor','Getriebe','Maschine'];
+  const band=(xa,xb,th,col)=>{ c.fillStyle=col; c.fillRect(xa,y0,xb-xa,th*T); c.save(); c.beginPath(); c.rect(xa,y0,xb-xa,th*T); c.clip(); c.strokeStyle='rgba(255,255,255,.45)'; c.lineWidth=2; c.setLineDash([10,14]); c.lineDashOffset=-(t*40)%24; for(let k=1;k<4;k++){ const y=y0+th*T*k/4; c.beginPath(); c.moveTo(xa,y); c.lineTo(xb,y); c.stroke(); } c.setLineDash([]); c.restore(); };
+  band(8,xs[0]-bw/2,1,C.acc); for(let k=0;k<3;k++) band(xs[k]+bw/2,(k<2?xs[k+1]-bw/2:W-8),lv[k+1],k===2?C.ok:C.acc);
+  for(let k=0;k<3;k++){ const loss=lv[k]-lv[k+1], x=xs[k], lw=loss*T; if(lw>.5){ c.fillStyle=C.bad; c.globalAlpha=.5; c.beginPath(); c.moveTo(x-lw/2,y0+lv[k+1]*T); c.lineTo(x+lw/2,y0+lv[k+1]*T); c.lineTo(x+lw/2,H-30); c.lineTo(x-lw/2,H-30); c.closePath(); c.fill(); c.globalAlpha=1; }
+    c.fillStyle=C.panel; c.strokeStyle=C.ink; c.lineWidth=2; c.beginPath(); c.roundRect(x-bw/2,y0-12,bw,lv[k]*T+24,8); c.fill(); c.stroke();
+    txt(c,names[k],x,y0-20,C.ink,14); txt(c,'η = '+fmt(e[k],2),x,y0+lv[k]*T/2+5,C.muted,12,'center','600',true);
+    txt(c,'Wärme '+fmt(loss*Pz,1)+' kW',x,H-12,C.bad,12); }
+  txt(c,'Netz: '+fmt(Pz,1)+' kW',12,y0+T+22,C.acc,13,'left','700'); txt(c,'Nutzen: '+fmt(Pn,1)+' kW',W-10,y0+lv[3]*T+22,C.ok,13,'right','700');
+  outs('flOut',[['η_ges = η_M · η_G · η_A',fmt(eg,3)],['P_nutz',fmt(Pn,2)+' kW'],['an der Maschine: P_nutz/η_A',fmt(Pn/e[2],2)+' kW'],['Motor gibt ab: /η_G',fmt(Pn/e[2]/e[1],2)+' kW'],['Motor nimmt auf: /η_M',fmt(Pz,2)+' kW'],['Verlust gesamt',fmt(Pz-Pn,2)+' kW']]);
+});
+tour('b5',[
+ {on:()=>flSet('0.89,0.93,0.67,73.5'),dur:8,cap:'Von links kommt elektrische Leistung aus dem Netz. Der Motor wandelt sie in Drehbewegung um und verliert dabei 11 % als Wärme (rot).'},
+ {dur:8,cap:'Im Getriebe gehen weitere 7 % verloren: Reibung zwischen den Zähnen, in den Lagern und im Öl.'},
+ {dur:8,cap:'Das Förderband selbst verliert viel (Tragrollen, Band). Übrig bleibt nur etwa die Hälfte: η_ges = 0,89 · 0,93 · 0,67 = 0,55.'},
+ {dur:9,cap:'Deshalb rechnet man <b>rückwärts</b>: 73,5 kW Nutzleistung durch 0,55 ergibt rund 133 kW, die der Motor aus dem Netz aufnehmen muss.'},
+ {on:()=>flSet('0.86,0.8,1,1.23'),dur:8,cap:'Seilwinde mit Schneckengetriebe: Allein im Getriebe gehen 20 % verloren. Schnecken haben viel Gleitreibung (Kapitel 10).'},
+ {on:()=>flSet('0.85,1,0.75,33'),dur:8,cap:'Kreiselpumpe ohne Getriebe: 33 kW hebt sie ins Hochbecken, 51,8 kW nimmt der Motor auf. η_ges = 0,85 · 0,75 = 0,64.'}]);
+
+
+/* ================= K6: Zahnradmaße mit Bezugsprofil ================= */
+bindV('toM',v=>fmt(v,2)); bindV('toZ',v=>v); bindV('toC',v=>fmt(v,2));
+let TOH='';
+sim('cvTooth',()=>{ const [c,W,H]=fit($('cvTooth')); const m=+$('toM').value, z=+$('toZ').value, kc=+$('toC').value, cc=kc*m, tan20=Math.tan(20*DEG);
+  const s=Math.min(H/(8.6*3),W/(7*Math.PI*3)), yP=H*.5, cx=W/2, R=m*z/2, Rp=R*s, gy=yP+Rp, p=Math.PI*m, pp=p*s;
+  const hw=rho=>(p/4-(rho-R)*tan20), ra=R+m, rf=R-(m+cc), N=Math.ceil((W/2)/pp)+2;
+  const P=(rho,a)=>[cx+rho*s*Math.cos(a),gy+rho*s*Math.sin(a)];
+  // Zahnrad
+  c.beginPath(); c.moveTo(-10,H+10); let first=true;
+  for(let j=-N;j<=N;j++){ const th=-Math.PI/2+j*TAU/z; for(let q=0;q<=6;q++){ const rho=rf+(ra-rf)*q/6; const [x,y]=P(rho,th-hw(rho)/rho); if(first){ c.lineTo(x,y); first=false; } else c.lineTo(x,y); }
+    for(let q=6;q>=0;q--){ const rho=rf+(ra-rf)*q/6; const [x,y]=P(rho,th+hw(rho)/rho); c.lineTo(x,y); }
+    const a0=th+hw(rf)/rf, a1=th+TAU/z-hw(rf)/rf; for(let q=1;q<=6;q++){ const [x,y]=P(rf,a0+(a1-a0)*q/6); c.lineTo(x,y); } }
+  c.lineTo(W+10,H+10); c.closePath(); c.fillStyle=C.gear1; c.fill(); c.strokeStyle=C.acc; c.lineWidth=1.6; c.stroke();
+  // Zahnstange (Bezugsprofil)
+  const yr=yP-(m+cc)*s, ytop=Math.max(6,yr-1.3*m*s), wr=d=>(p/4-d*tan20);
+  c.beginPath(); c.moveTo(-10,ytop); c.lineTo(-10,yr);
+  for(let j=-N;j<=N;j++){ const xc=cx+(j+.5)*pp; for(const d of [-(m+cc),m]) c.lineTo(xc-wr(d)*s,yP+d*s); for(const d of [m,-(m+cc)]) c.lineTo(xc+wr(d)*s,yP+d*s); }
+  c.lineTo(W+10,yr); c.lineTo(W+10,ytop); c.closePath(); c.fillStyle=C.gear2; c.fill(); c.strokeStyle=C.steel; c.lineWidth=1.6; c.stroke();
+  txt(c,'Gegenrad als Zahnstange (Bezugsprofil)',12,ytop+16,C.steel,12,'left');
+  // Kreise
+  const span=(W/2+40)/Rp;
+  const arc=(rho,col,dash,key,lab)=>{ const on=TOH===''||TOH===key; c.strokeStyle=col; c.globalAlpha=on?1:.25; c.lineWidth=on&&TOH===key?2.6:1.4; c.setLineDash(dash); c.beginPath(); c.arc(cx,gy,rho*s,-Math.PI/2-span,-Math.PI/2+span); c.stroke(); c.setLineDash([]); c.globalAlpha=1;
+    if(on){ const a=-Math.PI/2+Math.min(span*.8,((W/2)-70)/Rp); const [x,y]=P(rho,a); tag(c,lab,Math.min(x,W-8),y+(key==='df'?16:key==='da'?-6:5),col,12,'right'); } };
+  arc(rf,C.muted,[5,4],'df','Fußkreis d_f'); arc(R,C.ink,[12,4,2,4],'d','Teilkreis d'); arc(ra,C.acc,[5,4],'da','Kopfkreis d_a');
+  // Bemaßung
+  const hl=k=>TOH===''||TOH===k, col=k=>TOH===k?C.acc:C.ink;
+  if(hl('ha')){ dimV(c,cx,yP,yP-m*s,col('ha')); tag(c,'h_a = m',cx-10,yP-m*s/2+5,col('ha'),12,'right'); }
+  const xg=cx+pp/2;
+  if(hl('hf')){ dimV(c,xg+pp*.42,yP,yP+(m+cc)*s,col('hf')); tag(c,'h_f = m + c',xg+pp*.42+8,yP+(m+cc)*s/2+5,col('hf'),12,'left'); }
+  if(hl('c')){ const y1=yP+m*s, y2=yP+(m+cc)*s; c.strokeStyle=col('c'); c.lineWidth=2; c.beginPath(); c.arc(xg,(y1+y2)/2,Math.max(9,(y2-y1)*1.2),0,TAU); c.stroke(); tag(c,'Kopfspiel c',xg,y2+30,col('c'),12);
+    const y3=yP-m*s, y4=yP-(m+cc)*s; c.beginPath(); c.arc(cx,(y3+y4)/2,Math.max(9,(y3-y4)*1.2),0,TAU); c.stroke(); }
+  if(hl('h')){ const x=cx-pp; dimV(c,x-pp*.36,yP-m*s,yP+(m+cc)*s,col('h')); tag(c,'h = 2m + c',x-pp*.36-8,yP+5,col('h'),12,'right'); }
+  if(hl('p')){ const y=yP+(m+cc)*s+22, xa=cx-pp, xb=cx; line(c,xa,yP,xa,y+4,col('p'),1,[3,3]); line(c,xb,yP,xb,y+4,col('p'),1,[3,3]); arrow(c,(xa+xb)/2,y,xa,y,col('p'),1.4,7); arrow(c,(xa+xb)/2,y,xb,y,col('p'),1.4,7); tag(c,'p = π · m',(xa+xb)/2,y+20,col('p'),12); }
+  if(TOH==='se'){ line(c,cx-pp/4,yP,cx+pp/4,yP,C.acc,5); line(c,cx+pp/4,yP,cx+3*pp/4,yP,C.steel,5); tag(c,'s = p/2',cx,yP+22,C.acc,12); tag(c,'e = p/2',cx+pp/2,yP-12,C.steel,12); }
+  const d=m*z; outs('toOut',[['Teilkreis d = m·z',fmt(d,2)+' mm'],['Kopfkreis d_a = m·(z+2)',fmt(d+2*m,2)+' mm'],['Fußkreis d_f = d − 2(m+c)',fmt(d-2*(m+cc),2)+' mm'],['Teilung p = π·m',fmt(p,2)+' mm'],['Kopfhöhe h_a = m',fmt(m,2)+' mm'],['Fußhöhe h_f = m + c',fmt(m+cc,3)+' mm'],['Zahnhöhe h = 2m + c',fmt(2*m+cc,3)+' mm'],['Kopfspiel c',fmt(cc,3)+' mm']]);
+});
+tour('b6',[
+ {set:{toM:3,toZ:30,toC:.25},on:()=>TOH='d',dur:8,cap:'Der <b>Teilkreis d</b> ist der wichtigste Kreis. Auf ihm wälzen die Räder aufeinander ab. d = m · z.'},
+ {on:()=>TOH='p',dur:8,cap:'Auf dem Teilkreis haben die Zähne den Abstand p, die <b>Teilung</b>. z Zähne mal p ergibt den Umfang π·d. Daraus kommt der Modul: <b>m = p/π</b>.'},
+ {on:()=>TOH='se',dur:8,cap:'Auf dem Teilkreis sind Zahndicke s und Zahnlücke e gleich groß, je p/2. Deshalb passt ein Zahn genau in die Lücke des Gegenrades, wenn beide den <b>gleichen Modul</b> haben.'},
+ {on:()=>TOH='ha',dur:8,cap:'Der Zahnkopf ragt genau einen Modul über den Teilkreis: <b>h_a = m</b>. So entsteht der Kopfkreis d_a = d + 2m.'},
+ {on:()=>TOH='hf',dur:8,cap:'Der Zahnfuß reicht m + c unter den Teilkreis: <b>h_f = m + c</b>. Fußkreis d_f = d − 2·(m + c).'},
+ {on:()=>TOH='c',dur:9,cap:'Das <b>Kopfspiel c</b>: Zwischen dem Kopf des Gegenzahns und dem Zahngrund bleibt eine Lücke. Sonst würden die Räder klemmen. Außerdem ist dort Platz für Öl und Schmutz.'},
+ {set:{toM:5.5},on:()=>TOH='h',dur:8,cap:'Größerer Modul, größere Zähne. Alles wächst mit: Zahnhöhe <b>h = 2m + c</b>, Dicke und Teilung. Das Rad kann mehr Kraft übertragen.'},
+ {set:{toM:3,toZ:60},on:()=>TOH='',dur:8,cap:'Mehr Zähne bei gleichem Modul: Die Zähne bleiben gleich groß, nur der Teilkreis wird größer (der Bogen wird flacher). Alle Maße findest du auch im Tabellenbuch.'}]);
+
+/* ================= K7: Evolvente ================= */
+let IM='e'; const setIM=seg('data-im',v=>IM=v,'e');
+const ev=u=>u-Math.atan(u);
+function invGearPath(c,x,y,r,z,ang){ const m=2*r/z, al=20*DEG, rb=r*Math.cos(al), ra=r+m, rf=r-1.25*m, psib=Math.PI/(2*z)+(Math.tan(al)-al), N=8, rs=Math.max(rb,rf);
+  c.beginPath(); for(let k=0;k<z;k++){ const th=ang+k*TAU/z, aL=th-psib, aR=th+psib; const L=[],R=[];
+    for(let q=0;q<=N;q++){ const rho=rs+(ra-rs)*q/N, e=ev(Math.sqrt(Math.max(0,(rho/rb)**2-1))); L.push([rho,aL+e]); R.push([rho,aR-e]); }
+    const p0=[x+rf*Math.cos(aL),y+rf*Math.sin(aL)]; k===0?c.moveTo(...p0):c.lineTo(...p0);
+    for(const [q,a] of L) c.lineTo(x+q*Math.cos(a),y+q*Math.sin(a)); c.arc(x,y,ra,L[N][1],R[N][1]);
+    for(let q=N;q>=0;q--){ const [rr,a]=R[q]; c.lineTo(x+rr*Math.cos(a),y+rr*Math.sin(a)); }
+    c.lineTo(x+rf*Math.cos(aR),y+rf*Math.sin(aR)); c.arc(x,y,rf,aR,th+TAU/z-psib); }
+  c.closePath(); return {rb,ra,psib}; }
+function invPt(ox,oy,rb,a0,s,u){ const a=a0+s*u; return [ox+rb*(Math.cos(a)+s*u*Math.sin(a)),oy+rb*(Math.sin(a)-s*u*Math.cos(a))]; }
+sim('cvInv',(dt,t)=>{ const [c,W,H]=fit($('cvInv'));
+  if(IM==='e'){ const narrow=W<620, ox=narrow?W/2:W*.3, oy=H*.52, rb=Math.min(H*.2,W*.17), per=7, tau=(t%per), u=Math.min(2.1,2.1*tau/5), a0=-Math.PI*.15;
+    c.beginPath(); c.arc(ox,oy,rb,0,TAU); c.fillStyle=C.steelSoft; c.fill(); c.strokeStyle=C.steel; c.lineWidth=2; c.stroke(); txt(c,'Grundkreis',ox,oy+5,C.steel,13);
+    // Faden auf der Rolle
+    c.strokeStyle=C.ink; c.lineWidth=3; c.beginPath(); c.arc(ox,oy,rb+2,a0+u,a0+u+Math.PI*1.2); c.stroke();
+    c.strokeStyle=C.acc; c.lineWidth=3.5; c.beginPath(); for(let w=0;w<=u+1e-6;w+=.02){ const [x,y]=invPt(ox,oy,rb,a0,1,w); w===0?c.moveTo(x,y):c.lineTo(x,y); } c.stroke();
+    const T=[ox+rb*Math.cos(a0+u),oy+rb*Math.sin(a0+u)], Pp=invPt(ox,oy,rb,a0,1,u); line(c,T[0],T[1],Pp[0],Pp[1],C.ink,2.2);
+    c.beginPath(); c.arc(T[0],T[1],4,0,TAU); c.fillStyle=C.ink; c.fill(); c.beginPath(); c.arc(Pp[0],Pp[1],6,0,TAU); c.fillStyle=C.acc; c.fill();
+    tag(c,'straffer Faden',(T[0]+Pp[0])/2,(T[1]+Pp[1])/2-8,C.ink,12); tag(c,'Evolvente',Pp[0],Pp[1]-14,C.acc,12);
+    if(!narrow){ const gx=W*.76, gy=H*.52, r=Math.min(H*.32,W*.18), z=12; const g=invGearPath(c,gx,gy,r,z,-t*.35); c.fillStyle=C.gear1; c.fill(); c.strokeStyle=C.acc; c.lineWidth=1.6; c.stroke();
+      c.setLineDash([4,4]); c.strokeStyle=C.steel; c.lineWidth=1.2; c.beginPath(); c.arc(gx,gy,g.rb,0,TAU); c.stroke(); c.setLineDash([]); c.beginPath(); c.arc(gx,gy,r*.18,0,TAU); c.fillStyle=C.panel; c.fill(); c.stroke();
+      txt(c,'Zahnrad mit Evolventenflanken',gx,H-14,C.ink,13); } }
+  else { const z1=14,z2=22, R=Math.min((W-40)/(z1+z2+5)*.5,(H-40)/(z2+2.5)*.5), r1=z1*R, r2=z2*R, O1=[W/2-(r1+r2)/2-(r2-r1)/2,H/2+6], O2=[O1[0]+r1+r2,O1[1]];
+    const a1=t*.35, a2=meshExt(a1,z1,z2,0), al=20*DEG;
+    const g1=invGearPath(c,O1[0],O1[1],r1,z1,a1); c.fillStyle=C.gear1; c.fill(); c.strokeStyle=C.acc; c.lineWidth=1.4; c.stroke();
+    const g2=invGearPath(c,O2[0],O2[1],r2,z2,a2); c.fillStyle=C.gear2; c.fill(); c.strokeStyle=C.steel; c.lineWidth=1.4; c.stroke();
+    for(const [O,g,col] of [[O1,g1,C.acc],[O2,g2,C.steel]]){ c.setLineDash([4,4]); c.strokeStyle=col; c.lineWidth=1; c.beginPath(); c.arc(O[0],O[1],g.rb,0,TAU); c.stroke(); c.setLineDash([]); c.beginPath(); c.arc(O[0],O[1],4,0,TAU); c.fillStyle=col; c.fill(); }
+    const Cp=[O1[0]+r1,O1[1]], D=[Math.sin(al),Math.cos(al)], T1=[Cp[0]-r1*Math.sin(al)*D[0],Cp[1]-r1*Math.sin(al)*D[1]], T2=[Cp[0]+r2*Math.sin(al)*D[0],Cp[1]+r2*Math.sin(al)*D[1]];
+    line(c,T1[0]-D[0]*20,T1[1]-D[1]*20,T2[0]+D[0]*20,T2[1]+D[1]*20,C.ok,2.5); line(c,O1[0],O1[1],T1[0],T1[1],C.muted,1,[3,3]); line(c,O2[0],O2[1],T2[0],T2[1],C.muted,1,[3,3]);
+    // Berührpunkte auf der Eingriffslinie
+    const rb1=g1.rb, rh=[(T1[0]-O1[0])/rb1,(T1[1]-O1[1])/rb1], s1=(Math.abs(D[0]-rh[1])+Math.abs(D[1]+rh[0])<.2)?1:-1, b1=Math.atan2(rh[1],rh[0]), Lseg=Math.hypot(T2[0]-T1[0],T2[1]-T1[1]);
+    const psib=Math.PI/(2*z1)+(Math.tan(al)-al);
+    for(let k=0;k<z1;k++){ const th=a1+k*TAU/z1, a0=s1>0?th-psib:th+psib; let u=((s1*(b1-a0))%TAU+TAU)%TAU; const Q=[T1[0]+rb1*u*D[0],T1[1]+rb1*u*D[1]];
+      if(rb1*u>Lseg||Math.hypot(Q[0]-O1[0],Q[1]-O1[1])>g1.ra+.5||Math.hypot(Q[0]-O2[0],Q[1]-O2[1])>g2.ra+.5) continue;
+      c.beginPath(); c.arc(Q[0],Q[1],7,0,TAU); c.fillStyle=C.ok; c.globalAlpha=.3; c.fill(); c.globalAlpha=1; c.beginPath(); c.arc(Q[0],Q[1],4,0,TAU); c.fill(); }
+    c.beginPath(); c.arc(Cp[0],Cp[1],3.5,0,TAU); c.fillStyle=C.ink; c.fill(); tag(c,'Wälzpunkt C',Cp[0]+10,Cp[1]-10,C.ink,11,'left');
+    tag(c,'Eingriffslinie (20°)',T2[0]+D[0]*14,T2[1]+D[1]*14+16,C.ok,12,'center'); txt(c,'Grundkreise gestrichelt · grüne Punkte = Berührpunkte der Zähne',W/2,18,C.muted,12); }
+});
+tour('b7',[
+ {on:()=>setIM('e'),dur:7,cap:'Wickle einen straffen Faden von einer Rolle ab, dem <b>Grundkreis</b>. Das Fadenende zeichnet eine Kurve: die <b>Evolvente</b>.'},
+ {dur:7,cap:'Genau diese Kurve bildet die Zahnflanke. Rechts siehst du ein Zahnrad, dessen Flanken wirklich aus Evolventen bestehen.'},
+ {on:()=>setIM('g'),dur:9,cap:'Zwei Evolventenräder im Eingriff: Die Zähne berühren sich immer auf der <b>grünen Geraden</b>, der Eingriffslinie. Die Berührpunkte wandern gleichmäßig darauf entlang.'},
+ {dur:9,cap:'Weil die Kraft immer in dieselbe Richtung wirkt und die Übersetzung in jedem Augenblick gleich ist, läuft das Getriebe <b>ruhig</b>. Meist sind ein bis zwei Zahnpaare gleichzeitig im Eingriff.'},
+ {dur:8,cap:'Die Flanken wälzen aufeinander ab und gleiten nur wenig. Das spart Reibung, Wärme und Verschleiß. Deshalb ist die Evolventenverzahnung im Maschinenbau Standard.'}]);
+
+/* ================= K8: gerade / schräg / pfeil ================= */
+let HM='s'; const setHM=seg('data-hm',v=>{ HM=v; if(v==='g'){ $('hxB').value=0; $('hxB').dispatchEvent(new Event('input')); } else if(+$('hxB').value===0){ $('hxB').value=20; $('hxB').dispatchEvent(new Event('input')); } },'s');
+bindV('hxB',v=>v+'°');
+function clipX(P,Q,xL,xR){ let t0=0,t1=1; const dx=Q[0]-P[0]; if(Math.abs(dx)<1e-9){ if(P[0]<xL||P[0]>xR) return null; } else { let a=(xL-P[0])/dx, b=(xR-P[0])/dx; if(a>b) [a,b]=[b,a]; t0=Math.max(t0,a); t1=Math.min(t1,b); if(t0>=t1) return null; }
+  return [[P[0]+dx*t0,P[1]+(Q[1]-P[1])*t0],[P[0]+dx*t1,P[1]+(Q[1]-P[1])*t1]]; }
+sim('cvHelix',(dt,t)=>{ const [c,W,H]=fit($('cvHelix')); const b=(HM==='g'?0:+$('hxB').value)*DEG, wide=W>600;
+  const x0=20, x1=W-(wide?200:20), y0=34, y1=H-44, Lb=y1-y0, p=Lb/3.18, xc=(x0+x1)/2, ww=1.6*p, xL=xc-ww/2, xR=xc+ww/2, tb=Math.tan(b);
+  c.fillStyle=C.gear2; c.fillRect(x0,y0,x1-x0,Lb); c.fillStyle=C.okSoft; c.fillRect(xL,y0,ww,Lb);
+  c.save(); c.beginPath(); c.rect(x0,y0,x1-x0,Lb); c.clip();
+  const o=(t*34)%p; let cnt=0; const shift=HM==='p'?Lb/2*tb:Lb*tb;
+  for(let xa=x0-shift-2*p+o; xa<x1+2*p; xa+=p){ const segs=HM==='p'?[[[xa,y1],[xa+Lb/2*tb,y0+Lb/2]],[[xa+Lb/2*tb,y0+Lb/2],[xa,y0]]]:[[[xa,y1],[xa+Lb*tb,y0]]]; let hit=false;
+    for(const [P,Q] of segs){ line(c,P[0],P[1],Q[0],Q[1],C.steel,4); const cl=clipX(P,Q,xL,xR); if(cl){ hit=true; line(c,cl[0][0],cl[0][1],cl[1][0],cl[1][1],C.ok,7); } }
+    if(hit) cnt++; }
+  c.restore(); c.strokeStyle=C.ink; c.lineWidth=1.5; c.strokeRect(x0,y0,x1-x0,Lb);
+  txt(c,'Eingriffszone',xc,y0-8,C.ok,12); txt(c,'← Umfangsrichtung (Rad dreht) →',xc,H-24,C.muted,11); c.save(); c.translate(x0-8,(y0+y1)/2); c.rotate(-Math.PI/2); txt(c,'Zahnbreite b',0,0,C.muted,11); c.restore();
+  const Fa=1000*tb, fx=wide?x1+100:x1-40, fy=(y0+y1)/2;
+  if(wide){ c.fillStyle=C.gear2; c.strokeStyle=C.steel; c.lineWidth=1.4; c.beginPath(); c.roundRect(fx-22,y0+10,44,Lb-20,6); c.fill(); c.stroke(); line(c,fx,y0-10,fx,y1+10,C.ink,4); txt(c,'Welle',fx+26,y0+4,C.muted,11,'left'); }
+  const L=Math.min(Lb*.42,20+tb*110);
+  if(HM==='s'&&b>0){ arrow(c,fx+30,fy,fx+30,fy-L,C.bad,3.5); tag(c,'F_a = '+fmt(Fa,0)+' N',fx+30,fy-L-8,C.bad,12); }
+  if(HM==='p'){ arrow(c,fx+30,y0+Lb*.25,fx+30,y0+Lb*.25-L*.6,C.bad,3); arrow(c,fx+30,y1-Lb*.25,fx+30,y1-Lb*.25+L*.6,C.bad,3); tag(c,'Σ F_a = 0',fx+30,fy+5,C.ok,12); }
+  if(HM==='g') tag(c,'keine Axialkraft',fx+(wide?0:-30),fy+5,C.ok,12);
+  outs('hxOut',[['Verzahnung',HM==='g'?'gerade':HM==='s'?'schräg':'pfeil / doppelschräg'],['Zähne gerade im Eingriff',String(cnt)],['Überdeckung (ca.)',fmt(HM==='g'?1.6:1.6+10*Math.sin(b)/Math.PI,2)],['Axialkraft F_a = F_u · tan β',HM==='p'?'hebt sich auf':fmt(Fa,0)+' N'],['Laufruhe',HM==='g'?'Stoß bei jedem Zahn':'weich, Zähne laufen allmählich ein']]);
+});
+tour('b8',[
+ {on:()=>setHM('g'),dur:9,cap:'<b>Geradverzahnung:</b> Jeder Zahn greift auf einen Schlag über die ganze Breite ein. Mal tragen ein, mal zwei Zähne. Dieser Wechsel erzeugt kleine Stöße und Geräusch.'},
+ {on:()=>setHM('s'),set:{hxB:20},dur:9,cap:'<b>Schrägverzahnung:</b> Die Zähne laufen schräg durch die Eingriffszone. Jeder greift nach und nach ein, und es tragen immer mehrere Zähne gleichzeitig: leiser, ruhiger, belastbarer.'},
+ {set:{hxB:35},dur:8,cap:'Größerer Schrägungswinkel β: noch mehr Zähne im Eingriff. Aber die schräge Flanke drückt das Rad seitlich weg, in Richtung der Welle.'},
+ {dur:9,cap:'Diese <b>Axialkraft F_a = F_u · tan β</b> müssen die Lager aufnehmen (z. B. Kegelrollenlager). Bei 35° sind das schon 70 % der Umfangskraft.'},
+ {on:()=>setHM('p'),set:{hxB:25},dur:9,cap:'<b>Pfeilverzahnung:</b> zwei gegensinnig schräge Hälften. Ihre Axialkräfte heben sich gegenseitig auf. Die Laufruhe bleibt, und das Rad zentriert sich selbst.'}]);
+
+/* ================= K9: Wellenlage in 3D ================= */
+let AM='st'; const setAM=seg('data-am',v=>AM=v,'st');
+sim('cvAxes',(dt,t)=>{ const [c,W,H]=fit($('cvAxes')); const yaw=.62+.32*Math.sin(t*.35), pit=.38, sc=Math.min(W,H*1.5)*.23, cx=W/2, cy=H*(AM==='sn'?.8:.64);
+  const P=(x,y,z)=>{ const X=x*Math.cos(yaw)-y*Math.sin(yaw), Y=x*Math.sin(yaw)+y*Math.cos(yaw); return [cx+X*sc,cy-(z*Math.cos(pit)-Y*Math.sin(pit))*sc]; };
+  const poly=(pts,col,lw,fill,dash)=>{ c.beginPath(); pts.forEach((q,k)=>{ const [x,y]=P(...q); k?c.lineTo(x,y):c.moveTo(x,y); }); if(fill){ c.closePath(); c.fillStyle=fill; c.globalAlpha=.75; c.fill(); c.globalAlpha=1; } c.strokeStyle=col; c.lineWidth=lw; if(dash) c.setLineDash(dash); c.stroke(); c.setLineDash([]); };
+  const circ=(o,u,v,r,n=48)=>{ const a=[]; for(let k=0;k<=n;k++){ const th=k/n*TAU; a.push([o[0]+r*(Math.cos(th)*u[0]+Math.sin(th)*v[0]),o[1]+r*(Math.cos(th)*u[1]+Math.sin(th)*v[1]),o[2]+r*(Math.cos(th)*u[2]+Math.sin(th)*v[2])]); } return a; };
+  const spokes=(o,u,v,r,ang,col)=>{ for(let k=0;k<3;k++){ const th=ang+k*TAU/3; poly([o,[o[0]+r*(Math.cos(th)*u[0]+Math.sin(th)*v[0]),o[1]+r*(Math.cos(th)*u[1]+Math.sin(th)*v[1]),o[2]+r*(Math.cos(th)*u[2]+Math.sin(th)*v[2])]],col,2); } };
+  const shaft=(a,b,col)=>poly([a,b],col,6);
+  const X=[1,0,0],Y=[0,1,0],Z=[0,0,1]; let title='', sub='';
+  if(AM==='st'||AM==='in'){ const inn=AM==='in'; const r1=inn?.34:.42, r2=inn?.92:.66, o1=inn?[.92-.34,0,0]:[-.54,0,0], o2=inn?[0,0,0]:[-.54+r1+r2,0,0];
+    shaft([o1[0],-1.2,o1[2]],[o1[0],.9,o1[2]],C.acc); shaft([o2[0],-.9,o2[2]],[o2[0],1.3,o2[2]],C.steel);
+    poly(circ(o2,X,Z,r2),C.steel,2.5,C.gear2); if(inn) poly(circ(o2,X,Z,r2+.12),C.steel,2); spokes(o2,X,Z,r2*.9,(inn?1:-1)*t*.6*r1/r2,C.steel);
+    poly(circ(o1,X,Z,r1),C.acc,2.5,C.gear1); spokes(o1,X,Z,r1*.9,t*.6,C.acc);
+    title=inn?'Hohlrad: Wellen parallel, gleiche Drehrichtung':'Stirnräder: Wellen liegen parallel'; sub=inn?'kleiner Achsabstand, Grundlage des Planetengetriebes':'Außenverzahnung dreht die Drehrichtung um'; }
+  else if(AM==='ke'){ const d1=40*DEG, d2=50*DEG; shaft([0,0,0],[1.6,0,0],C.acc); shaft([0,0,0],[0,0,1.3],C.steel);
+    for(const [ax,u,v,dl,col,fill] of [[X,Y,Z,d1,C.acc,C.gear1],[Z,X,Y,d2,C.steel,C.gear2]]){ const k1=ax===Z?.5:.62, k2=ax===Z?.85:1.05; const pts1=circ(ax.map(q=>q*k1),u,v,k1*Math.tan(dl)), pts2=circ(ax.map(q=>q*k2),u,v,k2*Math.tan(dl));
+      poly(pts2,col,2.5,fill); poly(pts1,col,2); for(let k=0;k<48;k+=6) poly([pts1[k],pts2[k]],col,1.2); poly([[0,0,0],pts2[12]],col,1,null,[3,3]); poly([[0,0,0],pts2[36]],col,1,null,[3,3]); }
+    const [ax,ay]=P(0,0,0); c.beginPath(); c.arc(ax,ay,6,0,TAU); c.fillStyle=C.bad; c.fill(); tag(c,'Schnittpunkt der Achsen',ax-10,ay+22,C.bad,12,'right');
+    title='Kegelräder: Wellen schneiden sich'; sub='die Kegelspitzen liegen im Schnittpunkt'; }
+  else if(AM==='sn'){ const rw=.2, R=.72, h=rw+R; shaft([-1.5,0,0],[1.5,0,0],C.acc); shaft([0,-1.1,h],[0,1.1,h],C.steel);
+    const hel=[]; for(let th=0;th<=TAU*9;th+=.25){ const x=-.95+th/(TAU*9)*1.9; hel.push([x,rw*Math.cos(th+t*3),rw*Math.sin(th+t*3)]); } poly(hel,C.acc,2);
+    poly(circ([0,0,h],X,Z,R),C.steel,2.5,C.gear2); spokes([0,0,h],X,Z,R*.9,t*.08,C.steel);
+    poly([[0,0,0],[0,0,h]],C.bad,2,null,[5,4]); const [mx,my]=P(0,0,h/2); tag(c,'Achsabstand a',mx+10,my,C.bad,12,'left');
+    title='Schnecke: Wellen kreuzen sich'; sub='sie liegen in verschiedenen Ebenen und berühren sich nie'; }
+  else { const r=.5, off=((t*.3)%1.2)-.6; shaft([0,-1.1,r+.05],[0,1.1,r+.05],C.acc);
+    for(const yy of [-.18,.18]) poly([[-1.6+off,yy,-.05],[1.6+off,yy,-.05]],C.steel,2.5); poly([[-1.6+off,-.18,-.25],[1.6+off,-.18,-.25],[1.6+off,.18,-.25]],C.steel,1.5);
+    for(let x=-1.6;x<=1.6;x+=.16) poly([[x+off,-.18,-.05],[x+off,.18,-.05]],C.steel,1.4);
+    poly(circ([0,0,r+.05],X,Z,r),C.acc,2.5,C.gear1); spokes([0,0,r+.05],X,Z,r*.9,-t*.6,C.acc);
+    const [ax,ay]=P(1.1,0,-.35); arrow(c,ax-50,ay,ax+10,ay,C.bad,3); title='Zahnstange: aus Drehen wird Schieben'; sub='das Ritzel dreht, die Zahnstange bewegt sich geradlinig'; }
+  txt(c,title,W/2,24,C.ink,16,'center','700'); txt(c,sub,W/2,44,C.muted,13);
+});
+tour('b9',[
+ {on:()=>setAM('st'),dur:7,cap:'<b>Stirnräder</b>: Beide Wellen liegen parallel nebeneinander. Das ist die häufigste und einfachste Form mit dem besten Wirkungsgrad.'},
+ {on:()=>setAM('in'),dur:7,cap:'<b>Hohlrad</b> (Innenverzahnung): Wellen ebenfalls parallel, aber das Ritzel läuft innen. Gleiche Drehrichtung, sehr kompakt.'},
+ {on:()=>setAM('ke'),dur:8,cap:'<b>Kegelräder</b>: Die Wellen <b>schneiden</b> sich in einem Punkt, meist unter 90°. So lenkt man die Kraft um die Ecke.'},
+ {on:()=>setAM('sn'),dur:9,cap:'<b>Schnecke</b>: Die Wellen <b>kreuzen</b> sich. Sie laufen in verschiedenen Ebenen aneinander vorbei, wie zwei Straßen an einer Brücke. Dazwischen liegt der Achsabstand a.'},
+ {on:()=>setAM('za'),dur:8,cap:'<b>Zahnstange</b>: Hier gibt es nur eine Welle. Aus der Drehbewegung des Ritzels wird eine geradlinige Bewegung.'}]);
+
+/* ================= K10: Schnecke ================= */
+let WZ=1, WB=0, wNw=0; const setWZ=seg('data-wz',v=>WZ=+v,'1'), setWB=seg('data-wb',v=>WB=+v,'0');
+const W_Q=12, W_RHO=Math.atan(.09);
+sim('cvWorm',(dt,t)=>{ const [c,W,H]=fit($('cvWorm')); const z2=40, gam=Math.atan(WZ/W_Q), lock=WB===1&&gam<W_RHO;
+  if(!lock) wNw+=(WB?-1:1)*dt*.45;
+  const R=Math.min(H*.3,W*.24), cx=W<560?W/2:W*.4, pw=TAU*R/z2, mw=pw/Math.PI, rw=3.2*mw, cyW=H*.44, yw=cyW+R+rw;
+  const phi=Math.PI/2+wNw*TAU*WZ/z2+(lock?Math.sin(t*30)*.004:0);
+  gear(c,cx,cyW,R,z2,phi,C.gear2,C.steel,{pitch:true});
+  // Schnecke (Axialschnitt wie Zahnstange)
+  const xa=Math.max(10,cx-R*1.6), xb=Math.min(W-10,cx+R*1.6), sh=-R*(phi-Math.PI/2), lead=pw*WZ;
+  line(c,xa-20,yw,xb+20,yw,C.ink,5);
+  c.fillStyle=C.gear1; c.fillRect(xa,yw-rw+1.25*mw,xb-xa,2*rw-2.5*mw);
+  for(const side of [-1,1]){ c.beginPath(); const yp=yw+side*rw; let k0=Math.floor((xa-cx-pw/2-sh)/pw)-1;
+    c.moveTo(xa,yp-side*1.25*mw);
+    for(let k=k0;;k++){ const xc2=cx+pw/2+k*pw+sh; if(xc2-pw>xb) break; const tw=pw*.25, ww=pw*.5-tw; const xs=[xc2-ww/2-tw*.5,xc2-tw*.5,xc2+tw*.5,xc2+ww/2+tw*.5];
+      const pts=[[xs[0],yp-side*1.25*mw],[xs[1],yp+side*mw],[xs[2],yp+side*mw],[xs[3],yp-side*1.25*mw]]; for(const [x,y] of pts) c.lineTo(Math.max(xa,Math.min(xb,x)),y); }
+    c.lineTo(xb,yp-side*1.25*mw); c.closePath(); c.fillStyle=C.gear1; c.fill(); c.strokeStyle=C.acc; c.lineWidth=1.3; c.stroke(); }
+  c.save(); c.beginPath(); c.rect(xa,yw-rw-mw,xb-xa,2*rw+2*mw); c.clip(); c.strokeStyle=C.acc; c.lineWidth=1.3;
+  for(let k=-40;k<40;k++){ const x=cx+pw/2+k*pw+sh; c.beginPath(); c.moveTo(x,yw-rw); c.lineTo(x+lead/2,yw+rw); c.stroke(); } c.restore();
+  c.strokeStyle=C.acc; c.lineWidth=1.6; c.strokeRect(xa,yw-rw-mw,xb-xa,2*rw+2*mw);
+  rotArrow(c,xb+14,yw,12,WB?-1:1,C.acc,2.4); txt(c,'Schnecke z₁ = '+WZ,xa,yw+rw+mw+18,C.acc,13,'left'); txt(c,'Schneckenrad z₂ = 40',cx,cyW-R-10,C.steel,13);
+  // schiefe Ebene
+  const bx=W-Math.min(W*.3,210), by=H-20, bw=Math.min(W*.26,190), g=Math.max(gam,2*DEG);
+  if(W<560){ txt(c,gam<W_RHO?'γ < ρ → selbsthemmend':'γ > ρ → nicht selbsthemmend',W-8,H-10,gam<W_RHO?C.ok:C.bad,12,'right','700'); } else {
+  c.fillStyle=C.panel; c.strokeStyle=C.line2; c.lineWidth=1; c.beginPath(); c.roundRect(bx-10,16,bw+20,by-6,8); c.fill(); c.stroke();
+  txt(c,'Gewindegang = schiefe Ebene',bx+bw/2,34,C.ink,12);
+  const ex=bx+bw, ey=by-30, hh=bw*Math.tan(g*2.2); c.beginPath(); c.moveTo(bx,ey); c.lineTo(ex,ey); c.lineTo(ex,ey-hh); c.closePath(); c.fillStyle=C.gear1; c.fill(); c.strokeStyle=C.acc; c.stroke();
+  txt(c,'γ = '+fmt(gam/DEG,1)+'°',bx+36,ey-6,C.acc,12,'left'); txt(c,'Reibwinkel ρ = '+fmt(W_RHO/DEG,1)+'°',bx+bw/2,ey+20,C.muted,11);
+  txt(c,gam<W_RHO?'γ < ρ → selbsthemmend':'γ > ρ → nicht selbsthemmend',bx+bw/2,54,gam<W_RHO?C.ok:C.bad,13,'center','700'); }
+  if(lock){ tag(c,'🔒 Selbsthemmung: Die Last kann die Schnecke nicht zurückdrehen',Math.min(cx,W*.36),18,C.ok,13); }
+  else if(WB) tag(c,'Die Last dreht die Schnecke rückwärts',Math.min(cx,W*.36),18,C.bad,13);
+  const eta=Math.tan(gam)/Math.tan(gam+W_RHO), Nw=Math.abs(wNw);
+  outs('wmOut',[['Übersetzung i = z₂/z₁','40/'+WZ+' = '+fmt(40/WZ,1)],['Schnecke: Umdrehungen',fmt(Nw,1)],['Rad weitergedreht um',fmt(Nw*WZ,1)+' Zähne'],['Steigungswinkel γ',fmt(gam/DEG,2)+'°'],['Wirkungsgrad η = tan γ/tan(γ+ρ)',fmt(eta*100,0)+' %'],['Selbsthemmung',gam<W_RHO?'ja':'nein']]);
+});
+tour('b10',[
+ {on:()=>{setWZ(1);setWB(0);wNw=0;},dur:9,cap:'Die Schnecke ist eine Schraube. Bei jeder Umdrehung schiebt ihr Gewindegang das Rad um <b>einen Zahn</b> weiter. Schau auf die Zähler unten.'},
+ {dur:8,cap:'Das Rad hat 40 Zähne. Also braucht die Schnecke 40 Umdrehungen für eine Radumdrehung: <b>i = z₂/z₁ = 40/1 = 40</b>, in einer einzigen Stufe!'},
+ {on:()=>{setWZ(2);wNw=0;},dur:8,cap:'Zweigängige Schnecke: Zwei Gewindegänge schieben das Rad pro Umdrehung um zwei Zähne weiter. i = 40/2 = 20, und der Wirkungsgrad steigt.'},
+ {on:()=>{setWZ(1);setWB(1);},dur:9,cap:'Jetzt zieht die Last am Rad. Bei der eingängigen Schnecke ist der Steigungswinkel γ kleiner als der Reibwinkel ρ: Das Rad kann die Schnecke nicht drehen. Das ist <b>Selbsthemmung</b>.'},
+ {on:()=>{setWZ(3);setWB(1);},dur:8,cap:'Dreigängige Schnecke: Die Steigung ist steil, γ > ρ. Die Last dreht die Schnecke rückwärts. Keine Selbsthemmung mehr.'},
+ {on:()=>{setWZ(1);setWB(0);},dur:9,cap:'Der Preis der Selbsthemmung: viel Gleitreibung. Ein selbsthemmendes Schneckengetriebe hat einen Wirkungsgrad <b>unter 50 %</b>. Deshalb Bronze-Rad und Ölbad.'}]);
+
+/* ================= K11: Kegelräder ================= */
+bindV('bvS',v=>v+'°'); bindV('bvI',v=>fmt(v,2));
+sim('cvBevel',()=>{ const [c,W,H]=fit($('cvBevel')); const S=+$('bvS').value*DEG, i=+$('bvI').value, d1=Math.atan(Math.sin(S)/(i+Math.cos(S))), d2=S-d1;
+  const z1=20, m=4, dd1=m*z1, dd2=dd1*i, Re=dd1/(2*Math.sin(d1)); const th0=Math.PI/2-(S+d2-d1)/2, ox=W/2, oy=H*(S>100*DEG?.72:.86), L=Math.min(H*(S>100*DEG?.6:.74),W*.44);
+  const u=a=>[Math.cos(-(a+th0)),Math.sin(-(a+th0))], Pt=(a,r)=>[ox+u(a)[0]*r,oy+u(a)[1]*r];
+  const ax1=0, ax2=S;
+  const e1=Pt(ax1,L*1.12); line(c,ox,oy,e1[0],e1[1],C.acc,2,[10,4,2,4]); const e2=Pt(ax2,L*1.12); line(c,ox,oy,e2[0],e2[1],C.steel,2,[10,4,2,4]);
+  const fr=(ax,dl,fill,col)=>{ const ri=L*.55, ro=L; const pts=[Pt(ax+dl,ri),Pt(ax+dl,ro),Pt(ax-dl,ro),Pt(ax-dl,ri)]; c.beginPath(); pts.forEach((q,k)=>k?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1])); c.closePath(); c.fillStyle=fill; c.fill(); c.strokeStyle=col; c.lineWidth=2; c.stroke();
+    for(let k=1;k<8;k++){ const a=ax-dl+2*dl*k/8; const A=Pt(a,ri), B=Pt(a,ro); line(c,A[0],A[1],B[0],B[1],col,.8); }
+    line(c,ox,oy,Pt(ax+dl,ri)[0],Pt(ax+dl,ri)[1],col,1,[3,3]); line(c,ox,oy,Pt(ax-dl,ri)[0],Pt(ax-dl,ri)[1],col,1,[3,3]); };
+  fr(ax1,d1,C.gear1,C.acc); fr(ax2,d2,C.gear2,C.steel);
+  const g=Pt(d1,L*1.05); line(c,ox,oy,g[0],g[1],C.ok,2.5); tag(c,'gemeinsame Berührlinie',g[0],g[1]-8,C.ok,12);
+  c.beginPath(); c.arc(ox,oy,6,0,TAU); c.fillStyle=C.bad; c.fill(); tag(c,'Kegelspitze O · Schnittpunkt der Wellen',ox,oy+22,C.bad,12);
+  const arcA=(a0,a1,r,col,lab)=>{ c.strokeStyle=col; c.lineWidth=1.6; c.beginPath(); c.arc(ox,oy,r,-(a1+th0),-(a0+th0)); c.stroke(); const m2=Pt((a0+a1)/2,r+14); txt(c,lab,m2[0],m2[1]+4,col,13,'center','700'); };
+  arcA(0,d1,L*.34,C.acc,'δ₁'); arcA(d1,S,L*.26,C.steel,'δ₂'); arcA(0,S,L*.16,C.ink,'Σ');
+  const p1=Pt(ax1-d1,L*.9); tag(c,'Ritzel z₁ = 20',p1[0]+8,p1[1]+18,C.acc,12,'left'); const p2=Pt(ax2+d2,L*.9); tag(c,'Rad z₂ = '+fmt(z1*i,0),p2[0]-8,p2[1]-6,C.steel,12,'right');
+  const da1=dd1+2*m*Math.cos(d1), da2=dd2+2*m*Math.cos(d2), ka=Math.atan(m/Re);
+  outs('bvOut',[['δ₁',fmt(d1/DEG,2)+'°'],['δ₂ = Σ − δ₁',fmt(d2/DEG,2)+'°'],['d₁ / d₂',fmt(dd1,1)+' / '+fmt(dd2,1)+' mm'],['d_a1 / d_a2',fmt(da1,2)+' / '+fmt(da2,2)+' mm'],['R_e = d₁/(2 sin δ₁)',fmt(Re,2)+' mm'],['Kopfwinkel κ_a',fmt(ka/DEG,2)+'°']]);
+});
+tour('b11',[
+ {set:{bvS:90,bvI:1.5},dur:9,cap:'Zwei Kegelräder im Schnitt: Die Wellen (strichpunktiert) schneiden sich im Punkt O. Die Spitzen beider Kegel liegen genau dort.'},
+ {dur:9,cap:'Die Räder berühren sich entlang einer gemeinsamen Linie (grün). Die Teilkegelwinkel δ₁ und δ₂ ergeben zusammen den Achsenwinkel: <b>Σ = δ₁ + δ₂</b>.'},
+ {set:{bvI:3},dur:9,cap:'Größere Übersetzung: Das Ritzel wird spitzer (kleines δ₁), das Tellerrad flacher (großes δ₂). Bei Σ = 90° gilt <b>tan δ₁ = z₁/z₂</b>.'},
+ {set:{bvS:60,bvI:1.5},dur:9,cap:'Auch andere Achsenwinkel sind möglich, zum Beispiel 60° oder 75° wie in Aufgabe 4. Dann gilt tan δ₁ = sin Σ / (i + cos Σ).'},
+ {set:{bvS:90,bvI:1},dur:8,cap:'i = 1 bei 90°: Beide Kegel sind gleich (δ = 45°). Wichtig bei der Montage: Die Kegelspitzen müssen genau zusammenfallen, sonst stimmt das Tragbild nicht.'}]);
+
+/* ================= K12: Planetengetriebe ================= */
+const PZS=24, PZR=72, PZP=24;
+const PMODES=[['s','c','r','Hohlrad fest · Sonne treibt · Träger Abtrieb'],['c','s','r','Hohlrad fest · Träger treibt · Sonne Abtrieb'],['r','c','s','Sonne fest · Hohlrad treibt · Träger Abtrieb'],['c','r','s','Sonne fest · Träger treibt · Hohlrad Abtrieb'],['s','r','c','Träger fest · Sonne treibt · Hohlrad Abtrieb'],['r','s','c','Träger fest · Hohlrad treibt · Sonne Abtrieb']];
+PMODES.forEach((m,k)=>{ const o=document.createElement('option'); o.value=k; o.textContent=m[3]; $('plMode').appendChild(o); });
+const PNM={s:'Sonnenrad',c:'Planetenträger',r:'Hohlrad'}; const PA={s:0,c:0,r:0};
+function planN(){ const [a,b,f]=PMODES[+$('plMode').value]; const n={s:0,c:0,r:0}; n[a]=1; const R=PZR/PZS;
+  if(b==='s') n.s=n.c-R*(n.r-n.c); else if(b==='c') n.c=(n.s+R*n.r)/(1+R); else n.r=n.c-(n.s-n.c)/R; return {n,a,b,f}; }
+sim('cvPlan',(dt)=>{ const [c,W,H]=fit($('cvPlan')); const S=planN(), w=.9; for(const k of ['s','c','r']) PA[k]+=S.n[k]*w*dt;
+  const cx=W/2, cy=H/2+6, Rr=Math.min(W,H)/2-26, k=Rr/(PZR/2+3.2), rs=PZS*k/2, rp=PZP*k/2, rr=PZR*k/2, rc=rs+rp;
+  ring(c,cx,cy,rr,PZR,PA.r,S.f==='r'?C.line2:C.gear2,C.steel);
+  c.strokeStyle=S.f==='c'?C.muted:C.ink; c.lineWidth=5; c.beginPath(); for(let j=0;j<3;j++){ const a=PA.c+j*TAU/3; const x=cx+rc*Math.cos(a), y=cy+rc*Math.sin(a); j?c.lineTo(x,y):c.moveTo(x,y); } c.closePath(); c.globalAlpha=.5; c.stroke(); c.globalAlpha=1;
+  for(let j=0;j<3;j++){ const a=PA.c+j*TAU/3, x=cx+rc*Math.cos(a), y=cy+rc*Math.sin(a); gear(c,x,y,rp,PZP,meshExt(PA.s,PZS,PZP,a),C.gear3,C.warn); }
+  gear(c,cx,cy,rs,PZS,PA.s,S.f==='s'?C.line2:C.gear1,C.acc);
+  for(let j=0;j<3;j++){ const a=PA.c+j*TAU/3; c.beginPath(); c.arc(cx+rc*Math.cos(a),cy+rc*Math.sin(a),5,0,TAU); c.fillStyle=S.f==='c'?C.muted:C.ink; c.fill(); }
+  const lab=q=>q===S.a?'Antrieb':q===S.b?'Abtrieb':'fest';
+  txt(c,'Hohlrad: '+lab('r'),12,22,C.steel,13,'left'); txt(c,'Sonnenrad: '+lab('s'),12,40,C.acc,13,'left'); txt(c,'Planetenträger (Dreieck): '+lab('c'),12,58,C.ink,13,'left');
+  const nout=S.n[S.b], iv=1/nout;
+  outs('plOut',[['Antrieb',PNM[S.a]+' ↻'],['fest',PNM[S.f]],['Abtrieb',PNM[S.b]+(nout>0?' ↻':' ↺')],['Übersetzung i',fmt(iv,2)],['Richtung',nout>0?'gleich':'umgekehrt'],['',Math.abs(iv)>1?'ins Langsame':'ins Schnelle']]);
+});
+tour('b12',[
+ {on:()=>{ $('plMode').value=0; },dur:9,cap:'Standardbauart (Heft Bild 3): <b>Hohlrad fest</b>, das Sonnenrad treibt. Die Planeten rollen am festen Hohlrad ab und nehmen den Träger mit, in <b>gleicher Richtung</b>, 4-mal langsamer.'},
+ {dur:8,cap:'Die Übersetzung ist hier i = 1 + z_Hohlrad/z_Sonne = 1 + 72/24 = 4. Das ist auch die Antwort auf Frage 22: Der Abtrieb dreht im Uhrzeigersinn.'},
+ {on:()=>{ $('plMode').value=2; },dur:8,cap:'Sonne fest, das Hohlrad treibt: Der Träger läuft etwas langsamer mit (i = 1,33). Wieder gleiche Richtung.'},
+ {on:()=>{ $('plMode').value=4; },dur:9,cap:'<b>Träger fest</b>: Jetzt sind die Planeten nur noch Zwischenräder. Sonne treibt, Hohlrad dreht <b>andersherum</b> (i = −3). Nur in dieser Stellung kehrt sich die Richtung um.'},
+ {on:()=>{ $('plMode').value=1; },dur:8,cap:'Treibt man den Träger an, geht es ins Schnelle. So entstehen aus einem Satz Zahnrädern sechs Übersetzungen, nur durch Festhalten eines anderen Teils (Automatikgetriebe).'}]);
+
+/* ================= K13: Zahnstange / Spindel ================= */
+let RM='r', rkPhi=0; const setRM=seg('data-rm',v=>{ RM=v; rkPhi=0; },'r'); bindV('rkZ',v=>v); bindV('rkP',v=>fmt(v,1)+' mm');
+sim('cvRack',(dt,t)=>{ const [c,W,H]=fit($('cvRack')); rkPhi+=dt*1.2; const N=rkPhi/TAU;
+  if(RM==='r'){ const z=+$('rkZ').value, m=2, d=m*z, s=(H*.33)/40, R=d/2*s, cx=W*.5, cy=H*.08+R+10, yr=cy+R, pp=Math.PI*m*s;
+    let x=-R*rkPhi; if(-x>W*.36){ rkPhi=0; x=0; }
+    const phi=Math.PI/2+rkPhi; gear(c,cx,cy,R,z,phi,C.gear1,C.acc,{pitch:true}); rotArrow(c,cx,cy,Math.max(R*.5,12),1,C.acc);
+    const x0=-20, x1=W+20, hr=m*s;
+    c.beginPath(); c.moveTo(x0,yr+2.4*hr); c.lineTo(x0,yr+1.25*hr); const k0=Math.floor((x0-cx-x)/pp)-1;
+    for(let k=k0;;k++){ const xc=cx+pp/2+k*pp+x; if(xc-pp>x1) break; const tw=pp*.18; c.lineTo(xc-pp*.25-tw,yr+1.25*hr); c.lineTo(xc-tw,yr-hr); c.lineTo(xc+tw,yr-hr); c.lineTo(xc+pp*.25+tw,yr+1.25*hr); }
+    c.lineTo(x1,yr+1.25*hr); c.lineTo(x1,yr+2.4*hr); c.closePath(); c.fillStyle=C.gear2; c.fill(); c.strokeStyle=C.steel; c.lineWidth=1.4; c.stroke();
+    const sPx=-x, sMm=N*Math.PI*d; line(c,cx,yr+3.4*hr,cx-sPx,yr+3.4*hr,C.bad,3); c.beginPath(); c.arc(cx-sPx,yr+3.4*hr,5,0,TAU); c.fillStyle=C.bad; c.fill();
+    tag(c,'s = '+fmt(sMm,0)+' mm',cx-sPx/2,yr+3.4*hr+26,C.bad,13);
+    outs('rkOut',[['Ritzel d = m·z',fmt(d,0)+' mm'],['Umdrehungen N',fmt(N,2)],['Weg pro Umdrehung π·d',fmt(Math.PI*d,1)+' mm'],['s = N·π·d',fmt(sMm,1)+' mm']]); }
+  else { const P=+$('rkP').value, s=6, y=H*.5, r=26, x0=W*.12, x1=W*.9, Ppx=P*s; let sPx=N*Ppx; if(x0+60+sPx>x1-80){ rkPhi=0; sPx=0; }
+    c.fillStyle=C.panel2; c.fillRect(x0,y-r,x1-x0,2*r); c.strokeStyle=C.ink; c.lineWidth=1.6; c.strokeRect(x0,y-r,x1-x0,2*r);
+    c.save(); c.beginPath(); c.rect(x0,y-r,x1-x0,2*r); c.clip(); c.strokeStyle=C.steel; c.lineWidth=2; const off=(sPx%Ppx);
+    for(let x=x0-Ppx+off;x<x1+Ppx;x+=Ppx){ c.beginPath(); c.moveTo(x,y-r); c.lineTo(x+Ppx/2,y+r); c.stroke(); } c.restore();
+    const nx=x0+60+sPx; c.fillStyle=C.gear1; c.strokeStyle=C.acc; c.lineWidth=2; c.beginPath(); c.roundRect(nx-30,y-r-18,60,2*r+36,6); c.fill(); c.stroke(); txt(c,'Mutter',nx,y-r-26,C.acc,13);
+    c.beginPath(); c.arc(x0-18,y,22,0,TAU); c.fillStyle=C.panel; c.fill(); c.strokeStyle=C.ink; c.stroke(); line(c,x0-18,y,x0-18+18*Math.cos(rkPhi),y+18*Math.sin(rkPhi),C.ink,3);
+    line(c,x0+60,y+r+34,nx,y+r+34,C.bad,3); tag(c,'s = N · P = '+fmt(N*P,1)+' mm',(x0+60+nx)/2+20,y+r+58,C.bad,13);
+    outs('rkOut',[['Steigung P',fmt(P,1)+' mm'],['Umdrehungen N',fmt(N,2)],['s = N·P',fmt(N*P,1)+' mm'],['v bei 240/min (Tischantrieb 2)',fmt(240*P,0)+' mm/min']]); }
+});
+tour('b13',[
+ {on:()=>setRM('r'),set:{rkZ:18},dur:9,cap:'Das Ritzel rollt auf der Zahnstange ab wie ein Rad auf der Straße. Pro Umdrehung wandert die Zahnstange um den Teilkreisumfang <b>π·d</b>.'},
+ {set:{rkZ:36},dur:8,cap:'Doppelt so großes Ritzel, doppelter Weg pro Umdrehung. Aus s = N · π · d kannst du auch den Drehwinkel für einen bestimmten Weg berechnen.'},
+ {on:()=>setRM('s'),set:{rkP:5},dur:9,cap:'Die Gewindespindel: Pro Umdrehung schiebt sie die Mutter genau um die <b>Steigung P</b> weiter. s = N · P.'},
+ {set:{rkP:2},dur:8,cap:'Kleine Steigung: langsamer, feiner Vorschub und große Kraft. So arbeiten Frästische, Schraubstöcke und Wagenheber.'}]);
+
+/* ================= K14: Schaltgetriebe ================= */
+const SHA=[{p:['z₁','z₂'],z:[25,25]},{p:['z₃','z₄'],z:[17,33]}], SHB=[{p:['z₅','z₆'],z:[25,25]},{p:['z₇','z₈'],z:[21,29]},{p:['z₉','z₁₀'],z:[29,21]}];
+const SHS=[]; SHA.forEach((a,ia)=>SHB.forEach((b,ib)=>SHS.push({ia,ib})));
+let SH=0; (function(){ const sg=$('shSeg'); SHS.forEach((s,k)=>{ const b=document.createElement('button'); b.type='button'; b.dataset.sh=k; b.textContent=k+1; sg.appendChild(b); }); })();
+const setSH=seg('data-sh',v=>SH=+v,'0');
+function shN(s){ const a=SHA[s.ia], b=SHB[s.ib], n2=900*a.z[0]/a.z[1], n3=n2*b.z[0]/b.z[1]; return {a,b,n2,n3,i:900/n3}; }
+(function(){ let h='<tr><th>Schaltstufe</th><th>Energiefluss</th><th>Welle I</th><th>Welle II</th><th>Welle III</th><th>i_ges</th></tr>';
+  SHS.forEach((s,k)=>{ const r=shN(s); h+='<tr><td>'+(k+1)+'</td><td>'+r.a.p[0]+'–'+r.a.p[1]+'–'+r.b.p[0]+'–'+r.b.p[1]+'</td><td>900</td><td>'+fmt(r.n2,1)+'</td><td><b>'+fmt(r.n3,1)+'</b></td><td>'+fmt(r.i,3)+'</td></tr>'; }); $('shTable').innerHTML=h; })();
+sim('cvShift',(dt,t)=>{ const [c,W,H]=fit($('cvShift')); const s=SHS[SH], r=shN(s); const a=(H-110)/2, mp=a/25, y1=64, y2=y1+a, y3=y2+a;
+  const xA=[W*.15,W*.27], xB=[W*.5,W*.64,W*.78];
+  for(const [y,lab] of [[y1,'Welle I'],[y2,'Welle II'],[y3,'Welle III']]){ line(c,W*.06,y,W*.9,y,C.ink,4); txt(c,lab,W*.9,y-8,C.muted,11,'right'); }
+  const gr=(x,y,z,on,col,soft,lab)=>{ const h=z*mp; c.fillStyle=on?soft:C.panel2; c.strokeStyle=on?col:C.line2; c.lineWidth=on?2.2:1.2; c.fillRect(x-8,y-h/2,16,h); c.strokeRect(x-8,y-h/2,16,h); txt(c,lab+'='+z,x+12,y-h/2+12,on?col:C.muted,11,'left'); };
+  SHA.forEach((p,k)=>{ const on=k===s.ia; gr(xA[k],y1,p.z[0],on,C.acc,C.gear1,p.p[0]); gr(xA[k],y2,p.z[1],on,C.steel,C.gear2,p.p[1]); });
+  SHB.forEach((p,k)=>{ const on=k===s.ib; gr(xB[k],y2,p.z[0],on,C.acc,C.gear1,p.p[0]); gr(xB[k],y3,p.z[1],on,C.steel,C.gear2,p.p[1]); });
+  const path=[[W*.02,y1],[xA[s.ia],y1],[xA[s.ia],y2],[xB[s.ib],y2],[xB[s.ib],y3],[W*.97,y3]];
+  c.strokeStyle=C.acc; c.globalAlpha=.35; c.lineWidth=12; c.beginPath(); path.forEach((q,k)=>k?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1])); c.stroke(); c.globalAlpha=1;
+  c.setLineDash([8,10]); c.lineDashOffset=-(t*40)%18; c.lineWidth=3; c.beginPath(); path.forEach((q,k)=>k?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1])); c.stroke(); c.setLineDash([]);
+  txt(c,'n_A = 900/min →',W*.02,y1+22,C.acc,12,'left'); txt(c,'n_E = '+fmt(r.n3,0)+'/min',W*.97,y3+22,C.acc,13,'right','700');
+  txt(c,'Energiefluss: '+r.a.p[0]+'–'+r.a.p[1]+'–'+r.b.p[0]+'–'+r.b.p[1],W/2,24,C.ink,14,'center','700');
+  outs('shOut',[['Schaltstufe',String(SH+1)],['Stufe 1: i₁',r.a.z[1]+'/'+r.a.z[0]+' = '+fmt(r.a.z[1]/r.a.z[0],3)],['Stufe 2: i₂',r.b.z[1]+'/'+r.b.z[0]+' = '+fmt(r.b.z[1]/r.b.z[0],3)],['Welle II',fmt(r.n2,1)+' /min'],['Welle III',fmt(r.n3,1)+' /min'],['i_ges',fmt(r.i,3)]]);
+});
+tour('b14',[{on:()=>setSH(0),dur:9,cap:'Das Getriebe hat zwei Stufen mit wählbaren Radpaaren. Pro Stufe greift immer nur ein Paar. Orange ist der <b>Energiefluss</b>. Stufe 1: alle Paare haben gleich viele Zähne, i = 1, Welle III dreht mit 900/min.'}].concat(SHS.slice(1).map((s,k)=>{ const r=shN(s); return {on:()=>setSH(k+1),dur:7,cap:'Schaltstufe '+(k+2)+': '+r.a.p[0]+'–'+r.a.p[1]+'–'+r.b.p[0]+'–'+r.b.p[1]+'. i = '+fmt(r.a.z[1]/r.a.z[0],3)+' · '+fmt(r.b.z[1]/r.b.z[0],3)+' = '+fmt(r.i,3)+' → Welle III: <b>'+fmt(r.n3,1)+'/min</b>.'+(r.i<1?' Hier geht es ins Schnelle.':'')}; })));
+
+/* ================= K15: Riementrieb + Keilwirkung ================= */
+bindV('bD',v=>v+' mm'); bindV('bA',v=>v+' mm');
+function beltTan(x1,y1,r1,x2,y2,r2,cross){ const dx=x2-x1, dy=y2-y1, d=Math.hypot(dx,dy), base=Math.atan2(dy,dx), out=[];
+  for(const sg of [1,-1]){ const rr2=cross?-r2:r2, a=Math.acos(Math.max(-1,Math.min(1,(r1-rr2)/d))), th=base+sg*a; out.push([[x1+r1*Math.cos(th),y1+r1*Math.sin(th)],[x2+rr2*Math.cos(th),y2+rr2*Math.sin(th)],th]); } return out; }
+sim('cvBelt',(dt,t)=>{ const [c,W,H]=fit($('cvBelt')); const cross=$('bCross').checked, D=+$('bD').value, d=140, a=+$('bA').value;
+  const sc=Math.min((W-40)/(a+D/2+d/2),(H-70)/Math.max(D,d)), R1=D/2*sc, R2=d/2*sc, cy=H/2+8, x1=(W-(a*sc+R1+R2))/2+R1, x2=x1+a*sc;
+  const tg=beltTan(x1,cy,R1,x2,cy,R2,cross);
+  tg.forEach(([p,q],k)=>line(c,p[0],p[1],q[0],q[1],k===0?C.acc:C.steel,5));
+  c.strokeStyle=C.ink; c.lineWidth=5; const th1=tg[0][2], th2=tg[1][2];
+  c.beginPath(); c.arc(x1,cy,R1,th1,th2,false); c.stroke();
+  if(!cross){ c.beginPath(); c.arc(x2,cy,R2,th2,th1,false); c.stroke(); } else { c.beginPath(); c.arc(x2,cy,R2,th1+Math.PI,th2+Math.PI,false); c.stroke(); }
+  for(const [x,r,col] of [[x1,R1,C.gear2],[x2,R2,C.gear1]]){ c.beginPath(); c.arc(x,cy,r-3,0,TAU); c.fillStyle=col; c.fill(); c.beginPath(); c.arc(x,cy,5,0,TAU); c.fillStyle=C.ink; c.fill(); }
+  const r1a=-t*.9, r2a=r1a*D/d*(cross?-1:1);
+  for(const [x,r,ro] of [[x1,R1,r1a],[x2,R2,r2a]]) for(let k=0;k<3;k++){ const q=ro+k*TAU/3; line(c,x,cy,x+(r-7)*Math.cos(q),cy+(r-7)*Math.sin(q),C.muted,2); }
+  rotArrow(c,x1,cy,R1*.5,-1,C.steel); rotArrow(c,x2,cy,R2*.5,cross?1:-1,C.acc);
+  const beta=cross?180+2*Math.asin((D+d)/(2*a))/DEG:180-2*Math.asin((D-d)/(2*a))/DEG;
+  txt(c,'große Scheibe '+D+' mm (treibt)',x1,cy+R1+22,C.steel,12); txt(c,'klein '+d+' mm',x2,cy+R2+22,C.acc,12); txt(c,cross?'gekreuzt: gegenläufig':'offen: gleiche Drehrichtung',W/2,20,C.ink,14);
+  const L=cross?2*a*Math.cos(Math.asin((D+d)/(2*a)))+(D+d)/2*(Math.PI+2*Math.asin((D+d)/(2*a))):2*a+Math.PI/2*(D+d)+(D-d)**2/(4*a);
+  outs('bOut',[['Umschlingungswinkel klein',fmt(beta,1)+'°'],['Drehrichtung',cross?'entgegengesetzt':'gleich'],['i = d₂/d₁',fmt(d/D,3)+' (ins Schnelle)'],['Riemenlänge ≈',fmt(L,0)+' mm']]);
+});
+tour('b15',[
+ {set:{bD:224,bA:420,bCross:0},dur:8,cap:'Offener Riementrieb: Beide Scheiben drehen in <b>dieselbe Richtung</b>. Oben das ziehende Zugtrum (orange), unten das Leertrum.'},
+ {set:{bD:320},dur:9,cap:'Die große Scheibe wird größer. Der Riemen läuft steiler, und der <b>Umschlingungswinkel</b> an der kleinen Scheibe sinkt. Hier rutscht der Riemen zuerst durch.'},
+ {set:{bA:700},dur:8,cap:'Größerer Achsabstand: Der Umschlingungswinkel wird wieder größer. Auch eine Spannrolle am Leertrum vergrößert ihn.'},
+ {set:{bD:224,bA:420,bCross:1},dur:9,cap:'Gekreuzter Riemen: Die Scheiben drehen <b>gegenläufig</b>, und die Umschlingung ist größer. Das geht nur mit Flachriemen, weil der Riemen sich verdreht.'},
+ {set:{bCross:0},dur:7,cap:'Bei Überlast rutscht ein Riemen durch. Das schützt die Maschine. Ist eine genaue Übersetzung nötig, nimmt man Zahnriemen oder Kette.'}]);
+bindV('wgA',v=>v+'°');
+sim('cvWedge',()=>{ const [c,W,H]=fit($('cvWedge')); const al=+$('wgA').value*DEG, h=al/2, F=48, FN=F/(2*Math.sin(h));
+  // Flachriemen
+  const fx=W*.2, fy=H*.62; c.fillStyle=C.panel2; c.fillRect(fx-70,fy,140,30); c.strokeStyle=C.line2; c.strokeRect(fx-70,fy,140,30);
+  c.fillStyle=C.gear1; c.fillRect(fx-50,fy-16,100,16); c.strokeStyle=C.acc; c.strokeRect(fx-50,fy-16,100,16);
+  arrow(c,fx,fy-70,fx,fy-18,C.ink,3); txt(c,'F',fx+8,fy-50,C.ink,13,'left','700'); arrow(c,fx+30,fy+48,fx+30,fy+48-F,C.steel,3); txt(c,'F_N = F',fx+38,fy+30,C.steel,12,'left');
+  txt(c,'Flachriemen: F_R = μ · F',fx,H-12,C.ink,13);
+  // Keilriemen in der Rille
+  const kx=W*.64, ky=H*.72, dep=Math.min(H*.5,120), top=dep*Math.tan(h)*2+30;
+  const L=[kx-dep*Math.tan(h)-15,ky-dep], Rr=[kx+dep*Math.tan(h)+15,ky-dep], B=[kx-15,ky], Bb=[kx+15,ky];
+  c.fillStyle=C.panel2; c.beginPath(); c.moveTo(L[0]-60,L[1]); c.lineTo(L[0],L[1]); c.lineTo(B[0],B[1]); c.lineTo(Bb[0],Bb[1]); c.lineTo(Rr[0],Rr[1]); c.lineTo(Rr[0]+60,Rr[1]); c.lineTo(Rr[0]+60,ky+30); c.lineTo(L[0]-60,ky+30); c.closePath(); c.fill(); c.strokeStyle=C.line2; c.lineWidth=1.5; c.stroke();
+  const bt=dep*.72, byt=ky-dep*.95, byb=byt+bt, wt=(ky-byt)*Math.tan(h)+15, wb=(ky-byb)*Math.tan(h)+15;
+  c.fillStyle=C.gear1; c.beginPath(); c.moveTo(kx-wt,byt); c.lineTo(kx+wt,byt); c.lineTo(kx+wb,byb); c.lineTo(kx-wb,byb); c.closePath(); c.fill(); c.strokeStyle=C.acc; c.lineWidth=2; c.stroke();
+  arrow(c,kx,byt-60,kx,byt-4,C.ink,3); txt(c,'F',kx+8,byt-40,C.ink,13,'left','700');
+  const my=(byt+byb)/2, mxL=kx-((ky-my)*Math.tan(h)+15), mxR=kx+((ky-my)*Math.tan(h)+15);
+  const nL=[Math.cos(h),-Math.sin(h)], nR=[-Math.cos(h),-Math.sin(h)], s=1;
+  arrow(c,mxL-nL[0]*FN,my-nL[1]*FN,mxL,my,C.steel,3); arrow(c,mxR-nR[0]*FN,my-nR[1]*FN,mxR,my,C.steel,3);
+  txt(c,'F_N',mxL-nL[0]*FN-6,my-nL[1]*FN+4,C.steel,13,'right','700'); txt(c,'F_N',mxR-nR[0]*FN+6,my-nR[1]*FN+4,C.steel,13,'left','700');
+  const k=1/Math.sin(h); txt(c,'Keilriemen: F_N = F/(2·sin(α/2)) = '+fmt(1/(2*Math.sin(h)),2)+' · F je Flanke',kx,H-30,C.ink,13); txt(c,'Reibkraft F_R = μ·F/sin(α/2) ≈ '+fmt(k,2)+' · μ·F',kx,H-12,C.ok,13,'center','700');
+});
+tour('b15b',[
+ {set:{wgA:38},dur:9,cap:'Links ein Flachriemen: Er wird mit F auf die Scheibe gedrückt, die Scheibe drückt mit F_N = F zurück. Rechts der Keilriemen in der Rille.'},
+ {dur:9,cap:'Die schrägen Flanken der Rille drücken <b>senkrecht zur Flanke</b> zurück. Weil sie so steil stehen, muss F_N viel größer sein als F, damit die Kräfte im Gleichgewicht sind.'},
+ {dur:8,cap:'Bei α = 38° ist die Reibkraft etwa <b>dreimal so groß</b> wie beim Flachriemen. Das ist die Keilwirkung.'},
+ {set:{wgA:32},dur:8,cap:'Spitzere Rille, noch stärkere Keilwirkung. Deshalb überträgt ein Keilriemen große Kräfte schon bei kleinen Scheiben und wenig Vorspannung, und die Lager werden geschont.'}]);
+
+/* ================= K16: Kupplung und Stoß ================= */
+let KM='s'; const setKM=seg('data-km',v=>KM=v,'s'); const shock=[]; let kT=0;
+sim('cvShock',(dt,t)=>{ const [c,W,H]=fit($('cvShock')); kT+=dt; const per=2.4, tau=kT%per, dtau=Math.max(0,tau-.9);
+  let M=1; if(tau>.9){ if(KM==='s'||KM==='r'){ M=1+3.2*Math.exp(-dtau/.07)*Math.cos(TAU*9*dtau); if(KM==='r') M=Math.min(M,2); } else { M=1+1.05*(dtau/.22)*Math.exp(1-dtau/.22); } }
+  shock.push([kT,M,KM==='r'&&M>=2]); while(shock.length&&shock[0][0]<kT-6) shock.shift();
+  const sw=Math.min(W*.3,230), gx=sw+50, gw=W-gx-14, gy=26, gh=H-60, Y=m=>gy+gh-gh*m/4.5, X=tt=>gx+gw*(1-(kT-tt)/6);
+  // Szene
+  const by=H*.62; line(c,20,by,sw,by,C.ink,4); for(let x=30;x<sw;x+=34){ c.beginPath(); c.arc(x,by+8,6,0,TAU); c.strokeStyle=C.muted; c.lineWidth=1.4; c.stroke(); }
+  const sy=tau<.9?by-110+110*(tau/.9)**2:by-12; c.fillStyle=C.muted; c.beginPath(); c.moveTo(sw*.55-12,sy); c.lineTo(sw*.55+10,sy-6); c.lineTo(sw*.55+14,sy+10); c.lineTo(sw*.55-8,sy+12); c.closePath(); c.fill();
+  txt(c,'Stein fällt aus 80 cm',sw*.55,by-120,C.muted,11);
+  const kx=sw*.5, ky=H*.84; line(c,20,ky,sw,ky,C.ink,4); c.fillStyle=C.steelSoft; c.strokeStyle=C.steel; c.lineWidth=1.5; c.fillRect(kx-24,ky-18,14,36); c.strokeRect(kx-24,ky-18,14,36); c.fillRect(kx+10,ky-18,14,36); c.strokeRect(kx+10,ky-18,14,36);
+  if(KM==='e'){ c.fillStyle=C.warn; for(let k=-1;k<=1;k++) c.fillRect(kx-10,ky-6+k*10,20,5); } else if(KM==='r'){ c.fillStyle=C.bad; c.fillRect(kx-10,ky-18,20,36); } else { c.fillStyle=C.steel; c.fillRect(kx-10,ky-4,20,8); }
+  txt(c,KM==='s'?'starre Kupplung':KM==='e'?'elastische Kupplung':'Rutschkupplung',kx,ky+34,C.ink,12);
+  // Diagramm
+  for(let m=0;m<=4;m++){ line(c,gx,Y(m),gx+gw,Y(m),C.line,1); txt(c,m+'×',gx-6,Y(m)+4,C.muted,10,'right','500',true); }
+  line(c,gx,Y(2.5),gx+gw,Y(2.5),C.bad,1.5,[6,4]); txt(c,'zulässig für Zähne und Lager',gx+gw-4,Y(2.5)-6,C.bad,11,'right');
+  c.strokeStyle=C.acc; c.lineWidth=2.5; c.beginPath(); shock.forEach(([tt,m],k)=>{ const x=X(tt), y=Y(Math.min(4.4,m)); k?c.lineTo(x,y):c.moveTo(x,y); }); c.stroke();
+  txt(c,'Drehmoment am Getriebe (× Nennmoment)',gx,gy-8,C.muted,11,'left'); txt(c,'Zeit →',gx+gw,H-10,C.muted,11,'right');
+  const peak=Math.max(...shock.map(q=>q[1])); tag(c,'Spitze: '+fmt(peak,1)+'×',gx+gw-60,gy+18,peak>2.5?C.bad:C.ok,12);
+  if(KM==='r'&&shock.some(q=>q[2]&&q[0]>kT-.6)) tag(c,'rutscht durch',gx+gw*.5,Y(2)-12,C.warn,12);
+});
+tour('b16',[
+ {on:()=>setKM('s'),dur:9,cap:'Mit einer <b>starren Kupplung</b> geht jeder Steinschlag ungebremst ins Getriebe. Die Drehmomentspitze liegt weit über dem, was Zähne und Lager dauerhaft aushalten. So entstehen die Schäden aus Antriebsstation 3.'},
+ {on:()=>setKM('e'),dur:9,cap:'Eine <b>elastische Kupplung</b> gibt kurz nach und nimmt die Stoßenergie auf. Die Spitze wird flacher und breiter. Zähne und Lager werden geschont.'},
+ {on:()=>setKM('r'),dur:9,cap:'Eine <b>Rutschkupplung</b> rutscht durch, sobald das eingestellte Drehmoment erreicht ist. Sie schützt vor Überlast, zum Beispiel wenn ein Stein das Band blockiert.'},
+ {on:()=>setKM('e'),dur:8,cap:'Für das Steinband ist die elastische Kupplung die Lösung, eventuell ergänzt um eine Rutschkupplung. Für das ruhige Schüttgut reicht die starre Scheibenkupplung.'}]);
+
+/* ================= K17: Antriebs-Rechner ================= */
+const KT=[[25,46.2,4600],[30,87.5,4600],[35,150,4100],[40,236,4100],[45,355,3600],[50,515,3600],[55,730,3200],[60,975,3200],[70,1700,2850],[80,2650,2550],[90,4120,2300],[100,5800,2050]];
+const DPRE=[['Förderband (Antriebsstation)',{F:24525,v:3,d:200,n:1400,eA:.67,eG:.93,eM:.89,nu:1.5,m:6,z:18},'Kraft = 2500 kg · 9,81 m/s² (Last als Gewichtskraft)'],
+ ['Skilift',{F:2675,v:3,d:2510,n:1460,eA:.76,eG:.96,eM:1,nu:3,m:5,z:20},'Kraft aus P = 11 kW zurückgerechnet: F = 11 000 · 0,96 · 0,76 / 3 ≈ 2675 N'],
+ ['Schlepplift',{F:30000,v:.9722,d:1450,n:1409,eA:1,eG:.84,eM:.88,nu:1.5,m:6,z:18},'v = 3,5 km/h; n_Motor aus i = 110 berechnet'],
+ ['Seilwinde 5 kN, 1,2-fach',{F:6000,v:.4712,d:200,n:720,eA:.95,eG:.85,eM:1,nu:1.5,m:3,z:16},'F = 1,2 · 5 kN; v aus n_Trommel = 45/min'],
+ ['Hubwerk 3 kN',{F:3000,v:.555,d:200,n:550,eA:1,eG:1,eM:1,nu:1.5,m:2,z:17},'Stirnverzahnungen_3, Aufgabe 6, ohne Verluste']];
+const DID={F:'dsF',v:'dsV',d:'dsD',n:'dsN',eA:'dsEA',eG:'dsEG',eM:'dsEM',nu:'dsNu',m:'dsM',z:'dsZ'}; let dNote='';
+(function(){ const box=$('dsPre'); DPRE.forEach(([n,v,note],k)=>{ const b=document.createElement('button'); b.type='button'; b.className='btn'; b.textContent=n; b.onclick=()=>{ for(const k2 in v) $(DID[k2]).value=v[k2]; dNote=note; design(); }; box.appendChild(b); }); for(const k in DID) $(DID[k]).addEventListener('input',()=>{ dNote=''; design(); }); })();
+function design(){ const g=k=>+$(DID[k]).value; const F=g('F'), v=g('v'), d=g('d')/1000, nM=g('n'), eA=g('eA'), eG=g('eG'), eM=g('eM'), nu=g('nu'), m=g('m'), zm=Math.max(10,Math.round(g('z')));
+  if(!(F>0&&v>0&&d>0&&nM>0&&eA>0&&eG>0&&eM>0)){ $('dsSol').innerHTML='<li>Bitte alle Werte größer als null eingeben.</li>'; return; }
+  const nA=v/(Math.PI*d)*60, i=nM/nA, Pn=F*v, PG=Pn/eA, PM=PG/eG, Pa=PM/eM, MA=PG/(TAU*nA/60), MM=PM/(TAU*nM/60), MK=nu*MM, K=KT.find(r=>r[1]>=MK&&r[2]>=nM);
+  const k=i<=1?1:Math.max(1,Math.ceil(Math.log(i)/Math.log(5)-1e-9)), is=Math.pow(i,1/k), z2=Math.round(zm*is), ia=Math.pow(z2/zm,k), a=m*(zm+z2)/2;
+  const f=(x,dd=2)=>fmt(x,dd), L=[];
+  L.push('<b>Drehzahl an der Trommel</b><span class="f">n_A = v/(π·d) = '+f(v,3)+' m/s / (π · '+f(d,3)+' m) = '+f(nA/60,4)+' 1/s = <span class="res">'+f(nA,1)+' /min</span></span>');
+  L.push('<b>Gesamtübersetzung</b><span class="f">i = n_Motor/n_A = '+f(nM,0)+' / '+f(nA,1)+' = <span class="res">'+f(i,2)+'</span></span>');
+  L.push('<b>Nutzleistung</b><span class="f">P_nutz = F·v = '+f(F,0)+' N · '+f(v,3)+' m/s = <span class="res">'+f(Pn/1000,2)+' kW</span></span>');
+  L.push('<b>Rückwärts durch die Wirkungsgrade</b><span class="f">am Getriebeausgang: P_nutz/η_A = '+f(PG/1000,2)+' kW</span><span class="f">Motor gibt ab: /η_G = <span class="res">'+f(PM/1000,2)+' kW</span></span><span class="f">Motor nimmt auf: /η_M = <span class="res">'+f(Pa/1000,2)+' kW</span> &nbsp;(η_ges = '+f(eA*eG*eM,3)+')</span>');
+  L.push('<b>Drehmomente</b> (M = P/(2π·n), n in 1/s)<span class="f">Motor: M = '+f(PM,0)+' W / (2π · '+f(nM/60,2)+' 1/s) = <span class="res">'+f(MM,1)+' Nm</span></span><span class="f">Trommelwelle: M = '+f(PG,0)+' W / (2π · '+f(nA/60,3)+' 1/s) = <span class="res">'+f(MA,0)+' Nm</span> &nbsp;(Probe: M_Motor · i · η_G = '+f(MM*i*eG,0)+' Nm)</span>');
+  L.push('<b>Kupplung zwischen Motor und Getriebe</b><span class="f">M_erf = ν · M_Motor = '+f(nu,1)+' · '+f(MM,1)+' Nm = <span class="res">'+f(MK,0)+' Nm</span></span><span class="f">'+(K?'Scheibenkupplung (Skilift-Tabelle): Größe <span class="res">'+K[0]+'</span> mit T_max = '+K[1]+' Nm, n_max = '+K[2]+'/min ≥ '+f(nM,0)+'/min':'größer als die Tabelle (5800 Nm), andere Bauart wählen')+'</span>');
+  L.push('<b>Stufen aufteilen</b> (je Stufe höchstens etwa i = 5)<span class="f">'+k+' Stufe'+(k>1?'n':'')+', je i ≈ '+f(is,2)+' → Ritzel z = '+zm+', Rad z = '+z2+' (i je Stufe = '+f(z2/zm,3)+', i_ges = '+f(ia,2)+')</span><span class="f">d_Ritzel = '+f(m*zm,1)+' mm, d_Rad = '+f(m*z2,1)+' mm, Achsabstand a = m·(z₁+z₂)/2 = <span class="res">'+f(a,1)+' mm</span></span>');
+  if(dNote) L.push('<span class="hint">Hinweis zum Beispiel: '+dNote+'</span>');
+  $('dsSol').innerHTML=L.map(x=>'<li>'+x+'</li>').join('');
+  $('dsChain').innerHTML=[['Motor',[f(nM,0)+' /min',f(MM,1)+' Nm',f(PM/1000,2)+' kW ab',f(Pa/1000,2)+' kW auf']],['Kupplung',[K?'Größe '+K[0]:'–','M_erf '+f(MK,0)+' Nm','ν = '+f(nu,1)]],['Getriebe',['i = '+f(i,2),k+' Stufe'+(k>1?'n':''),'η = '+f(eG,2)]],['Trommel',[f(nA,1)+' /min',f(MA,0)+' Nm','d = '+f(d*1000,0)+' mm']],['Maschine',['F = '+f(F,0)+' N','v = '+f(v,2)+' m/s','P_nutz '+f(Pn/1000,2)+' kW']]]
+    .map(([t,vs],k2)=>(k2?'<span class="ar">→</span>':'')+'<div class="box"><b>'+t+'</b>'+vs.map(x=>'<span class="v">'+x+'</span>').join('')+'</div>').join(''); }
+(function(){ const v=DPRE[0][1]; for(const k in v) $(DID[k]).value=v[k]; dNote=DPRE[0][2]; design(); })();
+
+/* ================= K18: Selbsttest ================= */
+const QU=[
+ ['Warum hat das große Rad eines Zahnradpaares mehr Drehmoment?',['Es hat mehr Zähne, die gleichzeitig drücken','Die Umfangskraft ist gleich, aber der Hebelarm ist größer','Es dreht schneller'],1,'Am Berührpunkt wirkt auf beide Räder dieselbe Kraft F_u. M = F_u · d/2, also hat das größere Rad mehr Drehmoment.'],
+ ['Was bedeutet i = 0,25?',['ins Langsame, Abtrieb 4-mal langsamer','ins Schnelle, Abtrieb 4-mal schneller mit ¼ des Drehmoments','keine Drehzahländerung'],1,'i = n₁/n₂ = 0,25 → n₂ = 4·n₁. Das Drehmoment sinkt auf ein Viertel.'],
+ ['Welche Größe bleibt in einem idealen Getriebe gleich?',['Drehzahl','Drehmoment','Leistung'],2,'Das Getriebe tauscht Drehzahl gegen Drehmoment. P = 2π·n·M bleibt (bis auf Verluste) gleich.'],
+ ['Was ändert ein Zwischenrad?',['die Übersetzung','nur Drehrichtung und Abstand','die Leistung'],1,'i_ges = (z₂/z₁)(z₃/z₂) = z₃/z₁. Die Zähnezahl des Zwischenrades kürzt sich heraus.'],
+ ['Zwei Stufen mit i₁ = 3 und i₂ = 4. Wie groß ist i_ges?',['7','12','1,33'],1,'Übersetzungen werden multipliziert: 3 · 4 = 12.'],
+ ['Warum macht man i = 20 nicht in einer Stirnradstufe?',['Das Ritzel dreht sonst falsch herum','Das große Rad wäre riesig (Ritzel braucht mind. etwa 17 Zähne)','Der Modul wäre nicht genormt'],1,'z₂ = 20 · 17 = 340 Zähne. Riesiges Rad, großes Gehäuse. Besser mehrere Stufen.'],
+ ['Welche Bedingung müssen zwei Stirnräder mindestens erfüllen, um zu kämmen?',['gleiche Zähnezahl','gleicher Modul','gleicher Durchmesser'],1,'Nur mit gleichem Modul sind Teilung, Zahndicke und Lücke gleich groß.'],
+ ['Welchen Nachteil hat die Schrägverzahnung?',['lauter','Axialkraft auf Welle und Lager','kann keine hohen Drehzahlen'],1,'F_a = F_u · tan β. Die Lager müssen diese Kraft aufnehmen. Pfeilverzahnung hebt sie auf.'],
+ ['Eine Winde soll die Last halten, wenn der Motor ausfällt, und i = 50 in einer Stufe haben. Welches Getriebe?',['Stirnradgetriebe','eingängiges Schneckengetriebe','Kegelradgetriebe'],1,'Große Übersetzung in einer Stufe und Selbsthemmung bei kleinem Steigungswinkel.'],
+ ['Welchen Wirkungsgrad hat ein selbsthemmendes Schneckengetriebe?',['über 90 %','unter 50 %','genau 100 %'],1,'Selbsthemmung heißt: Die Reibung ist größer als der Antrieb von der Radseite. Das geht nur mit η < 50 %.'],
+ ['Steine fallen auf ein Förderband, das Getriebe geht kaputt. Welche Kupplung hilft?',['starre Scheibenkupplung','elastische Kupplung','Klauenkupplung'],1,'Die elastische Kupplung dämpft die Stöße, bevor sie Zähne und Lager erreichen.'],
+ ['Warum überträgt ein Keilriemen mehr als ein Flachriemen?',['Er ist dicker','Die Keilwirkung erhöht die Normalkraft an den Flanken','Er hat Zähne'],1,'F_N = F/(2·sin(α/2)). Bei 38° etwa 3-mal mehr Reibkraft.'],
+ ['Planetengetriebe: Hohlrad fest, Sonne treibt im Uhrzeigersinn. Wie dreht der Planetenträger?',['im Uhrzeigersinn, langsamer','gegen den Uhrzeigersinn','gar nicht'],0,'Die Planeten rollen am festen Hohlrad ab und nehmen den Träger in Drehrichtung der Sonne mit. i = 1 + z_H/z_S.'],
+ ['Wo sitzt die Spannrolle beim Riementrieb?',['am Zugtrum','am Leertrum','in der Mitte der großen Scheibe'],1,'Am Leertrum ist der Riemen locker. Dort wird gespannt, ohne die ziehende Seite zu stören.']];
+(function(){ let sc=0,an=0; const q=$('quiz');
+  QU.forEach(([t,o,r,e],k)=>{ const d=document.createElement('div'); d.className='qz'; d.innerHTML='<b class="q">'+(k+1)+'. '+t+'</b><div class="opts"></div><div class="ex"></div>'; const os=d.querySelector('.opts'), ex=d.querySelector('.ex');
+    o.forEach((x,j)=>{ const b=document.createElement('button'); b.type='button'; b.className='opt'; b.textContent=x; b.onclick=()=>{ if(d.dataset.done) return; d.dataset.done=1; an++;
+      if(j===r){ b.classList.add('r'); sc++; ex.textContent='✓ Richtig. '+e; } else { b.classList.add('w'); os.children[r].classList.add('r'); ex.textContent='✗ Nicht ganz. '+e; } ex.classList.add('s'); $('qScore').textContent=sc+' von '+an+' richtig'; }; os.appendChild(b); });
+    q.appendChild(d); }); })();
+
+/* ================= Inhaltsverzeichnis ================= */
+(function(){ const toc=$('toc'); let h=''; document.querySelectorAll('main > .teil, main > section.ch').forEach(el=>{ if(el.classList.contains('teil')) h+='<span class="sep">'+el.querySelector('.tl').textContent+'</span>';
+    else h+='<a href="#'+el.id+'" data-k="'+el.id+'"><span class="p">'+el.id.slice(1)+'</span>'+el.dataset.t+'</a>'; }); toc.innerHTML=h;
+  const links=[...toc.querySelectorAll('a')]; const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle('on',a.dataset.k===e.target.id)); const a=toc.querySelector('a.on'); if(a) a.scrollIntoView({block:'nearest',inline:'center'}); } }),{rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('section.ch').forEach(s=>io.observe(s)); })();
+
+/* ================= Hauptschleife ================= */
+let lastT=performance.now(), TT=0;
+function loop(now){ const dt=Math.min(.05,(now-lastT)/1000); lastT=now; const d=reduce?dt*.35:dt; TT+=d; tourTick(dt); for(const s of sims) if(s.vis){ try{ s.draw(d,TT); }catch(e){ console.error(s.cv.id,e); } } requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+
+</script>
+
+</body>
+</html>
