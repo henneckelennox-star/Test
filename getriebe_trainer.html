@@ -153,6 +153,7 @@ footer{color:var(--muted);font-size:.85rem;padding-block:20px 40px;border-top:1p
   <button class="tab" role="tab" data-v="fragen" aria-selected="false">Fragen 1–44</button>
   <button class="tab" role="tab" data-v="karten" aria-selected="false">Karteikarten</button>
   <button class="tab" role="tab" data-v="rechnen" aria-selected="false">Rechnen</button>
+  <button class="tab" role="tab" data-v="blatt" aria-selected="false">Übungsblätter</button>
   <button class="tab" role="tab" data-v="verstehen" aria-selected="false">Verstehen</button>
   <button class="tab" role="tab" data-v="kupplung" aria-selected="false">Kupplungen</button>
 </div></nav>
@@ -234,6 +235,28 @@ footer{color:var(--muted);font-size:.85rem;padding-block:20px 40px;border-top:1p
     </div>
   </div>
 
+  <div class="grid2" style="margin-top:14px">
+    <div class="panel"><h3 style="margin-top:0">Leistung und Wirkungsgrad</h3>
+      <div class="f">P = F · v &nbsp;·&nbsp; Heben: F = m · g (g = 9,81 m/s²)</div>
+      <div class="f">P = 2π · n · M &nbsp;(n in 1/s!)</div>
+      <div class="f">M = P / (2π · n) &nbsp;·&nbsp; M = F · d/2</div>
+      <div class="f">η = P_ab / P_zu &nbsp;·&nbsp; η_ges = η₁ · η₂ · η₃</div>
+      <div class="f">P_zu = P_nutz / η_ges</div>
+      <div class="f">Getriebe: M₂ = M₁ · i · η &nbsp;·&nbsp; n₂ = n₁ / i</div>
+      <div class="merk">Die Leistung geht durch das Getriebe fast unverändert durch (nur η geht verloren). Was an Drehzahl verloren geht, kommt als Drehmoment dazu.</div>
+    </div>
+    <div class="panel"><h3 style="margin-top:0">Umrechnen und Kegelräder</h3>
+      <div class="f">1/min ÷ 60 = 1/s &nbsp;·&nbsp; km/h ÷ 3,6 = m/s</div>
+      <div class="f">m/min ÷ 60 = m/s &nbsp;·&nbsp; 1 L Wasser = 1 kg</div>
+      <div class="f">Trommel/Scheibe: n = v / (π · d)</div>
+      <div class="f">Zahnstange: s = Umdrehungen · π · d</div>
+      <div class="f">Kegelrad: tan δ₁ = sin Σ / (i + cos Σ) &nbsp;·&nbsp; δ₂ = Σ − δ₁</div>
+      <div class="f">Σ = 90°: tan δ₁ = z₁/z₂</div>
+      <div class="f">d_a = d + 2·m·cos δ &nbsp;·&nbsp; R_e = d / (2·sin δ)</div>
+      <div class="f">tan κ_a = h_a / R_e &nbsp;·&nbsp; δ_a = δ + κ_a</div>
+    </div>
+  </div>
+
   <h3>Rechner: Zahnradmaße</h3>
   <div class="panel calc">
     <div class="cg">
@@ -256,6 +279,66 @@ footer{color:var(--muted);font-size:.85rem;padding-block:20px 40px;border-top:1p
 
   <h3>Aufgabe 31: Länge des Flachriemens</h3>
   <div class="panel"><p style="margin-top:0">Gegeben: d₁ = 224 mm, d₂ = 140 mm, a = 420 mm, offener Riementrieb.</p><div id="a31"></div></div>
+</section>
+
+<!-- UEBUNGSBLAETTER -->
+<section class="view" id="v-blatt" hidden>
+  <h2>Übungsblätter mit Lösungen</h2>
+  <p class="sub">Die fünf Blätter aus deinem Ordner. Erst selbst rechnen, dann Schritt für Schritt aufdecken. Formeln stehen im Tab „Rechnen“ und im Tabellenbuch.</p>
+
+  <div class="panel"><h3 style="margin-top:0">Blatt „Getriebe“: Wie funktioniert ein Getriebe?</h3>
+    <ul>
+      <li><b>Getriebestufe:</b> ein Zahnradpaar (treibendes und getriebenes Rad). Mehrere Stufen hintereinander ergeben i_ges = i₁ · i₂ · …</li>
+      <li><b>Übersetzungsverhältnis:</b> i = n₁/n₂ = z₂/z₁. i &gt; 1 ins Langsame, i &lt; 1 ins Schnelle</li>
+      <li><b>Drehzahl:</b> n₂ = n₁/i, das große Rad dreht langsamer</li>
+      <li><b>Drehmoment:</b> M₂ = M₁ · i · η, das große Rad hat mehr Drehmoment, weil die Umfangskraft am größeren Hebelarm d/2 wirkt</li>
+      <li><b>Leistung:</b> P = 2π · n · M bleibt bis auf die Verluste gleich: P₂ = P₁ · η. Ein Getriebe wandelt Drehzahl in Drehmoment um, es erzeugt keine Energie</li>
+    </ul>
+    <p style="margin:6px 0 0"><a href="https://www.youtube.com/watch?v=wCIMdGYe_IM" target="_blank" rel="noopener">Video vom Arbeitsblatt auf YouTube öffnen</a></p>
+  </div>
+
+  <h3>Aufgabe Antriebsstation (Förderband für den Hochofen)</h3>
+  <div class="panel"><p style="margin-top:0">n_Motor = 1400/min · Last 2500 kg · v = 3 m/s · η_F = 0,67 · η_G = 0,93 · η_M = 0,89 · d_Trommel = 200 mm</p>
+    <b>1. Übersetzung und Leistungsaufnahme</b><div id="an1"></div>
+    <b>2. Kupplung zwischen Motor und Getriebe</b><div id="an2"></div>
+    <b>3a. Warum gehen Zahnräder und Lager kaputt?</b><div id="an3a"></div>
+    <b>3b. Lösung</b><div id="an3b"></div>
+    <b>3c. Mehrstufiges Getriebe mit i = 5, m = 6 mm, z₁ &gt; 17</b><div id="an3c"></div>
+    <div id="svg3c" style="margin-top:8px"></div>
+  </div>
+
+  <h3>Antrieb des Skilifts mit Scheibenkupplung</h3>
+  <div class="panel"><p style="margin-top:0">n = 1460/min · P = 11 kW · v = 3 m/s · η_Lift = 0,76 · η_G = 0,96 · d_a = 2,51 m</p>
+    <b>1. Gesamtübersetzung und nutzbare Leistung</b><div id="sk1"></div>
+    <b>2. Dreistufiges Stirnradgetriebe im Vergleich</b><div id="sk2"></div>
+    <b>3. Getriebe entwerfen (i = 64, z ≥ 20, m = 5 mm)</b><div id="sk3"></div>
+    <div id="svgSk" style="margin-top:8px"></div>
+    <b>4. Kupplungsgröße (Betriebssicherheit ν = 3)</b><div id="sk4"></div>
+    <b>5. Spannkraft pro Schraube</b><div id="sk5"></div>
+    <b>6. Vor- und Nachteile der Scheibenkupplung</b><div id="sk6"></div>
+  </div>
+
+  <h3>Funktionseinheiten: Übungen</h3>
+  <div class="panel">
+    <b>Kreiselpumpe</b> (66 L/s auf 51 m, η_P = 0,75, η_M = 0,85)<div id="fe1"></div>
+    <b>Seilwinde</b> (5 t, 1,5 m/min, η_Schnecke = 0,80, η_M = 0,86)<div id="fe2"></div>
+    <b>Schlepplift</b> (3,5 km/h, 30 kN, η_G = 0,84, η_M = 0,88, Ø 1450 mm, i = 110)<div id="fe3"></div>
+    <b>Pkw-Dieselmotor</b><div id="fe4"></div>
+    <b>Seilwinde mit zweistufigem Getriebe</b> (3 kW, 720/min, z = 16/64 und 20/80, η_G = 0,85, d = 200 mm, η_T = 0,95)<div id="fe5"></div>
+  </div>
+
+  <h3>Übungen Stirnverzahnungen_3</h3>
+  <div class="panel">
+    <b>1.</b> n_A = 70/min, z₁ = 85, z₂ = 17, z₃ = 80, z₄ = 20<div id="st1"></div>
+    <b>2.</b> i₁ = 4, n_A = 1260/min, z₂ = 84, z₃ = 31, z₄ = 93<div id="st2"></div>
+    <b>3.</b> i₁ = 0,25, z₂ = 21, i_ges = 0,05, z₃ = 85, n₂ = n₃ = 336/min<div id="st3"></div>
+    <b>4.</b> Kegelrad-Nullgetriebe Σ = 75°, z₁ = 22, i = 1,5, m = 3,5 mm<div id="st4"></div>
+    <b>5.</b> Kegelradpaar Σ = 90°, i = 1,25, m = 6 mm, z₁ = 12<div id="st5"></div>
+    <b>6.</b> Zahnstange: z₁ = 18, z₂ = 45, Schnecke z₃ = 3, z₄ = 30, z₅ = 20, m = 2 mm, 90 Umdrehungen<div id="st6"></div>
+    <b>7.</b> n_A = 4200/min, Riemen Ø 240/600, Kegelräder 20/70, Schnecke 1/60<div id="st7"></div>
+    <b>8.</b> v = 15,7 m/min, z₃ = 20, m = 1 mm, z₂ = 60, Schnecke z₁ = 1<div id="st8"></div>
+    <b>9.</b> i₁ = 2,5, z₁ = 18, n₂ = n₃ = 372/min, i₂ = 30, z₄ = 60<div id="st9"></div>
+  </div>
 </section>
 
 <!-- VERSTEHEN -->
@@ -519,6 +602,149 @@ steps('a31',[
  '<b>Formel</b> (offener Riementrieb, Näherung aus dem Tabellenbuch):<div class="f">L ≈ 2a + π/2·(d₁ + d₂) + (d₁ − d₂)²/(4a)</div>',
  '<b>Einsetzen:</b><div class="f">2a = 840 mm</div><div class="f">π/2 · (224 + 140) mm = π/2 · 364 mm ≈ 571,8 mm</div><div class="f">(224 − 140)² / (4 · 420) mm = 7056/1680 mm = 4,2 mm</div>',
  '<b>Ergebnis:</b><div class="f">L ≈ 840 + 571,8 + 4,2 = <span class="res">≈ 1416 mm</span></div>Die exakte Rechnung mit dem Umschlingungswinkel ergibt ebenfalls 1416 mm.']);
+
+
+// ---------- Übungsblätter
+const L=(t,r)=>'<div class="f">'+t+(r?' = <span class="res">'+r+'</span>':'')+'</div>';
+const Tx=t=>'<p style="margin:4px 0">'+t+'</p>';
+steps('an1',[
+ Tx('Drehzahl der Antriebstrommel aus v = π·d·n:')+L('n_T = v/(π·d) = 3 m/s / (π · 0,2 m) = 4,775 1/s','286,5 /min'),
+ L('i = n_Motor / n_T = 1400 / 286,5','≈ 4,89'),
+ Tx('Nutzleistung. <b>Annahme:</b> Die Förderbandlast wird als Gewichtskraft angesetzt (F = m·g). Rechnet ihr anders, nur diesen Schritt ändern.')+L('P_nutz = m·g·v = 2500 kg · 9,81 m/s² · 3 m/s','73,6 kW'),
+ L('η_ges = η_F · η_G · η_M = 0,67 · 0,93 · 0,89','0,555'),
+ L('P_auf = P_nutz / η_ges = 73,6 kW / 0,555','≈ 132,7 kW')]);
+steps('an2',[
+ Tx('<b>Vorschlag: starre Kupplung, zum Beispiel eine Scheibenkupplung</b> (oder Schalenkupplung).'),
+ Tx('<b>Funktionsweise:</b> Auf jedem Wellenende sitzt eine Kupplungsscheibe (Nabe mit Passfeder). Die Scheiben werden mit Schrauben zusammengepresst. Das Drehmoment wird durch Reibung in der Trennfuge (kraftschlüssig) und über Passschrauben übertragen. Ein Zentrierrand richtet beide Hälften aus.'),
+ Tx('<b>Begründung:</b> Die Wellen fluchten, also ist kein Ausgleich nötig. Es gibt keine Stöße, also ist keine Dämpfung nötig. Die starre Kupplung ist einfach, günstig, wartungsfrei und überträgt das Drehmoment spielfrei.')]);
+steps('an3a',[
+ Tx('Die Steine fallen aus 80 cm auf das Band. Jeder Aufprall ist ein <b>Stoß</b>, der über Band, Trommel und Welle ungedämpft ins Getriebe geht.'),
+ Tx('Die Folgen sind <b>Stoßbelastung der Zähne</b> (Zahnbruch, Ausbrüche, Grübchen) und <b>Stoßbelastung der Lager</b>, dazu Schwingungen.'),
+ Tx('Mögliche Überlast durch verklemmte Steine oder einen blockierenden Zerkleinerer. Die starre Kupplung leitet alles direkt weiter. Das Getriebe ist für das ruhige Schüttgut ausgelegt, nicht für Stöße.')]);
+steps('an3b',[
+ Tx('<b>Elastische Kupplung</b> (zum Beispiel Gummihülsen- oder Metallfederkupplung) zwischen Getriebe und Antriebstrommel bzw. Motor.'),
+ Tx('<b>Funktionsweise:</b> Elastische Zwischenglieder verformen sich beim Stoß, nehmen Stoßenergie auf und geben sie verzögert ab. Die Drehmomentspitzen werden kleiner, Schwingungen gedämpft.'),
+ Tx('<b>Zusätzlich sinnvoll:</b> eine <b>Sicherheitskupplung</b> (Rutschkupplung) gegen Überlast bei blockierten Steinen, eventuell eine Prall- oder Aufgabeplatte mit Dämpfung an der Einfallstelle, oder ein Keilriemen als stoßdämpfendes Zwischenglied.'),
+ Tx('<b>Begründung:</b> Die Ursache sind Stöße. Eine elastische Kupplung dämpft sie direkt am Antriebsstrang und schützt so Zähne und Lager.')]);
+steps('an3c',[
+ Tx('<b>Ist-Zustand einstufig:</b> Aus a = m·(z₁+z₂)/2 = 378 mm folgt z₁ + z₂ = 126.')+L('z₁ = 21, z₂ = 105 (i = 5), d_a2 = (105+2)·6 mm','642 mm'),
+ Tx('<b>Vorschlag zweistufig, koaxial</b> (Antrieb und Abtrieb auf einer Achse wie beim Motor und Band): i₁ = 2,5, i₂ = 2, gleicher Achsabstand in beiden Stufen.'),
+ L('Stufe 1: z₁ = 18, z₂ = 45 → i₁ = 45/18','2,5')+L('Stufe 2: z₃ = 21, z₄ = 42 → i₂ = 42/21','2')+L('i_ges = 2,5 · 2','5'),
+ L('a₁ = 6 mm · (18 + 45)/2','189 mm')+L('a₂ = 6 mm · (21 + 42)/2','189 mm'),
+ L('größtes Rad: d_a2 = (45 + 2) · 6 mm','282 mm'),
+ Tx('<b>Lagerung:</b> drei Wellen (Antrieb, Zwischenwelle, Abtrieb), jede in zwei Wälzlagern (Fest- und Loslager), zusammen 6 Lager. Die Skizze darunter zeigt den Getriebeplan.'),
+ Tx('<b>Beurteilung:</b> Das größte Rad ist nur noch 282 mm statt 642 mm groß. Die Bauhöhe des Gehäuses sinkt deshalb deutlich, etwa auf die Hälfte (grob 450–550 mm statt 1000 mm). Dafür gibt es mehr Bauteile (zweites Radpaar, Zwischenwelle, zwei Lager mehr) und einen etwas kleineren Wirkungsgrad.')]);
+steps('sk1',[
+ L('n_Scheibe = v/(π·d) = 3 m/s / (π · 2,51 m) = 0,3805 1/s','22,83 /min'),
+ L('i_ges = 1460 / 22,83','≈ 64'),
+ L('P_nutz = P · η_G · η_Lift = 11 kW · 0,96 · 0,76','≈ 8,03 kW')]);
+steps('sk2',[
+ Tx('<b>Vergleich mit einem Schneckengetriebe:</b>'),
+ '<div class="tw"><table class="tbl"><tr><th></th><th>3-stufiges Stirnradgetriebe</th><th>Schneckengetriebe</th></tr><tr><td>Vorteile</td><td>hoher Wirkungsgrad (hier 96 %), robust, genormte Teile, einfache Wartung, gut für Dauerbetrieb</td><td>i = 64 in <b>einer</b> Stufe (z₂ = 64, eingängig), kompakt, leise, <b>Selbsthemmung</b>: Der Lift kann bei Stillstand nicht zurücklaufen</td></tr><tr><td>Nachteile</td><td>groß und schwer, viele Teile (6 Räder, 4 Wellen, 8 Lager), keine Selbsthemmung (Bremse oder Rücklaufsperre nötig)</td><td>schlechter Wirkungsgrad (etwa 0,5–0,9), dadurch größerer Motor, Wärme, Verschleiß (Bronzerad), Schmierung und Ölstand prüfen</td></tr></table></div>',
+ Tx('<b>Fazit für den Skilift:</b> Das Stirnradgetriebe spart im Dauerbetrieb Energie. Man braucht aber eine Rücklaufsperre, weil der Lift bergauf zieht. Das Schneckengetriebe wäre kompakter und sicherer gegen Rücklauf, verbraucht aber mehr Energie.')]);
+steps('sk3',[
+ Tx('i = 64 auf drei gleiche Stufen verteilen: ∛64 = 4, also i₁ = i₂ = i₃ = 4.'),
+ L('je Stufe: z_Ritzel = 20, z_Rad = 80 → i = 80/20','4')+L('i_ges = 4 · 4 · 4','64'),
+ L('d_Ritzel = 20 · 5 mm','100 mm')+L('d_Rad = 80 · 5 mm','400 mm'),
+ L('Achsabstand je Stufe a = (100 + 400)/2 mm','250 mm'),
+ Tx('Vier Wellen (Motorwelle, zwei Zwischenwellen, Abtriebswelle). Die Skizze darunter zeigt den Getriebeplan.')]);
+steps('sk4',[
+ L('Motordrehmoment M = P/(2π·n) = 11 000 W / (2π · 1460/60 1/s)','≈ 71,9 Nm'),
+ L('mit Betriebssicherheit: M_erf = 3 · 71,9 Nm','≈ 216 Nm'),
+ Tx('In der Tabelle die erste Größe mit T_max ≥ 216 Nm suchen: Größe 35 hat nur 150 Nm, <b>Größe 40 hat 236 Nm</b>.'),
+ Tx('Drehzahl prüfen: n_max = 4100/min ≥ 1460/min ✓. <b>Gewählt: Scheibenkupplung Größe 40</b>, dazu 3 Passschrauben M10, Lochkreis k = 100 mm.')]);
+steps('sk5',[
+ Tx('<b>Annahme:</b> Die Reibung wirkt am Lochkreis (r = k/2 = 50 mm), eine Reibfläche, Haftreibungszahl Stahl auf Stahl μ = 0,15. Den genauen Wert nimmst du aus dem Tabellenbuch.'),
+ L('Umfangskraft F_u = M_erf / r = 216 Nm / 0,05 m','≈ 4317 N'),
+ L('pro Schraube: F_u / 3','≈ 1439 N'),
+ L('F_S = F_N = (F_u/3) / μ = 1439 N / 0,15','≈ 9,6 kN pro Schraube'),
+ Tx('Mit μ = 0,2 wären es etwa 7,2 kN. Je kleiner die Reibzahl, desto stärker müssen die Schrauben spannen.')]);
+steps('sk6',[
+ Tx('<b>Kraftübertragung:</b> Die Schrauben pressen die beiden Scheiben mit der Normalkraft F_N zusammen. In der Trennfuge entsteht die Reibkraft F_R = μ · F_N, die das Drehmoment überträgt (kraftschlüssig). Die Passschrauben sichern zusätzlich formschlüssig. Die Naben sitzen mit Passfedern auf den Wellen.'),
+ Tx('<b>Vorteile:</b> einfach, robust, günstig, wartungsfrei, drehstarr und spielfrei, große Drehmomente, kurze Baulänge.'),
+ Tx('<b>Nachteile:</b> gleicht keinen Wellenversatz aus (Wellen müssen genau fluchten, Zentrierung nötig), dämpft keine Stöße, nicht schaltbar, zum Trennen müssen die Schrauben gelöst werden.'),
+ Tx('<b>Anwendung:</b> fluchtende Wellen ohne Stöße, zum Beispiel Motor mit Getriebe, Pumpen, Lüfter, Transmissionswellen.')]);
+steps('fe1',[
+ Tx('66 L Wasser = 66 kg pro Sekunde.')+L('a) P_Pumpe = m·g·h / t = 66 kg · 9,81 m/s² · 51 m / 1 s','≈ 33,0 kW'),
+ L('b) P_Motor,ab = 33,0 kW / 0,75','≈ 44,0 kW'),
+ L('c) P_Motor,auf = 44,0 kW / 0,85','≈ 51,8 kW'),
+ L('d) η_ges = 0,75 · 0,85','0,6375 ≈ 64 %')]);
+steps('fe2',[
+ L('v = 1,5 m/min = 0,025 m/s; P_nutz = m·g·v = 5000 kg · 9,81 m/s² · 0,025 m/s','≈ 1226 W'),
+ L('P_auf = 1226 W / (0,80 · 0,86)','≈ 1,78 kW')]);
+steps('fe3',[
+ L('v = 3,5 km/h / 3,6 = 0,972 m/s; P_nutz = F · v = 30 000 N · 0,972 m/s','≈ 29,2 kW'),
+ L('a) P_auf = 29,2 kW / (0,84 · 0,88)','≈ 39,5 kW'),
+ L('Seilscheibe: n₂ = v/(π·d) = 0,972 / (π · 1,45) 1/s','≈ 12,8 /min')+L('Motor: n₁ = i · n₂ = 110 · 12,8 /min','≈ 1409 /min'),
+ L('Motor gibt ab: P_ab = P_nutz / η_G = 29,2 kW / 0,84','≈ 34,7 kW'),
+ L('b) M = P_ab / (2π·n₁) = 34 722 W / (2π · 23,48 1/s)','≈ 235 Nm'),
+ Tx('Probe über das Drehmoment: M = F·r / (i·η_G) = 30 000 N · 0,725 m / (110 · 0,84) ≈ 235 Nm ✓')]);
+steps('fe4',[
+ L('a) M = P/(2π·n) = 105 000 W / (2π · 70 1/s)','≈ 239 Nm'),
+ L('b) P = 2π·n·M = 2π · (2200/60) 1/s · 315 Nm','≈ 72,6 kW'),
+ L('c) M_Rad = M · i · η = 300 Nm · 13,515 · 0,9','≈ 3649 Nm'),
+ L('F = M_Rad / r = 3649 Nm / 0,308 m','≈ 11,8 kN')]);
+steps('fe5',[
+ L('i = (64/16) · (80/20) = 4 · 4','16')+L('n_Trommel = 720 /min / 16','45 /min'),
+ L('Seilgeschwindigkeit v = π·d·n = π · 0,2 m · 0,75 1/s','≈ 0,471 m/s'),
+ L('nötige Leistung mit 1,2-facher Sicherheit an der Trommel: P = 1,2 · 5000 N · 0,471 m/s','≈ 2827 W'),
+ L('nötige Motorleistung: 2827 W / (0,85 · 0,95)','≈ 3,50 kW'),
+ Tx('<b>Ergebnis: 3,50 kW &gt; 3 kW, der Motor reicht nicht.</b> Ohne Sicherheit wären es 2,92 kW, also sehr knapp. Mit 3 kW und 1,2-facher Sicherheit darf die Last höchstens etwa 4,28 kN betragen.')]);
+steps('st1',[L('i₁ = z₂/z₁ = 17/85','0,2')+L('i₂ = z₄/z₃ = 20/80','0,25'),L('i_ges = 0,2 · 0,25','0,05')+L('n_E = n_A / i_ges = 70 / 0,05','1400 /min')]);
+steps('st2',[L('z₁ = z₂ / i₁ = 84 / 4','21')+L('n₂ = n₃ = 1260 / 4','315 /min'),L('i₂ = z₄/z₃ = 93/31','3')+L('i_ges = 4 · 3','12')+L('n_E = 1260 / 12','105 /min')]);
+steps('st3',[L('n_A = n₂ · i₁ = 336 · 0,25','84 /min')+L('z₁ = z₂ / i₁ = 21 / 0,25','84'),L('i₂ = i_ges / i₁ = 0,05 / 0,25','0,2')+L('z₄ = i₂ · z₃ = 0,2 · 85','17'),L('n_E = n_A / i_ges = 84 / 0,05','1680 /min')+Tx('Probe: n₃ / i₂ = 336 / 0,2 = 1680 /min ✓')]);
+steps('st4',[
+ L('z₂ = i · z₁ = 1,5 · 22','33'),
+ L('tan δ₁ = sin 75° / (1,5 + cos 75°) = 0,9659 / 1,7588 = 0,5492','δ₁ ≈ 28,78°')+L('δ₂ = Σ − δ₁ = 75° − 28,78°','46,22°'),
+ L('d₁ = z₁·m = 22 · 3,5 mm','77 mm')+L('d₂ = 33 · 3,5 mm','115,5 mm'),
+ L('d_a1 = d₁ + 2m·cos δ₁ = 77 + 7 · cos 28,78°','≈ 83,14 mm')+L('d_a2 = 115,5 + 7 · cos 46,22°','≈ 120,34 mm'),
+ L('R_e = d₁/(2·sin δ₁) = 77 / (2 · 0,4815)','≈ 79,98 mm')+L('tan κ_a = h_a/R_e = 3,5/79,98','κ_a ≈ 2,51°')+L('δ_a1 = 28,78° + 2,51°','≈ 31,28°')+L('δ_a2 = 46,22° + 2,51°','≈ 48,73°'),
+ Tx('Mit c = 0,2·m (im Tabellenbuch nachsehen):')+L('h_a = m','3,5 mm')+L('c = 0,2 · 3,5 mm','0,7 mm')+L('h = 2m + c','7,7 mm')]);
+steps('st5',[
+ L('z₂ = i · z₁ = 1,25 · 12','15'),
+ L('Σ = 90°: tan δ₁ = z₁/z₂ = 12/15 = 0,8','δ₁ ≈ 38,66°')+L('δ₂ = 90° − 38,66°','51,34°'),
+ L('d₁ = 12 · 6 mm','72 mm')+L('d₂ = 15 · 6 mm','90 mm'),
+ L('d_a1 = 72 + 12 · cos 38,66°','≈ 81,37 mm')+L('d_a2 = 90 + 12 · cos 51,34°','≈ 97,50 mm'),
+ L('R_e = 72 / (2 · sin 38,66°)','≈ 57,63 mm')+L('tan κ_a = 6 / 57,63','κ_a ≈ 5,94°')+L('δ_a1','≈ 44,60°')+L('δ_a2','≈ 57,28°'),
+ L('h_a = m','6 mm')+L('c = 0,2 · 6 mm','1,2 mm')+L('h = 2m + c','13,2 mm')]);
+steps('st6',[
+ L('z₂ dreht: 90 · 18/45','36 Umdrehungen'),
+ Tx('Die Schnecke z₃ (3 Gänge) sitzt auf derselben Welle wie z₂.')+L('Schneckenrad z₄: 36 · 3/30','3,6 Umdrehungen'),
+ Tx('z₅ sitzt auf der Welle von z₄:')+L('d₅ = z₅·m = 20 · 2 mm','40 mm')+L('s = 3,6 · π · 40 mm','≈ 452 mm')]);
+steps('st7',[
+ L('Riementrieb: n = 4200 · 240/600','1680 /min'),
+ L('Kegelräder: n = 1680 · 20/70','480 /min'),
+ L('Schnecke eingängig: n_E = 480 / 60','8 /min'),
+ L('pro Sekunde: 8/60','≈ 0,133 Umdrehungen')]);
+steps('st8',[
+ L('Ritzel z₃ an der Zahnstange: d₃ = 20 · 1 mm','20 mm'),
+ L('n₃ = v/(π·d₃) = 15,7 m/min / (π · 0,02 m)','≈ 250 /min'),
+ Tx('z₃ sitzt auf der Welle des Schneckenrades z₂ = 60, die Schnecke ist eingängig (z₁ = 1).')+L('n_A = 250 /min · 60/1','≈ 15 000 /min')]);
+steps('st9',[
+ L('n_A = n₂ · i₁ = 372 · 2,5','930 /min')+L('z₂ = i₁ · z₁ = 2,5 · 18','45'),
+ L('n_E = n₃ / i₂ = 372 / 30','12,4 /min')+L('i_ges = 2,5 · 30','75'),
+ Tx('Die Schnecke hat z₃ = z₄/i₂ = 60/30 = 2 Gänge.')]);
+
+// Getriebeplan-Skizze
+function plan(el,stages,coax,title){ const W=640, top=28; const maxd=Math.max(...stages.flatMap(s=>[s.d1,s.d2]));
+  let ys=[0]; stages.forEach((s,i)=>ys.push(coax&&i===stages.length-1?0:ys[i]+s.a));
+  const span=Math.max(...ys)+maxd, sc=Math.min(1.1,220/span), H=Math.round(span*sc+top+50), y0=top+maxd/2*sc+6;
+  const xs=stages.map((s,i)=>150+i*(W-260)/Math.max(1,stages.length-1)*(stages.length>1?1:0));
+  let g='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;max-width:'+W+'px;height:auto;display:block;color:var(--ink)" role="img" aria-label="'+title+'">';
+  g+='<text x="10" y="18" font-size="13" font-weight="700" fill="currentColor">'+title+'</text>';
+  const shaftGears=ys.map(()=>[]); stages.forEach((s,i)=>{ shaftGears[i].push(xs[i]); shaftGears[i+1].push(xs[i]); });
+  shaftGears.forEach((gx,k)=>{ const y=y0+ys[k]*sc; let a=Math.min(...gx)-40, b=Math.max(...gx)+40; if(k===0) a=20; if(k===ys.length-1) b=W-20;
+    g+='<line x1="'+a+'" y1="'+y+'" x2="'+b+'" y2="'+y+'" stroke="currentColor" stroke-width="2.5"/>';
+    for(const bx of [Math.min(...gx)-28,Math.max(...gx)+28]) g+='<rect x="'+(bx-5)+'" y="'+(y-7)+'" width="10" height="14" fill="var(--panel)" stroke="var(--steel)" stroke-width="2"/>';
+    g+='<text x="'+(k===0?20:b-4)+'" y="'+(y-10)+'" font-size="11" fill="var(--muted)" text-anchor="'+(k===0?'start':'end')+'">'+(k===0?'Antrieb':k===ys.length-1?'Abtrieb':'Welle '+(k+1))+'</text>'; });
+  stages.forEach((s,i)=>{ const x=xs[i], yA=y0+ys[i]*sc, yB=y0+ys[i+1]*sc;
+    g+='<rect x="'+(x-6)+'" y="'+(yA-s.d1/2*sc)+'" width="12" height="'+(s.d1*sc)+'" fill="var(--acc-soft)" stroke="var(--acc)" stroke-width="2"/>';
+    g+='<rect x="'+(x-6)+'" y="'+(yB-s.d2/2*sc)+'" width="12" height="'+(s.d2*sc)+'" fill="var(--steel-soft)" stroke="var(--steel)" stroke-width="2"/>';
+    g+='<text x="'+(x+12)+'" y="'+(yA+4)+'" font-size="11" fill="var(--acc)">z='+s.z1+'</text><text x="'+(x+12)+'" y="'+(yB+4)+'" font-size="11" fill="var(--steel)">z='+s.z2+'</text>';
+    g+='<text x="'+(x-10)+'" y="'+((yA+yB)/2+4)+'" font-size="11" fill="var(--muted)" text-anchor="end">a='+s.a+'</text>'; });
+  g+='</svg>'; $(el).innerHTML='<div class="panel" style="padding:10px">'+g+'<div class="src">Getriebeplan (vereinfacht): Rechtecke = Zahnräder, kleine Kästchen = Lager. Maße in mm.</div></div>'; }
+plan('svg3c',[{z1:18,z2:45,d1:108,d2:270,a:189},{z1:21,z2:42,d1:126,d2:252,a:189}],true,'Zweistufig koaxial, i = 5');
+plan('svgSk',[{z1:20,z2:80,d1:100,d2:400,a:250},{z1:20,z2:80,d1:100,d2:400,a:250},{z1:20,z2:80,d1:100,d2:400,a:250}],false,'Dreistufig, i = 64');
 
 // ---------- Canvas-Helfer
 function fit(cv){ const r=cv.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2), w=Math.max(1,r.width|0), h=Math.max(1,r.height|0);
