@@ -203,7 +203,7 @@ details.q summary>span:last-child{display:flex;gap:4px;flex-wrap:wrap;justify-co
   <div class="wrap">
     <div class="eyebrow">Industriemechaniker · LF 13 · Getriebe und Kupplungen</div>
     <h1>Getriebe-Trainer</h1>
-    <p class="lead">Alle 44 Übungsfragen mit Musterantwort und verständlicher Erklärung aus deinen Unterlagen. Im Tab „Selbst antworten“ schreibst du deine eigene Antwort, und Claude prüft sie. Dazu Karteikarten, Rechenwege, Kupplungen und Animationen zum Verstehen. Zum Verstehen von Grund auf: <a href="https://claude.ai/artifact/FQpZyLSeAvFLCwQDG2EPYs" target="_blank" rel="noopener" style="color:#fff;font-weight:700">Getriebe verstehen →</a></p>
+    <p class="lead">Alle 44 Übungsfragen mit Musterantwort und verständlicher Erklärung aus deinen Unterlagen. Im Tab „Selbst antworten“ schreibst du deine eigene Antwort, und Claude prüft sie. Dazu Karteikarten, Rechenwege, Kupplungen und Animationen zum Verstehen. Zum Verstehen von Grund auf: <a href="https://claude.ai/artifact/FQpZyLSeAvFLCwQDG2EPYs" target="_blank" rel="noopener" style="color:#fff;font-weight:700">Getriebe verstehen →</a> · Alle Fragen als Video mit Sprecherin: <a href="https://claude.ai/artifact/9g2XgDpux7Sgpcwkw1Hgye" target="_blank" rel="noopener" style="color:#fff;font-weight:700">Getriebe Lernvideo ▶</a></p>
     <div class="stats">
       <div class="stat"><b id="stOk">0</b><span>kann ich</span></div>
       <div class="stat"><b id="stAgain">0</b><span>nochmal üben</span></div>
@@ -660,6 +660,7 @@ K5:'<p>Eine Sicherheitskupplung wirkt wie eine Sicherung im Stromkreis. Wird das
 const HK={1:['k1'],2:['k9','k15'],3:['k1'],4:['k2','k15'],5:['k2','k6'],6:['k6','k8'],7:['k4'],8:['k8'],9:['k9','k11'],10:['k9','k10'],11:['k6'],12:['k6'],13:['k6'],14:['k6'],15:['k6'],16:['k8'],17:['k9','k10','k11','k12','k13'],18:['k10'],19:['k10','k4'],20:['k10'],21:['k12'],22:['k12'],23:['k9'],24:['k10'],25:['k7'],26:['k6','k8'],27:['k6'],28:['k6','k2'],29:['k15'],30:['k2'],31:['k15'],32:['k15'],33:['k15'],34:['k15'],35:['k15'],36:['k15'],37:['k15'],38:['k15','k3'],39:['k15'],40:['k15'],41:['k15'],42:['k15'],43:['k15'],44:['k15'],K1:['k16'],K2:['k16'],K3:['k16'],K4:['k16'],K5:['k16']};
 const KN={k1:'Warum?',k2:'Zahnradpaar',k3:'Drehrichtung',k4:'Mehrstufig',k5:'Leistung',k6:'Modul',k7:'Evolvente',k8:'Verzahnung',k9:'Wellenlage',k10:'Schnecke',k11:'Kegelrad',k12:'Planeten',k13:'Zahnstange',k14:'Schaltgetriebe',k15:'Riemen & Kette',k16:'Kupplungen'};
 const VURL='https://claude.ai/artifact/FQpZyLSeAvFLCwQDG2EPYs';
+const LVURL='https://claude.ai/artifact/9g2XgDpux7Sgpcwkw1Hgye';
 // ---------- Antwort-Prüfer: eigene Antwort schreiben, Claude prüft sie gegen die Musterlösung
 const GP=(function(){
   const rd=(k,d)=>{ try{ const v=JSON.parse(localStorage.getItem(k)); return v&&typeof v==='object'?v:d; }catch(e){ return d; } };
@@ -751,6 +752,7 @@ function body(q){ let h='<div class="kurz">'+q.k+'</div>';
   if(q.b) h+='<ul>'+q.b.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
   if(q.m) h+='<div class="merk">'+q.m+'</div>';
   if(HK[q.n]) h+='<div class="more">Mehr dazu mit Animation: '+HK[q.n].map(k=>'<a href="'+VURL+'#'+k+'" target="_blank" rel="noopener">Getriebe verstehen, Kapitel '+k.slice(1)+' · '+KN[k]+'</a>').join(' · ')+'</div>';
+  if(typeof q.n==='number') h+='<div class="more">▶ <a href="'+LVURL+'#f'+q.n+'" target="_blank" rel="noopener">Frage '+q.n+' als Lernvideo mit Sprecherin ansehen</a></div>';
   if(q.s) h+='<div class="src">Quelle: '+q.s+'</div>';
   return h; }
 
