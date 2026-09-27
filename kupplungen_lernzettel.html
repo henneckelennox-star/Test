@@ -1,0 +1,418 @@
+<meta charset="utf-8">
+<title>Kupplungen merken</title>
+<meta name="description" content="Lernzettel zu allen Kupplungen vom Arbeitsblatt LF 13: Einteilung, Erklärungen, Eselsbrücken und Selbsttest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --bg:#0a0e13; --panel:#111922; --panel2:#0d141b; --ink:#e9eef3; --muted:#9aa8b5; --line:#1f2c38; --line2:#2d3d4c;
+  --acc:#ff7a1a; --acc-soft:#3a1f0c; --steel:#6fb1ff; --steel-soft:#132638; --warn:#ffc247; --warn-soft:#352a10;
+  --ok:#43d17a; --ok-soft:#10301f; --bad:#ff5a4d; --bad-soft:#3a1714; --grid:rgba(111,177,255,.045);
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"Barlow","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1100px 560px at 75% -10%,rgba(255,122,26,.09),transparent 60%),radial-gradient(900px 500px at 0% 15%,rgba(111,177,255,.08),transparent 60%),var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding-inline:16px}
+a{color:var(--steel)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+.g-n{--g:var(--steel);--gs:var(--steel-soft)} .g-s{--g:var(--acc);--gs:var(--acc-soft)} .g-x{--g:var(--warn);--gs:var(--warn-soft)}
+
+/* Kopf */
+.hero{padding-block:28px 8px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:26px;align-items:end}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.8rem,9vw,5.2rem);line-height:.9;margin:.14em 0 .2em;text-wrap:balance}
+h1 span{color:var(--acc)}
+.lead{margin:0;color:var(--muted);font-size:1.08rem;max-width:56ch}
+.lead a{white-space:nowrap}
+.sort{background:var(--panel);border:1px solid var(--line2);border-radius:14px;padding:16px 18px}
+.sort h2{font-family:var(--display);font-size:1.3rem;margin:0 0 10px;letter-spacing:.01em}
+.sort ol{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.sort li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.sort .q{font-family:var(--mono);font-size:.7rem;border:1px solid var(--line2);border-radius:6px;padding:2px 7px;color:var(--muted);margin-top:2px;white-space:nowrap}
+.sort b{color:var(--g)}
+
+/* Abschnitte */
+section{padding-block:30px 6px}
+.sh{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;align-items:center;margin-bottom:14px}
+.sh .no{font-family:var(--mono);font-size:.78rem;color:var(--acc);border:1px solid rgba(255,122,26,.45);border-radius:6px;padding:2px 8px}
+.sh h2{font-family:var(--display);font-size:clamp(1.7rem,4vw,2.3rem);margin:0;line-height:1}
+.sh p{grid-column:1/-1;margin:8px 0 0;color:var(--muted);max-width:68ch}
+
+/* Merksatz mit farbigen Anfangsbuchstaben */
+.ms{font-family:var(--display);font-weight:700;font-size:clamp(1.35rem,3.4vw,1.8rem);line-height:1.15;margin:0 0 14px}
+.ms i{font-style:normal;color:var(--acc)}
+.ms small{display:block;font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.06em;color:var(--muted);margin-top:4px}
+
+/* Aufgaben */
+.tasks{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media (max-width:980px){.tasks{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.tasks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.task{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 12px 13px;display:grid;gap:3px;align-content:start}
+.task .L{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1;color:var(--acc)}
+.task b{font-family:var(--display);font-size:1.15rem;letter-spacing:.01em}
+.task span{color:var(--muted);font-size:.9rem;line-height:1.35}
+.train{margin-top:14px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:10px;overflow-x:auto}
+.train svg{display:block;min-width:620px;width:100%;height:auto}
+
+/* Landkarte */
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.btn{background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:8px 13px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--steel)}
+.btn[aria-pressed="true"]{background:var(--steel-soft);border-color:var(--steel);color:var(--ink)}
+.map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:980px){.map{grid-template-columns:1fr}}
+.grp{background:var(--panel);border:1px solid var(--line2);border-radius:16px;overflow:hidden}
+.gh{background:var(--gs);border-bottom:1px solid var(--line2);padding:14px 16px 13px}
+.gh .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g)}
+.gh h3{font-family:var(--display);font-size:1.55rem;margin:2px 0 4px;line-height:1.05}
+.gh p{margin:0;font-size:.93rem;color:var(--ink);opacity:.86}
+.gh .gs{margin-top:8px;font-family:var(--display);font-weight:700;font-size:1.12rem;color:var(--g)}
+.gh .gs small{display:block;font-family:var(--mono);font-weight:500;font-size:.68rem;color:var(--muted);letter-spacing:.04em}
+.art{padding:14px 16px;border-top:1px solid var(--line)}
+.art:first-of-type{border-top:0}
+.ah{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center}
+.ico{width:44px;height:44px;border-radius:10px;background:var(--gs);display:grid;place-items:center;color:var(--g)}
+.ico svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ah h4{font-family:var(--display);font-size:1.22rem;margin:0;line-height:1.1}
+.ap{margin:8px 0 6px;font-size:.92rem;color:var(--muted)}
+.mk{display:inline-block;font-family:var(--mono);font-size:.72rem;color:var(--g);border:1px dashed var(--g);border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.mk2{display:block;font-size:.84rem;color:var(--muted);margin:-2px 0 6px}
+.kl{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:7px}
+.kl li{padding-left:12px;border-left:2px solid var(--line2);font-size:.9rem;line-height:1.4}
+.kl li b{display:block;font-weight:700;font-size:.98rem;color:var(--ink)}
+.kl li span{color:var(--muted)}
+/* Abfragemodus */
+.cover .kn,.cover .an{cursor:pointer;border-radius:5px;background:var(--line2);color:transparent!important;user-select:none}
+.cover .kn.shown,.cover .an.shown{background:none;color:inherit!important}
+.cover .kl li span,.cover .ap{filter:blur(4px);transition:filter .2s}
+.cover .kl li.open span,.cover .art.open .ap{filter:none}
+
+/* Eselsbrücken */
+.mems{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:720px){.mems{grid-template-columns:1fr}}
+.mem{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.mem .w{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mem .s{font-family:var(--display);font-weight:700;font-size:1.35rem;line-height:1.15;margin:3px 0}
+.mem .s i{font-style:normal;color:var(--g,var(--acc))}
+.mem .z{font-size:.88rem;color:var(--muted)}
+
+/* Test */
+.quiz{background:var(--panel);border:1px solid var(--line2);border-radius:16px;padding:18px;display:grid;gap:14px}
+.qtop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
+.qbar{height:6px;border-radius:4px;background:var(--line);overflow:hidden}
+.qbar i{display:block;height:100%;width:0;background:var(--ok);transition:width .3s}
+.qq{font-family:var(--display);font-size:clamp(1.4rem,3.6vw,1.9rem);line-height:1.15;margin:0;text-wrap:balance}
+.qq b{color:var(--acc)}
+.qopts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.qopts{grid-template-columns:1fr}}
+.qcol{display:grid;gap:7px;align-content:start}
+.qcol .t{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g)}
+.qo{text-align:left;background:var(--panel2);border:1px solid var(--line2);border-radius:9px;padding:9px 11px;cursor:pointer;font-weight:600;display:flex;gap:9px;align-items:center}
+.qo svg{width:22px;height:22px;flex:none;fill:none;stroke:var(--g);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.qo:hover:not(:disabled){border-color:var(--g)}
+.qo:disabled{cursor:default}
+.qo.right{background:var(--ok-soft);border-color:var(--ok)}
+.qo.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.qfb{border-radius:10px;padding:11px 13px;font-size:.95rem;display:grid;gap:4px}
+.qfb.ok{background:var(--ok-soft);border:1px solid rgba(67,209,122,.5)}
+.qfb.no{background:var(--bad-soft);border:1px solid rgba(255,90,77,.5)}
+.qfb b{font-family:var(--display);font-size:1.15rem}
+.qact{display:flex;gap:8px;flex-wrap:wrap}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#140900}
+.done{text-align:center;display:grid;gap:8px;justify-items:center}
+.done .big{font-family:var(--display);font-weight:800;font-size:3rem;line-height:1;color:var(--ok)}
+
+footer{margin-top:34px;border-top:1px solid var(--line);padding-block:16px 34px;color:var(--muted);font-size:.86rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+<div class="wrap">
+<header class="hero">
+  <div>
+    <div class="eyebrow">Lernzettel · Industriemechaniker · LF 13</div>
+    <h1>Kupplungen <span>merken</span></h1>
+    <p class="lead">Alle Kupplungen vom Arbeitsblatt, sortiert in drei Gruppen. Zu jeder Gruppe gibt es eine Eselsbrücke, zu jeder Kupplung einen Satz Erklärung. Unten kannst du dich selbst abfragen.<span id="vidLink"></span></p>
+  </div>
+  <div class="sort" aria-labelledby="sortH">
+    <h2 id="sortH">So ordnest du jede Kupplung ein</h2>
+    <ol>
+      <li class="g-x"><span class="q">Frage 1</span><span>Hat sie einen <b>Sonderzweck</b>: schützen, sanft anlaufen oder frei laufen? Dann ist es eine <b>Sonderkupplung</b>.</span></li>
+      <li class="g-s"><span class="q">Frage 2</span><span>Kann man sie <b>während des Betriebs</b> trennen? Dann ist sie <b>schaltbar</b>.</span></li>
+      <li class="g-n"><span class="q">sonst</span><span>Sie verbindet <b>immer</b>: eine <b>nicht schaltbare</b> Kupplung.</span></li>
+    </ol>
+  </div>
+</header>
+
+<section id="aufgaben" aria-labelledby="h1a">
+  <div class="sh"><span class="no">1</span><h2 id="h1a">Aufgaben einer Kupplung</h2><p>Sechs Aufgaben, sechs Anfangsbuchstaben: V, U, S, S, D, A.</p></div>
+  <p class="ms" id="aufSatz"></p>
+  <div class="tasks" id="tasks"></div>
+  <div class="train" aria-label="Antriebsstrang mit Motor, Kupplung, Getriebe, Gelenkkupplungen und Seiltrommel">
+    <svg viewBox="0 0 900 190" role="img" aria-labelledby="trT">
+      <title id="trT">Wo Kupplungen sitzen: zwischen Motor und Getriebe und als Gelenkkupplungen vor der Seiltrommel</title>
+      <style>
+        .s0{fill:none;stroke:#93a1ae;stroke-width:2.2}.s1{fill:#111922;stroke:#93a1ae;stroke-width:2.2}
+        .sh0{stroke:#6d7c8a;stroke-width:7;stroke-linecap:round}.hl{fill:#3a1f0c;stroke:#ff7a1a;stroke-width:2.6}
+        .t0{font:600 15px Barlow,Arial,sans-serif;fill:#e9eef3}.t1{font:500 12px 'JetBrains Mono',monospace;fill:#9aa8b5}.t2{font:700 15px Barlow,Arial,sans-serif;fill:#ff7a1a}
+      </style>
+      <line class="sh0" x1="130" y1="88" x2="252" y2="88"/>
+      <rect class="s1" x="22" y="52" width="108" height="72" rx="8"/>
+      <path class="s0" d="M36 60v56M50 60v56M64 60v56M78 60v56M92 60v56M106 60v56"/>
+      <text class="t0" x="76" y="146" text-anchor="middle">Motor</text>
+      <text class="t1" x="76" y="40" text-anchor="middle">n₁ · M₁</text>
+      <rect class="hl" x="166" y="66" width="13" height="44" rx="2"/><rect class="hl" x="181" y="66" width="13" height="44" rx="2"/>
+      <text class="t2" x="180" y="136" text-anchor="middle">Kupplung</text>
+      <rect class="s1" x="252" y="40" width="124" height="96" rx="8"/>
+      <circle class="s0" cx="292" cy="80" r="22"/><circle class="s0" cx="338" cy="110" r="15"/>
+      <text class="t0" x="314" y="160" text-anchor="middle">Getriebe</text>
+      <line class="sh0" x1="376" y1="110" x2="420" y2="110"/>
+      <line class="sh0" x1="432" y1="110" x2="540" y2="88"/>
+      <line class="sh0" x1="552" y1="88" x2="590" y2="88"/>
+      <circle class="hl" cx="426" cy="110" r="10"/><circle class="hl" cx="546" cy="88" r="10"/>
+      <text class="t2" x="486" y="146" text-anchor="middle">Gelenkkupplungen</text>
+      <rect class="s1" x="590" y="50" width="150" height="76" rx="6"/>
+      <path class="s0" d="M608 50v76M622 50v76M636 50v76M650 50v76M664 50v76M678 50v76M692 50v76M706 50v76M720 50v76"/>
+      <text class="t0" x="665" y="40" text-anchor="middle">Seiltrommel</text>
+      <text class="t1" x="800" y="92">n₂ · M₂</text>
+      <path class="s0" d="M730 126v30"/><rect class="s1" x="706" y="156" width="48" height="26" rx="4"/>
+      <text class="t0" x="772" y="175">Last</text>
+    </svg>
+  </div>
+</section>
+
+<section id="einteilung" aria-labelledby="h2a">
+  <div class="sh"><span class="no">2</span><h2 id="h2a">Einteilung: alle Kupplungen</h2><p>Drei Gruppen, darin zehn Arten. Mit „Namen verdecken“ fragst du dich selbst ab: Tippe auf ein graues Feld, um es aufzudecken.</p></div>
+  <div class="tools">
+    <button class="btn" id="bCover" type="button" aria-pressed="false">Namen verdecken</button>
+    <button class="btn" id="bShow" type="button" hidden>Alles aufdecken</button>
+  </div>
+  <div class="map" id="map"></div>
+</section>
+
+<section id="merken" aria-labelledby="h3a">
+  <div class="sh"><span class="no">3</span><h2 id="h3a">Alle Eselsbrücken auf einen Blick</h2><p>Die Anfangsbuchstaben verraten die Reihenfolge. Sag dir zu jedem Buchstaben das Wort laut.</p></div>
+  <div class="mems" id="mems"></div>
+</section>
+
+<section id="test" aria-labelledby="h4a">
+  <div class="sh"><span class="no">4</span><h2 id="h4a">Teste dich</h2><p>Zu welcher Art gehört die Kupplung? Falsch beantwortete Fragen kommen am Ende noch einmal.</p></div>
+  <div class="quiz" id="quiz" aria-live="polite"></div>
+</section>
+
+<footer>Nach dem Arbeitsblatt „Kupplungen“ (Industriemechaniker, LF 13). Die Beispiele und Eselsbrücken sind Lernhilfen; im Zweifel gilt das Arbeitsblatt bzw. das Tabellenbuch.</footer>
+</div>
+<script>
+// Inhalte des Lernzettels „Kupplungen“ (nach dem Arbeitsblatt LF 13)
+const KUP = {
+  aufgaben: {
+    satz: 'Vater Und Sohn Schrauben Den Antrieb.',
+    items: [
+      ['V', 'Verbinden', 'Antrieb (Motor) mit Abtrieb (Getriebe, Spindel …)'],
+      ['U', 'Unterbrechen', 'Drehmoment trennen, z. B. im Kfz beim Schalten'],
+      ['S', 'Schalten', 'Getriebestufen schalten'],
+      ['S', 'Schützen', 'vor Überlastung, z. B. an der CNC-Maschine'],
+      ['D', 'Dämpfen', 'Stöße abfangen, z. B. in Förderanlagen'],
+      ['A', 'Ausgleichen', 'Wellenversatz ausgleichen, z. B. mit einer Gelenkkupplung']
+    ]
+  },
+  gruppen: [
+    { id: 'n', name: 'Nicht schaltbare Kupplungen', kurz: 'immer verbunden',
+      def: 'Lassen eine Trennung von An- und Abtrieb während des Betriebes nicht zu.',
+      satz: 'Sehr Dicke Elefanten Schwimmen', satzZu: 'Starr · Drehstarr · Elastisch · Strömung',
+      hint: 'Von hart nach weich: Stahl → Gelenk → Gummi → Öl.',
+      arten: [
+        { id: 'starr', name: 'Starre Kupplungen', icon: 'starr',
+          prinzip: 'Verbinden die Wellen so fest wie ein durchgehendes Stück Welle. Sie gleichen keinen Versatz aus, die Wellen müssen genau fluchten.',
+          merk: 'Zwei S: Scheibe und Schale',
+          k: [
+            ['Scheibenkupplung', 'Zwei Flanschscheiben sitzen mit Passfedern auf den Wellenenden und werden verschraubt. Ein Zentrierring richtet sie genau aus.'],
+            ['Schalenkupplung mit Kegelhülse', 'Zwei Halbschalen werden um beide Wellenenden gelegt und festgeklemmt. Ein- und Ausbau gehen, ohne die Wellen zu verschieben.']
+          ] },
+        { id: 'drehstarr', name: 'Drehstarre Kupplungen', icon: 'drehstarr',
+          prinzip: 'Übertragen das Drehmoment ohne Verdrehen, gleichen aber Versatz der Wellen aus: Winkel, seitlich und in Längsrichtung.',
+          merk: 'Bogenzahn plus drei Mal Gelenk',
+          k: [
+            ['Bogenzahnkupplung', 'Ballig (bogenförmig) geformte Außenzähne greifen in eine innenverzahnte Hülse. Die Hülse kann leicht kippen und gleicht so Winkel- und Radialversatz aus.'],
+            ['Gelenkkupplungen', 'Kreuzgelenk (Kardangelenk): zwei Gabeln mit einem Zapfenkreuz dazwischen. Erlaubt große Beugewinkel.'],
+            ['Topfgelenke', 'Gleichlaufgelenk: Kugeln laufen zwischen Kugelstern und Kugelschale in geraden Bahnen, ein Käfig führt sie. Dreht gleichmäßig und lässt Längsverschiebung zu, z. B. an der Antriebswelle im Auto.'],
+            ['Gelenkwelle', 'Welle mit je einem Gelenk an beiden Enden. Überbrückt größere Abstände und Versatz, z. B. Kardanwelle im Lkw oder im Bild zur Seiltrommel.']
+          ] },
+        { id: 'elastisch', name: 'Elastische Kupplungen', icon: 'elastisch',
+          prinzip: 'Nachgiebige Glieder aus Gummi oder Metall federn bei einem Stoß ein. Sie dämpfen Stöße und Schwingungen und gleichen kleinen Versatz aus.',
+          merk: 'Gummi Federt Bälle: Gummihülse · Feder · Balg',
+          k: [
+            ['Gummihülsenkupplung', 'Bolzen mit Gummihülsen übertragen das Drehmoment. Das Gummi federt Stöße ab, die Hülsen lassen sich einfach tauschen.'],
+            ['Metallfederkupplung', 'Stahlfedern zwischen den Kupplungshälften übertragen das Moment. Robust, auch für große Drehmomente und Wärme.'],
+            ['Metallbalgkupplungen', 'Ein dünnwandiger Metallbalg biegt sich und gleicht so Versatz aus. Beim Verdrehen bleibt er steif und spielfrei, deshalb für Servoantriebe und Messgeber.']
+          ] },
+        { id: 'stroem', name: 'Strömungskupplungen', icon: 'stroem',
+          prinzip: 'Das Drehmoment wird über eine Flüssigkeit übertragen, es gibt keine feste Verbindung. Anfahren ist weich, Stöße werden gedämpft, etwas Schlupf ist immer da.',
+          merk: 'Öl statt Stahl',
+          k: [
+            ['Visco-Kupplung', 'Lamellen laufen in zähem Silikonöl. Drehen sich die Seiten unterschiedlich schnell, nimmt das Öl die andere Seite mit, z. B. beim Allradantrieb oder am Lüfter.']
+          ] }
+      ] },
+    { id: 's', name: 'Schaltbare Kupplungen', kurz: 'an und aus',
+      def: 'Lassen eine Trennung von An- und/oder Abtrieb während des Betriebes zu.',
+      satz: 'Form, Kraft, Magnet', satzZu: 'formschlüssig · kraftschlüssig · magnetisch',
+      hint: 'Form greift, Kraft reibt, Magnet zieht.',
+      arten: [
+        { id: 'form', name: 'Formschlüssige Kupplungen', icon: 'form',
+          prinzip: 'Das Drehmoment wird durch Ineinandergreifen zweier Bauteile übertragen. Kein Schlupf, aber schalten nur im Stillstand oder bei gleicher Drehzahl.',
+          merk: 'Ein Tier packt zu: Klaue und Zahn',
+          k: [
+            ['Klauenkupplung', 'Die Klauen einer verschiebbaren Hälfte greifen in die Lücken der festen Hälfte. Im Bild: links verschiebbar, rechts fest mit der Welle verbunden.'],
+            ['Zahnkupplung', 'Außen- und Innenverzahnung werden ineinandergeschoben, wie die Schaltmuffe im Schaltgetriebe.']
+          ] },
+        { id: 'kraft', name: 'Kraftschlüssige Kupplungen', icon: 'kraft',
+          prinzip: 'Das Drehmoment wird durch Reibung übertragen: Reibflächen werden aneinandergepresst. Schalten unter Last ist möglich, dabei entstehen Wärme und Verschleiß.',
+          merk: 'Ein Mechaniker Kuppelt Fix',
+          k: [
+            ['Einscheibenkupplung', 'Eine Kupplungsscheibe wird zwischen Schwungrad und Druckplatte gepresst. Das ist die Kupplung im Auto.'],
+            ['Mehrscheibenkupplungen', 'Lamellenkupplung: Außen- und Innenlamellen wechseln sich ab und werden zusammengedrückt. Viele Reibflächen geben ein großes Moment bei kleinem Durchmesser, z. B. in Werkzeugmaschinen und Motorrädern.'],
+            ['Kegelkupplungen', 'Kegelige Reibflächen werden ineinandergedrückt. Durch die Keilwirkung reicht eine kleine Schaltkraft für eine große Anpresskraft.'],
+            ['Fliehkraftkupplung', 'Schaltet selbst nach der Drehzahl: Bei schneller Drehung drücken Fliehgewichte nach außen gegen eine Trommel, z. B. an der Motorsäge.']
+          ] },
+        { id: 'magnet', name: 'Magnetische Kupplungen', icon: 'magnet',
+          prinzip: 'Ein Elektromagnet zieht beim Einschalten eine Ankerscheibe an. Geschaltet wird mit Strom, also gut aus der Ferne und automatisch.',
+          merk: 'Strom an: Kupplung zu',
+          k: [
+            ['Elektromagnetkupplung', 'Z. B. am Klimakompressor im Auto oder in Werkzeugmaschinen: Die Steuerung schaltet die Kupplung per Strom.']
+          ] }
+      ] },
+    { id: 'x', name: 'Sonderkupplungen', kurz: 'Kupplungen für Sonderzwecke',
+      def: 'Haben meist die Funktion einer Sicherheitskupplung: Sie unterbrechen den Kraftfluss, wenn das zulässige Drehmoment überschritten wird.',
+      satz: 'Schützen, Starten, Rollen', satzZu: 'Sicherheit · Anlauf · Freilauf',
+      hint: 'Sicherheitskupplung schützt, Anlaufkupplung startet sanft, Freilauf lässt rollen.',
+      arten: [
+        { id: 'sicher', name: 'Sicherheitskupplungen', icon: 'sicher',
+          prinzip: 'Trennen bei Überlast, damit Maschine und Werkstück nicht beschädigt werden.',
+          merk: 'Alle Bolzen Rutschen Durch',
+          merk2: 'Zwei brechen (danach tauschen), zwei kuppeln von selbst wieder ein.',
+          k: [
+            ['Abscherstift', 'Ein Stift mit Sollbruchstelle schert bei Überlast ab. Danach wird er ersetzt.'],
+            ['Brechbolzenkupplung', 'Ein Brechbolzen sitzt in gehärteten Buchsen und bricht bei Überlast. Danach wird ein neuer Bolzen eingesetzt.'],
+            ['Rutschkupplungen', 'Federn drücken Reibbeläge zusammen. Bei Überlast rutscht die Kupplung durch und nimmt danach wieder mit.'],
+            ['Durchrastkupplungen', 'Federn drücken Kugeln oder Rollen in Rasten. Bei Überlast springen sie heraus (rasten durch) und rasten danach wieder ein.'],
+            ['Sicherheitskupplungen', 'Weitere Bauarten, die bei Überlast trennen und oft zusätzlich ein Signal zum Abschalten des Motors geben.']
+          ] },
+        { id: 'anlauf', name: 'Anlaufkupplungen', icon: 'anlauf',
+          prinzip: 'Der Motor läuft zuerst ohne Last hoch, dann wird die Last sanft mitgenommen. Das schont Motor und Netz beim Anlauf.',
+          merk: 'Erst Motor, dann Last',
+          k: [
+            ['Anlaufkupplung', 'Z. B. als Fliehkraft- oder Strömungskupplung: Sie greift erst, wenn der Motor Drehzahl hat.']
+          ] },
+        { id: 'frei', name: 'Freilaufkupplungen', icon: 'frei',
+          prinzip: 'Übertragen das Drehmoment nur in einer Drehrichtung. In der anderen Richtung läuft die Welle frei.',
+          merk: 'Wie beim Fahrrad: treten treibt, rollen lässt frei',
+          k: [
+            ['Freilauf', 'Kugeln oder Klemmrollen in einem Käfig verklemmen sich in einer Richtung zwischen Antriebs- und Abtriebswelle. In der Gegenrichtung rollen sie frei. Z. B. Fahrradnabe, Anlasser, Rücklaufsperre.']
+          ] }
+      ] }
+  ]
+};
+
+/* Pictogramme der zehn Arten (Strichzeichnungen, Farbe über currentColor) */
+const ICONS = {
+  starr: '<path d="M3 24h11M34 24h11"/><rect x="14" y="9" width="9" height="30" rx="1.5"/><rect x="25" y="9" width="9" height="30" rx="1.5"/><path d="M18 15h12M18 33h12"/>',
+  drehstarr: '<path d="M4 31l15-5M29 22l15-8"/><circle cx="24" cy="24" r="5.5"/><path d="M19 19l10 10M29 19l-10 10"/>',
+  elastisch: '<rect x="4" y="13" width="8" height="22" rx="1.5"/><rect x="36" y="13" width="8" height="22" rx="1.5"/><path d="M12 24l3-7 4 14 4-14 4 14 4-14 3 7"/>',
+  stroem: '<path d="M8 11v26M40 11v26"/><path d="M12 18c4-5 8-5 12 0s8 5 12 0"/><path d="M12 30c4-5 8-5 12 0s8 5 12 0"/>',
+  form: '<path d="M4 10h11v4h10v6H15v8h10v6H15v4H4z"/><path d="M44 10H33v10h-10v8h10v10h11z"/>',
+  kraft: '<path d="M18 10v28M23 14v20M28 10v28M33 14v20"/><path d="M4 24h8M9 20l4 4-4 4M44 24h-6M40 20l-4 4 4 4"/>',
+  magnet: '<path d="M13 10v14a11 11 0 0 0 22 0V10"/><path d="M13 10h7v14a4 4 0 0 0 8 0V10h7"/><path d="M8 40h32"/>',
+  sicher: '<path d="M4 17h15l3 4-3 3 3 3-3 4H4z"/><path d="M44 17H28l3 4-3 3 3 3-3 4h16z"/>',
+  anlauf: '<path d="M7 7v34h34"/><path d="M7 38c9 0 12-2 16-12s8-13 17-13"/>',
+  frei: '<circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="7"/><path d="M24 8l3 6h-6zM38 30l-6 1 3-6zM10 30l3-5 3 6z"/><path d="M42 12l2 7-7-1"/>'
+};
+const svgIcon = id => '<svg viewBox="0 0 48 48" aria-hidden="true">' + ICONS[id] + '</svg>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const $ = id => document.getElementById(id);
+/* Merksatz: Anfangsbuchstaben hervorheben */
+const initials = s => esc(s).replace(/(^|[\s(])([A-ZÄÖÜ])/g, '$1<i>$2</i>');
+
+/* 1 Aufgaben */
+$('aufSatz').innerHTML = initials(KUP.aufgaben.satz) + '<small>Verbinden · Unterbrechen · Schalten · Schützen · Dämpfen · Ausgleichen</small>';
+$('tasks').innerHTML = KUP.aufgaben.items.map(([l, w, e]) => '<div class="task"><span class="L">' + l + '</span><b>' + esc(w) + '</b><span>' + esc(e) + '</span></div>').join('');
+
+/* 2 Landkarte */
+$('map').innerHTML = KUP.gruppen.map(g => '<article class="grp g-' + g.id + '"><div class="gh"><div class="tag">' + esc(g.kurz) + '</div><h3>' + esc(g.name) + '</h3><p>' + esc(g.def) + '</p>' +
+  '<div class="gs">' + esc(g.satz) + '<small>' + esc(g.satzZu) + '</small></div></div>' +
+  g.arten.map(a => '<div class="art"><div class="ah"><span class="ico">' + svgIcon(a.icon) + '</span><h4><span class="an">' + esc(a.name) + '</span></h4></div>' +
+    '<p class="ap">' + esc(a.prinzip) + '</p><span class="mk">' + esc(a.merk) + '</span>' + (a.merk2 ? '<span class="mk2">' + esc(a.merk2) + '</span>' : '') +
+    '<ul class="kl">' + a.k.map(([n, d]) => '<li><b><span class="kn">' + esc(n) + '</span></b><span>' + esc(d) + '</span></li>').join('') + '</ul></div>').join('') + '</article>').join('');
+
+const map = $('map'), bCover = $('bCover'), bShow = $('bShow');
+function setCover(on) {
+  map.classList.toggle('cover', on); bCover.setAttribute('aria-pressed', on); bCover.textContent = on ? 'Namen wieder zeigen' : 'Namen verdecken'; bShow.hidden = !on;
+  map.querySelectorAll('.shown,.open').forEach(e => e.classList.remove('shown', 'open'));
+  map.querySelectorAll('.kn,.an').forEach(e => { if (on) { e.setAttribute('tabindex', '0'); e.setAttribute('role', 'button'); } else { e.removeAttribute('tabindex'); e.removeAttribute('role'); } });
+}
+function reveal(el) { el.classList.add('shown'); const li = el.closest('li'); if (li) li.classList.add('open'); const art = el.closest('.art'); if (art && el.classList.contains('an')) art.classList.add('open'); }
+map.addEventListener('click', e => { const el = e.target.closest('.kn,.an'); if (el && map.classList.contains('cover')) reveal(el); });
+map.addEventListener('keydown', e => { const el = e.target.closest('.kn,.an'); if (el && map.classList.contains('cover') && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); reveal(el); } });
+bCover.addEventListener('click', () => setCover(!map.classList.contains('cover')));
+bShow.addEventListener('click', () => map.querySelectorAll('.kn,.an').forEach(reveal));
+
+/* 3 Eselsbrücken */
+const MEMS = [
+  ['a', 'Aufgaben', KUP.aufgaben.satz, 'Verbinden, Unterbrechen, Schalten, Schützen, Dämpfen, Ausgleichen'],
+  ['n', 'Nicht schaltbar: die vier Arten', 'Sehr Dicke Elefanten Schwimmen', 'Starr, Drehstarr, Elastisch, Strömung (von hart nach weich)'],
+  ['n', 'Starr', 'Zwei S: Scheibe und Schale', 'Scheibenkupplung, Schalenkupplung mit Kegelhülse'],
+  ['n', 'Drehstarr', 'Bogenzahn plus drei Mal Gelenk', 'Bogenzahnkupplung, Gelenkkupplung, Topfgelenk, Gelenkwelle'],
+  ['n', 'Elastisch', 'Gummi Federt Bälle', 'Gummihülsen-, Metallfeder-, Metallbalgkupplung'],
+  ['s', 'Schaltbar: die drei Arten', 'Form greift, Kraft reibt, Magnet zieht', 'formschlüssig, kraftschlüssig, magnetisch'],
+  ['s', 'Formschlüssig', 'Ein Tier packt zu: Klaue und Zahn', 'Klauenkupplung, Zahnkupplung'],
+  ['s', 'Kraftschlüssig', 'Ein Mechaniker Kuppelt Fix', 'Einscheiben-, Mehrscheiben-, Kegel-, Fliehkraftkupplung'],
+  ['x', 'Sonderkupplungen', 'Schützen, Starten, Rollen', 'Sicherheits-, Anlauf-, Freilaufkupplung'],
+  ['x', 'Sicherheitskupplungen', 'Alle Bolzen Rutschen Durch', 'Abscherstift, Brechbolzen, Rutsch-, Durchrastkupplung']
+];
+$('mems').innerHTML = MEMS.map(([g, w, s, z]) => '<div class="mem' + (g === 'a' ? '' : ' g-' + g) + '"><div class="w">' + esc(w) + '</div><div class="s">' + initials(s) + '</div><div class="z">' + esc(z) + '</div></div>').join('');
+
+/* 4 Test */
+const ARTEN = []; KUP.gruppen.forEach(g => g.arten.forEach(a => ARTEN.push({ ...a, g: g.id, gname: g.name })));
+const artById = id => ARTEN.find(a => a.id === id);
+const SKIP = new Set(['Sicherheitskupplungen', 'Anlaufkupplung', 'Freilauf', 'Elektromagnetkupplung']);
+const QS = [];
+ARTEN.forEach(a => a.k.forEach(([n, d]) => { if (!SKIP.has(n)) QS.push({ q: 'Zu welcher Art gehört die <b>' + esc(n) + '</b>?', a: a.id, why: n + ': ' + d }); }));
+[['Überträgt das Drehmoment nur in <b>einer Drehrichtung</b>.', 'frei'], ['Der Motor läuft zuerst <b>ohne Last</b> hoch, dann wird die Last mitgenommen.', 'anlauf'],
+ ['Wird <b>mit Strom</b> geschaltet.', 'magnet'], ['Die Wellen müssen <b>genau fluchten</b>, Versatz wird nicht ausgeglichen.', 'starr'],
+ ['Gleicht <b>Versatz</b> aus, <b>verdreht sich</b> dabei aber nicht.', 'drehstarr'], ['Federt Stöße mit <b>Gummi- oder Metallgliedern</b> ab.', 'elastisch'],
+ ['Überträgt das Drehmoment über eine <b>Flüssigkeit</b>.', 'stroem'], ['Kein Schlupf, aber schalten nur <b>im Stillstand</b> oder bei gleicher Drehzahl.', 'form'],
+ ['Überträgt durch <b>Reibung</b> und lässt sich <b>unter Last</b> schalten.', 'kraft'], ['Trennt bei <b>Überlast</b>, damit nichts kaputtgeht.', 'sicher']
+].forEach(([q, a]) => QS.push({ q: 'Welche Art ist das? ' + q, a, why: artById(a).name + ': ' + artById(a).prinzip }));
+
+let order = [], pos = 0, firstRight = 0, answered = false, missed = new Set();
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function startQuiz() { order = shuffle(QS.map((_, i) => i)); pos = 0; firstRight = 0; missed = new Set(); renderQ(); }
+function renderQ() {
+  const box = $('quiz');
+  if (pos >= order.length) {
+    const n = QS.length;
+    box.innerHTML = '<div class="done"><div class="big">' + firstRight + ' / ' + n + '</div><p>beim ersten Versuch richtig' + (firstRight === n ? '. Alles sitzt!' : '. Die falschen hast du am Ende wiederholt.') + '</p><button class="btn pri" id="qAgain" type="button">Noch eine Runde</button></div>';
+    $('qAgain').addEventListener('click', startQuiz); $('qAgain').focus(); return;
+  }
+  const it = QS[order[pos]]; answered = false;
+  box.innerHTML = '<div class="qtop"><span>Frage ' + (pos + 1) + ' von ' + order.length + '</span><span>beim ersten Versuch richtig: ' + firstRight + '</span></div><div class="qbar"><i style="width:' + (pos / order.length * 100) + '%"></i></div>' +
+    '<p class="qq">' + it.q + '</p><div class="qopts">' + KUP.gruppen.map(g => '<div class="qcol g-' + g.id + '"><span class="t">' + esc(g.name) + '</span>' +
+      g.arten.map(a => '<button class="qo" type="button" data-a="' + a.id + '">' + svgIcon(a.icon) + '<span>' + esc(a.name) + '</span></button>').join('') + '</div>').join('') + '</div><div id="qfb"></div>';
+  box.querySelectorAll('.qo').forEach(b => b.addEventListener('click', () => answer(b)));
+}
+function answer(b) {
+  if (answered) return; answered = true; const it = QS[order[pos]], ok = b.dataset.a === it.a, idx = order[pos];
+  $('quiz').querySelectorAll('.qo').forEach(x => { x.disabled = true; if (x.dataset.a === it.a) x.classList.add('right'); });
+  if (!ok) b.classList.add('wrong');
+  if (ok && !missed.has(idx)) firstRight++;
+  if (!ok && !missed.has(idx)) { missed.add(idx); order.push(idx); }
+  const art = artById(it.a);
+  $('qfb').innerHTML = '<div class="qfb ' + (ok ? 'ok' : 'no') + '"><b>' + (ok ? 'Richtig: ' : 'Nicht ganz. Richtig ist: ') + esc(art.name) + '</b><span>' + esc(it.why) + '</span><span>Eselsbrücke: ' + esc(art.merk) + '</span></div>' +
+    '<div class="qact" style="margin-top:10px"><button class="btn pri" id="qNext" type="button">Weiter</button></div>';
+  $('qNext').addEventListener('click', () => { pos++; renderQ(); document.getElementById('test').scrollIntoView({ block: 'nearest' }); });
+  $('qNext').focus({ preventScroll: true });
+}
+startQuiz();
+</script>
