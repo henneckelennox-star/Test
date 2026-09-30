@@ -1,0 +1,674 @@
+<title>Stochastik-Klausur Q3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Layout: Karopapier-Heft. Schmale Lesespalte, Tinte fuer Struktur, Textmarker fuer Signalwoerter, Rotstift fuer Fehler. */
+:root{
+  --paper:#f7f8fb; --grid:#dfe5f0; --sheet:#ffffff; --ink:#1b2a4a; --muted:#56627a;
+  --accent:#2447a8; --accent-soft:#e6ecfa; --marker:#fff0a3; --marker-ink:#4a3d00;
+  --red:#c2362b; --red-soft:#fbe9e7; --green:#1f7a4a; --green-soft:#e4f4ea; --line:#cfd7e6;
+  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Source Sans 3",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#121826; --grid:#1c2436; --sheet:#182033; --ink:#e3e8f4; --muted:#9aa6bf;
+  --accent:#8fb0ff; --accent-soft:#22305a; --marker:#5b4d0e; --marker-ink:#fff1b0;
+  --red:#ff8a7d; --red-soft:#3d2020; --green:#6fd39c; --green-soft:#17352a; --line:#2c3854; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121826; --grid:#1c2436; --sheet:#182033; --ink:#e3e8f4; --muted:#9aa6bf;
+  --accent:#8fb0ff; --accent-soft:#22305a; --marker:#5b4d0e; --marker-ink:#fff1b0;
+  --red:#ff8a7d; --red-soft:#3d2020; --green:#6fd39c; --green-soft:#17352a; --line:#2c3854; color-scheme:dark}
+*{box-sizing:border-box}
+body{background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:20px 20px;color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 80px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,6vw,3rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800;margin-bottom:.4rem}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0}
+.lead{color:var(--muted);max-width:62ch;margin-top:.6rem}
+mark{background:var(--marker);color:var(--marker-ink);padding:0 .15em;border-radius:2px}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line);
+  margin-inline:-16px;padding:8px 16px;display:flex;gap:6px;flex-wrap:wrap}
+nav.top a{font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border-radius:999px;font-size:.92rem}
+nav.top a:hover,nav.top a:focus-visible{background:var(--accent-soft);outline:none}
+section{margin-top:44px;scroll-margin-top:70px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:20px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:700}
+.plan{display:grid;gap:10px;counter-reset:b}
+.plan li{list-style:none;display:grid;grid-template-columns:4.2rem 1fr;gap:12px;align-items:baseline}
+.plan .t{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+ol.flow{margin:0;padding:0;list-style:none;counter-reset:q;display:flex;flex-direction:column;gap:10px}
+ol.flow>li{counter-increment:q;display:grid;grid-template-columns:2.2rem 1fr;gap:12px;background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:14px}
+ol.flow>li::before{content:counter(q);font-family:var(--f-display);font-weight:800;font-size:1.3rem;color:var(--accent);line-height:1.2}
+.flow .q{font-weight:700}
+.flow .then{margin-top:4px}
+.flow .then b{color:var(--accent)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);font-weight:700}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+details.tool{background:var(--sheet);border:1px solid var(--line);border-radius:6px}
+details.tool>summary{cursor:pointer;padding:14px 18px;display:flex;gap:10px;align-items:baseline;list-style:none}
+details.tool>summary::-webkit-details-marker{display:none}
+details.tool>summary::before{content:"+";font-weight:800;color:var(--accent);width:1ch}
+details.tool[open]>summary::before{content:"–"}
+details.tool>summary .sig{margin-left:auto;color:var(--muted);font-size:.88rem;text-align:right}
+.tool .body{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px}
+.when{border-left:3px solid var(--accent);padding-left:12px}
+.recipe{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:4px}
+.ex{background:var(--accent-soft);border-radius:6px;padding:12px 14px}
+.ex .eyebrow{color:var(--accent)}
+.trap{background:var(--red-soft);color:var(--ink);border-radius:6px;padding:10px 14px}
+.trap b{color:var(--red)}
+.formula{font-size:1.05rem;overflow-x:auto}
+/* Trainer */
+.trainer-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.score{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+.btn{font:inherit;font-weight:600;border:1px solid var(--accent);background:var(--sheet);color:var(--accent);border-radius:6px;padding:7px 12px;cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--sheet)}
+.btn:focus-visible,.mbtn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.task{font-size:1.07rem}
+.task .src{font-size:.85rem;color:var(--muted);margin-top:6px}
+.methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.mbtn{font:inherit;text-align:left;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:6px;padding:8px 10px;cursor:pointer;font-size:.95rem}
+.mbtn:hover{border-color:var(--accent)}
+.mbtn.right{background:var(--green-soft);border-color:var(--green);color:var(--ink)}
+.mbtn.wrong{background:var(--red-soft);border-color:var(--red);color:var(--ink)}
+.feedback{border-radius:6px;padding:12px 14px}
+.feedback.ok{background:var(--green-soft)}
+.feedback.no{background:var(--red-soft)}
+.steps{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:6px}
+.result{font-weight:700;color:var(--green)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+/* Rechner */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.calc>*{min-width:0}
+label{font-weight:600;font-size:.92rem;display:flex;flex-direction:column;gap:4px}
+input,select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--paper);color:var(--ink);width:100%}
+.inrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
+.out{background:var(--accent-soft);border-radius:6px;padding:12px 14px}
+.err{color:var(--red);font-weight:600}
+ul.errs{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+ul.errs li{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;grid-template-columns:1fr;gap:4px}
+ul.errs .bad{color:var(--red);font-weight:700}
+ul.errs .good{color:var(--green);font-weight:700}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.two>*{min-width:0}
+@media (prefers-reduced-motion:no-preference){.mbtn,.btn{transition:background .15s,border-color .15s}}
+math{font-size:1.05em}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">13BG · Q3 Grundkurs Mathematik · Klausur Nr. 1</p>
+  <h1>Stochastik: Was mache ich wann?</h1>
+  <p class="lead">Alles aus deinem Skript auf einer Seite. Oben steht der Entscheidungsweg, mit dem du bei jeder gemischten Aufgabe die richtige Methode findest. Darunter findest du jedes Werkzeug mit Rezept und Beispiel aus euren Blättern, einen Trainer mit 26 gemischten Aufgaben und zwei Rechner zum Selbstkontrollieren.</p>
+</header>
+
+<nav class="top" aria-label="Abschnitte">
+  <a href="#plan">Lernplan</a><a href="#wann">Was wann?</a><a href="#werkzeuge">Werkzeuge</a><a href="#trainer">Trainer</a><a href="#rechner">Rechner</a><a href="#fehler">Typische Fehler</a>
+</nav>
+
+<!-- ===================== PLAN ===================== -->
+<section id="plan">
+  <h2>Lernplan für heute Nachmittag</h2>
+  <div class="sheet">
+    <ol class="plan">
+      <li><span class="t">20 min</span><span><b>Entscheidungsweg</b> unten zweimal durchlesen. Danach ohne Hinschauen die 9 Fragen aufschreiben. Das ist dein Kompass für die Klausur.</span></li>
+      <li><span class="t">40 min</span><span><b>Werkzeuge 1–6</b> (Grundbegriffe, Laplace, Baum, „mindestens“, Erwartungswert, unbekanntes x). Pro Werkzeug das Beispiel auf Papier selbst rechnen, dann vergleichen.</span></li>
+      <li><span class="t">10 min</span><span>Pause.</span></li>
+      <li><span class="t">35 min</span><span><b>Kombinatorik und Lotto</b> (Werkzeuge 7–8). Mit dem Kombinatorik-Rechner deine Lösungen von AB 6 prüfen.</span></li>
+      <li><span class="t">40 min</span><span><b>Vierfeldertafel, bedingt, unabhängig</b> (Werkzeuge 9–11). Die HIV- oder Brustkrebs-Aufgabe komplett mit Tafel lösen.</span></li>
+      <li><span class="t">45 min</span><span><b>Trainer</b>: Bei jeder Aufgabe zuerst die Methode anklicken, dann auf Papier rechnen, dann Lösung aufdecken. Danach „Nur Fehler wiederholen“.</span></li>
+      <li><span class="t">morgen</span><span>Übungsklausur 1 und 2 unter Zeitdruck. Buch S. 22–26. Vor dem Schlafen noch einmal „Typische Fehler“ lesen.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== WAS WANN ===================== -->
+<section id="wann">
+  <h2>Was mache ich wann?</h2>
+  <p class="lead">Stell dir bei jeder Aufgabe diese Fragen <b>in dieser Reihenfolge</b>. Die erste, bei der du „ja“ sagst, liefert die Methode. Achte auf die <mark>markierten Signalwörter</mark>.</p>
+  <ol class="flow" style="margin-top:14px">
+    <li><div><p class="q">Wird nach einer <mark>Anzahl</mark> gefragt? („Wie viele Möglichkeiten / Passwörter / Anordnungen / Tipps?“)</p>
+      <p class="then">→ <b>Kombinatorik</b> (Werkzeug 7). Zwei Fragen: Ist die Reihenfolge wichtig? Darf sich etwas wiederholen? Wird danach eine Wahrscheinlichkeit gefragt, rechnest du $\frac{\text{günstig}}{\text{möglich}}$ mit diesen Anzahlen.</p></div></li>
+    <li><div><p class="q">Gibt es <mark>zwei Merkmale</mark> gleichzeitig mit Prozenten oder Anzahlen? (Raucher/Abitur, krank/Test positiv, Auto/pünktlich)</p>
+      <p class="then">→ <b>Vierfeldertafel</b> (Werkzeug 9). Immer zuerst die Tafel vollständig ausfüllen, dann ablesen.</p></div></li>
+    <li><div><p class="q">Steht da <mark>„unter der Bedingung“</mark>, <mark>„von den …“</mark>, <mark>„einer, der … ist, …“</mark>, <mark>„Test positiv, wirklich krank?“</mark>, <mark>„Anteil in dieser Gruppe“</mark>?</p>
+      <p class="then">→ <b>Bedingte Wahrscheinlichkeit</b> (Werkzeug 10): $P_B(A)=\frac{P(A\cap B)}{P(B)}$. Das Wort nach „von den“ bzw. das, was man schon weiß, ist die <b>Bedingung</b> und kommt in den Nenner.</p></div></li>
+    <li><div><p class="q">Wird gefragt, ob etwas <mark>abhängig</mark>, <mark>unabhängig</mark> ist oder <mark>„einen Einfluss hat“</mark>?</p>
+      <p class="then">→ <b>Unabhängigkeit prüfen</b> (Werkzeug 11): Vergleiche $P(A\cap B)$ mit $P(A)\cdot P(B)$.</p></div></li>
+    <li><div><p class="q">Wird <mark>ohne Zurücklegen</mark> gezogen und nach <mark>„genau k Stück“</mark> einer Sorte gefragt (Lotto, defekte Batterien, Stichprobe)?</p>
+      <p class="then">→ <b>Lottomodell</b> (Werkzeug 8): $\frac{\binom{\text{Treffer}}{k}\cdot\binom{\text{Nieten}}{n-k}}{\binom{\text{alle}}{n}}$. Bei nur 2–3 Zügen geht auch der Baum.</p></div></li>
+    <li><div><p class="q">Steht da <mark>„mindestens einmal“</mark> oder <mark>„wie oft muss man mindestens …, damit …“</mark>?</p>
+      <p class="then">→ <b>Gegenereignis</b> (Werkzeug 4): $P(\text{mind. 1}) = 1-P(\text{keinmal})$. Bei „wie oft“: Ungleichung mit Logarithmus, dann <b>aufrunden</b>.</p></div></li>
+    <li><div><p class="q">Geht es um <mark>Einsatz</mark>, <mark>Auszahlung</mark>, <mark>„lohnt sich“</mark>, <mark>„fair“</mark>, <mark>„durchschnittlicher Gewinn“</mark>?</p>
+      <p class="then">→ <b>Erwartungswert</b> (Werkzeug 5): Summe aus Auszahlung × Wahrscheinlichkeit, dann Einsatz abziehen. Fair heißt: Ergebnis $= 0$.</p></div></li>
+    <li><div><p class="q">Ist eine Gesamtwahrscheinlichkeit gegeben, aber eine <mark>Einzelwahrscheinlichkeit gesucht</mark>? („Wie hoch ist die Trefferquote von B?“, „Welche Wahrscheinlichkeit für Kopf, damit …?“)</p>
+      <p class="then">→ <b>Unbekannte $x$</b> (Werkzeug 6): Baum mit $x$ an den Ästen, Pfadregeln anwenden, gleich dem gegebenen Wert setzen, nach $x$ auflösen.</p></div></li>
+    <li><div><p class="q">Passiert etwas <mark>mehrmals nacheinander</mark> oder <mark>gleichzeitig</mark> (zweimal würfeln, zwei Kugeln, zwei Glücksräder)?</p>
+      <p class="then">→ <b>Baumdiagramm + Pfadregeln</b> (Werkzeug 3). Sind alle Ergebnisse gleich wahrscheinlich (normale Würfel), geht auch <b>Laplace</b> mit $|\Omega|=36$.</p></div></li>
+  </ol>
+  <p class="lead" style="margin-top:12px">Nichts davon? Dann ist es ein einstufiger Versuch mit gleich wahrscheinlichen Ergebnissen: <b>Laplace</b>, günstig durch möglich (Werkzeug 2). Bei Tabellen mit Alterswerten usw. sind es <b>Häufigkeiten</b> (Werkzeug 1).</p>
+
+  <h3 style="margin-top:22px">Signalwörter auf einen Blick</h3>
+  <div class="tbl" style="margin-top:8px"><table>
+    <tr><th>Du liest …</th><th>Das bedeutet …</th><th>Rechnung</th></tr>
+    <tr><td>„mindestens einmal“</td><td>Gegenereignis „keinmal“</td><td>$1-P(\text{keinmal})$</td></tr>
+    <tr><td>„höchstens 4“ (von 5)</td><td>Gegenereignis „alle 5“</td><td>$1-P(X=5)$</td></tr>
+    <tr><td>„spätestens beim 3. Mal“</td><td>beim 1., 2. oder 3. Mal, also „nicht dreimal daneben“</td><td>$1-P(\text{3× nicht})$</td></tr>
+    <tr><td>„und“, „sowohl … als auch“</td><td>Schnitt $A\cap B$</td><td>entlang eines Pfades multiplizieren</td></tr>
+    <tr><td>„oder“</td><td>Vereinigung $A\cup B$</td><td>$P(A)+P(B)-P(A\cap B)$</td></tr>
+    <tr><td>„genau 2 gleichfarbige“, „eine rote und eine grüne“</td><td>mehrere Pfade</td><td>Pfade einzeln berechnen und addieren</td></tr>
+    <tr><td>„zuerst rot, dann blau“</td><td>genau ein Pfad</td><td>nur multiplizieren</td></tr>
+    <tr><td>„mit einem Griff“, „gleichzeitig ziehen“</td><td>ohne Zurücklegen</td><td>Nenner wird kleiner</td></tr>
+    <tr><td>„Reihenfolge egal“, „Gruppe“, „Komitee“, „Tipp“</td><td>ungeordnet</td><td>$\binom{n}{k}$</td></tr>
+    <tr><td>„Platz 1, 2, 3“, „Gold, Silber, Bronze“, „Code“</td><td>geordnet</td><td>$n^k$ oder $\frac{n!}{(n-k)!}$</td></tr>
+  </table></div>
+</section>
+
+<!-- ===================== WERKZEUGE ===================== -->
+<section id="werkzeuge">
+  <h2>Die Werkzeuge</h2>
+  <p class="lead">Jedes Werkzeug hat: wann du es brauchst, das Rezept, ein durchgerechnetes Beispiel aus euren Blättern und die typische Falle. Klick zum Aufklappen.</p>
+  <div class="stack" style="margin-top:14px">
+
+  <details class="tool" open>
+    <summary><h3>1 · Grundbegriffe, Häufigkeiten, Mengen</h3><span class="sig">Ω, Ereignis, Gegenereignis, ∪, ∩</span></summary>
+    <div class="body">
+      <div class="two">
+        <div class="when"><p><b>Ergebnisraum Ω</b>: Menge aller möglichen Ergebnisse. Münze 3× werfen: $|\Omega|=2^3=8$.<br><b>Ereignis</b>: Teilmenge von Ω.<br><b>Gegenereignis $\bar A$</b>: alles aus Ω, was nicht in A ist. $P(\bar A)=1-P(A)$.</p></div>
+        <div class="when"><p><b>$A\cap B$</b> (Schnitt): A <i>und</i> B.<br><b>$A\cup B$</b> (Vereinigung): A <i>oder</i> B (oder beide).<br><b>Additionssatz</b>: $P(A\cup B)=P(A)+P(B)-P(A\cap B)$.</p></div>
+      </div>
+      <p><b>Absolute Häufigkeit $H$</b>: wie oft etwas vorkommt (Anzahl). <b>Relative Häufigkeit $h$</b>: Anteil, $h=\frac{H}{n}$. Alle $h$ zusammen ergeben 1. Bei vielen Versuchen nähert sich $h$ der Wahrscheinlichkeit (Gesetz der großen Zahlen).</p>
+      <p><b>Wahrscheinlichkeitsverteilung</b>: Jedem Ergebnis (z. B. Augensumme 2 … 12) wird seine Wahrscheinlichkeit zugeordnet und als Säulendiagramm gezeichnet. Die Säulen zusammen ergeben 1.</p>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 1</p>
+        <p>Münze dreimal: $A=\{WWW,ZZZ\}$ bedeutet „Die Münze fällt dreimal auf dieselbe Seite“. $\bar A$ sind die übrigen 6 Ergebnisse: „nicht dreimal dieselbe Seite“.<br>$B=\{WWW,WWZ,WZW,ZWW\}$ bedeutet „höchstens einmal Zahl“, also $\bar B$ = „mindestens zweimal Zahl“.</p></div>
+      <div class="ex"><p class="eyebrow">Beispiel Tetraeder, Übungsklausur 2</p>
+        <p>Zwei Tetraeder (1–4): $|\Omega|=16$. $E_1$ „Augenzahlen gleich“ $=\{(1,1),(2,2),(3,3),(4,4)\}$, $P=\frac{4}{16}$. Bei $\bar{E_3}$ oder $E_1\cup E_4$ immer erst die Menge hinschreiben, dann zählen.</p></div>
+      <div class="trap"><b>Falle:</b> Beim Gegenereignis von „höchstens einmal Zahl“ ist das Gegenteil „mindestens zweimal Zahl“ und nicht „keinmal Zahl“.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>2 · Laplace: günstig durch möglich</h3><span class="sig">alle Ergebnisse gleich wahrscheinlich</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Alle Ergebnisse sind gleich wahrscheinlich: fairer Würfel, gleich große Sektoren, Karte ziehen, Los ziehen.</p>
+      <p class="formula">$$P(E)=\frac{\text{Anzahl günstige Ergebnisse}}{\text{Anzahl mögliche Ergebnisse}}=\frac{|E|}{|\Omega|}$$</p>
+      <ol class="recipe"><li>$|\Omega|$ bestimmen (zwei Würfel: $6\cdot 6=36$).</li><li>Günstige Ergebnisse als Paare aufschreiben und zählen.</li><li>Teilen, kürzen.</li></ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 2</p>
+        <p>Zwei Würfel. B „Augensumme gerade“: 18 von 36 Paaren, also $P(B)=\frac{18}{36}=\frac12$. C „beide Augenzahlen gerade“: $3\cdot 3=9$ Paare, $P(C)=\frac{9}{36}=\frac14$.</p></div>
+      <div class="trap"><b>Falle (Fritzchen, AB 2):</b> Die Augensummen 2 bis 12 sind <b>nicht</b> gleich wahrscheinlich. $P(\text{Summe }7)=\frac{6}{36}$, nicht $\frac{1}{11}$. Laplace gilt nur für die 36 Paare. Das gilt auch für Würfel mit anderen Netzen (z. B. 4 Einsen, 2 Sechsen): da ist jede <i>Seite</i> gleich wahrscheinlich, nicht jede <i>Zahl</i>.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>3 · Baumdiagramm und Pfadregeln</h3><span class="sig">mehrstufig: nacheinander, zweimal …</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Der Versuch hat mehrere Stufen: zweimal drehen, zwei Kugeln ziehen, zwei Schützen, Test nach Krankheit.</p>
+      <div class="two">
+        <div class="ex"><p class="eyebrow">1. Pfadregel (Produktregel)</p><p>Wahrscheinlichkeit eines Pfades = <b>Produkt</b> der Wahrscheinlichkeiten entlang des Pfades.</p></div>
+        <div class="ex"><p class="eyebrow">2. Pfadregel (Summenregel)</p><p>Gehören mehrere Pfade zum Ereignis: Pfadwahrscheinlichkeiten <b>addieren</b>.</p></div>
+      </div>
+      <ol class="recipe">
+        <li>Stufen erkennen und Baum zeichnen. <b>Mit Zurücklegen:</b> Äste bleiben gleich. <b>Ohne Zurücklegen:</b> Zähler und Nenner werden in Stufe 2 kleiner.</li>
+        <li>Alle Pfade markieren, die zum Ereignis passen.</li>
+        <li>Jeden Pfad multiplizieren, dann die Pfade addieren.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 3 (2 grün, 3 rot, 5 blau, ohne Zurücklegen)</p>
+        <p>C „eine rote und eine grüne“: zwei Pfade (r,g) und (g,r).<br>$P(C)=\frac{3}{10}\cdot\frac{2}{9}+\frac{2}{10}\cdot\frac{3}{9}=\frac{12}{90}=\frac{2}{15}$<br>E „keine blaue“: nur Äste mit g und r: $\frac{2}{10}\cdot\frac19+\frac{2}{10}\cdot\frac39+\frac{3}{10}\cdot\frac29+\frac{3}{10}\cdot\frac29=\frac{20}{90}=\frac29$</p></div>
+      <div class="ex"><p class="eyebrow">Sonderfall: „genau k Treffer bei n Versuchen“ (AB 7, Nr. 10)</p>
+        <p>Jeder passende Pfad hat dieselbe Wahrscheinlichkeit. Also: <b>Anzahl der Pfade × Wahrscheinlichkeit eines Pfades</b>.<br>10 Fragen, je 3 Antworten, genau 5 richtig: $\binom{10}{5}\cdot\left(\frac13\right)^5\cdot\left(\frac23\right)^5\approx 0{,}1366$. Dabei zählt $\binom{10}{5}$, wie viele Möglichkeiten es gibt, die 5 richtigen Fragen auszuwählen.</p></div>
+      <div class="trap"><b>Falle:</b> „Eine rote und eine grüne“ hat <b>zwei</b> Pfade, weil die Reihenfolge rot-grün oder grün-rot sein kann. „Zuerst rot, dann blau“ hat nur einen. Bei drei verschiedenen Farben gibt es $3!=6$ Reihenfolgen.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>4 · „Mindestens einmal“ und „wie oft mindestens?“</h3><span class="sig">Gegenereignis, Logarithmus</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> „mindestens einmal“, „mindestens ein defektes“, „spätestens beim 3. Mal“. Direkt rechnen wären viele Pfade, das Gegenereignis ist nur <b>ein</b> Pfad.</p>
+      <p class="formula">$$P(\text{mindestens einmal})=1-P(\text{keinmal})=1-q^n$$</p>
+      <p>Dabei ist $q$ die Wahrscheinlichkeit für „kein Treffer“ in einem Versuch.</p>
+      <p><b>Wie oft mindestens?</b> (gesucht ist $n$)</p>
+      <ol class="recipe">
+        <li>Ansatz: $1-q^n \ge 0{,}95$</li>
+        <li>Umstellen: $q^n \le 0{,}05$</li>
+        <li>Logarithmus: $n = \log_q(0{,}05)$ bzw. $n=\frac{\ln 0{,}05}{\ln q}$</li>
+        <li><b>Immer aufrunden</b>, auch bei 5,1 → 6.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel Buch S. 25 Nr. 6c</p>
+        <p>Glücksrad 3 weiß, 2 rot. Wie oft drehen, damit mit mind. 95 % mindestens einmal Rot kommt?<br>$P(\text{kein Rot})=\left(\frac35\right)^n\le 0{,}05\;\Rightarrow\; n=\log_{3/5}0{,}05\approx 5{,}86$ → <b>mindestens 6-mal</b>.</p></div>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 4b: „spätestens beim 3. Mal erkannt“</p>
+        <p>Fehler wird mit 20 % übersehen. Gegenereignis: dreimal übersehen. $1-0{,}2^3=0{,}992=99{,}2\,\%$.</p></div>
+      <div class="trap"><b>Falle:</b> Beim Teilen durch $\ln q$ (negativ!) dreht sich das Zeichen um. Merk dir einfach: Ergebnis ausrechnen und <b>aufrunden</b>.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>5 · Erwartungswert und faires Spiel</h3><span class="sig">Einsatz, Auszahlung, lohnt sich</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Einsatz, Auszahlung, Gewinnplan, „lohnt sich auf lange Sicht“, „durchschnittlicher Gewinn“, „fair“.</p>
+      <p class="formula">$$E = \text{Auszahlung}_1\cdot P_1+\text{Auszahlung}_2\cdot P_2+\ldots\;-\;\text{Einsatz}$$</p>
+      <ol class="recipe">
+        <li>Für jede Auszahlung die Wahrscheinlichkeit bestimmen (meist mit Baum).</li>
+        <li>Mittlere Auszahlung = Summe aus Auszahlung × Wahrscheinlichkeit.</li>
+        <li>Einsatz abziehen. $E>0$: Spieler gewinnt im Schnitt. $E<0$: Betreiber gewinnt. <b>$E=0$: fair.</b></li>
+        <li>Ist etwas unbekannt (fairer Einsatz, Gewinn für „11“), setze $E=0$ und löse auf.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 9</p>
+        <p>$P(5\,€)=\frac{7}{24}$, $P(3\,€)=\frac{5}{24}$, Einsatz 2 €.<br>$E=\frac{7}{24}\cdot5+\frac{5}{24}\cdot3-2=\frac{1}{12}\approx 0{,}083\,€$. Der Spieler gewinnt im Schnitt etwa 8,3 ct pro Spiel.</p></div>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 7 (Minilotto 4 aus 16, Sicht des Veranstalters)</p>
+        <p>$1\,€-\frac{12}{455}\cdot10\,€-\frac{1}{1820}\cdot1000\,€=\frac{17}{91}\approx0{,}19\,€$ Gewinn pro Tipp für den Veranstalter.</p></div>
+      <div class="trap"><b>Falle:</b> Einsatz vergessen oder doppelt abziehen. Lies genau, ob der „Gewinn“ die Auszahlung ist oder schon Auszahlung minus Einsatz.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>6 · Unbekannte Wahrscheinlichkeit x</h3><span class="sig">„Wie hoch ist die Trefferquote von B?“</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Eine Gesamtwahrscheinlichkeit ist gegeben, eine einzelne Astwahrscheinlichkeit fehlt.</p>
+      <ol class="recipe">
+        <li>Baum zeichnen, am fehlenden Ast $x$, am Gegenast $1-x$ eintragen.</li>
+        <li>Das gegebene Ereignis (oder sein Gegenereignis, oft einfacher!) mit den Pfadregeln aufschreiben.</li>
+        <li>Gleich dem gegebenen Wert setzen und nach $x$ auflösen. Bei $x^2$: pq-Formel oder Taschenrechner, nur Lösungen zwischen 0 und 1 zählen.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 7, Nr. 11</p>
+        <p>A trifft mit 0,6. In 90 % wird die Scheibe mindestens einmal getroffen. Gegenereignis: beide daneben, 10 %.<br>$0{,}4\cdot(1-x)=0{,}1\;\Rightarrow\;1-x=0{,}25\;\Rightarrow\;x=0{,}75$. B trifft zu 75 %.</p></div>
+      <div class="ex"><p class="eyebrow">Beispiel Buch S. 24 Nr. 4</p>
+        <p>Zwei Schüsse, P(mindestens ein Treffer) = 0,25. Gegenereignis: $(1-x)^2=0{,}75$ → $1-x\approx0{,}866$ → $x\approx0{,}134$. Er muss zu 13,4 % treffen.</p></div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>7 · Kombinatorik: die 4 Fälle</h3><span class="sig">„Wie viele Möglichkeiten?“</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Es wird eine <b>Anzahl</b> gesucht. Bestimme $n$ (woraus wird gewählt) und $k$ (wie oft wird gewählt). Dann zwei Fragen stellen:</p>
+      <div class="tbl"><table>
+        <tr><th></th><th>mit Wiederholung</th><th>ohne Wiederholung</th></tr>
+        <tr><th>Reihenfolge wichtig</th><td><b>Fall 1:</b> $n^k$<br><small>Passwort, Toto, Zahlenschloss</small></td><td><b>Fall 2:</b> $\frac{n!}{(n-k)!}$<br><small>Plätze 1–3, Medaillen. Alle anordnen ($k=n$): $n!$</small></td></tr>
+        <tr><th>Reihenfolge egal</th><td><b>Fall 4:</b> $\binom{n+k-1}{k}$<br><small>Getränkekasten, Eiskugeln</small></td><td><b>Fall 3:</b> $\binom{n}{k}$<br><small>Lotto, Klassensprecher, Komitee</small></td></tr>
+      </table></div>
+      <div class="ex"><p class="eyebrow">Eure Lösungen (AB 6, vermischte Aufgaben)</p>
+        <p>Fußballtoto: $n=3$, $k=8$, mit W., Reihenfolge wichtig: $3^8=6561$<br>
+        Pferdewette Plätze 1–3 aus 10: $\frac{10!}{7!}=10\cdot9\cdot8=720$<br>
+        2 Klassensprecher aus 30: $\binom{30}{2}=435$<br>
+        Kasten mit 12 Flaschen aus 3 Sorten: $\binom{3+12-1}{12}=91$</p></div>
+      <p><b>Produktregel (Fächerprinzip)</b> bei gemischten Stellen: Möglichkeiten pro Stelle multiplizieren.<br>Passwort aus 2 Großbuchstaben + 4 Ziffern: $26\cdot26\cdot10^4=6\,760\,000$.</p>
+      <p><b>Gruppen nebeneinander</b> (AB 7 Nr. 8b): erst innerhalb jeder Gruppe anordnen, dann die Gruppen selbst. 3 Frauen, 5 Männer, 4 Kinder: $3!\cdot5!\cdot4!\cdot\underbrace{3!}_{\text{Gruppen}}=103\,680$.</p>
+      <p><b>Gleiche Objekte auf Plätze</b> (Parkplatz II): 3 rote und 5 blaue Autos auf 10 Plätze: $\binom{10}{3}\cdot\binom{7}{5}=2520$.</p>
+      <div class="trap"><b>Falle:</b> Ohne Wiederholung muss $n\ge k$ sein. Und: Wenn du beim Vertauschen zweier Elemente etwas <i>anderes</i> bekommst (Gold/Silber), ist die Reihenfolge wichtig. Bekommst du <i>dasselbe</i> (Gruppe aus Anna und Ben), ist sie egal.</div>
+      <p>Taschenrechner: $\binom{49}{6}$ = <b>49 nCr 6</b>, $\frac{10!}{7!}$ = <b>10 nPr 3</b>.</p>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>8 · Lottomodell (hypergeometrische Verteilung)</h3><span class="sig">ohne Zurücklegen, „genau k“</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Aus einer Menge mit zwei Sorten (Treffer/Nieten, defekt/ok, rot/weiß) wird <b>ohne Zurücklegen</b> eine Stichprobe gezogen. Gefragt: „genau k“ der einen Sorte.</p>
+      <p class="formula">$$P(\text{genau }k)=\frac{\binom{\text{Treffer}}{k}\cdot\binom{\text{Nieten}}{n-k}}{\binom{\text{alle}}{n}}$$</p>
+      <ol class="recipe">
+        <li>Die Urne in zwei Gruppen teilen: $M$ Treffer und $N-M$ Nieten.</li>
+        <li>Oben: $k$ aus den Treffern <b>mal</b> den Rest $n-k$ aus den Nieten. Die unteren Zahlen oben ergeben zusammen $n$, die oberen zusammen $N$.</li>
+        <li>Unten: $n$ aus allen $N$.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel Lotto 6 aus 49, „4 Richtige“</p>
+        <p>$P=\frac{\binom64\cdot\binom{43}{2}}{\binom{49}{6}}=\frac{15\cdot903}{13\,983\,816}\approx0{,}00097$</p></div>
+      <div class="ex"><p class="eyebrow">„mindestens“ im Lottomodell</p>
+        <p>Summe der Fälle, oder Gegenereignis: $P(\text{mind. 1 defekt})=1-P(\text{0 defekt})=1-\frac{\binom{10}{0}\binom{70}{5}}{\binom{80}{5}}$ (80 Batterien, 10 defekt, 5 gezogen).</p></div>
+      <div class="trap"><b>Falle:</b> Oben <b>multiplizieren</b>, nicht addieren. Und prüfen: $k+(n-k)=n$ und $M+(N-M)=N$.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>9 · Vierfeldertafel</h3><span class="sig">zwei Merkmale, Prozente</span></summary>
+    <div class="body">
+      <p class="when"><b>Wann?</b> Zwei Merkmale mit je ja/nein: Raucher/Abitur, krank/Test positiv, Größe/Haarfarbe.</p>
+      <div class="tbl"><table>
+        <tr><th></th><th class="num">$A$</th><th class="num">$\bar A$</th><th class="num">Σ</th></tr>
+        <tr><th>$B$</th><td class="num">$P(A\cap B)$</td><td class="num">$P(\bar A\cap B)$</td><td class="num">$P(B)$</td></tr>
+        <tr><th>$\bar B$</th><td class="num">$P(A\cap\bar B)$</td><td class="num">$P(\bar A\cap\bar B)$</td><td class="num">$P(\bar B)$</td></tr>
+        <tr><th>Σ</th><td class="num">$P(A)$</td><td class="num">$P(\bar A)$</td><td class="num">1</td></tr>
+      </table></div>
+      <ol class="recipe">
+        <li>Jede Zeile und jede Spalte ergibt ihre Summe. Mit drei passenden Werten lässt sich alles ausfüllen.</li>
+        <li><b>Innen</b> stehen immer „und“-Wahrscheinlichkeiten. Die Randwerte sind die einzelnen Merkmale.</li>
+        <li>Ist eine <b>bedingte</b> Angabe gegeben („70 % der Männer über 1,90 m haben braune Haare“), musst du erst multiplizieren: $P(G\cap B)=P(G)\cdot P_G(B)$. Erst dann in die Tafel!</li>
+        <li>Mit absoluten Zahlen genauso, nur ist die Gesamtsumme dann $N$ statt 1.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 11, Nr. 1</p>
+        <p>40 % Auto (A), 87 % pünktlich (P), 5 % kamen nicht mit dem Auto und waren unpünktlich, also $P(\bar A\cap\bar P)=0{,}05$. Dann: $P(\bar A)=0{,}6$ → $P(\bar A\cap P)=0{,}55$ → $P(A\cap P)=0{,}87-0{,}55=0{,}32$ → $P(A\cap\bar P)=0{,}08$.<br>Zu spät, mit dem Auto? $P_{\bar P}(A)=\frac{0{,}08}{0{,}13}\approx0{,}615$.</p></div>
+      <div class="ex"><p class="eyebrow">Umrechnen Tafel ↔ Baum</p>
+        <p>Baum mit $A$ zuerst: Astwahrscheinlichkeiten 1. Stufe = Randwerte $P(A)$. 2. Stufe = bedingt: $P_A(B)=\frac{P(A\cap B)}{P(A)}$. Pfadenden = Innenfelder der Tafel. Den <b>umgekehrten Baum</b> (B zuerst) liest du einfach wieder aus der Tafel ab.</p></div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>10 · Bedingte Wahrscheinlichkeit</h3><span class="sig">„unter der Bedingung“, „von den …“</span></summary>
+    <div class="body">
+      <p class="formula">$$P_B(A)=\frac{P(A\cap B)}{P(B)}\qquad\text{Multiplikationssatz: }P(A\cap B)=P(B)\cdot P_B(A)$$</p>
+      <p class="when"><b>So findest du die Bedingung:</b> Das, was <b>schon bekannt</b> ist, steht unten im Index und im Nenner. Test-Aufgabe: „Der Test war positiv. Wie wahrscheinlich ist er wirklich krank?“ Bekannt: positiv. Also $P_{T+}(K)=\frac{P(K\cap T+)}{P(T+)}$.</p>
+      <ol class="recipe">
+        <li>Bedingung finden (was weiß ich schon?).</li>
+        <li>Vierfeldertafel oder Baum aufstellen.</li>
+        <li>Zähler: Feld, in dem <b>beides</b> gilt. Nenner: <b>Randsumme</b> der Bedingung.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 9 (Sportverein, 400 Mitglieder)</p>
+        <p>Weibliches Mitglied spielt Handball: $P_W(H)=\frac{50}{200}$. Handballspieler ist weiblich: $P_H(W)=\frac{50}{140}$. Weiblich <i>und</i> Handball: $P(W\cap H)=\frac{50}{400}$. Drei verschiedene Fragen, drei verschiedene Nenner!</p></div>
+      <div class="ex"><p class="eyebrow">Beispiel HIV-Test (AB 8a)</p>
+        <p>0,1 % infiziert, Test erkennt 99,9 %, falsch positiv bei 0,3 %.<br>$P(\text{HIV}\cap T+)=0{,}001\cdot0{,}999=0{,}000999$<br>$P(\text{kein HIV}\cap T+)=0{,}999\cdot0{,}003=0{,}002997$<br>$P_{T+}(\text{HIV})=\frac{0{,}000999}{0{,}000999+0{,}002997}\approx0{,}25$. Nur 25 %, weil es viel mehr Gesunde gibt.</p></div>
+      <div class="trap"><b>Falle:</b> $P_A(B)$ und $P_B(A)$ verwechseln. „Anteil der Raucher unter den Abiturienten“ ist $P_A(R)$. „Anteil der Abiturienten unter den Rauchern“ ist $P_R(A)$.</div>
+    </div>
+  </details>
+
+  <details class="tool">
+    <summary><h3>11 · Stochastische Unabhängigkeit</h3><span class="sig">„abhängig?“, „Einfluss?“</span></summary>
+    <div class="body">
+      <p class="formula">$$A,B\text{ unabhängig}\iff P(A\cap B)=P(A)\cdot P(B)\iff P_B(A)=P(A)$$</p>
+      <ol class="recipe">
+        <li>Aus der Tafel $P(A)$, $P(B)$ und $P(A\cap B)$ ablesen (bei Anzahlen durch $N$ teilen).</li>
+        <li>$P(A)\cdot P(B)$ ausrechnen und mit $P(A\cap B)$ vergleichen.</li>
+        <li>Antwortsatz: gleich → unabhängig; verschieden → abhängig. Bei Umfragen: „kleine Abweichung“ kann Zufall sein, das darfst du erwähnen.</li>
+      </ol>
+      <div class="ex"><p class="eyebrow">Beispiel AB 10, Nr. 4</p>
+        <p>200 Personen, 90 männlich, 80 Raucher, 36 männliche Raucher.<br>$P(M)\cdot P(R)=0{,}45\cdot0{,}4=0{,}18$ und $P(M\cap R)=\frac{36}{200}=0{,}18$. Gleich, also unabhängig.</p></div>
+      <div class="ex"><p class="eyebrow">Alternative mit bedingter Wahrscheinlichkeit (AB 10, Nr. 2)</p>
+        <p>Brille bei Mädchen: $\frac{105}{476}\approx0{,}221$. Brille bei allen: $\frac{230}{1036}\approx0{,}222$. Fast gleich, also praktisch unabhängig vom Geschlecht.</p></div>
+      <div class="trap"><b>Falle:</b> „Unabhängig“ ist nicht „unvereinbar“. Unvereinbar heißt $A\cap B=\emptyset$. Ziehen <b>ohne</b> Zurücklegen macht die Züge abhängig, <b>mit</b> Zurücklegen unabhängig.</div>
+    </div>
+  </details>
+
+  </div>
+</section>
+
+<!-- ===================== TRAINER ===================== -->
+<section id="trainer">
+  <h2>Trainer: gemischte Aufgaben</h2>
+  <p class="lead">Genau das, was dir schwerfällt. Erst die Methode wählen, dann auf Papier rechnen, dann die Lösung aufdecken. Die Aufgaben sind gemischt wie in der Klausur.</p>
+  <div class="sheet stack" style="margin-top:14px">
+    <div class="trainer-head">
+      <span class="score" id="score">Aufgabe 1 von 26</span>
+      <div class="row">
+        <button class="btn" id="btn-mix" type="button">Neu mischen</button>
+        <button class="btn" id="btn-wrong" type="button">Nur Fehler wiederholen</button>
+      </div>
+    </div>
+    <div class="task" id="task"></div>
+    <p class="eyebrow">Welche Methode passt?</p>
+    <div class="methods" id="methods"></div>
+    <div id="fb"></div>
+    <div class="row">
+      <button class="btn" id="btn-sol" type="button">Lösung zeigen</button>
+      <button class="btn primary" id="btn-next" type="button">Nächste Aufgabe</button>
+    </div>
+    <div id="sol" hidden></div>
+  </div>
+</section>
+
+<!-- ===================== RECHNER ===================== -->
+<section id="rechner">
+  <h2>Rechner zur Selbstkontrolle</h2>
+  <p class="lead">Nutze sie nur zum Überprüfen. In der Klausur musst du den Ansatz aufschreiben.</p>
+  <div class="calc" style="margin-top:14px">
+    <div class="sheet stack">
+      <h3>Kombinatorik</h3>
+      <div class="inrow">
+        <label for="k-ord">Reihenfolge wichtig?<select id="k-ord"><option value="1">ja</option><option value="0">nein</option></select></label>
+        <label for="k-rep">Wiederholung erlaubt?<select id="k-rep"><option value="1">ja</option><option value="0" selected>nein</option></select></label>
+      </div>
+      <div class="inrow">
+        <label for="k-n">$n$ (Auswahl aus)<input id="k-n" type="number" min="0" value="10"></label>
+        <label for="k-k">$k$ (wie oft)<input id="k-k" type="number" min="0" value="3"></label>
+      </div>
+      <div class="out" id="k-out"></div>
+    </div>
+    <div class="sheet stack">
+      <h3>Vierfeldertafel</h3>
+      <div class="inrow">
+        <label for="v-a">$P(A)$<input id="v-a" type="number" step="any" value="0.4"></label>
+        <label for="v-b">$P(B)$<input id="v-b" type="number" step="any" value="0.87"></label>
+        <label for="v-ab">$P(A\cap B)$<input id="v-ab" type="number" step="any" value="0.32"></label>
+      </div>
+      <div id="v-out"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEHLER ===================== -->
+<section id="fehler">
+  <h2>Typische Fehler</h2>
+  <ul class="errs" style="margin-top:12px">
+    <li><span class="bad">Bei „mindestens einmal“ alle Pfade einzeln addieren.</span><span class="good">Gegenereignis: $1-P(\text{keinmal})$, das ist ein einziger Pfad.</span></li>
+    <li><span class="bad">Bei „wie oft mindestens“ abrunden (5,86 → 5).</span><span class="good">Immer aufrunden: 6.</span></li>
+    <li><span class="bad">Ohne Zurücklegen, aber in Stufe 2 den gleichen Nenner.</span><span class="good">Nenner um 1 verkleinern, Zähler der gezogenen Farbe auch.</span></li>
+    <li><span class="bad">„Eine rote und eine grüne“ nur als (r, g) rechnen.</span><span class="good">Beide Reihenfolgen: (r, g) + (g, r).</span></li>
+    <li><span class="bad">Bedingte Angabe („70 % der Männer über 1,90 m …“) direkt in die Vierfeldertafel schreiben.</span><span class="good">Erst mit dem Rand multiplizieren: $0{,}4\cdot0{,}7=0{,}28$ kommt ins Innenfeld.</span></li>
+    <li><span class="bad">$P_A(B)$ und $P_B(A)$ verwechseln.</span><span class="good">Was schon bekannt ist, kommt in den Nenner.</span></li>
+    <li><span class="bad">Augensummen 2–12 als gleich wahrscheinlich behandeln.</span><span class="good">Mit den 36 Paaren zählen.</span></li>
+    <li><span class="bad">Beim Lottomodell oben addieren.</span><span class="good">$\binom{M}{k}\cdot\binom{N-M}{n-k}$, oben wird multipliziert.</span></li>
+    <li><span class="bad">Beim Erwartungswert den Einsatz vergessen.</span><span class="good">Mittlere Auszahlung minus Einsatz. Fair heißt Ergebnis 0.</span></li>
+    <li><span class="bad">Reihenfolge bei „Gruppe/Komitee“ als wichtig ansehen.</span><span class="good">Vertauschen ändert nichts → $\binom{n}{k}$.</span></li>
+    <li><span class="bad">Antwortsatz vergessen oder ohne Prozent.</span><span class="good">Zum Schluss immer: „Die Wahrscheinlichkeit beträgt ca. 21,7 %.“</span></li>
+  </ul>
+</section>
+</div>
+
+<script>
+const M = {
+  haeuf:"Häufigkeiten / Mengen",
+  laplace:"Laplace: günstig / möglich",
+  baum:"Baum + Pfadregeln",
+  gegen:"Gegenereignis (mindestens / wie oft)",
+  erw:"Erwartungswert / fair",
+  x:"Unbekannte x, Gleichung",
+  kombi:"Kombinatorik (Anzahl)",
+  lotto:"Lottomodell",
+  vft:"Vierfeldertafel",
+  bed:"Bedingte Wahrscheinlichkeit",
+  unab:"Unabhängigkeit prüfen"
+};
+// m = Hauptmethode, ok = auch akzeptiert, why = Signal, steps = Loesungsweg
+const T = [
+{m:"laplace",ok:[],src:"ähnlich AB 7, Nr. 2",
+ q:String.raw`Zwei faire Würfel werden geworfen. Wie groß ist die Wahrscheinlichkeit, dass die Augensumme 9 beträgt?`,
+ why:String.raw`Alle 36 Paare sind gleich wahrscheinlich → günstig durch möglich.`,
+ s:[String.raw`$|\Omega|=36$`,String.raw`Günstig: $(3,6),(4,5),(5,4),(6,3)$ → 4 Paare`,String.raw`$P=\frac{4}{36}=\frac19\approx11{,}1\,\%$`]},
+{m:"baum",ok:[],src:"ähnlich AB 5, Nr. 4b",
+ q:String.raw`In einer Urne liegen 4 rote und 6 blaue Kugeln. Es werden zwei Kugeln <b>ohne Zurücklegen</b> gezogen. Wie groß ist die Wahrscheinlichkeit, dass beide die gleiche Farbe haben?`,
+ why:String.raw`Zwei Stufen nacheinander, „gleichfarbig“ = zwei Pfade (rr und bb).`,
+ s:[String.raw`Pfad rr: $\frac{4}{10}\cdot\frac39=\frac{12}{90}$`,String.raw`Pfad bb: $\frac{6}{10}\cdot\frac59=\frac{30}{90}$`,String.raw`Addieren: $P=\frac{42}{90}=\frac{7}{15}\approx46{,}7\,\%$`]},
+{m:"gegen",ok:[],src:"ähnlich AB 5, Nr. 5b",
+ q:String.raw`Ein Basketballspieler trifft bei einem Freiwurf mit 30 %. Wie oft muss er mindestens werfen, damit er mit mindestens 90 % Wahrscheinlichkeit mindestens einmal trifft?`,
+ why:String.raw`„Wie oft mindestens … damit mindestens einmal“ → Gegenereignis + Logarithmus.`,
+ s:[String.raw`Gegenereignis: $n$-mal daneben, $P=0{,}7^n$`,String.raw`$1-0{,}7^n\ge0{,}9\;\Rightarrow\;0{,}7^n\le0{,}1$`,String.raw`$n=\log_{0{,}7}0{,}1\approx6{,}46$`,String.raw`Aufrunden: <b>mindestens 7 Würfe</b>`]},
+{m:"kombi",ok:[],src:"ähnlich AB 6, Nr. 5",
+ q:String.raw`Zehn Läuferinnen starten im Finale. Wie viele Möglichkeiten gibt es für die Vergabe von Gold, Silber und Bronze?`,
+ why:String.raw`Anzahl gesucht. Reihenfolge wichtig (Gold ≠ Silber), ohne Wiederholung (niemand bekommt zwei Medaillen) → Fall 2.`,
+ s:[String.raw`$n=10$, $k=3$`,String.raw`$\frac{10!}{(10-3)!}=10\cdot9\cdot8=720$`]},
+{m:"kombi",ok:[],src:"ähnlich AB 6, Nr. 3 (Klassensprecher)",
+ q:String.raw`Aus einer Klasse mit 25 Schülerinnen und Schülern wird ein gleichberechtigtes Dreier-Komitee gewählt. Wie viele Möglichkeiten gibt es?`,
+ why:String.raw`Anzahl gesucht. „Gleichberechtigt“ → Reihenfolge egal, ohne Wiederholung → Fall 3.`,
+ s:[String.raw`$\binom{25}{3}=2300$`]},
+{m:"lotto",ok:["kombi"],src:"ähnlich AB 6-04, Aufgabe 2",
+ q:String.raw`Von 20 Glühbirnen sind 5 defekt. Es werden 4 Glühbirnen zufällig entnommen. Wie groß ist die Wahrscheinlichkeit, dass genau 2 davon defekt sind?`,
+ why:String.raw`Zwei Sorten, ohne Zurücklegen, „genau k“ → Lottomodell.`,
+ s:[String.raw`Treffer = 5 defekte, Nieten = 15 gute, Stichprobe $n=4$, $k=2$`,String.raw`$P=\frac{\binom52\cdot\binom{15}{2}}{\binom{20}{4}}=\frac{10\cdot105}{4845}$`,String.raw`$P=\frac{1050}{4845}\approx21{,}7\,\%$`]},
+{m:"erw",ok:[],src:"ähnlich AB 4a, Übung 22",
+ q:String.raw`Ein Glücksrad hat 8 gleich große Felder. Ein Feld zahlt 5 € aus, zwei Felder zahlen 2 € aus, der Rest nichts. Der Einsatz beträgt 1 €. Lohnt sich das Spiel für den Spieler?`,
+ why:String.raw`Einsatz, Auszahlung, „lohnt sich“ → Erwartungswert.`,
+ s:[String.raw`Mittlere Auszahlung: $\frac18\cdot5+\frac28\cdot2=\frac98=1{,}125\,€$`,String.raw`Minus Einsatz: $E=1{,}125-1=0{,}125\,€$`,String.raw`Der Spieler gewinnt im Schnitt 12,5 ct pro Spiel, das Spiel lohnt sich für ihn. Fair wäre ein Einsatz von 1,125 €.`]},
+{m:"vft",ok:["unab","bed"],src:"ähnlich AB 11, Nr. 1",
+ q:String.raw`60 % der Schüler benutzen im Unterricht heimlich ihr Handy (H). 30 % haben eine schlechte Note (N). 20 % tun beides. Stelle die Vierfeldertafel auf. Mit welcher Wahrscheinlichkeit hat ein Handy-Nutzer eine schlechte Note? Sind H und N unabhängig?`,
+ why:String.raw`Zwei Merkmale mit Prozenten → Vierfeldertafel. Danach bedingt ablesen und Unabhängigkeit prüfen.`,
+ s:[String.raw`Innen: $P(H\cap N)=0{,}2$; $P(H\cap\bar N)=0{,}4$; $P(\bar H\cap N)=0{,}1$; $P(\bar H\cap\bar N)=0{,}3$`,String.raw`$P_H(N)=\frac{0{,}2}{0{,}6}=\frac13\approx33{,}3\,\%$`,String.raw`$P(H)\cdot P(N)=0{,}6\cdot0{,}3=0{,}18\neq0{,}2$ → <b>abhängig</b>`]},
+{m:"bed",ok:["vft","baum"],src:"ähnlich AB 8a / 8b",
+ q:String.raw`2 % einer Bevölkerung haben eine Krankheit. Ein Test erkennt die Krankheit bei 95 % der Kranken. Bei 4 % der Gesunden zeigt er fälschlich „positiv“. Ein Test ist positiv. Wie wahrscheinlich ist die Person wirklich krank?`,
+ why:String.raw`„Test positiv – wirklich krank?“ → bedingte Wahrscheinlichkeit, Bedingung ist „positiv“. Am besten mit Baum oder Vierfeldertafel.`,
+ s:[String.raw`$P(K\cap T+)=0{,}02\cdot0{,}95=0{,}019$`,String.raw`$P(\bar K\cap T+)=0{,}98\cdot0{,}04=0{,}0392$`,String.raw`$P(T+)=0{,}0582$`,String.raw`$P_{T+}(K)=\frac{0{,}019}{0{,}0582}\approx32{,}6\,\%$`]},
+{m:"unab",ok:["vft"],src:"ähnlich AB 10, Nr. 4",
+ q:String.raw`Von 200 Befragten sind 120 Frauen, 90 treiben regelmäßig Sport, 54 Frauen treiben regelmäßig Sport. Hängen Geschlecht und Sportverhalten voneinander ab?`,
+ why:String.raw`„Hängen … ab?“ → Unabhängigkeit prüfen: $P(F\cap S)$ vs. $P(F)\cdot P(S)$.`,
+ s:[String.raw`$P(F)=0{,}6$, $P(S)=0{,}45$, $P(F\cap S)=\frac{54}{200}=0{,}27$`,String.raw`$P(F)\cdot P(S)=0{,}6\cdot0{,}45=0{,}27$`,String.raw`Gleich → <b>unabhängig</b>`]},
+{m:"x",ok:["baum","gegen"],src:"ähnlich AB 7, Nr. 11",
+ q:String.raw`Zwei Schützen schießen gleichzeitig. Schütze A trifft mit 70 %. In 94 % der Fälle wird die Scheibe mindestens einmal getroffen. Wie hoch ist die Trefferquote von B?`,
+ why:String.raw`Gesamtwahrscheinlichkeit gegeben, Einzelwahrscheinlichkeit gesucht → $x$ im Baum. Gegenereignis „beide daneben“ ist ein einziger Pfad.`,
+ s:[String.raw`Beide daneben: $0{,}3\cdot(1-x)=0{,}06$`,String.raw`$1-x=0{,}2$`,String.raw`$x=0{,}8$ → B trifft zu <b>80 %</b>`]},
+{m:"haeuf",ok:["laplace"],src:"ähnlich AB 7, Nr. 1",
+ q:String.raw`Eine Münze wird dreimal geworfen. Gib $|\Omega|$ an und bestimme die Wahrscheinlichkeit für „genau zweimal Wappen“.`,
+ why:String.raw`Ergebnisraum aufschreiben, dann günstig/möglich zählen.`,
+ s:[String.raw`$|\Omega|=2^3=8$`,String.raw`Günstig: $WWZ, WZW, ZWW$`,String.raw`$P=\frac38=37{,}5\,\%$`]},
+{m:"baum",ok:["kombi"],src:"ähnlich AB 7, Nr. 10",
+ q:String.raw`Ein Test hat 8 Fragen mit je 4 Antworten, genau eine ist richtig. Jemand kreuzt zufällig an. Wie groß ist die Wahrscheinlichkeit für genau 2 richtige Antworten?`,
+ why:String.raw`Mehrstufig (8 Fragen), „genau k“ → Anzahl der Pfade mal Pfadwahrscheinlichkeit.`,
+ s:[String.raw`Ein Pfad: $\left(\frac14\right)^2\cdot\left(\frac34\right)^6$`,String.raw`Anzahl Pfade: $\binom82=28$ (welche 2 Fragen sind richtig?)`,String.raw`$P=28\cdot\left(\frac14\right)^2\cdot\left(\frac34\right)^6\approx31{,}1\,\%$`]},
+{m:"kombi",ok:[],src:"ähnlich AB 7, Nr. 8b",
+ q:String.raw`4 Mädchen und 3 Jungen stellen sich für ein Foto in eine Reihe. Wie viele Möglichkeiten gibt es, (a) beliebig, (b) wenn Mädchen und Jungen jeweils als Gruppe nebeneinander stehen?`,
+ why:String.raw`Anzahl von Anordnungen → Kombinatorik ($n!$) und bei Gruppen die Produktregel.`,
+ s:[String.raw`(a) $7!=5040$`,String.raw`(b) Mädchen intern $4!$, Jungen intern $3!$, die zwei Gruppen $2!$`,String.raw`$4!\cdot3!\cdot2!=24\cdot6\cdot2=288$`]},
+{m:"kombi",ok:[],src:"ähnlich AB 6, Nr. 2",
+ q:String.raw`Ein Kennzeichen besteht aus 2 Großbuchstaben gefolgt von 3 Ziffern. Wie viele Kennzeichen sind möglich?`,
+ why:String.raw`Anzahl gesucht, verschiedene Stellen → Produktregel, jede Stelle mit Wiederholung.`,
+ s:[String.raw`$26\cdot26\cdot10\cdot10\cdot10=26^2\cdot10^3=676\,000$`]},
+{m:"kombi",ok:[],src:"ähnlich AB 6-03, Nr. 4 (Flaschen)",
+ q:String.raw`In einer Eisdiele gibt es 8 Sorten. Du nimmst einen Becher mit 3 Kugeln; Sorten dürfen mehrfach vorkommen, die Reihenfolge im Becher ist egal. Wie viele Becher gibt es?`,
+ why:String.raw`Anzahl, Reihenfolge egal, mit Wiederholung → Fall 4.`,
+ s:[String.raw`$n=8$, $k=3$`,String.raw`$\binom{8+3-1}{3}=\binom{10}{3}=120$`]},
+{m:"bed",ok:["vft"],src:"ähnlich AB 9 (Sportverein)",
+ q:String.raw`In einer Klasse sind 18 Mädchen und 12 Jungen. 9 Mädchen und 3 Jungen tragen eine Brille. Eine Person mit Brille wird zufällig ausgewählt. Wie wahrscheinlich ist es ein Mädchen?`,
+ why:String.raw`„Eine Person mit Brille“ = schon bekannt → Bedingung ist Brille.`,
+ s:[String.raw`Brillenträger insgesamt: $9+3=12$`,String.raw`$P_{Br}(M)=\frac{9}{12}=75\,\%$`,String.raw`Zum Vergleich (andere Frage!): $P_M(Br)=\frac{9}{18}=50\,\%$`]},
+{m:"gegen",ok:["baum"],src:"ähnlich AB 7, Nr. 4b",
+ q:String.raw`Eine Kontrolle entdeckt einen Fehler mit 90 %. Das Teil läuft mehrmals durch dieselbe Kontrolle. Wie groß ist die Wahrscheinlichkeit, dass ein Fehler spätestens bei der 3. Kontrolle entdeckt wird?`,
+ why:String.raw`„Spätestens beim 3. Mal“ = mindestens einmal in 3 Versuchen → Gegenereignis: dreimal übersehen.`,
+ s:[String.raw`$P(\text{3× übersehen})=0{,}1^3=0{,}001$`,String.raw`$P=1-0{,}001=0{,}999=99{,}9\,\%$`]},
+{m:"erw",ok:["x"],src:"ähnlich Übungsklausur 2, Aufgabe 5b",
+ q:String.raw`Ein Glücksrad hat 10 gleich große Felder, 3 davon sind rot. Bei Rot wird ein Betrag $a$ ausgezahlt, sonst nichts. Der Einsatz beträgt 1,50 €. Wie groß muss $a$ sein, damit das Spiel fair ist?`,
+ why:String.raw`„Fair“ → Erwartungswert gleich 0 setzen und nach $a$ auflösen.`,
+ s:[String.raw`$E=0{,}3\cdot a-1{,}5=0$`,String.raw`$a=5\,€$`]},
+{m:"haeuf",ok:[],src:"ähnlich Übungsklausur 2, Aufgabe 1",
+ q:String.raw`Alter von 10 Befragten: 16, 17, 16, 18, 17, 16, 17, 17, 19, 16. Gib die absoluten und relativen Häufigkeiten an.`,
+ why:String.raw`Messwerte aus einer Umfrage → Häufigkeiten zählen, relative = absolute durch $n$.`,
+ s:[String.raw`16: $H=4$, $h=0{,}4$`,String.raw`17: $H=4$, $h=0{,}4$`,String.raw`18: $H=1$, $h=0{,}1$; 19: $H=1$, $h=0{,}1$`,String.raw`Kontrolle: $0{,}4+0{,}4+0{,}1+0{,}1=1$. Stabdiagramm: Alter auf der x-Achse, $h$ als Stablänge.`]},
+{m:"haeuf",ok:["laplace"],src:"ähnlich AB 2, Zusatzaufgabe",
+ q:String.raw`Ein Würfel wird einmal geworfen. A: „gerade Zahl“, B: „Zahl größer als 3“. Gib $A\cap B$, $A\cup B$ und $\bar A$ an und berechne $P(A\cup B)$ mit dem Additionssatz.`,
+ why:String.raw`Mengen und Verknüpfungen → Grundbegriffe, Additionssatz.`,
+ s:[String.raw`$A=\{2,4,6\}$, $B=\{4,5,6\}$`,String.raw`$A\cap B=\{4,6\}$, $A\cup B=\{2,4,5,6\}$, $\bar A=\{1,3,5\}$`,String.raw`$P(A\cup B)=\frac36+\frac36-\frac26=\frac46=\frac23$`]},
+{m:"baum",ok:["kombi"],src:"ähnlich Buch S. 25 Nr. 7a",
+ q:String.raw`In einer Urne sind 5 rote und 3 blaue Kugeln. Es wird dreimal <b>mit Zurücklegen</b> gezogen. Wie groß ist die Wahrscheinlichkeit für genau eine rote Kugel?`,
+ why:String.raw`Mehrstufig, mehrere Pfade mit gleicher Wahrscheinlichkeit (rbb, brb, bbr).`,
+ s:[String.raw`Ein Pfad: $\frac58\cdot\frac38\cdot\frac38=\frac{45}{512}$`,String.raw`3 Pfade`,String.raw`$P=3\cdot\frac{45}{512}=\frac{135}{512}\approx26{,}4\,\%$`]},
+{m:"lotto",ok:["gegen"],src:"ähnlich AB 6-04, Aufgabe 2d",
+ q:String.raw`In einer Lostrommel sind 30 Lose, davon 6 Gewinne. Du ziehst 3 Lose. Wie groß ist die Wahrscheinlichkeit, mindestens einen Gewinn zu ziehen?`,
+ why:String.raw`Ohne Zurücklegen, zwei Sorten → Lottomodell. „Mindestens einen“ → über das Gegenereignis „keinen“.`,
+ s:[String.raw`$P(\text{kein Gewinn})=\frac{\binom60\cdot\binom{24}{3}}{\binom{30}{3}}=\frac{2024}{4060}$`,String.raw`$P=1-\frac{2024}{4060}\approx50{,}1\,\%$`]},
+{m:"bed",ok:["baum","vft"],src:"ähnlich AB 9a, Aufgabe 3",
+ q:String.raw`Maschine 1 stellt 60 % aller Teile her, davon sind 3 % defekt. Maschine 2 stellt 40 % her, davon sind 5 % defekt. Ein Teil ist defekt. Mit welcher Wahrscheinlichkeit stammt es von Maschine 2?`,
+ why:String.raw`„Ein Teil ist defekt“ = bekannt → Bedingung. Rückwärts fragen → Baum oder Tafel, dann $P_D(M_2)$.`,
+ s:[String.raw`$P(M_1\cap D)=0{,}6\cdot0{,}03=0{,}018$`,String.raw`$P(M_2\cap D)=0{,}4\cdot0{,}05=0{,}02$`,String.raw`$P_D(M_2)=\frac{0{,}02}{0{,}038}\approx52{,}6\,\%$`]},
+{m:"kombi",ok:[],src:"ähnlich AB 6, Nr. 3",
+ q:String.raw`Ein Passwort hat 5 Zeichen. Erlaubt sind Groß- und Kleinbuchstaben sowie Ziffern. Wie viele Passwörter gibt es?`,
+ why:String.raw`Anzahl, Reihenfolge wichtig, Zeichen dürfen sich wiederholen → Fall 1.`,
+ s:[String.raw`$n=26+26+10=62$, $k=5$`,String.raw`$62^5=916\,132\,832$`]},
+{m:"vft",ok:["unab"],src:"ähnlich Übungsklausur 2, Aufgabe 6",
+ q:String.raw`40 % der Männer sind größer als 1,90 m (G). Von diesen haben 70 % braune Haare (B). Von den Männern unter 1,90 m haben ebenfalls 70 % braune Haare. Stelle die Vierfeldertafel auf und begründe, ob Größe und Haarfarbe unabhängig sind.`,
+ why:String.raw`Zwei Merkmale → Vierfeldertafel. Achtung: 70 % sind bedingte Angaben, erst multiplizieren!`,
+ s:[String.raw`$P(G\cap B)=0{,}4\cdot0{,}7=0{,}28$; $P(G\cap\bar B)=0{,}12$`,String.raw`$P(\bar G\cap B)=0{,}6\cdot0{,}7=0{,}42$; $P(\bar G\cap\bar B)=0{,}18$`,String.raw`$P(B)=0{,}7$; $P(G)\cdot P(B)=0{,}4\cdot0{,}7=0{,}28=P(G\cap B)$`,String.raw`→ <b>unabhängig</b> (auch sichtbar: $P_G(B)=P_{\bar G}(B)=0{,}7$)`]}
+];
+
+const $ = id => document.getElementById(id);
+function tex(el){ if(window.renderMathInElement){ try{ renderMathInElement(el,{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],output:"mathml",throwOnError:false}); }catch(e){} } }
+const store = {get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}, set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+let wrongSet = new Set(store.get("stoch-wrong",[]));
+let order = [], pos = 0, answered = false, right = 0, done = 0, mode = "all";
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function start(m){
+  mode = m;
+  order = m==="wrong" ? [...wrongSet].map(Number).filter(i=>T[i]) : T.map((_,i)=>i);
+  if(m!=="wrong") shuffle(order);
+  if(!order.length){ $("task").innerHTML = "<p>Keine falschen Aufgaben gespeichert. Stark! Starte mit „Neu mischen“ eine neue Runde.</p>"; $("methods").innerHTML=""; $("fb").innerHTML=""; $("sol").hidden=true; $("score").textContent=""; return; }
+  pos = 0; right = 0; done = 0; show();
+}
+function show(){
+  const t = T[order[pos]]; answered = false;
+  $("score").textContent = `Aufgabe ${pos+1} von ${order.length}` + (done ? ` · ${right} von ${done} Methoden richtig` : "");
+  $("task").innerHTML = `<p>${t.q}</p><p class="src">${t.src}</p>`;
+  $("methods").innerHTML = Object.entries(M).map(([k,v])=>`<button type="button" class="mbtn" data-k="${k}">${v}</button>`).join("");
+  $("fb").innerHTML = ""; $("sol").hidden = true; $("sol").innerHTML = "";
+  tex($("task"));
+}
+function pick(k){
+  if(answered) return; answered = true; done++;
+  const idx = order[pos], t = T[idx], good = k===t.m || t.ok.includes(k);
+  if(good){ right++; wrongSet.delete(idx); } else wrongSet.add(idx);
+  store.set("stoch-wrong",[...wrongSet]);
+  document.querySelectorAll(".mbtn").forEach(b=>{
+    if(b.dataset.k===t.m) b.classList.add("right");
+    else if(b.dataset.k===k && !good) b.classList.add("wrong");
+  });
+  const alt = t.ok.length ? ` Auch möglich: ${t.ok.map(o=>M[o]).join(", ")}.` : "";
+  $("fb").innerHTML = `<div class="feedback ${good?"ok":"no"}"><b>${good?"Richtig.":"Nicht ganz."}</b> Hauptmethode: <b>${M[t.m]}</b>.${alt}<br><b>Signal:</b> ${t.why}</div>`;
+  tex($("fb"));
+  $("score").textContent = `Aufgabe ${pos+1} von ${order.length} · ${right} von ${done} Methoden richtig`;
+}
+function solution(){
+  const t = T[order[pos]]; if(!t) return;
+  $("sol").innerHTML = `<p class="eyebrow">Lösungsweg</p><ol class="steps">${t.s.map((x,i)=>`<li${i===t.s.length-1?' class="result"':''}>${x}</li>`).join("")}</ol>`;
+  $("sol").hidden = false; tex($("sol"));
+}
+$("methods").addEventListener("click",e=>{const b=e.target.closest(".mbtn"); if(b) pick(b.dataset.k);});
+$("btn-sol").addEventListener("click",solution);
+$("btn-next").addEventListener("click",()=>{ if(!order.length) return; pos=(pos+1)%order.length; show(); });
+$("btn-mix").addEventListener("click",()=>start("all"));
+$("btn-wrong").addEventListener("click",()=>start("wrong"));
+
+/* Kombinatorik-Rechner */
+function fact(n){let r=1;for(let i=2;i<=n;i++)r*=i;return r}
+function perm(n,k){let r=1;for(let i=0;i<k;i++)r*=(n-i);return r}
+function binom(n,k){if(k<0||k>n)return 0;k=Math.min(k,n-k);let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return Math.round(r)}
+function fmt(x){ if(!isFinite(x)) return "zu groß"; return x<1e15 ? x.toLocaleString("de-DE") : x.toExponential(4).replace(".",","); }
+function komb(){
+  const o=$("k-ord").value==="1", w=$("k-rep").value==="1", n=parseInt($("k-n").value,10), k=parseInt($("k-k").value,10);
+  const out=$("k-out");
+  if(!(n>=0&&k>=0)){ out.innerHTML='<p class="err">Bitte ganze Zahlen ≥ 0 für n und k eingeben.</p>'; return; }
+  let f,v,c;
+  if(o&&w){c="Fall 1";f=`n^k=${n}^{${k}}`;v=Math.pow(n,k);}
+  else if(o&&!w){c="Fall 2";f=`\\frac{n!}{(n-k)!}=\\frac{${n}!}{${n-k}!}`;v=k>n?NaN:perm(n,k);}
+  else if(!o&&!w){c="Fall 3";f=`\\binom{n}{k}=\\binom{${n}}{${k}}`;v=k>n?NaN:binom(n,k);}
+  else {c="Fall 4";f=`\\binom{n+k-1}{k}=\\binom{${n+k-1}}{${k}}`;v=binom(n+k-1,k);}
+  if(isNaN(v)){ out.innerHTML=`<p class="err">Ohne Wiederholung muss n ≥ k sein (du kannst nicht ${k} aus ${n} ziehen).</p>`; return; }
+  out.innerHTML=`<p><b>${c}</b>: $${f}$</p><p style="font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums">${fmt(v)} Möglichkeiten</p>${c!=="Fall 4"?`<p>Wahrscheinlichkeit, zufällig genau die richtige zu treffen: $\\frac{1}{${fmt(v).replace(/\./g,"{.}")}}$</p>`:""}`;
+  tex(out);
+}
+["k-ord","k-rep","k-n","k-k"].forEach(id=>$(id).addEventListener("input",komb));
+
+/* Vierfeldertafel-Rechner */
+const r4 = x => (Math.round(x*10000)/10000).toLocaleString("de-DE",{maximumFractionDigits:4});
+function vft(){
+  const a=parseFloat($("v-a").value), b=parseFloat($("v-b").value), ab=parseFloat($("v-ab").value), out=$("v-out");
+  const bad = [a,b,ab].some(x=>isNaN(x)||x<0||x>1);
+  if(bad){ out.innerHTML='<p class="err">Alle drei Werte müssen zwischen 0 und 1 liegen (z. B. 0,4 als 0.4).</p>'; return; }
+  const aNb=a-ab, nAb=b-ab, nAnB=1-a-b+ab, eps=1e-9;
+  if(aNb<-eps||nAb<-eps||nAnB<-eps){ out.innerHTML='<p class="err">Diese Werte passen nicht zusammen: ein Feld würde negativ. P(A∩B) darf nicht größer als P(A) oder P(B) sein.</p>'; return; }
+  const prod=a*b, ind=Math.abs(prod-ab)<0.0005;
+  out.innerHTML=`<div class="tbl"><table>
+   <tr><th></th><th class="num">$A$</th><th class="num">$\\bar A$</th><th class="num">Σ</th></tr>
+   <tr><th>$B$</th><td class="num">${r4(ab)}</td><td class="num">${r4(nAb)}</td><td class="num">${r4(b)}</td></tr>
+   <tr><th>$\\bar B$</th><td class="num">${r4(aNb)}</td><td class="num">${r4(nAnB)}</td><td class="num">${r4(1-b)}</td></tr>
+   <tr><th>Σ</th><td class="num">${r4(a)}</td><td class="num">${r4(1-a)}</td><td class="num">1</td></tr></table></div>
+   <div class="out" style="margin-top:10px"><p>$P_A(B)=\\frac{P(A\\cap B)}{P(A)}=${a>0?r4(ab/a):"–"}$ · $P_B(A)=${b>0?r4(ab/b):"–"}$</p>
+   <p>$P_{\\bar B}(A)=${b<1?r4(aNb/(1-b)):"–"}$ · $P_{\\bar A}(B)=${a<1?r4(nAb/(1-a)):"–"}$</p>
+   <p>$P(A)\\cdot P(B)=${r4(prod)}$ ${ind?"=":"≠"} $P(A\\cap B)=${r4(ab)}$ → <b>${ind?"unabhängig":"abhängig"}</b></p></div>`;
+  tex(out);
+}
+["v-a","v-b","v-ab"].forEach(id=>$(id).addEventListener("input",vft));
+
+function boot(){ tex(document.querySelector(".wrap")); start("all"); komb(); vft(); }
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
+</script>
