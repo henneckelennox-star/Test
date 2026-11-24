@@ -61,10 +61,21 @@ main{padding-block:1.4rem 3rem}
 .grp{font-family:var(--display);font-variation-settings:"wdth" 75;font-weight:800;font-size:1.05rem;text-transform:uppercase;letter-spacing:.04em;margin:1.6rem 0 0;padding-bottom:.35rem;border-bottom:2px solid var(--ink);display:flex;gap:.8rem;align-items:baseline;flex-wrap:wrap}
 .grp:first-child{margin-top:.4rem}
 .grp .mono{color:var(--acc);font-weight:600;text-transform:none;letter-spacing:.04em}
-.file{display:grid;grid-template-columns:4.2rem 1fr auto;gap:.2rem 1rem;align-items:center;padding:.9rem .2rem;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;text-align:left;width:100%}
+.file{display:grid;grid-template-columns:96px 1fr auto;gap:.2rem 1rem;align-items:center;padding:.9rem .2rem;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;text-align:left;width:100%}
 .file:hover:not(:disabled){background:var(--panel2)}
 .file:disabled{opacity:.5;cursor:not-allowed}
-.file .code{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.thumb{grid-row:1 / span 2;position:relative;display:block;width:96px;height:60px;border-radius:6px;overflow:hidden;background:#0b1622}
+.thumb .art{width:100%;height:100%;display:block}
+.file .code{position:absolute;left:4px;bottom:3px;font-family:var(--mono);font-size:.66rem;color:#e8eef5;background:rgba(11,22,34,.75);padding:0 .25rem;border-radius:3px}
+.file h3,.file .sub{grid-column:2}
+.brief .art{display:block;width:100%;height:auto;aspect-ratio:600/240;border-radius:8px}
+.brief .role{font-size:1.08rem;line-height:1.55;max-width:62ch;margin:.9rem 0}
+.brief .role::before{content:'Lage';display:block;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:.2rem}
+.brief .facts{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;color:var(--muted);font-family:var(--mono);font-size:.8rem}
+.brief h2{font-family:var(--display);font-variation-settings:"wdth" 75;font-weight:850;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1;margin:.9rem 0 0}
+.result .art{display:block;width:100%;height:auto;aspect-ratio:600/240;border-radius:8px;margin-bottom:.8rem}
+.qart{display:block;height:46px;border-radius:6px;overflow:hidden;margin:-.2rem 0 .8rem}
+.qart .art{width:100%;height:100%;display:block}
 .file h3{margin:0;font-family:var(--display);font-variation-settings:"wdth" 85;font-weight:750;font-size:1.22rem;line-height:1.15}
 .file .sub{grid-column:2;color:var(--muted);font-size:.9rem;min-width:0}
 .file .meta{grid-row:1 / span 2;grid-column:3;text-align:right}
@@ -516,6 +527,73 @@ function makeVote(){
   return {t:'vote',p5,e10,ja,nein,enth,res,topic,o:[label[res],...Object.keys(label).filter(k=>k!==res).map(k=>label[k])],e:why,id:'V'};
 }
 
+/* ---------- Illustrationen (inline SVG, gezeichnet im Code) ---------- */
+const C={night:'#0b1622',navy:'#12263a',mid:'#1f3b57',steel:'#4f6a86',pale:'#e8eef5',gold:'#e6b43c',blue:'#5aa2ef',red:'#e5534b',sand:'#c9a36b'};
+let ARTN=0;
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function wrap(label,c1,c2,inner,defs=''){const id='g'+(++ARTN);return `<svg class="art" viewBox="0 0 600 240" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${label}"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient>${defs}</defs><rect width="600" height="240" fill="url(#${id})"/>${inner}</svg>`}
+const T_=(x,y,s,o={})=>`<text x="${x}" y="${y}" fill="${o.fill||C.pale}" font-family="IBM Plex Mono,monospace" font-size="${o.size||11}" ${o.anchor?`text-anchor="${o.anchor}"`:''} ${o.op?`opacity="${o.op}"`:''} ${o.w?`font-weight="${o.w}"`:''} ${o.rot?`transform="rotate(${o.rot} ${x} ${y})"`:''}>${s}</text>`;
+function stars(r,n,h){let s='';for(let i=0;i<n;i++)s+=`<circle cx="${(r()*600).toFixed(0)}" cy="${(r()*h).toFixed(0)}" r="${(r()*1.2+.3).toFixed(1)}" fill="${C.pale}" opacity="${(r()*.6+.2).toFixed(2)}"/>`;return s}
+function skyline(r,base,fill,win,minH=40,maxH=130){let s='',x=-10;while(x<610){const w=20+r()*35,h=minH+r()*(maxH-minH);s+=`<rect x="${x.toFixed(0)}" y="${(base-h).toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}" fill="${fill}"/>`;for(let wy=base-h+8;wy<base-8;wy+=11)for(let wx=x+5;wx<x+w-6;wx+=9)if(r()<.28)s+=`<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="4" height="5" fill="${win}" opacity="${(r()*.6+.3).toFixed(2)}"/>`;x+=w+2}return s}
+function seatRing(cx,cy,rx,ry,veto,extra){let pts=[],seats='';for(let i=0;i<=40;i++){const a=(-40+260*i/40)*Math.PI/180;pts.push(`${(cx+rx*Math.cos(a)).toFixed(1)},${(cy-ry*Math.sin(a)).toFixed(1)}`)}
+ for(let i=0;i<15;i++){const a=(-40+260*i/14)*Math.PI/180,x=cx+(rx+24)*Math.cos(a),y=cy-(ry+20)*Math.sin(a),p=[0,3,7,11,14].includes(i);seats+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${p?9:7}" fill="${veto&&i===7?C.red:p?C.gold:C.pale}" opacity="${p?1:.75}"/>`;if(veto&&i===7)seats+=`<path d="M${x-4} ${y-4}L${x+4} ${y+4}M${x+4} ${y-4}L${x-4} ${y+4}" stroke="${C.night}" stroke-width="2"/>`}
+ if(extra)for(let i=0;i<6;i++){const a=(-25+230*i/5)*Math.PI/180;seats+=`<circle cx="${(cx+(rx+52)*Math.cos(a)).toFixed(1)}" cy="${(cy-(ry+44)*Math.sin(a)).toFixed(1)}" r="8" fill="none" stroke="${C.gold}" stroke-width="2" stroke-dasharray="3 3"/>`}
+ return `<polyline points="${pts.join(' ')}" fill="none" stroke="${C.steel}" stroke-width="16" stroke-linecap="round"/>${seats}`}
+const ART={
+ T:()=>{const r=rng(7);let arcs='';for(let i=1;i<=5;i++)arcs+=`<path d="M${455-26*i} 52 A${26*i} ${26*i} 0 0 1 ${455+26*i} 52" fill="none" stroke="${C.gold}" stroke-width="2" opacity="${(1-i*.17).toFixed(2)}"/>`;
+  let scr='';[[40,34],[132,62],[52,104]].forEach(([x,y],i)=>{scr+=`<g transform="rotate(${[-4,3,-2][i]} ${x+40} ${y+25})"><rect x="${x}" y="${y}" width="82" height="50" rx="3" fill="${C.navy}" stroke="${C.steel}"/><rect x="${x+5}" y="${y+33}" width="72" height="11" fill="${C.red}"/>${T_(x+9,y+42,'EIL',{size:8,w:600})}<rect x="${x+8}" y="${y+8}" width="${30+i*8}" height="4" fill="${C.steel}"/><rect x="${x+8}" y="${y+16}" width="${50-i*6}" height="4" fill="${C.steel}" opacity=".6"/></g>`});
+  return wrap('Nächtliche Skyline mit Sendeturm und Eilmeldungen',C.night,C.mid,stars(r,40,120)+arcs+`<polygon points="455,52 440,205 470,205" fill="${C.steel}"/><circle cx="455" cy="52" r="6" fill="${C.gold}"/>`+skyline(r,240,'#08111b',C.gold,30,110)+scr+T_(16,228,'TERROR = KOMMUNIKATIONSSTRATEGIE',{op:.8}))},
+ K:()=>{let s='';for(let i=0;i<7;i++){let d=`M0 ${30+i*30}`;for(let x=0;x<=600;x+=30)d+=` L${x} ${(30+i*30+Math.sin(x/70+i)*9).toFixed(1)}`;s+=`<path d="${d}" fill="none" stroke="${C.steel}" opacity=".22"/>`}
+  const L=['Gewaltmonopol','Rechtsstaatlichkeit','Interdependenz','Partizipation','Soziale Gerechtigkeit','Konfliktkultur'];let pts=[],lab='',sp='';
+  for(let i=0;i<6;i++){const a=(-90+60*i)*Math.PI/180,x=300+82*Math.cos(a),y=122+82*Math.sin(a);pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);sp+=`<line x1="300" y1="122" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${C.gold}" opacity=".3"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" fill="${i===0?C.red:C.gold}"/>`;const lx=300+104*Math.cos(a),ly=122+100*Math.sin(a)+4;lab+=T_(lx.toFixed(0),ly.toFixed(0),L[i],{anchor:Math.abs(Math.cos(a))<.2?'middle':Math.cos(a)>0?'start':'end'})}
+  return wrap('Zivilisatorisches Hexagon über einer Konfliktkarte',C.night,'#16304a',s+`<polygon points="${pts.join(' ')}" fill="${C.gold}" fill-opacity=".07" stroke="${C.gold}" stroke-width="2"/>`+sp+`<path d="M300 40 L292 58 L305 70 L294 88 L303 104" fill="none" stroke="${C.red}" stroke-width="2.5"/>`+lab+T_(16,228,'SENGHAAS · AKUF · NEUE KRIEGE',{op:.7}))},
+ U:()=>{let g=`<circle cx="300" cy="62" r="44" fill="none" stroke="${C.steel}" stroke-width="2"/>`;[14,30].forEach(rx=>g+=`<ellipse cx="300" cy="62" rx="${rx}" ry="44" fill="none" stroke="${C.steel}"/>`);[-24,0,24].forEach(dy=>g+=`<line x1="${300-Math.sqrt(44*44-dy*dy)}" y1="${62+dy}" x2="${300+Math.sqrt(44*44-dy*dy)}" y2="${62+dy}" stroke="${C.steel}"/>`);
+  let d='';const rows=[27,33,39,44,50];rows.forEach((n,ri)=>{const rr=70+ri*25;for(let i=0;i<n;i++){const a=(12+156*i/(n-1))*Math.PI/180;d+=`<circle cx="${(300+Math.cos(a)*rr*1.7).toFixed(1)}" cy="${(250-Math.sin(a)*rr*.72).toFixed(1)}" r="3.2" fill="${(i*7+ri)%23===0?C.gold:C.pale}" opacity=".85"/>`}});
+  return wrap('Generalversammlung mit 193 Sitzen und Weltkugel',C.night,C.navy,g+d+`<rect x="286" y="206" width="28" height="34" fill="${C.gold}"/>`+T_(16,24,'193 STAATEN · EIN STAAT – EINE STIMME',{op:.8}))},
+ S:()=>{let c='';const cols=[C.red,C.blue,C.gold,C.steel,'#2f5f8f'];const r=rng(3);for(let x=150;x<410;x+=26)for(let y=128;y>=128-18*Math.floor(1+r()*3);y-=18)c+=`<rect x="${x}" y="${y}" width="24" height="16" fill="${cols[Math.floor(r()*5)]}"/>`;
+  let ch='';for(let x=60;x<560;x+=22)ch+=`<ellipse cx="${x}" cy="${118+(x%44?4:-4)}" rx="12" ry="6" fill="none" stroke="#aab8c7" stroke-width="3"/>`;
+  let w='';for(let i=0;i<6;i++)w+=`<path d="M0 ${190+i*9} Q150 ${185+i*9} 300 ${190+i*9} T600 ${190+i*9}" fill="none" stroke="${C.steel}" opacity=".3"/>`;
+  return wrap('Containerschiff, durch Kette und Schloss blockiert',C.navy,'#2a4766',`<rect y="170" width="600" height="70" fill="${C.night}"/>`+w+c+`<polygon points="120,146 480,146 460,182 140,182" fill="#08111b"/><rect x="420" y="96" width="34" height="50" fill="#08111b"/>`+ch+`<path d="M285 104 v-16 a15 15 0 0 1 30 0 v16" fill="none" stroke="${C.gold}" stroke-width="6"/><rect x="274" y="104" width="52" height="40" rx="5" fill="${C.gold}"/><circle cx="300" cy="120" r="5" fill="${C.night}"/><rect x="298" y="122" width="4" height="12" fill="${C.night}"/><g transform="rotate(-10 500 52)"><rect x="452" y="34" width="96" height="34" fill="none" stroke="${C.red}" stroke-width="3"/>${T_(500,58,'ART. 41',{fill:C.red,size:18,anchor:'middle',w:700})}</g>`)},
+ P:()=>wrap('Hufeisentisch des Sicherheitsrats mit Veto-Stempel',C.night,C.navy,seatRing(300,128,150,78,true,false)+`<g transform="rotate(-12 300 130)"><rect x="232" y="104" width="136" height="50" fill="none" stroke="${C.red}" stroke-width="4"/>${T_(300,142,'VETO',{fill:C.red,size:34,anchor:'middle',w:700})}</g>`+T_(16,228,'9 VON 15 · KEIN NEIN DER P5',{op:.8})),
+ R:()=>wrap('Sicherheitsrat mit gestrichelten zusätzlichen Sitzen',C.night,'#16304a',seatRing(300,132,140,70,false,true)+[['G4',22,30],['AU',540,30],['Uniting for Consensus',408,228],['Art. 108',22,196]].map(([t,x,y])=>`<rect x="${x-6}" y="${y-14}" width="${t.length*7+12}" height="20" rx="10" fill="none" stroke="${C.gold}"/>`+T_(x,y,t,{fill:C.gold})).join('')+T_(16,228,'1945: 51 STAATEN · HEUTE: 193',{op:.8})),
+ N:()=>{const sh={a:C.gold,b:C.blue,c:'#2f6aa3',x:'#1a2a3b'};const tiles=[['GL',1,0,2,1,'a'],['IS',3,0,1,1,'a'],['NO',7,0,1,1,'a'],['SE',8,0,1,1,'c'],['FI',9,0,1,1,'c'],['RUS',10,0,2,3,'x'],['CA',0,1,2,2,'a'],['EE',9,1,1,1,'c'],['IE',3,2,1,1,'x'],['GB',4,2,1,1,'a'],['DK',7,2,1,1,'a'],['LV',9,2,1,1,'c'],['US',0,3,2,2,'a'],['NL',6,3,1,1,'a'],['DE',7,3,1,1,'b'],['PL',8,3,1,1,'c'],['LT',9,3,1,1,'c'],['BY',10,3,1,1,'x'],['BE',5,4,1,1,'a'],['LU',6,4,1,1,'a'],['CZ',7,4,1,1,'c'],['SK',8,4,1,1,'c'],['UA',9,4,2,1,'x'],['FR',5,5,1,1,'a'],['CH',6,5,1,1,'x'],['AT',7,5,1,1,'x'],['HU',8,5,1,1,'c'],['RO',9,5,1,1,'c'],['MD',10,5,1,1,'x'],['PT',4,6,1,1,'a'],['ES',5,6,1,1,'b'],['IT',6,6,1,2,'a'],['SI',7,6,1,1,'c'],['HR',8,6,1,1,'c'],['RS',9,6,1,1,'x'],['BG',10,6,1,1,'c'],['BA',7,7,1,1,'x'],['XK',8,7,1,1,'x'],['MK',9,7,1,1,'c'],['TR',10,7,2,2,'b'],['ME',7,8,1,1,'c'],['AL',8,8,1,1,'c'],['GR',9,8,1,1,'b']];
+  const U=26,ox=276,oy=4;let s='';tiles.forEach(([t,c,r,w,h,k])=>{const x=ox+c*U,y=oy+r*U,W=w*U-3,H=h*U-3;s+=`<rect x="${x}" y="${y}" width="${W}" height="${H}" rx="2" fill="${sh[k]}"/>`+T_(x+W/2,y+H/2+3,t,{size:8,anchor:'middle',fill:k==='a'?C.night:k==='x'?C.steel:C.pale,w:600})});
+  const leg=[['a','Gründung 1949'],['b','Beitritt 1952–1982'],['c','Beitritt 1999–2024'],['x','kein Mitglied']].map(([k,t],i)=>`<rect x="16" y="${120+i*20}" width="12" height="12" fill="${sh[k]}"/>`+T_(36,130+i*20,t)).join('');
+  return wrap('Kachelkarte der 32 NATO-Mitglieder',C.night,C.navy,s+`<text x="16" y="70" fill="${C.pale}" font-family="Archivo,Arial Narrow,sans-serif" font-size="46" font-weight="800">32</text>`+T_(16,92,'MITGLIEDER · ART. 5',{op:.8})+leg)},
+ UA:()=>{const r=rng(11);let f='';[[176,.6],[196,.8],[222,1.05]].forEach(([y,sc])=>{for(let x=-10;x<620;x+=34*sc){const xx=x+r()*10,yy=y+r()*8;f+=`<line x1="${xx}" y1="${yy}" x2="${xx}" y2="240" stroke="#2f5a2a" stroke-width="${3*sc}"/><circle cx="${xx}" cy="${yy}" r="${10*sc}" fill="none" stroke="${C.gold}" stroke-width="${7*sc}" stroke-dasharray="${2*sc} ${2.4*sc}"/><circle cx="${xx}" cy="${yy}" r="${6*sc}" fill="#4a2f12"/>`}});
+  let dr='';[[120,92],[380,70],[500,110]].forEach(([x,y])=>dr+=`<g opacity=".85"><path d="M${x-9} ${y-9}L${x+9} ${y+9}M${x+9} ${y-9}L${x-9} ${y+9}" stroke="${C.night}" stroke-width="2"/>${[[-9,-9],[9,-9],[-9,9],[9,9]].map(([a,b])=>`<circle cx="${x+a}" cy="${y+b}" r="4" fill="none" stroke="${C.night}" stroke-width="1.5"/>`).join('')}</g>`);
+  const yrs=[['1991',40],['1994',120],['2014',260],['2015',330],['2022',450],['2026',560]];
+  return wrap('Sonnenblumenfeld unter einem Himmel mit Drohnen und Zeitleiste',C.mid,'#9a7b3c',`<line x1="30" y1="34" x2="575" y2="34" stroke="${C.pale}" opacity=".6"/>`+yrs.map(([t,x])=>`<circle cx="${x}" cy="34" r="${t==='2022'?6:4}" fill="${t==='2022'?C.red:C.gold}"/>`+T_(x,24,t,{anchor:'middle',size:10})).join('')+dr+f)},
+ IR:()=>{let w='';for(let i=0;i<8;i++)w+=`<path d="M0 ${90+i*16} Q150 ${84+i*16} 300 ${90+i*16} T600 ${90+i*16}" fill="none" stroke="${C.steel}" opacity=".18"/>`;
+  let t='';[[200,140,-8],[290,128,-4],[380,150,6]].forEach(([x,y,a])=>t+=`<g transform="rotate(${a} ${x} ${y})"><polygon points="${x-22},${y-5} ${x+16},${y-5} ${x+24},${y} ${x+16},${y+5} ${x-22},${y+5}" fill="${C.pale}" opacity=".85"/><rect x="${x-18}" y="${y-3}" width="6" height="6" fill="${C.night}"/></g>`);
+  return wrap('Karte der Straße von Hormus mit Tankern und Raketenbahnen',C.night,C.navy,w+`<path d="M0 0 H600 V58 Q520 70 470 64 Q420 60 380 88 Q350 110 320 96 Q260 70 200 78 Q120 86 0 72 Z" fill="${C.mid}"/><path d="M600 240 H250 Q300 222 360 214 Q410 206 430 180 Q448 160 470 168 Q520 190 600 176 Z" fill="${C.mid}"/>`+t+`<path d="M340 92 Q420 40 470 170" fill="none" stroke="${C.red}" stroke-width="2" stroke-dasharray="6 5"/><circle cx="470" cy="170" r="5" fill="${C.red}"/><path d="M180 80 Q240 20 300 126" fill="none" stroke="${C.gold}" stroke-width="2" stroke-dasharray="6 5"/>`+T_(30,40,'IRAN',{size:14,w:600})+T_(560,226,'OMAN · VAE',{anchor:'end',size:12})+T_(40,180,'STRASSE VON HORMUS',{fill:C.gold}))},
+ SY:()=>{const r=rng(5);let s='',x=-5;while(x<610){const w=24+r()*36,h=40+r()*70,b=200;const kind=r();if(kind<.25){s+=`<rect x="${x}" y="${b-h}" width="${w}" height="${h}" fill="#1a1512"/><path d="M${x+w*.2} ${b-h} a${w*.3} ${w*.3} 0 0 1 ${w*.6} 0" fill="#1a1512"/>`}else if(kind<.55){let p=`${x},${b} ${x},${b-h}`;for(let k=1;k<=5;k++)p+=` ${(x+w*k/5).toFixed(1)},${(b-h+(r()*h*.45)).toFixed(1)}`;s+=`<polygon points="${p} ${x+w},${b}" fill="#1a1512"/>`}else{s+=`<rect x="${x}" y="${b-h}" width="${w}" height="${h}" fill="#1a1512"/>`;if(r()<.5)s+=`<rect x="${x+w*.3}" y="${b-h*.7}" width="${w*.35}" height="${h*.25}" fill="#5a3a24" opacity=".7"/>`}if(r()<.18)s+=`<rect x="${x+w/2-3}" y="${b-h-45}" width="6" height="45" fill="#1a1512"/><circle cx="${x+w/2}" cy="${b-h-47}" r="5" fill="#1a1512"/>`;x+=w+3}
+  const arr=(d)=>`<path d="${d}" fill="none" stroke="${C.gold}" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#ah)"/>`;
+  return wrap('Zerstörte Stadt in der Morgendämmerung, Fluchtpfeile in Nachbarländer','#1f3b57','#b87a45',`<circle cx="430" cy="150" r="34" fill="${C.gold}" opacity=".55"/>`+arr('M300 120 Q200 60 40 70')+arr('M320 120 Q430 50 560 60')+T_(40,58,'TÜRKEI 3,2 MIO.',{fill:C.gold})+T_(560,48,'LIBANON · JORDANIEN',{fill:C.gold,anchor:'end'})+s+`<rect y="200" width="600" height="40" fill="#120e0c"/>`+T_(16,228,'2011–2024 · 13 JAHRE KRIEG',{op:.75}),`<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="${C.gold}"/></marker>`)},
+ FA:()=>{let fp='';for(let i=0;i<14;i++){const t=i/13,x=20+t*330,y=222-Math.sin(t*Math.PI)*22+(i%2?5:-5);fp+=`<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="5" ry="3" fill="${C.pale}" opacity="${(.25+t*.6).toFixed(2)}"/>`}
+  const doors=['Art. 16a GG','GFK','EU-Recht','AufenthG'];let d='';doors.forEach((t,i)=>{const x=388+i*48;d+=`<rect x="${x}" y="150" width="30" height="50" fill="${C.night}" stroke="${i===2?C.gold:C.steel}"/>`+T_(x+15,144,t,{size:8,anchor:'middle',fill:i===2?C.gold:C.pale})});
+  return wrap('Fußspuren führen zu einem Amtsgebäude mit vier Türen',C.night,C.mid,stars(rng(2),25,90)+`<rect y="200" width="600" height="40" fill="#0a131d"/><rect x="370" y="70" width="216" height="130" fill="${C.navy}" stroke="${C.steel}"/><rect x="440" y="84" width="76" height="26" fill="${C.gold}"/>`+T_(478,102,'BAMF',{fill:C.night,size:15,anchor:'middle',w:700})+d+fp+`<circle cx="330" cy="156" r="9" fill="${C.pale}"/><rect x="321" y="167" width="18" height="30" rx="7" fill="${C.pale}"/><rect x="335" y="170" width="10" height="18" rx="3" fill="${C.gold}"/>`+T_(16,30,'4 SCHUTZFORMEN · 1 VERFAHREN',{op:.8}))},
+ KL:()=>wrap('Klausurblatt mit Stift und Uhr auf dem Tisch',C.navy,C.night,`<g transform="rotate(-6 260 125)"><rect x="140" y="22" width="240" height="210" fill="${C.pale}"/><text x="158" y="50" font-family="Archivo,Arial Narrow,sans-serif" font-weight="800" font-size="18" fill="${C.night}">Übungsklausur Q3.1</text>${[['B1 Darstellen','AFB I'],['B2 Einordnen / Analysieren','AFB II'],['B3 Erörtern','AFB III']].map(([a,b],i)=>`<rect x="158" y="${72+i*44}" width="11" height="11" fill="none" stroke="${C.night}"/>`+T_(178,82+i*44,a,{fill:C.night,size:11,w:600})+T_(178,96+i*44,b,{fill:'#566475',size:9})).join('')}</g><g transform="rotate(32 430 150)"><rect x="350" y="144" width="150" height="12" rx="3" fill="${C.gold}"/><polygon points="500,144 516,150 500,156" fill="${C.pale}"/></g><circle cx="500" cy="64" r="36" fill="none" stroke="${C.pale}" stroke-width="3"/><line x1="500" y1="64" x2="500" y2="40" stroke="${C.pale}" stroke-width="3"/><line x1="500" y1="64" x2="518" y2="72" stroke="${C.gold}" stroke-width="3"/>`+T_(500,118,'90 MIN',{anchor:'middle'})),
+ FINAL:()=>{const r=rng(9);let h='';for(let row=0;row<2;row++)for(let x=10+row*14;x<600;x+=28){const y=214+row*16;h+=`<circle cx="${x}" cy="${y-12}" r="7" fill="#07101a"/><rect x="${x-11}" y="${y-5}" width="22" height="30" rx="9" fill="#07101a"/>`}
+  return wrap('Rednerpult der Generalversammlung im Scheinwerferlicht',C.night,C.navy,`<polygon points="150,0 210,0 330,210 250,210" fill="${C.pale}" opacity=".06"/><polygon points="450,0 390,0 270,210 350,210" fill="${C.pale}" opacity=".06"/><circle cx="300" cy="78" r="60" fill="none" stroke="${C.gold}" stroke-width="2" opacity=".7"/><ellipse cx="300" cy="78" rx="24" ry="60" fill="none" stroke="${C.gold}" opacity=".5"/><line x1="240" y1="78" x2="360" y2="78" stroke="${C.gold}" opacity=".5"/><polygon points="272,150 328,150 320,206 280,206" fill="${C.steel}"/><rect x="266" y="144" width="68" height="8" fill="${C.gold}"/>`+h+T_(16,26,'81. GENERALDEBATTE · NEW YORK',{op:.8}))},
+};
+const art=k=>(ART[k]||ART.FINAL)();
+const BRIEF={
+ T:'Lagezentrum, 06:12 Uhr. In einer europäischen Hauptstadt hat es einen Anschlag gegeben, die Bilder laufen weltweit in Dauerschleife. Deine Ministerin will wissen: Was wollen die Täter eigentlich erreichen – und ist das Terror oder Amok?',
+ K:'Du arbeitest als Analyst/in in einem Institut für Friedensforschung. Auf deinem Tisch liegen Berichte aus drei Konfliktgebieten. Bevor du sie einordnest, musst du klären: Was ist überhaupt ein Krieg – und was braucht eine Gesellschaft für dauerhaften Frieden?',
+ U:'New York, am East River. Dein erster Tag in der Ständigen Vertretung Deutschlands bei den Vereinten Nationen. Bevor du in den Saal darfst, prüft dich die Botschafterin: Wie funktioniert diese Organisation eigentlich?',
+ S:'Ein Staat hat seinen Nachbarn angegriffen. Im Sicherheitsrat liegt ein Entwurf für Zwangsmaßnahmen auf dem Tisch. Du schreibst die Vorlage für die Delegation – von Artikel 39 bis zum Sanktionsausschuss.',
+ P:'September 2026, Generaldebatte. Der Ukraine-Krieg dauert über viereinhalb Jahre, der Sicherheitsrat ist blockiert. Du schreibst an der Rede mit: Was kann die UNO tun – und warum tut sie so wenig?',
+ R:'Hinter verschlossenen Türen laufen die zwischenstaatlichen Verhandlungen über die Reform des Sicherheitsrats. G4, Afrikanische Union und „Uniting for Consensus“ sitzen am Tisch. Du musst wissen, wer was will – und warum Art. 108 alles bremst.',
+ N:'Brüssel, NATO-Hauptquartier. Über einem Mitgliedstaat sind Drohnen abgestürzt, der Nordatlantikrat tritt zusammen. Artikel 4 oder Artikel 5? Du berätst die deutsche Delegation.',
+ UA:'Kyjiw, Februar 2022. Die Geheimdienste warnen seit Wochen vor einem Angriff. Um zu verstehen, was jetzt passiert, musst du zurück bis 1991 – und wissen, wer wem hilft und warum.',
+ IR:'Straße von Hormus, 2026. Tanker liegen vor Anker, über dem Golf fliegen Raketen. Du bist Krisenbeauftragte/r: Welche Akteure mischen mit, was wollen sie – und welche Rolle spielen UNO und NATO?',
+ SY:'Damaskus, Dezember 2024. Nach über 13 Jahren Krieg ist Assad gestürzt. Du schreibst für eine Untersuchungskommission die Bilanz: Wie kam es dazu – und hätte die Welt eingreifen müssen?',
+ FA:'Eine Erstaufnahmeeinrichtung in Hessen. Vor dir liegen Akten von Menschen, die Schutz suchen. Du arbeitest dich ins Verfahren des BAMF ein: Welche Schutzform passt zu wem – und was steht ihnen zu?',
+ KL:'Klausurraum, die Uhr läuft. Vor dir liegt die Übungsklausur zu Syrien und der Schutzverantwortung. Bevor du schreibst, trainierst du: Was gehört in welche Aufgabe – und was bringt die Punkte?',
+ FINAL:'Du stehst am Rednerpult der Generalversammlung. 193 Staaten hören zu, die Kameras laufen. Jetzt zeigt sich, ob du alles draufhast.',
+};
+
 /* ---------- Spielzustand ---------- */
 let G=null, timerId=null;
 
@@ -545,13 +623,13 @@ function home(){
     <p class="hint">Prüfungsmodus: Zeitlimit pro Frage, dafür ×1,5 Punkte. Sterne: ★ bestanden · ★★ ab 75 % beim ersten Versuch · ★★★ ab 90 %.</p>
     <div class="files">
       ${GROUPS.map((g,gi)=>`<h2 class="grp"><span class="mono">${g[2]||'Schwerpunkt '+(gi+1)}</span>${esc(g[0])}</h2>`+D.filter(d=>g[1].includes(d.key)).map(d=>`<button class="file" data-k="${d.key}">
-        <span class="code">${d.code}</span><h3>${esc(d.title)}</h3>
+        <span class="thumb" aria-hidden="true">${art(d.key)}<span class="code">${d.code}</span></span><h3>${esc(d.title)}</h3>
         <span class="sub">${esc(d.sub)} · ${d.q.length} Fragen</span>
         <span class="meta">${starStr(store.stars[d.key]||0)}<span class="best">${store.best[d.key]?'Rekord '+store.best[d.key]:'—'}</span></span>
       </button>`).join('')).join('')}
       <h2 class="grp"><span class="mono">Klausurtraining</span>Abschlussprüfung</h2>
       <button class="file final" data-k="FINAL" ${finalOpen?'':'disabled'}>
-        <span class="code">${FINAL_CODE}</span><h3>Abschlussprüfung</h3>
+        <span class="thumb" aria-hidden="true">${art('FINAL')}<span class="code">${FINAL_CODE}</span></span><h3>Abschlussprüfung</h3>
         <span class="sub">${finalOpen?'20 Fragen aus allen Akten, plus Operatoren und Querverbindungen':'Wird freigeschaltet, wenn du '+NEED+' Akten bestanden hast ('+passed+'/'+NEED+')'}</span>
         <span class="meta">${starStr(store.stars.FINAL||0)}<span class="best">${store.best.FINAL?'Rekord '+store.best.FINAL:'—'}</span></span>
       </button>
@@ -570,6 +648,22 @@ function horseshoe(){
 }
 
 function start(key){
+  if(!BRIEF[key]) return begin(key);
+  const d=D.find(x=>x.key===key); const fin=key==='FINAL';
+  const title=fin?'Abschlussprüfung':d.title, code=fin?FINAL_CODE:d.code;
+  const n=fin?20:Math.min(12,d.q.length), hearts=fin?4:3;
+  document.body.classList.remove('inquiz');
+  app.innerHTML=`<main class="wrap brief"><section class="card">
+    ${art(key)}
+    <h2>${esc(title)}</h2>
+    <p class="role">${esc(BRIEF[key])}</p>
+    <div class="facts"><span>${code}</span><span>${n} Fragen</span><span>${hearts} Leben</span><span>${store.timer?'Prüfungsmodus an':'ohne Zeitlimit'}</span><span>Rekord: ${store.best[key]||'—'}</span></div>
+    <div class="actions"><button class="btn" id="go">Mission starten</button><button class="btn ghost" id="back">Zu den Akten</button></div>
+  </section></main>`;
+  $('#go').onclick=()=>begin(key); $('#back').onclick=home; $('#go').focus({preventScroll:true});
+  window.scrollTo(0,0);
+}
+function begin(key){
   let pool, title, n=12, code;
   if(key==='FINAL'){pool=ALLQ.filter(q=>q.t!=='vote');pool=shuffle(pool).slice(0,17).concat([{t:'vote'},{t:'vote'},{t:'vote'}]);title='Abschlussprüfung';code=FINAL_CODE;n=20}
   else if(key==='MIX'){pool=shuffle(ALLQ).slice(0,15);title='Schnellrunde';code='MIX';n=15}
@@ -598,7 +692,7 @@ function renderQ(){
   <div class="prog"><i style="width:${(G.i/total*100).toFixed(1)}%"></i></div>
   <div class="timer" ${store.timer?'':'hidden'}><i id="tbar"></i></div></div>
   <main class="wrap"><section class="card" id="card">
-    <div class="qkind mono"><span>${KIND[q.t]}${G.retried.has(G.i)?' · Wiederholung':''}</span><span>${G.i+1} / ${total}</span></div>
+    ${BRIEF[G.key]?`<div class="qart" aria-hidden="true">${art(G.key)}</div>`:''}<div class="qkind mono"><span>${KIND[q.t]}${G.retried.has(G.i)?' · Wiederholung':''}</span><span>${G.i+1} / ${total}</span></div>
     <div id="qbody"></div>
     <div id="fb"></div>
     <div class="actions" id="act"></div>
@@ -751,7 +845,7 @@ function result(passed){
   let newBest=false;
   if(isDossier){ if(stars>(store.stars[G.key]||0)) store.stars[G.key]=stars; if(passed && G.score>(store.best[G.key]||0)){store.best[G.key]=G.score;newBest=true} save(); }
   const uniq=[...new Map(G.log.map(q=>[q.id+(q.q||q.topic),q])).values()];
-  app.innerHTML=`<main class="wrap result"><section class="card">
+  app.innerHTML=`<main class="wrap result"><section class="card">${BRIEF[G.key]?art(G.key):''}
     <div class="mono" style="color:var(--muted)">${G.code} · ${esc(G.title)}</div>
     <h2>${passed?(stars===3?'Exzellent verhandelt.':stars===2?'Mission erfüllt.':'Knapp bestanden.'):'Mission gescheitert.'}</h2>
     <div class="bigstars">${[0,1,2].map(i=>i<stars?'★':'<span class="off">★</span>').join('')}</div>
@@ -764,7 +858,7 @@ function result(passed){
     ${uniq.length?`<h3>Das solltest du wiederholen</h3><ol class="review">${uniq.map(q=>`<li><div class="q">${esc(q.q||('Sicherheitsrat: '+q.topic))}</div><div class="a">${esc(q.e||'')}</div></li>`).join('')}</ol><p class="hint">Diese Fragen liegen jetzt in deiner Fehlerkartei.</p>`:''}
     <div class="actions"><button class="btn" id="again">Noch einmal</button><button class="btn ghost" id="back">Zu den Akten</button></div>
   </section></main>`;
-  $('#again').onclick=()=>start(G.key); $('#back').onclick=home;
+  $('#again').onclick=()=>begin(G.key); $('#back').onclick=home;
   window.scrollTo(0,0);
 }
 
