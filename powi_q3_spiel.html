@@ -204,6 +204,43 @@ body.inquiz::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-are
 .spickh h3{margin:0;font-family:var(--display);font-variation-settings:"wdth" 85;font-size:1.15rem}
 .spickh span{font-family:var(--mono);font-size:.75rem;color:var(--muted)}
 .fb h4 .tier{font-family:var(--mono);font-size:.75rem;color:var(--gold);margin-left:.5rem}
+
+/* Größere Schrift und Bilder */
+.wrap{max-width:980px}
+body{font-size:19px}
+.hero h1{font-size:clamp(2.8rem,10vw,4.6rem)}
+.hero p{font-size:1.08rem}
+.qtext{font-size:clamp(1.4rem,4.4vw,1.8rem);line-height:1.22}
+.qtext small{font-size:1rem}
+.case{font-size:1.12rem}
+.opt{font-size:1.06rem;padding:.85rem 1rem}
+.sortrow .item{font-size:1.05rem}
+.seg button{font-size:.98rem;padding:.4rem .75rem}
+.pool button,.seq .slot{font-size:1.02rem}
+.fb p{font-size:1.04rem}
+.fb h4{font-size:1.25rem}
+.gloss{font-size:1.02rem}
+.qart{height:clamp(120px,30vw,220px);margin:-.3rem 0 1rem;border-radius:8px}
+.card{padding:clamp(1rem,3vw,1.6rem)}
+.file{grid-template-columns:170px 1fr auto;gap:.3rem 1.1rem;padding:1rem .2rem}
+.thumb{width:170px;height:102px;border-radius:8px}
+.file h3{font-size:1.45rem}
+.file .sub{font-size:.98rem}
+.file .code{font-size:.75rem}
+.brief .role{font-size:1.2rem}
+.brief h2{font-size:clamp(2.2rem,8vw,3.2rem)}
+.scard .big{font-size:2.3rem}
+.scard p{font-size:1.02rem}
+.spick{grid-auto-columns:min(82%,300px)}
+.result h2{font-size:clamp(2.4rem,8vw,3.4rem)}
+.grp{font-size:1.2rem}
+@media (max-width:560px){
+ .file{grid-template-columns:1fr auto;padding:1rem 0}
+ .thumb{grid-row:auto;grid-column:1 / -1;width:100%;height:auto;aspect-ratio:600/240}
+ .file h3{grid-column:1;grid-row:2}
+ .file .sub{grid-column:1 / -1;grid-row:3}
+ .file .meta{grid-row:2;grid-column:2;align-self:center}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .shake{animation:shake .35s}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
