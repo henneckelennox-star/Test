@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dossier Weltfrieden</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: Lagezentrum – dunkles Kopfband mit Sicherheitsrats-Hufeisen, darunter Akten (Dossiers) als Liste; Quiz als eine konzentrierte Karte. */
+:root{
+  --bg:#eef2f6; --panel:#ffffff; --panel2:#f5f8fb; --ink:#13202e; --muted:#566475; --line:#d5dde6;
+  --band:#0f1d2c; --band-ink:#e8eef5; --band-muted:#8fa3b8;
+  --acc:#1f6fc5; --acc-ink:#ffffff; --acc-soft:#e1edf9;
+  --gold:#b07a00; --gold-soft:#fbf0d4;
+  --ok:#1d7f48; --ok-soft:#dcf1e4; --bad:#c2372b; --bad-soft:#fbe3e0;
+  --display:"Archivo","Arial Narrow",Arial,sans-serif; --body:"Source Sans 3","Segoe UI",Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0d151e; --panel:#152130; --panel2:#1a2838; --ink:#e4ebf2; --muted:#93a4b6; --line:#263649;
+  --band:#08101a; --band-ink:#e8eef5; --band-muted:#7f93a8;
+  --acc:#5aa2ef; --acc-ink:#07121e; --acc-soft:#16304b;
+  --gold:#e6b43c; --gold-soft:#3a2e12;
+  --ok:#4cc27d; --ok-soft:#14301f; --bad:#ff7366; --bad-soft:#3b1a17; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0d151e; --panel:#152130; --panel2:#1a2838; --ink:#e4ebf2; --muted:#93a4b6; --line:#263649;
+  --band:#08101a; --band-ink:#e8eef5; --band-muted:#7f93a8;
+  --acc:#5aa2ef; --acc-ink:#07121e; --acc-soft:#16304b;
+  --gold:#e6b43c; --gold-soft:#3a2e12;
+  --ok:#4cc27d; --ok-soft:#14301f; --bad:#ff7366; --bad-soft:#3b1a17; color-scheme:dark; }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em}
+
+/* Kopfband */
+.hero{background:var(--band);color:var(--band-ink);margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 1.6rem);padding-bottom:1.6rem}
+.hero .wrap{display:grid;grid-template-columns:1fr auto;gap:1.2rem;align-items:center}
+.hero .eyebrow{color:var(--band-muted);text-transform:uppercase}
+.hero h1{font-family:var(--display);font-variation-settings:"wdth" 70;font-weight:850;font-size:clamp(2.4rem,8vw,3.8rem);line-height:.95;margin:.3rem 0 .6rem;letter-spacing:-.01em;text-wrap:balance}
+.hero p{margin:0;color:var(--band-muted);max-width:46ch}
+.horseshoe{width:150px;max-width:100%}
+.rankline{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;margin-top:1rem;align-items:baseline}
+.rank{font-family:var(--display);font-variation-settings:"wdth" 90;font-weight:700;font-size:1.25rem}
+.rankline .mono{color:var(--band-muted)}
+.bar{height:6px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden;margin-top:.5rem;max-width:340px}
+.bar i{display:block;height:100%;background:var(--gold)}
+@media (max-width:560px){.hero .wrap{grid-template-columns:1fr}.horseshoe{display:none}}
+
+/* Startseite */
+main{padding-block:1.4rem 3rem}
+.tools{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem;align-items:center}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:.45rem .9rem;font-weight:600;font-size:.95rem}
+.chip[aria-pressed="true"]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.chip:disabled{opacity:.45;cursor:not-allowed}
+.hint{color:var(--muted);font-size:.92rem;margin:0 0 1rem}
+.files{display:grid;gap:0;border-top:2px solid var(--ink)}
+.file{display:grid;grid-template-columns:4.2rem 1fr auto;gap:.2rem 1rem;align-items:center;padding:.9rem .2rem;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;text-align:left;width:100%}
+.file:hover:not(:disabled){background:var(--panel2)}
+.file:disabled{opacity:.5;cursor:not-allowed}
+.file .code{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.file h3{margin:0;font-family:var(--display);font-variation-settings:"wdth" 85;font-weight:750;font-size:1.22rem;line-height:1.15}
+.file .sub{grid-column:2;color:var(--muted);font-size:.9rem;min-width:0}
+.file .meta{grid-row:1 / span 2;grid-column:3;text-align:right}
+.stars{color:var(--gold);letter-spacing:.1em;font-size:1.05rem;white-space:nowrap}
+.stars .off{color:var(--line)}
+.best{display:block;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.file.final h3::after{content:" · Prüfung";color:var(--acc)}
+
+/* Quiz */
+.qtop{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--band);color:var(--band-ink)}
+body.inquiz::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--band)}
+.qtop .wrap{display:flex;align-items:center;gap:.7rem;padding-block:.65rem}
+.qtop .back{background:none;border:1px solid rgba(255,255,255,.25);color:var(--band-ink);border-radius:6px;padding:.25rem .6rem;font-size:.9rem}
+.qtop .title{font-family:var(--display);font-variation-settings:"wdth" 80;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hearts{letter-spacing:.15em;font-size:1rem;color:var(--band-ink)}
+.hearts .lost{opacity:.25}
+.score{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums}
+.streak{font-family:var(--mono);font-size:.78rem;color:var(--gold);white-space:nowrap}
+.streak:empty{display:none}
+.hearts{white-space:nowrap}
+.prog{height:4px;background:rgba(255,255,255,.12)}
+.prog i{display:block;height:100%;background:var(--acc);transition:width .3s}
+.timer{height:3px;background:transparent}
+.timer i{display:block;height:100%;background:var(--gold);width:100%}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.3rem;margin-top:1.2rem}
+.qkind{display:flex;justify-content:space-between;gap:1rem;color:var(--muted);text-transform:uppercase;margin-bottom:.5rem}
+.qtext{font-family:var(--display);font-variation-settings:"wdth" 92;font-weight:650;font-size:clamp(1.18rem,3.6vw,1.45rem);line-height:1.25;margin:0 0 1.1rem;text-wrap:balance}
+.qtext small{display:block;font-family:var(--body);font-weight:400;font-size:.95rem;color:var(--muted);margin-top:.4rem}
+.opts{display:grid;gap:.55rem}
+.opt{display:flex;gap:.75rem;align-items:flex-start;text-align:left;background:var(--panel2);border:1.5px solid var(--line);border-radius:8px;padding:.7rem .85rem;width:100%;line-height:1.35}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt .k{font-family:var(--mono);font-size:.75rem;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:.05rem .35rem;flex:none;margin-top:.12rem}
+.opt[aria-pressed="true"]{border-color:var(--acc);background:var(--acc-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.missed{border-style:dashed;border-color:var(--ok)}
+.opt:disabled{cursor:default}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.tf .opt{justify-content:center;font-weight:700}
+
+.sortrow{display:grid;grid-template-columns:minmax(0,1fr);gap:.4rem;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.sortrow:last-child{border-bottom:0}
+.sortrow .item{font-weight:600;line-height:1.3}
+.seg{display:flex;flex-wrap:wrap;gap:.35rem}
+.seg button{border:1.5px solid var(--line);background:var(--panel2);border-radius:6px;padding:.3rem .6rem;font-size:.88rem}
+.seg button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.seg button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.seg button.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.seg button.missed{border-color:var(--ok);border-style:dashed}
+
+.seq{display:grid;gap:.4rem;margin-bottom:1rem;counter-reset:s}
+.seq .slot{border:1.5px dashed var(--line);border-radius:8px;padding:.55rem .8rem;color:var(--muted);min-height:2.6rem;display:flex;gap:.6rem;align-items:center}
+.seq .slot.filled{border-style:solid;color:var(--ink);background:var(--acc-soft);border-color:var(--acc)}
+.seq .slot.right{background:var(--ok-soft);border-color:var(--ok)}
+.seq .slot.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.seq .n{font-family:var(--mono);font-size:.75rem;color:var(--muted);flex:none;width:1.4rem}
+.pool{display:flex;flex-wrap:wrap;gap:.45rem}
+.pool button{border:1.5px solid var(--line);background:var(--panel2);border-radius:8px;padding:.45rem .7rem;text-align:left;line-height:1.3}
+.pool button:hover{border-color:var(--acc)}
+
+.inp{display:flex;gap:.5rem;flex-wrap:wrap}
+.inp input{flex:1;min-width:0;font:inherit;padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--ink)}
+.inp input.right{border-color:var(--ok);background:var(--ok-soft)}
+.inp input.wrong{border-color:var(--bad);background:var(--bad-soft)}
+
+.council{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.35rem;margin:0 0 1rem}
+.seat{border:1px solid var(--line);border-radius:6px;padding:.35rem .2rem;text-align:center;font-size:.78rem;line-height:1.2;background:var(--panel2)}
+.seat b{display:block;font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--muted)}
+.seat.p5{border-width:2px;border-color:var(--ink)}
+.seat.ja{background:var(--ok-soft)}
+.seat.nein{background:var(--bad-soft)}
+.seat.enth{background:var(--panel)}
+.tally{font-family:var(--mono);font-size:.82rem;color:var(--muted);margin:-.4rem 0 1rem}
+
+.actions{display:flex;gap:.6rem;margin-top:1.1rem;flex-wrap:wrap}
+.btn{background:var(--acc);color:var(--acc-ink);border:0;border-radius:8px;padding:.7rem 1.2rem;font-weight:700}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.fb{margin-top:1.1rem;border-radius:8px;padding:.9rem 1rem;border-left:5px solid var(--ok);background:var(--ok-soft)}
+.fb.bad{border-left-color:var(--bad);background:var(--bad-soft)}
+.fb h4{margin:0 0 .3rem;font-family:var(--display);font-variation-settings:"wdth" 90;font-size:1.05rem}
+.fb p{margin:0;max-width:65ch}
+.fb .pts{font-family:var(--mono);font-size:.8rem;float:right}
+.fb .sol{margin-top:.4rem;font-weight:600}
+
+/* Ergebnis */
+.result h2{font-family:var(--display);font-variation-settings:"wdth" 75;font-weight:850;font-size:clamp(2rem,7vw,3rem);margin:.2rem 0 .4rem;line-height:1}
+.result .bigstars{font-size:2.2rem;color:var(--gold);letter-spacing:.15em}
+.result .bigstars .off{color:var(--line)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:1rem 0}
+.kpi{border-top:2px solid var(--ink);padding-top:.4rem}
+.kpi b{display:block;font-family:var(--display);font-variation-settings:"wdth" 80;font-size:1.7rem;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:.85rem}
+.review{margin-top:1rem}
+.review li{margin-bottom:.6rem}
+.review .q{font-weight:600}
+.review .a{color:var(--muted);font-size:.92rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+/* ================================================================
+   FRAGENPOOL – alle Inhalte stammen aus den Unterrichtsmaterialien
+   Typen: mc (o[0] ist richtig), multi (r richtig, w falsch), tf,
+   sort (cats), order (items in richtiger Reihenfolge), input (a)
+   ================================================================ */
+const D = [
+{key:'T',code:'Q3/01',title:'Terrorismus',sub:'Münkler M 1.1 · Formen M 1.2 · Motive, Zielgruppe, Ziel',q:[
+ {t:'mc',q:'Warum ist eine allgemein anerkannte Definition von Terrorismus laut Münkler so umstritten?',o:['Es gibt sachliche und machtpolitische Gründe: Wer Gewalt „terroristisch“ nennt, spricht ihr in der Regel jede politische Legitimität ab.','Weil Terrorismus erst seit 2001 existiert und noch kaum erforscht ist.','Weil die UN-Charta Terrorismus ausdrücklich als Form der Selbstverteidigung erlaubt.','Weil Terrorismus und Amok in der Forschung als dasselbe gelten.'],e:'Die Bezeichnung ist ein politisches Werkzeug. Wer Gewalthandlungen „terroristisch“ nennt, will ihnen die Legitimität absprechen – deshalb streiten Akteure über das Etikett.'},
+ {t:'mc',q:'Münkler nennt „Terrorismus“ in der internationalen Politik einen …',o:['Ausschließungsbegriff','Kampfbegriff der Guerilla','Fachbegriff der UN-Charta','Sammelbegriff für alle Kriege'],e:'Ausschließungsbegriff: Den so bezeichneten Akteuren wird bedeutet, dass ihre Anliegen nicht verhandelbar sind – solange sie sich bestimmter Formen der Gewalt bedienen.'},
+ {t:'mc',q:'Wie bezeichnen sich die als terroristisch bezeichneten Gruppen laut M 1.1 häufig selbst?',o:['Als Guerilleros, die einen Partisanenkampf für die Befreiung sozialer oder ethnischer Gruppen führen','Als reguläre Streitkräfte eines souveränen Staates','Als neutrale Friedenstruppe','Als private Sicherheitsfirmen'],e:'Sie reklamieren für sich, Guerilleros (Widerstandskämpfer) zu sein und einen Partisanenkampf (außerhalb einer regulären Armee) zu führen.'},
+ {t:'mc',q:'Mit welcher Begründung rechtfertigen solche Gruppen laut M 1.1 ihre „unkonventionellen“ Methoden?',o:['Wegen der militärischen Überlegenheit der Repressionsmacht','Weil das Völkerrecht ihnen diese Methoden ausdrücklich erlaubt','Weil der UN-Sicherheitsrat sie dazu ermächtigt hat','Weil sie über mehr Waffen verfügen als der Staat'],e:'Aus Sicht der Gruppen muss „aufgrund der militärischen Überlegenheit der Repressionsmacht“ auf unkonventionelle Methoden zurückgegriffen werden.'},
+ {t:'mc',q:'Terrorismus ist nach Münkler eine Form der Gewaltanwendung, die Erfolge wesentlich erringen will über …',o:['die indirekten Effekte der Gewalt','die Zahl der Toten','die Eroberung von Territorium','die Zerstörung von Versorgungssystemen'],e:'Terrorismus will „wesentlich über die indirekten Effekte der Gewalt Erfolge erringen“.'},
+ {t:'mc',q:'Woran sind terroristische Strategien laut Münkler WENIGER interessiert?',o:['An den materiellen Schäden: Ausmaß der Zerstörung, Zahl der Toten, Zusammenbruch der Versorgung','Am Schrecken, der verbreitet wird','An Erwartungen und Hoffnungen bei Sympathisanten','An der Botschaft, der Gegner sei verletzbar'],e:'Gerade die physischen/materiellen Folgen sind zweitrangig. Wichtig sind die psychischen Folgen: Schrecken sowie Erwartungen und Hoffnungen als Zeichen der Verletzbarkeit eines scheinbar übermächtigen Gegners.'},
+ {t:'multi',q:'Welche Folgen eines Anschlags zählen bei Münkler zu den PSYCHISCHEN Folgen?',r:['Der Schrecken, der verbreitet wird','Hoffnungen der Unterstützer, weil der Gegner verletzbar wirkt','Das Zeichen der Verletzbarkeit eines scheinbar übermächtigen Gegners'],w:['Die Anzahl der Toten','Der Zusammenbruch der Versorgungssysteme','Das Ausmaß der Zerstörungen'],e:'Psychisch: Schrecken, Erwartungen und Hoffnungen. Physisch/materiell: Tote, Zerstörungen, zusammengebrochene Versorgung.'},
+ {t:'sort',q:'Ordne die Merkmale der passenden Form des Terrorismus (M 1.2) zu.',cats:{'Ethno-nationalistisch':['Militante Organisationen von Minderheitspopulationen','Eigene Tradition und Sprache','Anspruch auf ein bestimmtes Gebiet','Identitätsbewusstsein, das sich von der Mehrheit des Nationalstaats abhebt'],'Religiös':['Gespeist durch fundamentalistische Strömungen','Radikale protestantische Sekten','Islamische Splittergruppen in Algerien und im Libanon']},e:'Ethno-nationalistisch: Minderheit + eigene Identität + Gebietsanspruch. Religiös: fundamentalistische Strömungen, z. B. radikale protestantische Sekten oder islamische Splittergruppen.'},
+ {t:'mc',q:'Eine Untergrundgruppe einer sprachlichen Minderheit verübt Anschläge, um einen eigenen Staat in ihrer Heimatregion zu erzwingen. Welche Form nach M 1.2?',o:['Ethno-nationalistischer Terrorismus','Religiöser Terrorismus','Hybride Kriegführung','Klassischer zwischenstaatlicher Krieg'],e:'Minderheit mit eigener Sprache/Identität + Anspruch auf ein Gebiet = ethno-nationalistisch.'},
+ {t:'multi',q:'Welche Motive für Terrorismus stehen in deinem Tafelbild?',r:['religiös','politisch','egoistisch'],w:['präventiv','geostrategisch','humanitär'],e:'Tafelbild Terrorismus: Motive religiös, politisch, egoistisch. „Präventiv“ und „geostrategisch“ sind Motive für KRIEG (Tafelbild Krieg) – eine typische Verwechslung.'},
+ {t:'tf',q:'Terrorismus und Amok sind im Kern dasselbe, weil beide Angst verbreiten.',a:false,e:'Im Tafelbild steht ausdrücklich „Terrorismus ≠ Amok“. Terror ist eine Kommunikationsstrategie mit dem Ziel, etwas zu verändern; die Tat soll eine Botschaft an die Gesamtgesellschaft senden.'},
+ {t:'mc',q:'Wer ist laut Tafelbild die eigentliche Zielgruppe von Terror?',o:['Die Gesamtgesellschaft – direkt getroffen werden häufig Unbeteiligte','Ausschließlich Soldaten','Nur Regierungsmitglieder','Die eigenen Anhänger'],e:'Direkt trifft es häufig Unbeteiligte, gemeint ist aber die Gesamtgesellschaft – deshalb „Kommunikationsstrategie“.'},
+ {t:'input',q:'Ergänze: Terrorismus ist eine Kommunikations________.',a:['strategie','kommunikationsstrategie'],e:'Kommunikationsstrategie (Überschrift von M 1.1): Gewalt soll Angst und Schrecken verbreiten und eine Botschaft senden.'},
+ {t:'tf',q:'Laut M 1.2 kennt die Terrorismusforschung genau zwei Formen von Terrorismus.',a:false,e:'Es heißt: „neben anderen vor allem zwei Formen“. Es gibt also weitere Formen.'},
+ {t:'mc',q:'Aufgabe 2 (M 1.1): Welche Beobachtung zu 9/11 stützt Münklers These vom Vorrang der psychischen Folgen am stärksten?',o:['Die weltweite Verunsicherung und die Reaktionen – bis zum einzigen NATO-Bündnisfall der Geschichte – reichten weit über die materiellen Schäden hinaus.','Die USA verloren durch die Anschläge dauerhaft ihre Versorgungssysteme.','Die Täter wollten New York militärisch besetzen.','Die Zahl der Opfer war größer als in jedem Krieg zuvor.'],e:'Die Wirkung (Angst, Sicherheitspolitik weltweit, Art. 5 NATO) übersteigt den physischen Schaden bei Weitem – genau das meint Münkler.'},
+ {t:'mc',q:'Warum gilt Terror im Tafelbild oft als „letztes Mittel“?',o:['Täter wollen etwas verändern, was ihnen mehr wert ist als das eigene Leben','Weil Terror völkerrechtlich erst nach einem UN-Beschluss erlaubt ist','Weil Staaten Terror als letzte Stufe von Sanktionen einsetzen','Weil er immer am Ende eines Krieges steht'],e:'Tafelbild: Kommunikationsstrategie → oft als letztes Mittel → mit dem Ziel, etwas zu verändern → was mehr wert ist als das eigene Leben.'},
+]},
+{key:'K',code:'Q3/02',title:'Krieg & Frieden',sub:'AKUF-Kriterien · Neue Kriege · hybride Kriegführung · Zivilisatorisches Hexagon',q:[
+ {t:'mc',q:'Wie lautet die klassische Definition von Krieg im Text?',o:['Ein bewaffneter, organisierter Konflikt zwischen politisch konsolidierten Akteuren, mit gewisser Intensität und Kontinuität','Jede Gewalttat mit mehr als 1.000 Toten','Ein Konflikt, den der UN-Sicherheitsrat als Krieg feststellt','Jeder Konflikt, der mit einer Kriegserklärung beginnt'],e:'Klassische Definition: bewaffnet, organisiert, politisch konsolidierte Akteure, gewisse Intensität und Kontinuität.'},
+ {t:'multi',q:'Welche Kriterien muss ein Gewaltereignis nach der AKUF erfüllen, um als Krieg zu gelten?',r:['Beteiligung von Streitkräften (mind. eine Seite reguläre Streitkräfte)','Mindestmaß an zentral gelenkter Organisation auf beiden Seiten','Kontinuität der Operationen'],w:['Eine förmliche Kriegserklärung','Mindestens zwei souveräne Staaten als Kriegsparteien','Ein Beschluss des UN-Sicherheitsrats'],e:'AKUF: (1) Streitkräfte (auch bewaffnete Oppositionseinheiten zählen), (2) Organisation auf beiden Seiten, (3) Kontinuität statt spontaner Zusammenstöße.'},
+ {t:'tf',q:'Nach der AKUF-Definition müssen auf BEIDEN Seiten reguläre Streitkräfte kämpfen.',a:false,e:'Mindestens auf EINER Seite müssen reguläre Streitkräfte (Regierung oder bewaffnete Oppositionseinheiten) beteiligt sein. Organisation braucht es dagegen auf beiden Seiten.'},
+ {t:'input',q:'Seit welchem Jahr (Westfälisches Staatensystem) gilt Krieg als Monopol souveräner Staaten?',a:['1648'],e:'Westfälischer Frieden 1648: Krieg wird Monopol souveräner Staaten.'},
+ {t:'sort',q:'Klassischer Krieg oder „Neuer Krieg“? Ordne zu.',cats:{'Klassischer Krieg':['Deklarierter Beginn durch Kriegserklärung','Physische Frontlinie zwischen Kombattanten','Formales Ende durch Waffenstillstand oder Friedensvertrag','Militärischer Zustand zwischen souveränen Staaten'],'Neue Kriege':['Warlords, Milizen und private Sicherheitsfirmen','Finanzierung über Konfliktdiamanten, Drogen, Erpressung','Grenze zwischen Zivilisten und Kombattanten verwischt','Krieg wird zum Dauerzustand']},e:'Klassisch = Binarität (Beginn, Front, Ende) zwischen Staaten. Neue Kriege = Entstaatlichung/Asymmetrie, Schattenökonomien, Autonomisierung der Gewalt.'},
+ {t:'mc',q:'Was meint „Autonomisierung der Gewalt“?',o:['Gewaltunternehmer haben kein Interesse an Frieden, weil der Krieg ihnen wirtschaftliche oder Machtvorteile sichert','Staaten führen Kriege ohne Zustimmung ihres Parlaments','Drohnen kämpfen ohne menschliche Steuerung','Jeder Staat darf sich selbst verteidigen'],e:'Krieg wird zum Dauerzustand, da die beteiligten Gewaltunternehmer vom Krieg profitieren.'},
+ {t:'mc',q:'Welche Autoren werden im Text mit dem Begriff der „Neuen Kriege“ verbunden?',o:['Herfried Münkler und Mary Kaldor','Dieter Senghaas und Johan Galtung','António Guterres und Mark Rutte','Hugo Grotius und Carl von Clausewitz'],e:'Münkler und Kaldor prägten die Debatte um die „Neuen Kriege“ seit den 1990er-Jahren. Senghaas gehört zum Hexagon.'},
+ {t:'multi',q:'Was gehört laut Text zur hybriden Kriegführung?',r:['Gezielte Desinformationskampagnen','Wirtschaftlicher Druck','Sabotage kritischer Infrastrukturen','Angriffe im digitalen Raum (Cyberwarfare)'],w:['Eine offizielle Kriegserklärung','Einsatz von UN-Blauhelmen','Ein klar erkennbarer Angreifer'],e:'Hybrid = verdeckte Kombination militärischer und nicht-militärischer Mittel. Typisch: Die Täterschaft soll gerade NICHT erkennbar sein.'},
+ {t:'mc',q:'Welches Problem schafft hybride Kriegführung bewusst?',o:['Die Zuordnung der Täterschaft (Attribution) wird erschwert','Es gibt zu viele Kriegserklärungen','Blauhelme können nicht mehr neutral sein','Das Vetorecht wird abgeschafft'],e:'Attribution wird erschwert – deshalb greifen rechtliche und institutionelle Abwehrmechanismen schwer.'},
+ {t:'mc',q:'Worin unterscheiden sich negativer und positiver Frieden?',o:['Negativ = Abwesenheit physischer Gewalt; positiv = zusätzlich keine strukturelle Gewalt und Gerechtigkeit','Negativ = Krieg; positiv = Waffenstillstand','Negativ = Frieden ohne UN-Mandat; positiv = mit UN-Mandat','Negativ = innerstaatlich; positiv = zwischenstaatlich'],e:'Der erweiterte Friedensbegriff: positiver Frieden umfasst das Fehlen struktureller Gewalt und die Präsenz von Gerechtigkeit.'},
+ {t:'input',q:'Wer entwickelte das Zivilisatorische Hexagon? (Nachname)',a:['senghaas','dieter senghaas'],e:'Dieter Senghaas: dauerhafter Frieden nur durch das Zusammenspiel von sechs Bedingungen.'},
+ {t:'multi',q:'Welche Bedingungen gehören zum Zivilisatorischen Hexagon?',r:['Gewaltmonopol (Entprivatisierung von Gewalt)','Rechtsstaatlichkeit','Interdependenz und Affektkontrolle','Demokratische Partizipation','Soziale Gerechtigkeit','Konstruktive Konfliktkultur'],w:['Nichteinmischungsprinzip','Militärische Abschreckung','Freie Marktwirtschaft'],e:'Die sechs Ecken: Gewaltmonopol, Rechtsstaatlichkeit, Interdependenz/Affektkontrolle, demokratische Partizipation, soziale Gerechtigkeit, konstruktive Konfliktkultur.'},
+ {t:'mc',q:'„Das Gewaltmonopol muss kontrolliert werden, um Willkür zu verhindern.“ Welche Hexagon-Bedingung?',o:['Rechtsstaatlichkeit','Gewaltmonopol','Demokratische Partizipation','Konstruktive Konfliktkultur'],e:'Rechtsstaatlichkeit kontrolliert das Gewaltmonopol. Das Gewaltmonopol selbst entzieht dem Einzelnen die Selbstjustiz.'},
+ {t:'mc',q:'In einem Failing State kontrollieren Milizen Stadtviertel und treiben „Schutzgeld“ ein. Welche Säule des Hexagons ist zuerst zusammengebrochen?',o:['Entprivatisierung von Gewalt (Gewaltmonopol)','Soziale Gerechtigkeit','Interdependenz und Affektkontrolle','Demokratische Partizipation'],e:'Wenn private Gewaltakteure herrschen, gibt es kein staatliches Gewaltmonopol mehr – Gewalt ist „reprivatisiert“. Das passt zur Dynamik der Neuen Kriege.'},
+ {t:'mc',q:'Eine Regierung schließt eine ethnische Gruppe dauerhaft von Wahlen und Ämtern aus. Welche Bedingung des Hexagons ist verletzt?',o:['Demokratische Partizipation','Rechtsstaatlichkeit','Gewaltmonopol','Interdependenz und Affektkontrolle'],e:'Demokratische Partizipation = Einbindung aller Gruppen zur Relevanzminderung von Gewalt.'},
+ {t:'mc',q:'„Sicherung der Grundbedürfnisse und Behebung von Ausgrenzung“ beschreibt …',o:['Soziale Gerechtigkeit','Konstruktive Konfliktkultur','Rechtsstaatlichkeit','Demokratische Partizipation'],e:'Soziale Gerechtigkeit – im Material markiert.'},
+ {t:'mc',q:'Was passiert laut Text, wenn eine Säule des Hexagons einbricht – etwa in einem Failing State?',o:['Das Risiko eines Rückfalls in bewaffnete Konflikte steigt drastisch','Der UN-Sicherheitsrat muss automatisch eingreifen','Der Staat verliert seine UN-Mitgliedschaft','Die übrigen fünf Säulen gleichen das automatisch aus'],e:'Bricht eine Säule ein, steigt das Rückfallrisiko drastisch.'},
+ {t:'mc',q:'Ein Staat greift an, um einem erwarteten Angriff des Gegners zuvorzukommen. Welcher Kriegstyp aus deinem Tafelbild?',o:['Präventivkrieg','Bürgerkrieg','Ideologischer Krieg','Hybrider Krieg'],e:'Präventivkrieg. Achtung: Völkerrechtlich ist das KEINE Ausnahme vom Gewaltverbot.'},
+ {t:'input',q:'Welche internationalen Abkommen regeln den Schutz der Zivilbevölkerung im Krieg? (Genfer …)',a:['konventionen','genfer konventionen','konvention','genfer konvention'],e:'Genfer Konventionen (plus Völkerstrafrecht).'},
+]},
+{key:'U',code:'Q3/03',title:'Die Vereinten Nationen',sub:'Charta · Hauptorgane · Gewaltverbot · kollektive Sicherheit · Blauhelme',q:[
+ {t:'input',q:'Wie viele Mitgliedstaaten hat die UNO?',a:['193'],e:'193 Staaten. Kosovo und Palästina gehören nicht dazu, der Vatikan ist „aktives Nichtmitglied“.'},
+ {t:'input',q:'In welchem Jahr wurde die UNO gegründet?',a:['1945'],e:'1945, nach dem Zweiten Weltkrieg.'},
+ {t:'mc',q:'Welches Dokument wird oft als „Weltverfassung“ bezeichnet?',o:['Die Charta der Vereinten Nationen','Die Genfer Konventionen','Der Nordatlantikvertrag','Das Budapester Memorandum'],e:'Die UN-Charta ist Grundlage der Völkerrechtsordnung seit 1945.'},
+ {t:'multi',q:'Welche sind Hauptorgane der UNO?',r:['Generalversammlung','Sicherheitsrat','Sekretariat','Internationaler Gerichtshof','Wirtschafts- und Sozialrat (ECOSOC)','Treuhandrat'],w:['UNICEF','Weltgesundheitsorganisation (WHO)','Nordatlantikrat'],e:'Sechs Hauptorgane – der Treuhandrat ist heute inaktiv, zählt aber dazu. UNICEF ist Nebenorgan, die WHO Sonderorganisation.'},
+ {t:'mc',q:'Welche Wirkung haben Beschlüsse der Generalversammlung, die über die interne Organisation hinausgehen?',o:['Keine Bindungswirkung – es sind Empfehlungen','Sie sind für alle Staaten völkerrechtlich bindend','Sie binden nur die Staaten, die zugestimmt haben, militärisch','Sie gelten erst nach Zustimmung des IGH'],e:'GV-Beschlüsse sind nur Empfehlungen. Bindend (Art. 25) sind Beschlüsse des Sicherheitsrats.'},
+ {t:'mc',q:'Nach welchem Prinzip stimmt die Generalversammlung ab?',o:['Ein Staat – eine Stimme','Stimmen nach Bevölkerungszahl','Stimmen nach Höhe der Beiträge','Nur die P5 haben volles Stimmrecht'],e:'„Ein Staat – eine Stimme“ (souveräne Gleichheit).'},
+ {t:'multi',q:'Welche Staaten sind ständige Mitglieder des Sicherheitsrats?',r:['China','Frankreich','Großbritannien','Russland','USA'],w:['Deutschland','Indien','Japan'],e:'P5: China, Frankreich, Großbritannien, Russland, USA. Dazu 10 nichtständige Mitglieder für je 2 Jahre.'},
+ {t:'mc',q:'Wann kommt laut Art. 27 eine Entscheidung im Sicherheitsrat zustande?',o:['Mindestens 9 von 15 stimmen zu und keines der fünf ständigen Mitglieder stimmt mit Nein','Alle 15 Mitglieder müssen zustimmen','Eine einfache Mehrheit von 8 Stimmen genügt','Die P5 müssen alle mit Ja stimmen'],e:'9 von 15 + kein Nein eines ständigen Mitglieds. Eine Enthaltung zählt NICHT als Ablehnung.'},
+ {t:'tf',q:'Enthält sich ein ständiges Mitglied, ist eine Resolution automatisch gescheitert.',a:false,e:'Enthaltung ≠ Veto. Nur ein ausdrückliches Nein eines P5-Staates blockiert.'},
+ {t:'input',q:'In welchem Artikel der UN-Charta steht das allgemeine Gewaltverbot? (Format: Art. _ Nr. _)',a:['art 2 nr 4','art 2 abs 4','2 nr 4','2 abs 4','artikel 2 absatz 4','art. 2 nr. 4','art 2 ziff 4','2 ziffer 4'],e:'Art. 2 Nr. 4 (auch: Ziffer bzw. Abs. 4): Verbot von Androhung und Anwendung von Gewalt gegen die territoriale Unversehrtheit oder politische Unabhängigkeit eines Staates.'},
+ {t:'multi',q:'Welche Ausnahmen vom allgemeinen Gewaltverbot erlaubt die Charta?',r:['Selbstverteidigung nach einem bewaffneten Angriff (Art. 51), auch kollektiv','Vom Sicherheitsrat autorisierte Zwangsmaßnahmen nach Kapitel VII'],w:['Humanitäre Intervention ohne UN-Mandat','Präventivkrieg gegen eine vermutete Bedrohung','Militäreinsatz nach einem Beschluss der Generalversammlung'],e:'Nur zwei Ausnahmen: Art. 51 (bis der SR handelt) und SR-Autorisierung. Kosovo 1999 war ohne Mandat – legitim, aber nicht legal.'},
+ {t:'input',q:'Welcher Artikel der Charta regelt das Recht auf Selbstverteidigung? (Zahl)',a:['51','art 51','artikel 51'],e:'Art. 51 – Staaten dürfen sich verteidigen und um kollektiven Beistand bitten (z. B. NATO).'},
+ {t:'mc',q:'Welche Aufgabe überträgt Art. 24 dem Sicherheitsrat?',o:['Die Hauptverantwortung für den Weltfrieden und die internationale Sicherheit','Die Verwaltung des UN-Haushalts','Die Wahl des IGH-Präsidenten','Die Aufnahme von Sonderorganisationen'],e:'Art. 24: vorrangige Verantwortung für Frieden und Sicherheit.'},
+ {t:'mc',q:'Art. 43 sieht vor, dass Mitgliedstaaten der UNO Streitkräfte zur Verfügung stellen. Was wurde daraus?',o:['Es kam nie dazu, weil die Staaten die Verfügungsgewalt über ihre Truppen nicht abgeben wollten','Die UNO hat seitdem eine eigene stehende Armee','Nur die P5 stellen dauerhaft Truppen','Die NATO übernimmt diese Aufgabe automatisch'],e:'Nie umgesetzt. Deshalb entstand das Peacekeeping mit Blauhelmen als eigene Form.'},
+ {t:'mc',q:'Was kennzeichnet UN-Friedensmissionen in ihrer KLASSISCHEN Form?',o:['Unbewaffnete Beobachter oder leicht bewaffnete Truppen, strikt neutral, überwachen einen Waffenstillstand','Robuste Mandate mit Kampfeinsätzen gegen Friedensstörer','Wiederaufbau ganzer Staaten (peacebuilding)','Durchsetzung von Handelsembargos'],e:'Klassisch = Beobachtung, Neutralität, Puffer zwischen regulären Armeen. Robuste Mandate und peacebuilding kamen nach dem Kalten Krieg hinzu.'},
+ {t:'sort',q:'Welche Mission gehört wohin?',cats:{'Beobachtungsmission 1940er':['UNTSO – Waffenstillstand in Palästina','UNMOGIP – Kaschmir zwischen Indien und Pakistan'],'Peacebuilding nach Konflikt':['Bosnien-Herzegowina','Kosovo','Ost-Timor','Sierra Leone']},e:'UNTSO und UNMOGIP sind frühe Beobachtungsmissionen. Bosnien, Kosovo, Ost-Timor, Sierra Leone stehen für post-conflict peacebuilding.'},
+ {t:'mc',q:'Warum stieg die Zahl der UN-Friedensmissionen nach 1988 sprunghaft an?',o:['Größere Handlungsfähigkeit des Sicherheitsrats nach dem Ende der Blockkonfrontation und Hinwendung zu innerstaatlichen Konflikten','Weil die UNO 1988 eine eigene Armee bekam','Weil das Vetorecht 1988 abgeschafft wurde','Weil die NATO keine Einsätze mehr durchführen durfte'],e:'1988–1992 wurden mehr Operationen begonnen als in den 45 Jahren davor.'},
+ {t:'input',q:'Wie viele Friedensmissionen führte die UNO zwischen 1948 und 1988 durch?',a:['13'],e:'13 – vor allem in Afrika (Kongo), Asien (Kaschmir), Nahost (Palästina/Sinai) und Europa (Zypern).'},
+ {t:'mc',q:'Wer leitet das Sekretariat (Stand 2026) und welche Rolle hat es?',o:['António Guterres; reines Verwaltungsorgan ohne eigene Entscheidungsbefugnisse','Mark Rutte; entscheidet über Militäreinsätze','António Guterres; kann Sanktionen verhängen','Ursula von der Leyen; vertritt die UNO nach außen'],e:'Guterres (Portugal) seit 2017; Amtszeit endet am 31.12.2026. Das Sekretariat handelt im Auftrag von GV und SR.'},
+ {t:'mc',q:'Wo sitzt der Internationale Gerichtshof?',o:['Den Haag','New York','Genf','Wien'],e:'IGH in Den Haag. Fünf Hauptorgane sitzen in New York; Außenstellen des Sekretariats in Genf, Nairobi und Wien.'},
+ {t:'mc',q:'Welche „Grundspannung“ prägt laut Text die Arbeit der UNO?',o:['Staaten schließen sich als souverän Gleiche zusammen – zugleich soll die UNO ihre souveränen Rechte zugunsten gemeinsamer Interessen begrenzen','Spannung zwischen NATO und Warschauer Pakt','Konflikt zwischen Sekretariat und IGH','Streit zwischen Sonderorganisationen um Spendengelder'],e:'Souveräne Gleichheit vs. Begrenzung der Souveränität (Gewalt, Menschenrechte, Klima). Staaten versuchen dabei, möglichst viele eigene Interessen durchzusetzen.'},
+ {t:'tf',q:'Laut Text ist die UNO „so stark oder so schwach, wie es ihre Mitgliedstaaten wollen“.',a:true,e:'Genau das ist das Fazit des Textes – alle Handlungsmöglichkeiten liegen in den Händen der Mitgliedstaaten, vor allem der großen Mächte.'},
+ {t:'mc',q:'Warum war der Sicherheitsrat im Kalten Krieg massiv eingeschränkt?',o:['USA und Sowjetunion setzten ihr Veto fast gewohnheitsmäßig ein','Weil er nur 5 Mitglieder hatte','Weil die Generalversammlung ihn überstimmen konnte','Weil Deutschland ein Vetorecht hatte'],e:'Gegenseitige Blockade per Veto.'},
+]},
+{key:'S',code:'Q3/04',title:'Sanktionen & UN-System',sub:'Kapitel VII · Art. 39/41/42 · Sonderorganisationen vs. Nebenorgane',q:[
+ {t:'order',q:'Bringe den Weg zu einer UN-Sanktion in die richtige Reihenfolge.',items:['Feststellung einer Bedrohung oder eines Bruchs des Weltfriedens (Art. 39)','Abstimmung: mind. 9 von 15 Stimmen, kein Veto der P5','Umsetzung durch die Staaten, Überwachung durch einen Sanktionsausschuss','Überprüfung: befristet, dann verlängert, verschärft oder beendet'],e:'Feststellen → Auswählen/Abstimmen → Überwachen → Überprüfen. Ohne Schritt 1 (Art. 39) keine Zwangsmaßnahmen.'},
+ {t:'sort',q:'Nichtmilitärisch (Art. 41) oder militärisch (Art. 42)?',cats:{'Art. 41':['Handelsembargo','Einfrieren von Vermögenswerten','Reiseverbote für Einzelpersonen','Waffenembargo','Abbruch diplomatischer Beziehungen'],'Art. 42':['Autorisierung von Luft-, See- oder Landstreitkräften','Einsatz gegen den Irak nach der Invasion Kuwaits 1990/91']},e:'Art. 41 = Sanktionen ohne Waffengewalt. Art. 42 = letztes Mittel, wenn Art. 41 nicht reicht.'},
+ {t:'input',q:'Nach welchem Artikel stellt der Sicherheitsrat zuerst fest, ob der Weltfrieden bedroht ist? (Zahl)',a:['39','art 39','artikel 39'],e:'Art. 39 – erst danach sind Zwangsmaßnahmen nach Art. 41/42 möglich.'},
+ {t:'mc',q:'Welches Kapitel der UN-Charta ist die Rechtsgrundlage für Zwangsmaßnahmen?',o:['Kapitel VII','Kapitel I','Kapitel XIV','Kapitel V'],e:'Kapitel VII: Maßnahmen bei Bedrohung oder Bruch des Friedens und bei Angriffshandlungen.'},
+ {t:'tf',q:'Die 17 Sanktionspakete der EU gegen Russland sind für alle 193 UN-Staaten rechtlich bindend.',a:false,e:'Das sind unilaterale Sanktionen. Bindend für alle sind nur Sanktionen des Sicherheitsrats – und die blockiert Russland per Veto.'},
+ {t:'sort',q:'Sonderorganisation oder Nebenorgan/Programm?',cats:{'Sonderorganisation':['WHO','UNESCO','ILO','FAO','IWF','Weltbank'],'Nebenorgan / Programm':['UNICEF','UNHCR','WFP','UNDP']},e:'Sonderorganisationen: eigener Vertrag, eigenes Budget, eigener Beitritt. Nebenorgane: direkt der UNO unterstellt, meist spendenfinanziert.'},
+ {t:'multi',q:'Was trifft auf SONDERORGANISATIONEN zu?',r:['Eigener Gründungsvertrag, völkerrechtlich selbstständig','Eigenes Budget und eigene Beschlussgremien','Staaten können eigenständig ein- oder austreten'],w:['Keine eigene Rechtspersönlichkeit','Meist von der Generalversammlung eingerichtet','Finanzierung fast nur durch freiwillige Spenden'],e:'Die falschen Antworten beschreiben Nebenorgane wie UNICEF.'},
+ {t:'mc',q:'Welches Beispiel zeigt, dass man aus einer Sonderorganisation austreten kann?',o:['USA 1984 aus der UNESCO','Deutschland 1955 aus der NATO','Russland 2022 aus dem Sicherheitsrat','Großbritannien 2016 aus UNICEF'],e:'USA 1984 – UNESCO. Bei Nebenorganen gibt es keinen eigenen Austritt.'},
+ {t:'mc',q:'WHO: Gründung, Sitz, Mitglieder?',o:['1948 · Genf · 194','1945 · New York · 193','1946 · Wien · 190','1949 · Brüssel · 32'],e:'WHO 1948, Genf, 194 Mitgliedstaaten. Kritik: kein eigenes Durchsetzungsrecht.'},
+ {t:'mc',q:'Wie finanziert sich UNICEF?',o:['Fast vollständig durch freiwillige Spenden von Regierungen, Unternehmen und Privatpersonen','Durch Pflichtbeiträge aller Mitgliedstaaten','Durch Kredite des IWF','Durch Strafzahlungen aus Sanktionen'],e:'Als Nebenorgan hat UNICEF kein Pflichtbudget. Gegründet 1946, aktiv in über 190 Ländern und Gebieten.'},
+ {t:'mc',q:'Welche UN-Institution erhielt 1954 und 1981 den Friedensnobelpreis?',o:['UNHCR','WFP','UNDP','WHO'],e:'UNHCR – Schutz Geflüchteter und Binnenvertriebener.'},
+ {t:'mc',q:'Welches Sanktionsregime besteht seit 2006 wegen eines Atom- und Raketenprogramms?',o:['Nordkorea','Mali','Jemen','Somalia'],e:'Nordkorea seit 2006. Somalia: Waffenembargo gegen Al-Shabaab; DR Kongo: Waffen und Rohstoffhandel.'},
+ {t:'multi',q:'Welche Kritikpunkte an Sanktionen nennt das Material?',r:['Humanitäre Folgen für die Zivilbevölkerung (z. B. Irak 1990–2003)','Fragliche Wirksamkeit gegenüber autoritären Regierungen','Umgehung durch Drittstaaten und Schattenflotten','Blockade durch das Vetorecht'],w:['Sanktionen sind grundsätzlich völkerrechtswidrig','Sanktionen dürfen nur von der NATO verhängt werden'],e:'Vier Kritikpunkte: humanitäre Folgen, Wirksamkeit, Umgehung, Veto-Blockade.'},
+ {t:'mc',q:'Warum reagierten EU und USA auf den Ukraine-Krieg mit eigenen statt UN-Sanktionen?',o:['Russland ist ständiges Mitglied und kann jede Resolution gegen sich per Veto blockieren','Die UNO darf grundsätzlich keine Sanktionen gegen Atommächte verhängen','Die Generalversammlung hatte Sanktionen verboten','Die UN-Charta kennt keine Wirtschaftssanktionen'],e:'Grenze kollektiver Sicherheit: Gegen P5 (und enge Verbündete) sind bindende UN-Sanktionen praktisch nicht durchsetzbar.'},
+ {t:'mc',q:'Wer setzt UN-Sanktionen konkret um?',o:['Die einzelnen Mitgliedstaaten (z. B. nationale Ein- und Ausfuhrverbote); ein Sanktionsausschuss überwacht','Das Sekretariat mit eigener Polizei','Der Internationale Gerichtshof','Die NATO'],e:'Die UNO hat keine eigenen Machtmittel – Umsetzung liegt bei den Staaten.'},
+ {t:'mc',q:'Wie nennt der UN-Text Sanktionen wie Waffenembargos oder Handelsbeschränkungen auf Englisch?',o:['peace making','peacekeeping','peacebuilding','use of military force'],e:'Sanktionen = peace making; Autorisierung militärischer Gewalt = use of military force; Blauhelme = peacekeeping; Wiederaufbau = peacebuilding.'},
+ {t:'sort',q:'Ordne den Fachbegriff zu.',cats:{'peacekeeping':['Blauhelme überwachen neutral einen Waffenstillstand'],'peace making':['Waffenembargo gegen einen Friedensstörer'],'peacebuilding':['Wiederaufbau von Staat und Verwaltung nach einem Bürgerkrieg'],'use of military force':['Autorisierung militärischer Gewalt wie Irak 1990']},e:'Vier Stufen des UN-Instrumentariums – eine beliebte Klausurfalle.'},
+]},
+{key:'UA',code:'Q3/05',title:'Der Ukraine-Krieg',sub:'Vorgeschichte 1991–2022 · Kriegsverlauf · Unterstützer & Motive',q:[
+ {t:'order',q:'Bringe die Vorgeschichte in die richtige Reihenfolge.',items:['Unabhängigkeit der Ukraine','Budapester Memorandum','Euromaidan','Annexion der Krim','Minsk II','Truppenaufmarsch an der Grenze','Vollinvasion'],e:'1991 → 1994 → 2013/14 → Feb./März 2014 → Feb. 2015 → 2021 → 24.02.2022.'},
+ {t:'order',q:'Kriegsverlauf 2022: Was geschah zuerst?',items:['Angriff aus drei Richtungen, auch auf Kyjiw','Rückzug russischer Truppen aus dem Norden','Ukrainische Gegenoffensive bei Charkiw','Rückeroberung von Cherson'],e:'24.02. → März/April → September → November 2022.'},
+ {t:'mc',q:'Was regelte das Budapester Memorandum (5.12.1994)?',o:['Die Ukraine gibt ihre Kernwaffen ab; Russland, USA und Großbritannien sichern Souveränität und territoriale Unversehrtheit zu','Die Ukraine tritt der NATO bei','Russland erhält die Krim für 50 Jahre','Die OSZE überwacht einen Waffenstillstand im Donbass'],e:'Ukraine hatte das drittgrößte Kernwaffenarsenal der Welt. Wichtig: Eine verbindliche Militärhilfe-Garantie enthielt das Memorandum NICHT.'},
+ {t:'tf',q:'Das Budapester Memorandum verpflichtete die USA und Großbritannien, der Ukraine im Angriffsfall militärisch beizustehen.',a:false,e:'Keine verbindliche Militärhilfe-Garantie – der rechtliche Status ist bis heute umstritten.'},
+ {t:'mc',q:'Was löste den Euromaidan aus?',o:['Präsident Janukowytsch lehnte auf Druck Moskaus ein fertig verhandeltes EU-Assoziierungsabkommen ab','Russland annektierte die Krim','Die NATO lud die Ukraine zum Beitritt ein','Selenskyj wurde zum Präsidenten gewählt'],e:'November 2013; über 100 Tote bei der Eskalation; am 22.02.2014 wurde Janukowytsch abgesetzt und floh nach Russland.'},
+ {t:'sort',q:'Ordne die Personen zu.',cats:{'Präsident der Ukraine 2010–2014':['Viktor Janukowytsch'],'Präsident der Ukraine 2014–2019':['Petro Poroschenko'],'Präsident der Ukraine seit 2019':['Wolodymyr Selenskyj'],'Präsident Russlands':['Wladimir Putin']},e:'Poroschenko amtierte während Krim-Annexion, Donbass-Krieg und Minsker Abkommen.'},
+ {t:'mc',q:'Wer waren die „grünen Männchen“?',o:['Unmarkierte, bewaffnete Soldaten, die Ende Februar 2014 Gebäude und Stützpunkte auf der Krim besetzten','Ukrainische Freiwillige im Donbass','OSZE-Beobachter','Blauhelme der UNO'],e:'Russland bestritt zunächst jede Beteiligung – Wochen später räumte Putin sie ein. Ein Beispiel für hybride Kriegführung.'},
+ {t:'mc',q:'Krim-Referendum am 16. März 2014 – was stimmt?',o:['Offiziell 97 % für den Anschluss, ohne internationale Beobachter und unter militärischer Präsenz; völkerrechtlich nicht anerkannt','Von der UNO überwacht und anerkannt','Die Mehrheit stimmte für den Verbleib in der Ukraine','Es fand erst 2022 statt'],e:'Die Angliederung gilt völkerrechtlich als Annexion. Strategisch wichtig: Sewastopol, Hauptstützpunkt der Schwarzmeerflotte.'},
+ {t:'mc',q:'Wer vermittelte die Minsker Abkommen?',o:['Die OSZE im „Normandie-Format“ mit Frankreich und Deutschland','Die UNO mit Blauhelmen','Die NATO','China und die Türkei'],e:'Minsk I (Sept. 2014) scheiterte nach Wochen; Minsk II (Feb. 2015) wurde nie vollständig umgesetzt.'},
+ {t:'mc',q:'Warum scheiterte Minsk II vor allem?',o:['Beide Seiten interpretierten zentrale Punkte unterschiedlich, z. B. die Reihenfolge von Wahlen und Grenzkontrolle','Die UNO legte ein Veto ein','Die Ukraine trat der NATO bei','Russland zog alle Truppen ab'],e:'Streit um Reihenfolge Wahlen/Grenzkontrolle und Grad der Autonomie für Donezk/Luhansk.'},
+ {t:'input',q:'Wie viele Todesopfer forderte der Krieg im Donbass schon 2014–2021 (ungefähr)?',a:['14000','14.000','14 000','über 14000','ueber 14000','14000+'],e:'Über 14.000 Tote, 1,5 Mio. Binnenvertriebene – ein „eingefrorener Konflikt“, im Westen wenig beachtet.'},
+ {t:'mc',q:'Wie viele russische Soldaten standen im Februar 2022 (geschätzt) an der Grenze?',o:['ca. 190.000','ca. 19.000','ca. 1,9 Mio.','ca. 90.000'],e:'Rund 190.000, aus drei Richtungen: Norden (Belarus), Osten, Süden (Krim).'},
+ {t:'sort',q:'Wie ist der Konflikt einzuordnen?',cats:{'2014–2022':['Separatisten und „grüne Männchen“ als Akteure','Verdeckte, uneingestandene russische Beteiligung','Kämpfe regional auf den Donbass begrenzt'],'seit 2022':['Offener Angriff eines Staates auf einen anderen','Reguläre Streitkräfte auf beiden Seiten, klare Fronten','Landesweite Kriegshandlungen']},e:'2014–2022: eher hybrider, innerstaatlich geprägter Konflikt. Seit 2022: klassischer zwischenstaatlicher Krieg mit hybriden Elementen.'},
+ {t:'sort',q:'Wer unterstützt wen?',cats:{'Unterstützt die Ukraine':['Europäische Union','Polen und die baltischen Staaten','Großbritannien'],'Unterstützt Russland':['Nordkorea','Iran','Belarus','China (offiziell keine Waffen)']},e:'China liefert offiziell keine Waffen, stützt Russland aber durch Rohstoffkäufe und Dual-Use-Güter.'},
+ {t:'mc',q:'Welcher Staat lieferte Kampfdrohnen vom Typ Shahed, die Russland inzwischen in Lizenz selbst baut?',o:['Iran','Nordkorea','China','Belarus'],e:'Iran – strategische Partnerschaft zweier sanktionierter Staaten; Gegenleistung: Rüstungs- und Militärtechnologie.'},
+ {t:'mc',q:'Was erhält Nordkorea für seine Soldaten (geschätzt 14.000–15.000) und Munition?',o:['Mehl und Mais, einen Verteidigungsvertrag als Sicherheitsgarantie und Zugang zu Militär- und Raumfahrttechnologie','Einen ständigen Sitz im Sicherheitsrat','Die Aufhebung aller UN-Sanktionen','Gebiete in der Ostukraine'],e:'Mehr als kurzfristige Wirtschaftshilfe: neuer strategischer Verbündeter, nachdem China sich distanzierte.'},
+ {t:'mc',q:'Wie unterstützt China Russland laut Material?',o:['Kauf von Öl und Gas (Abkommen Feb. 2026: rund 100 Mrd. € über 25 Jahre) und Lieferung von Dual-Use-Gütern; Enthaltung bei UN-Abstimmungen','Direkte Lieferung von Panzern und Soldaten','Veto gegen alle EU-Sanktionen','Übernahme der Kriegsführung im Donbass'],e:'Machtpolitische Motive: gemeinsames autoritäres Staatsverständnis, Ablehnung der westlich geprägten Ordnung – und ein von China abhängiges Russland.'},
+ {t:'mc',q:'Warum unterstützt Belarus Russland?',o:['Lukaschenko sicherte seinen Machterhalt nach den Protesten 2020 durch russische Rückendeckung – die Unterstützung ist der politische Preis','Belarus ist NATO-Mitglied','Belarus will die Krim erhalten','Belarus wurde von der UNO dazu verpflichtet'],e:'Belarus diente 2022 als Aufmarschgebiet gegen Kyjiw und übt mit Russland nukleare Manöver.'},
+ {t:'multi',q:'Wie unterstützt die EU die Ukraine laut Material?',r:['Finanzielle und militärische Hilfe, u. a. über die Europäische Friedensfazilität','Ausbildung ukrainischer Soldaten über die Mission EUMAM Ukraine','17 Sanktionspakete gegen Russland'],w:['Entsendung eigener EU-Kampftruppen an die Front','Ausrufung des NATO-Bündnisfalls'],e:'Die EU ist inzwischen größte Gesamtunterstützerin. Motive: v. a. wertebasiert, aber auch Eigeninteressen (kritische Infrastruktur, Abschreckung).'},
+ {t:'mc',q:'Wie hat sich die Rolle der USA seit 2025 verändert?',o:['Sie treten vor allem als Vermittler auf, weniger als Unterstützer mit eigenen Waffenlieferungen','Sie sind direkte Kriegspartei geworden','Sie haben sich auf die Seite Russlands gestellt','Sie haben die UNO mit der Vermittlung beauftragt'],e:'Unter Trump: Interesse, einen teuren Krieg rasch diplomatisch zu beenden und die Hauptlast den Europäern zu überlassen.'},
+ {t:'mc',q:'Warum handeln Polen und die baltischen Staaten laut Material besonders entschlossen?',o:['Sie liegen direkt neben Russland und fürchten, nach einem ukrainischen Scheitern selbst ins Visier zu geraten','Sie sind ständige Mitglieder des Sicherheitsrats','Sie sind nicht in der NATO','Sie wollen ukrainische Gebiete übernehmen'],e:'Unterstützung der Ukraine = vorbeugende Verteidigung der eigenen Sicherheit.'},
+ {t:'multi',q:'Welche Motive sehen unabhängige Beobachter hinter Russlands Angriff (statt der offiziellen Begründung)?',r:['Anspruch, als Großmacht Einfluss im „nahen Ausland“ zu behalten','Verhindern einer demokratischen, westlich orientierten Ukraine als Vorbild','Kontrolle wirtschaftlich und militärisch wichtiger Gebiete wie Krim und Donbass'],w:['„Entnazifizierung“ der Ukraine','Schutz vor einem unmittelbar bevorstehenden NATO-Angriff'],e:'„Entmilitarisierung/Entnazifizierung“ und NATO-Bedrohung sind die OFFIZIELLEN Begründungen – Beobachter halten sie für Vorwände.'},
+ {t:'tf',q:'Wenn Russlands Sicherheitsinteressen berechtigt wären, wäre der Angriff von 2022 mit dem Völkerrecht vereinbar.',a:false,e:'Die Frage nach Motiven ändert nichts an der Bewertung: Der Angriff verstößt gegen Art. 2 Abs. 4 UN-Charta.'},
+ {t:'mc',q:'Welche Gebiete kontrolliert Russland im Herbst 2026 (zumindest teilweise)?',o:['Teile von Donezk, Luhansk, Saporischschja und Cherson sowie die Krim','Kyjiw und Charkiw','Die gesamte Ukraine östlich des Dnipro einschließlich Kyjiw','Nur die Krim'],e:'Die Front ist weitgehend statisch; Verhandlungsversuche (z. B. Paris, Januar 2026) ohne Durchbruch.'},
+]},
+{key:'P',code:'Q3/06',title:'UNO auf dem Prüfstand',sub:'Veto im Ukraine-Krieg · Generaldebatte 2026 · R2P · Libyen vs. Syrien',q:[
+ {t:'vote'},{t:'vote'},
+ {t:'mc',q:'Wer spricht traditionell als Erstes in der Generaldebatte der UN-Generalversammlung?',o:['Brasilien, danach das Gastgeberland USA','Die USA, danach China','Der Generalsekretär, danach Russland','Das Land mit dem Vorsitz im Sicherheitsrat'],e:'Brasilien zuerst, dann die USA. Die 81. Generaldebatte begann am 22. September 2026.'},
+ {t:'mc',q:'Warum ist die Generaldebatte 2026 besonders?',o:['Es ist die letzte von Generalsekretär Guterres, dessen Amtszeit am 31.12.2026 endet; zudem dauert der Ukraine-Krieg über 4,5 Jahre','Russland verlor dort sein Vetorecht','Zum ersten Mal sprach Deutschland zuerst','Die NATO wurde dort Mitglied der UNO'],e:'Über die Nachfolge verhandelt der Sicherheitsrat. Für Deutschland sprach Außenminister Johann Wadephul.'},
+ {t:'mc',q:'Wer vermittelte 2026 die neuen Gespräche im Ukraine-Krieg – und was zeigt das?',o:['Die USA, nicht die UNO – die UNO spielt bei der Friedensvermittlung kaum eine Rolle','Die UNO über den Sicherheitsrat','Der IGH','China im Auftrag der Generalversammlung'],e:'Eine Waffenruhe zu Ostern 2026 hielt nur 32 Stunden. Vermittler: die USA.'},
+ {t:'order',q:'Bringe die Ereignisse im Sicherheitsrat zum Ukraine-Krieg in die richtige Reihenfolge.',items:['Veto gegen Resolution zum Krim-Referendum (13 Ja, China enthält sich)','Veto gegen Verurteilung des Großangriffs (11 Ja, 1 Nein, 3 Enthaltungen)','„Uniting for Peace“: Überweisung an die Generalversammlung','Veto gegen Verurteilung der Scheinreferenden und Annexion von vier Gebieten','US-Resolution fordert schnelles Kriegsende, nennt Russland nicht als Angreifer'],e:'15.03.2014 → 25.02.2022 → 02.03.2022 → 30.09.2022 → 24.02.2025.'},
+ {t:'mc',q:'25.02.2022: 11 Ja, 1 Nein (Russland), 3 Enthaltungen. Wer enthielt sich?',o:['China, Indien, Vereinigte Arabische Emirate','China, Brasilien, Deutschland','Indien, Frankreich, Großbritannien','Belarus, Iran, Nordkorea'],e:'China, Indien, VAE. Die Resolution scheiterte trotzdem – am russischen Veto.'},
+ {t:'mc',q:'Was ist das Verfahren „Uniting for Peace“?',o:['Der Sicherheitsrat überweist einen blockierten Fall an die Generalversammlung, in der es kein Veto gibt','Die P5 einigen sich auf eine gemeinsame Friedenstruppe','Die NATO übernimmt einen UN-Einsatz','Der IGH entscheidet anstelle des Sicherheitsrats'],e:'02.03.2022: 141 Staaten verurteilten den Angriff, 5 dagegen, 35 Enthaltungen. ABER: GV-Beschlüsse sind nur Empfehlungen.'},
+ {t:'input',q:'Wie viele Staaten verurteilten am 2. März 2022 in der Generalversammlung den russischen Angriff?',a:['141'],e:'141 Ja, 5 Nein, 35 Enthaltungen.'},
+ {t:'mc',q:'Was verlangt Resolution 76/262 (seit 2022)?',o:['Eine Vetomacht muss ihr Veto vor der Generalversammlung begründen','Das Vetorecht Russlands ist ausgesetzt','Der Sicherheitsrat wird auf 25 Mitglieder erweitert','Die GV kann ein Veto mit Zweidrittelmehrheit aufheben'],e:'Das erhöht den Druck – verhindern kann es ein Veto nicht.'},
+ {t:'mc',q:'Was besagt das Nichteinmischungsprinzip (Art. 2 Nr. 7)?',o:['Die UNO mischt sich grundsätzlich nicht in die inneren Angelegenheiten eines Staates ein','Kein Staat darf einen anderen angreifen','Staaten dürfen keine Bündnisse schließen','Die P5 dürfen sich bei Abstimmungen nicht enthalten'],e:'Art. 2 Nr. 4 = Gewaltverbot, Art. 2 Nr. 7 = Nichteinmischung. Beides schützt die Souveränität.'},
+ {t:'mc',q:'Ruanda 1994 – was geschah?',o:['In rund 100 Tagen wurden etwa 800.000 Menschen, überwiegend Tutsi, ermordet; die UNO zog ihre Blauhelme größtenteils ab','Die NATO griff ohne UN-Mandat ein','Der Sicherheitsrat erließ eine Flugverbotszone','Russland legte ein Veto gegen Blauhelme ein'],e:'Die Staatengemeinschaft schaute weg – eine Erfahrung, aus der die R2P entstand.'},
+ {t:'mc',q:'Der NATO-Einsatz im Kosovo 1999 gilt als …',o:['legitim, aber nicht legal','legal, aber nicht legitim','legal und legitim','weder legal noch legitim'],e:'Legal = rechtmäßig (UN-Charta). Legitim = moralisch gerechtfertigt. Russland und China drohten mit Veto, daher kein Mandat.'},
+ {t:'sort',q:'Legal oder legitim? Ordne die Beschreibung zu.',cats:{'legal':['Die Handlung entspricht dem geltenden Recht','Im Völkerrecht: im Einklang mit der UN-Charta'],'legitim':['Die Handlung gilt aus moralischen Gründen als richtig','Beispiel: Schutz der Kosovo-Albaner vor Vertreibung und Mord']},e:'Kosovo 1999: legitim (Schutz), aber nicht legal (kein SR-Beschluss).'},
+ {t:'input',q:'In welchem Jahr wurde die Schutzverantwortung (R2P) auf dem UN-Weltgipfel anerkannt?',a:['2005'],e:'2005, von allen Mitgliedstaaten. Kernidee: Souveränität ist nicht nur ein Recht, sondern auch eine Pflicht.'},
+ {t:'sort',q:'Ordne den drei Säulen der R2P zu.',cats:{'Säule 1: Der Staat':['Jeder Staat schützt seine Bevölkerung vor Völkermord und Kriegsverbrechen'],'Säule 2: Unterstützung':['Die Staatengemeinschaft hilft mit Beratung, Ausbildung und Geld'],'Säule 3: Eingreifen':['Versagt ein Staat, geht die Verantwortung auf die Staatengemeinschaft über','Als letztes Mittel auch militärisch']},e:'Säule 3 nur mit Beschluss des Sicherheitsrats – und damit wieder abhängig vom Veto der P5.'},
+ {t:'multi',q:'Vor welchen Verbrechen muss ein Staat laut R2P seine Bevölkerung schützen?',r:['Völkermord','Kriegsverbrechen','Ethnische Säuberungen','Verbrechen gegen die Menschlichkeit'],w:['Wirtschaftskrisen','Terroranschläge aus dem Ausland'],e:'Genau diese vier Massenverbrechen.'},
+ {t:'order',q:'Säule 3 der R2P: In welcher Reihenfolge greift die Staatengemeinschaft ein?',items:['Friedliche Mittel (Diplomatie, humanitäre Hilfe)','Sanktionen','Militärisches Eingreifen als letztes Mittel'],e:'Eskalation in Stufen – und alle Zwangsmaßnahmen nur durch den Sicherheitsrat.'},
+ {t:'mc',q:'Wie missbrauchte Russland 2022 die Idee der Schutzverantwortung?',o:['Es behauptete, Menschen im Donbass vor einem angeblichen „Völkermord“ schützen zu müssen','Es beantragte ein R2P-Mandat im Sicherheitsrat','Es verlangte Blauhelme für die Krim','Es berief sich auf Art. 43'],e:'Die Ukraine klagte vor dem IGH; am 16.03.2022 verpflichtete der IGH Russland (13 zu 2), die Militäroperationen sofort einzustellen. Russland hielt sich nicht daran.'},
+ {t:'input',q:'Mit welchem Stimmenverhältnis verpflichtete der IGH Russland am 16.03.2022 zur Einstellung der Operationen? (z. B. 10:5)',a:['13:2','13 2','13 zu 2','13-2','13/2'],e:'13 zu 2 Richterstimmen.'},
+ {t:'sort',q:'Libyen 2011 oder Syrien ab 2011?',cats:{'Libyen':['Resolution 1973 mit Flugverbotszone','Erlaubnis für „alle notwendigen Maßnahmen“','Deutschland enthielt sich im Sicherheitsrat','NATO-Luftangriffe, Machthaber gestürzt'],'Syrien':['Kein Beschluss über Zwangsmaßnahmen','Mehr als ein Dutzend russische Vetos','Krieg dauerte über 13 Jahre','Machthaber floh im Dezember 2024 nach Moskau']},e:'Libyen: R2P umgesetzt. Syrien: blockiert. Russland und China fühlten sich durch Libyen „getäuscht“ (Regimewechsel).'},
+ {t:'mc',q:'Resolution 1973 (17.03.2011): 10 Ja, 5 Enthaltungen. Wer enthielt sich?',o:['China, Russland, Indien, Brasilien, Deutschland','USA, Frankreich, Großbritannien, Indien, Japan','China, Russland, Iran, Syrien, Belarus','Deutschland, Polen, Italien, Spanien, Türkei'],e:'Auch Deutschland enthielt sich – eine bekannte Klausurfrage.'},
+ {t:'mc',q:'Was kritisierten Russland, China und die Afrikanische Union am Libyen-Einsatz?',o:['Es sei um Regimewechsel gegangen, nicht nur um den Schutz von Zivilisten','Die NATO habe zu spät eingegriffen','Es habe kein Waffenembargo gegeben','Die Blauhelme seien nicht neutral gewesen'],e:'Dieser „Libyen-Effekt“ ist ein Hauptgrund für die Blockade im Fall Syrien.'},
+]},
+{key:'SY',code:'Q3/07',title:'Syrien & Flucht',sub:'Konfliktverlauf 2011–2026 · R2P-Check · Fluchtbewegungen · Schutzformen',q:[
+ {t:'order',q:'Bringe den Syrien-Konflikt in die richtige Reihenfolge.',items:['Proteste in Daraa','Giftgasangriff auf die Ghuta bei Damaskus','IS ruft ein „Kalifat“ aus','Russland greift für Assad ein','Regime erobert Ost-Aleppo zurück','Waffenstillstand in Idlib','Sturz Assads'],e:'2011 → Aug. 2013 → 2014 → Sept. 2015 → Dez. 2016 → März 2020 → 8. Dez. 2024.'},
+ {t:'mc',q:'Was war der Auslöser der Proteste in Daraa 2011?',o:['Jugendliche wurden wegen regimekritischer Graffiti verhaftet und gefoltert','Ein Giftgasangriff des Regimes','Der Einmarsch der Türkei','Die Ausrufung des IS-Kalifats'],e:'Im Zuge des „Arabischen Frühlings“. Das Regime antwortete mit Gewalt; Deserteure gründeten die „Freie Syrische Armee“.'},
+ {t:'mc',q:'Wie reagierte die Staatengemeinschaft auf den Giftgasangriff in der Ghuta 2013 (über 1.000 Tote)?',o:['Kein Militärschlag trotz „roter Linie“ der USA; stattdessen Vernichtung der Chemiewaffen (Resolution 2118)','NATO-Luftangriffe mit UN-Mandat','Flugverbotszone nach dem Vorbild Libyens','Blauhelm-Einsatz in Damaskus'],e:'Resolution 2118. Weitere Giftgasangriffe folgten 2017/2018 (Chan Schaichun, Duma).'},
+ {t:'mc',q:'Wie oft legten Russland und China 2011–2023 ein Veto zu Syrien ein?',o:['Russland 18-mal, China 10-mal','Russland 3-mal, China nie','Beide je 5-mal','Russland 10-mal, China 18-mal'],e:'2014 scheiterte so auch die Überweisung an den Internationalen Strafgerichtshof.'},
+ {t:'sort',q:'Wer unterstützte wen im Syrien-Krieg?',cats:{'Assad-Regime':['Russland (Luftwaffe, Veto)','Iran','Hisbollah'],'Opposition/Islamisten':['Türkei','Golfstaaten'],'Kurden (SDF)':['USA und Anti-IS-Koalition']},e:'Ein Stellvertreterkrieg. Die Türkei ist zugleich Gegnerin der Kurden.'},
+ {t:'mc',q:'Wie lange dauerte es von der HTS-Offensive (27.11.2024) bis zum Fall von Damaskus?',o:['11 Tage','11 Wochen','11 Monate','3 Tage'],e:'Assads Verbündete waren geschwächt: Russland durch den Ukraine-Krieg, Iran und Hisbollah durch den Krieg mit Israel.'},
+ {t:'input',q:'Wie viele Jahre herrschte die Familie Assad (1971–2024)?',a:['53'],e:'53 Jahre – Hafiz al-Assad, ab 2000 Sohn Baschar.'},
+ {t:'order',q:'R2P-Check Syrien: Bringe das Prüfraster in die Reihenfolge aus dem Unterricht.',items:['Liegen Massenverbrechen vor?','Schützt der Staat seine Bevölkerung nicht?','Sind friedliche Mittel ausgeschöpft?','Gibt es ein Mandat des Sicherheitsrats?'],e:'Bilanz: Punkte 1–3 erfüllt, Punkt 4 blockiert (Veto).'},
+ {t:'mc',q:'Fazit des R2P-Checks zu Syrien?',o:['Die inhaltlichen Voraussetzungen waren erfüllt – umgesetzt wurde R2P nicht, weil das Veto sie blockierte','R2P war nicht anwendbar, weil keine Massenverbrechen vorlagen','R2P wurde erfolgreich umgesetzt wie in Libyen','Syrien war kein UN-Mitglied'],e:'Syrien zeigt die Grenzen von R2P: Schützt eine Vetomacht einen Täterstaat, bleibt sie wirkungslos.'},
+ {t:'multi',q:'Warum blieb ein Eingreifen in Syrien aus?',r:['„Libyen-Effekt“: Russland und China sahen R2P als Vorwand für Regimewechsel','Russlands Interessen (Marinestützpunkt Tartus), ab 2015 selbst Kriegspartei','Hohe Risiken: zersplitterte Opposition, IS, Gefahr eines Zusammenstoßes mit Russland','Kriegsmüdigkeit des Westens nach Irak und Afghanistan'],w:['Syrien hatte ein Vetorecht','Die Generalversammlung hatte Eingreifen verboten'],e:'Vier Gründe aus der Präsentation.'},
+ {t:'mc',q:'Wer ist (Stand Sept. 2026) Übergangspräsident Syriens?',o:['Ahmed al-Scharaa, früherer HTS-Chef','Baschar al-Assad','Ein von der UNO eingesetzter Verwalter','Ein Kurdenführer der SDF'],e:'Übergangsverfassung für 5 Jahre; al-Scharaa sprach 2026 auch vor der UN-Generalversammlung.'},
+ {t:'mc',q:'Was ist der Unterschied zwischen Binnenvertriebenen und Flüchtlingen?',o:['Binnenvertriebene fliehen innerhalb des eigenen Landes; Flüchtlinge haben eine Staatsgrenze überquert','Binnenvertriebene sind politisch verfolgt, Flüchtlinge nicht','Flüchtlinge bleiben im Land, Binnenvertriebene fliehen nach Europa','Es gibt keinen Unterschied'],e:'Syrien 2021: 6,8 Mio. Binnenvertriebene, 6,5 Mio. Flüchtlinge im Ausland.'},
+ {t:'order',q:'Wer nahm die meisten Syrer auf? Von den meisten zu den wenigsten (Stand Anfang 2024).',items:['Türkei','Libanon','Deutschland','Jordanien','Irak','Ägypten'],e:'Türkei 3,2 Mio. · Libanon 785.000 · Deutschland 712.000 · Jordanien 649.000 · Irak 273.000 · Ägypten 154.000.'},
+ {t:'mc',q:'Welches Land war im Verhältnis zur Einwohnerzahl am stärksten belastet?',o:['Libanon – zeitweise jeder 4. Einwohner ein syrischer Flüchtling','Türkei – jeder 2. Einwohner','Deutschland – jeder 10. Einwohner','Jordanien – jeder 3. Einwohner'],e:'Libanon ca. 25 % (2014), Jordanien jeder 17., Türkei jeder 27., Deutschland jeder 120.'},
+ {t:'mc',q:'Was gilt weltweit für Flüchtlinge – am Beispiel Syrien?',o:['Die meisten bleiben in der Nähe ihrer Heimat, oft in ärmeren Ländern (4 von 5 in Nachbarländern)','Die meisten fliehen nach Europa','Die meisten fliehen nach Nordamerika','Die meisten kehren nach einem Jahr zurück'],e:'Nachbarländer tragen die Hauptlast; Deutschland ist das wichtigste Aufnahmeland außerhalb der Region.'},
+ {t:'sort',q:'Folgen von Flucht: für wen?',cats:{'Geflüchtete':['Verlust von Heimat, Besitz, Angehörigen','Unsicherer Aufenthaltsstatus'],'Aufnahmeländer':['Belastung von Wohnraum, Schulen und Gesundheitssystem','Chance: Arbeitskräfte'],'Herkunftsland':['Braindrain: Ärzte und Fachkräfte fehlen','Wiederaufbau schwierig ohne Menschen und Geld']},e:'Beispiel Chance: 266.000 Syrer in Deutschland sozialversicherungspflichtig beschäftigt.'},
+ {t:'sort',q:'Ordne die Rechtsgrundlage der Schutzform zu.',cats:{'Asylberechtigung':['Art. 16a Grundgesetz','Politische Verfolgung durch den Staat'],'Flüchtlingsschutz':['Genfer Flüchtlingskonvention','Verfolgung aus einem von 5 Gründen'],'Subsidiärer Schutz':['EU-Recht','Ernsthafter Schaden droht, z. B. Krieg'],'Abschiebungsverbot':['Aufenthaltsgesetz','Gefahr für Leib und Leben, z. B. schwere Krankheit']},e:'Bei Syrern ist der subsidiäre Schutz der häufigste Status (Kriegsflüchtlinge).'},
+ {t:'mc',q:'Was gilt beim subsidiären Schutz für den Familiennachzug?',o:['Ausgesetzt bis Juli 2027 (nur Härtefälle)','Erleichtert wie bei Asyl','Unbegrenzt möglich','Nur für Kinder unter 6 Jahren'],e:'Aufenthalt zunächst 1 Jahr, dann je 2 Jahre.'},
+ {t:'mc',q:'Ein Asylantrag wird abgelehnt, die Abschiebung ist aber (noch) nicht möglich. Was folgt?',o:['Duldung','Subsidiärer Schutz','Asylberechtigung','Einbürgerung'],e:'Ablehnung → Pflicht zur Ausreise; ist die Abschiebung nicht möglich → Duldung.'},
+ {t:'mc',q:'Wie viele Menschen in Syrien brauchen (2026) humanitäre Hilfe?',o:['15,6 Mio.','1,56 Mio.','5,5 Mio.','156.000'],e:'15,6 Mio. 5,5 Mio. sind weiterhin Binnenvertriebene; aus dem Ausland sind rund 1,8 Mio. zurückgekehrt (Aug./Sept. 2026).'},
+ {t:'multi',q:'Was gehört zur aktuellen Lage in Syrien (Stand Sept. 2026)?',r:['Massaker an Alawiten im März 2025 (ca. 1.400 Tote)','Kurdisch wird Nationalsprache, SDF gehen im August 2026 in der Armee auf','USA heben Sanktionen auf (Caesar Act 12/2025)','Assad im August 2026 in Abwesenheit zum Tode verurteilt'],w:['UN-Blauhelme kontrollieren Damaskus','Assad regiert weiter aus Damaskus'],e:'Dazu: Israel besetzt seit Dez. 2024 eine Pufferzone im Süden; der IS bleibt eine Gefahr.'},
+]},
+{key:'N',code:'Q3/08',title:'Die NATO',sub:'Gründung & Organe · Art. 4 und Art. 5 · Strategiephasen · UN vs. NATO',q:[
+ {t:'mc',q:'Wann und wo wurde die NATO gegründet?',o:['4. April 1949 in Washington, von zwölf Staaten','1945 in San Francisco, von 51 Staaten','1955 in Bonn, von zehn Staaten','1949 in Brüssel, von 32 Staaten'],e:'Ziel: gemeinsamer Schutz gegen die Sowjetunion. Hauptsitz heute: Brüssel.'},
+ {t:'order',q:'Bringe die Beitritte in die richtige Reihenfolge.',items:['Gründungsmitglieder','Bundesrepublik Deutschland','Staaten Mittel- und Osteuropas nach dem Kalten Krieg','Finnland','Schweden'],e:'1949 → 1955 → ab 1999 → 2023 → 2024. Heute 32 Mitglieder.'},
+ {t:'input',q:'Wie viele Mitglieder hat die NATO heute?',a:['32'],e:'32 – zuletzt Finnland (2023) und Schweden (2024).'},
+ {t:'multi',q:'Welche drei Kernaufgaben hat die NATO?',r:['Abschreckung und Verteidigung','Krisenprävention und Krisenmanagement','Kooperative Sicherheit mit Partnerstaaten'],w:['Weltweite Friedenssicherung für alle Staaten','Verhängung bindender Wirtschaftssanktionen'],e:'Weltweite Friedenssicherung und bindende Sanktionen sind Aufgaben der UNO/des Sicherheitsrats.'},
+ {t:'sort',q:'Welches NATO-Organ macht was?',cats:{'Nordatlantikrat':['Höchstes Gremium, Entscheidung im Konsens'],'Generalsekretär':['Leitet Sitzungen, vertritt die NATO nach außen (Mark Rutte)'],'Militärausschuss':['Berät in militärischen Fragen'],'SACEUR':['Führt die Einsätze in Europa, traditionell ein US-General']},e:'Konsens im Nordatlantikrat heißt: praktisch jeder Staat hat ein Veto.'},
+ {t:'tf',q:'Die NATO verfügt über eine eigene stehende Armee.',a:false,e:'Keine eigene Armee – die Staaten stellen Soldaten und Waffen bei Bedarf. Genau wie die UNO (Blauhelme).'},
+ {t:'mc',q:'Was beschloss der Gipfel in Den Haag 2025 zu den Verteidigungsausgaben?',o:['Bis 2035 jährlich 5 % des BIP: 3,5 % für Streitkräfte, 1,5 % z. B. für Infrastruktur und Cyberabwehr','2 % des BIP bis 2030','10 % des BIP sofort','Jeder Staat zahlt denselben festen Betrag'],e:'5 % = 3,5 + 1,5.'},
+ {t:'sort',q:'Artikel 4 oder Artikel 5 des Nordatlantikvertrags?',cats:{'Artikel 4':['Konsultation, wenn ein Mitglied sich bedroht fühlt','Noch keine Pflicht zu helfen','Genutzt am 24.02.2022 und im September 2025 von Polen'],'Artikel 5':['Ein Angriff auf einen gilt als Angriff auf alle','Jeder Staat entscheidet selbst, wie er hilft','Bisher nur einmal ausgerufen: nach dem 11. September 2001']},e:'Art. 4 = Gespräch, Art. 5 = Beistandspflicht (Bündnisfall).'},
+ {t:'tf',q:'Wird der Bündnisfall nach Art. 5 ausgerufen, muss jedes Mitglied automatisch Soldaten schicken.',a:false,e:'Jeder Staat trifft die Maßnahmen, „die sie für erforderlich erachtet“ – das muss nicht militärisch sein.'},
+ {t:'mc',q:'Warum gilt Art. 5 nicht für die Ukraine?',o:['Die Ukraine ist kein NATO-Mitglied','Weil Russland ein Veto im Nordatlantikrat hat','Weil Art. 5 nur für Angriffe außerhalb Europas gilt','Weil der UN-Sicherheitsrat zustimmen muss'],e:'Art. 5 schützt nur Mitglieder in Europa und Nordamerika. Die NATO-Staaten unterstützen die Ukraine trotzdem, koordiniert u. a. von einem Kommando in Wiesbaden.'},
+ {t:'mc',q:'Fallakte: Eine russische Drohne trifft ein Wohnhaus in Litauen, zwei Menschen sterben. Was ist die naheliegende ERSTE Reaktion Litauens laut Vertragslogik?',o:['Art. 4 beantragen und die Verbündeten konsultieren; Art. 5 ist möglich, aber eine politische Entscheidung mit hohem Eskalationsrisiko','Sofort automatisch Art. 5 – alle 32 Staaten müssen Truppen schicken','Den UN-Sicherheitsrat um ein R2P-Mandat bitten','Keine Reaktion möglich, weil Litauen kein NATO-Mitglied ist'],e:'Vergleiche Polen im September 2025: Art. 4, nicht Art. 5. Ob ein „bewaffneter Angriff“ vorliegt, ist eine Abwägungsfrage – zur Beurteilung (AFB III) gehört, beide Seiten zu begründen.'},
+ {t:'order',q:'Bringe die Strategiephasen der NATO in die richtige Reihenfolge.',items:['Gegenpol zum Warschauer Pakt, kollektive Verteidigung','Stabilisierung Osteuropas, Beginn der Osterweiterung','Aktive Sicherheitspolitik und Bekämpfung des weltweiten Terrorismus','Schutz der osteuropäischen Mitglieder vor Russland'],e:'NATO I 1949–1989 · II 1990–1999 · III 1999–2014 · IV seit 2014.'},
+ {t:'sort',q:'Was löste welchen Strategiewechsel aus?',cats:{'Ende NATO I (1989)':['Zerfall der Sowjetunion, Wiedervereinigung'],'Ende NATO II (1999)':['Eingreifen im Kosovo-Konflikt'],'Ende NATO III (2014)':['Annexion der Krim durch Russland']},e:'Seit 2014 (NATO IV): Abgrenzung von Russland (u. a. Aussetzung des NATO-Russland-Rates), China teils als Bedrohung.'},
+ {t:'sort',q:'UNO oder NATO?',cats:{'UNO':['System kollektiver Sicherheit (weltweit)','Gegründet 1945, 193 Mitglieder','Blockade durch Veto der P5','Konflikte zwischen den eigenen Mitgliedern friedlich lösen'],'NATO':['Verteidigungsbündnis (kollektive Verteidigung)','Gegründet 1949, 32 Mitglieder','Konsens: jeder Staat hat praktisch ein Veto','Schutz der Mitglieder vor Angriffen von außen']},e:'Kollektive Sicherheit richtet sich nach innen (alle gegen den Friedensbrecher unter ihnen), kollektive Verteidigung nach außen.'},
+ {t:'mc',q:'Wer ist NATO-Generalsekretär (seit Oktober 2024)?',o:['Mark Rutte (Niederlande)','Jens Stoltenberg (Norwegen)','António Guterres (Portugal)','Johann Wadephul (Deutschland)'],e:'Guterres ist UN-Generalsekretär, Wadephul deutscher Außenminister.'},
+]},
+];
+
+/* Operatoren & Querschnitt – nur in der Abschlussprüfung */
+const EXTRA = [
+ {t:'sort',q:'Welcher Anforderungsbereich (AFB) passt zum Operator?',cats:{'AFB I':['Nennen','Beschreiben'],'AFB II':['Erläutern','Vergleichen','Analysieren'],'AFB III':['Beurteilen']},e:'AFB I = Wiedergabe, AFB II = Anwenden/Erklären, AFB III = Urteilen. In deinen Arbeitsblättern: „Nennen [AFB I]“, „Erklären/Vergleichen [AFB II]“, „Beurteilen [AFB III]“.'},
+ {t:'mc',q:'„Beurteilen Sie, inwiefern das Zivilisatorische Hexagon eine geeignete Leitlinie gegen hybride Bedrohungen ist.“ Was erwartet der Operator?',o:['Ein begründetes eigenes Urteil nach Abwägung von Stärken und Grenzen','Eine Aufzählung der sechs Bedingungen','Eine Nacherzählung des Textes','Eine Definition von hybrider Kriegführung'],e:'Beurteilen = AFB III: Kriterien, Pro und Contra, eigenes begründetes Fazit.'},
+ {t:'mc',q:'Welcher Satz verbindet Hexagon und Neue Kriege am treffendsten?',o:['In Neuen Kriegen wird Gewalt reprivatisiert – damit zerfällt zuerst das Gewaltmonopol, auf dem die übrigen Säulen aufbauen','Neue Kriege stärken das Gewaltmonopol, weil Staaten mehr Soldaten brauchen','Das Hexagon gilt nur für zwischenstaatliche Kriege','Neue Kriege betreffen nur die Säule Konfliktkultur'],e:'Warlords, Milizen, Schattenökonomien = Entstaatlichung → Gewaltmonopol bricht → Rechtsstaat, Partizipation usw. folgen.'},
+ {t:'tf',q:'Der 11. September 2001 ist das einzige Mal, dass der NATO-Bündnisfall ausgerufen wurde.',a:true,e:'Verknüpft Terrorismus (M 1.1) und NATO (M2).'},
+ {t:'mc',q:'Was haben UNO und NATO gemeinsam?',o:['Beide haben keine eigene Armee; die Mitgliedstaaten stellen Truppen','Beide haben 193 Mitglieder','In beiden haben nur fünf Staaten ein Veto','Beide wurden 1945 gegründet'],e:'UNO: Blauhelme der Mitglieder (Art. 43 nie umgesetzt). NATO: Truppen der Mitglieder.'},
+ {t:'vote'},{t:'vote'},
+];
+
+/* ================================================================ */
+const RANKS=[[0,'Praktikant/in'],[4,'Referent/in'],[9,'Attaché'],[15,'Botschafter/in'],[21,'Sondergesandte/r'],[26,'Generalsekretär/in']];
+const KIND={mc:'Auswahl',multi:'Mehrfachauswahl',tf:'Stimmt das?',sort:'Zuordnung',order:'Reihenfolge',input:'Freitext',vote:'Sicherheitsrat'};
+const BASE={mc:100,tf:80,multi:150,input:150,vote:150,sort:200,order:200};
+const TIME={mc:30,tf:20,multi:45,input:40,vote:40,sort:70,order:70};
+D.forEach(d=>d.q.forEach((q,i)=>q.id=d.key+'-'+i));
+EXTRA.forEach((q,i)=>q.id='X-'+i);
+const ALLQ=[...D.flatMap(d=>d.q),...EXTRA];
+const BYID=Object.fromEntries(ALLQ.map(q=>[q.id,q]));
+
+let store={stars:{},best:{},wrong:[],timer:false};
+try{const s=JSON.parse(localStorage.getItem('dossier-weltfrieden')||'null');if(s)store=Object.assign(store,s)}catch(e){}
+function save(){try{localStorage.setItem('dossier-weltfrieden',JSON.stringify(store))}catch(e){}}
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s).toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9:]+/g,' ').trim().replace(/\s+/g,' ');
+const normTight=s=>norm(s).replace(/[ :]/g,'');
+const totalStars=()=>Object.values(store.stars).reduce((a,b)=>a+b,0);
+function rank(){const s=totalStars();let r=RANKS[0];RANKS.forEach(x=>{if(s>=x[0])r=x});const nx=RANKS.find(x=>x[0]>s);return {name:r[1],next:nx,s}}
+const starStr=n=>'<span class="stars" aria-label="'+n+' von 3 Sternen">'+[0,1,2].map(i=>i<n?'★':'<span class="off">★</span>').join('')+'</span>';
+
+/* ---------- Sicherheitsrat-Abstimmung generieren ---------- */
+const P5=['USA','Russland','China','Frankreich','Großbritannien'];
+const P5K=['USA','RUS','CHN','FRA','GBR'];
+function makeVote(){
+  const kind=['veto','pass_abst','few','pass_nein','veto_abst'][Math.floor(Math.random()*5)];
+  let p5=['ja','ja','ja','ja','ja'], e10=Array(10).fill('ja');
+  const setRand=(arr,val,n)=>{shuffle([...arr.keys()]).filter(i=>arr[i]==='ja').slice(0,n).forEach(i=>arr[i]=val)};
+  if(kind==='veto'){ setRand(p5,'nein',1); setRand(p5,'enth',Math.floor(Math.random()*2)); setRand(e10,'enth',Math.floor(Math.random()*3)); }
+  if(kind==='veto_abst'){ setRand(p5,'nein',1); setRand(p5,'enth',1); setRand(e10,'nein',1); setRand(e10,'enth',1); }
+  if(kind==='pass_abst'){ setRand(p5,'enth',1+Math.floor(Math.random()*2)); setRand(e10,'enth',Math.floor(Math.random()*3)); }
+  if(kind==='pass_nein'){ setRand(e10,'nein',1+Math.floor(Math.random()*3)); setRand(p5,'enth',Math.floor(Math.random()*2)); }
+  if(kind==='few'){ setRand(p5,'enth',1+Math.floor(Math.random()*2)); const yes=()=>p5.concat(e10).filter(v=>v==='ja').length; while(yes()>=9) setRand(e10,Math.random()<.5?'enth':'nein',1); }
+  // Kontrolle der Logik
+  const all=p5.concat(e10), ja=all.filter(v=>v==='ja').length, nein=all.filter(v=>v==='nein').length, enth=15-ja-nein;
+  const veto=p5.includes('nein');
+  if(veto && ja<9) return makeVote();
+  const res=veto?'veto':(ja>=9?'pass':'few');
+  const label={pass:'Angenommen',veto:'Gescheitert – Veto eines ständigen Mitglieds',few:'Gescheitert – weniger als 9 Ja-Stimmen'};
+  const why= res==='veto' ? `${P5[p5.indexOf('nein')]} stimmt als ständiges Mitglied mit Nein. Das ist ein Veto – egal, dass ${ja} Staaten zugestimmt haben.`
+    : res==='pass' ? `${ja} Ja-Stimmen (≥ 9) und kein Nein eines ständigen Mitglieds.`+(p5.includes('enth')?' Eine Enthaltung der P5 zählt nicht als Veto.':'')+(e10.includes('nein')?' Nein-Stimmen nichtständiger Mitglieder blockieren nicht.':'')
+    : `Nur ${ja} Ja-Stimmen – nötig sind mindestens 9 von 15 (Art. 27).`;
+  const topic=shuffle(['Waffenembargo gegen eine Bürgerkriegspartei','Einfrieren von Vermögen einer Terrormiliz','Verlängerung einer Blauhelm-Mission','Verurteilung einer Annexion','Reiseverbote gegen Regierungsmitglieder','Flugverbotszone zum Schutz von Zivilisten'])[0];
+  return {t:'vote',p5,e10,ja,nein,enth,res,topic,o:[label[res],...Object.keys(label).filter(k=>k!==res).map(k=>label[k])],e:why,id:'V'};
+}
+
+/* ---------- Spielzustand ---------- */
+let G=null, timerId=null;
+
+function home(){
+  document.body.classList.remove('inquiz'); clearInterval(timerId);
+  const r=rank(); const pct=r.next?Math.round((r.s-(RANKS.find(x=>x[1]===r.name)[0]))/(r.next[0]-RANKS.find(x=>x[1]===r.name)[0])*100):100;
+  const passed=D.filter(d=>(store.stars[d.key]||0)>0).length;
+  const finalOpen=passed>=5;
+  const wrongN=store.wrong.length;
+  app.innerHTML=`
+  <header class="hero"><div class="wrap">
+    <div>
+      <div class="eyebrow mono">PoWi Q3 · Internationale Beziehungen, Konflikte und Globalisierung</div>
+      <h1>Dossier Weltfrieden</h1>
+      <p>Acht Akten, eine Abschlussprüfung. Drei Fehler und die Mission ist gescheitert (Abschlussprüfung: vier). Falsch beantwortete Fragen kommen am Ende der Mission noch einmal.</p>
+      <div class="rankline"><span class="rank">${r.name}</span><span class="mono">${r.s} / 27 Sterne${r.next?' · nächster Rang: '+r.next[1]+' ab '+r.next[0]:''}</span></div>
+      <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+    </div>
+    ${horseshoe()}
+  </div></header>
+  <main class="wrap">
+    <div class="tools">
+      <button class="chip" id="tmr" aria-pressed="${store.timer}">⏱ Prüfungsmodus: ${store.timer?'an':'aus'}</button>
+      <button class="chip" id="wrong" ${wrongN?'':'disabled'}>Fehlerkartei (${wrongN})</button>
+      <button class="chip" id="mix">Schnellrunde: alles gemischt</button>
+    </div>
+    <p class="hint">Prüfungsmodus: Zeitlimit pro Frage, dafür ×1,5 Punkte. Sterne: ★ bestanden · ★★ ab 75 % beim ersten Versuch · ★★★ ab 90 %.</p>
+    <div class="files">
+      ${D.map(d=>`<button class="file" data-k="${d.key}">
+        <span class="code">${d.code}</span><h3>${esc(d.title)}</h3>
+        <span class="sub">${esc(d.sub)} · ${d.q.length} Fragen</span>
+        <span class="meta">${starStr(store.stars[d.key]||0)}<span class="best">${store.best[d.key]?'Rekord '+store.best[d.key]:'—'}</span></span>
+      </button>`).join('')}
+      <button class="file final" data-k="FINAL" ${finalOpen?'':'disabled'}>
+        <span class="code">Q3/09</span><h3>Abschlussprüfung</h3>
+        <span class="sub">${finalOpen?'20 Fragen aus allen Akten, plus Operatoren und Querverbindungen':'Wird freigeschaltet, wenn du 5 Akten bestanden hast ('+passed+'/5)'}</span>
+        <span class="meta">${starStr(store.stars.FINAL||0)}<span class="best">${store.best.FINAL?'Rekord '+store.best.FINAL:'—'}</span></span>
+      </button>
+    </div>
+  </main>`;
+  app.querySelectorAll('.file').forEach(b=>b.onclick=()=>start(b.dataset.k));
+  $('#tmr').onclick=()=>{store.timer=!store.timer;save();home()};
+  $('#wrong').onclick=()=>start('WRONG');
+  $('#mix').onclick=()=>start('MIX');
+  window.scrollTo(0,0);
+}
+function horseshoe(){
+  // 15 Sitze im Hufeisen des Sicherheitsrats; die 5 ständigen hervorgehoben
+  let c='';for(let i=0;i<15;i++){const a=Math.PI*(0.08+0.84*i/14);const x=75-62*Math.cos(a),y=18+62*Math.sin(a);const p=[0,3,7,11,14].includes(i);c+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${p?7:5}" fill="${p?'#e6b43c':'#4f6a86'}"/>`}
+  return `<svg class="horseshoe" viewBox="0 0 150 95" role="img" aria-label="Sitzordnung des Sicherheitsrats: 15 Sitze, 5 ständige hervorgehoben">${c}<text x="75" y="40" text-anchor="middle" fill="#8fa3b8" font-family="IBM Plex Mono,monospace" font-size="9">9 / 15</text></svg>`;
+}
+
+function start(key){
+  let pool, title, n=12, code;
+  if(key==='FINAL'){pool=ALLQ.filter(q=>q.t!=='vote');pool=shuffle(pool).slice(0,17).concat([{t:'vote'},{t:'vote'},{t:'vote'}]);title='Abschlussprüfung';code='Q3/09';n=20}
+  else if(key==='MIX'){pool=shuffle(ALLQ).slice(0,15);title='Schnellrunde';code='MIX';n=15}
+  else if(key==='WRONG'){pool=shuffle(store.wrong.map(id=>BYID[id]).filter(Boolean)).slice(0,15);title='Fehlerkartei';code='FEHLER';n=pool.length}
+  else{const d=D.find(x=>x.key===key);pool=d.q;title=d.title;code=d.code;n=Math.min(12,pool.length)}
+  let qs=key==='FINAL'||key==='WRONG'||key==='MIX'?shuffle(pool):shuffle(pool).slice(0,n);
+  qs=qs.map(q=>q.t==='vote'?makeVote():q);
+  const maxH=key==='FINAL'?4:key==='WRONG'?5:3;
+  G={key,title,code,qs,i:0,hearts:maxH,maxH,score:0,streak:0,firstRight:0,firstTotal:qs.length,retry:[],retried:new Set(),log:[],answered:false};
+  document.body.classList.add('inquiz');
+  renderQ();
+}
+
+function renderQ(){
+  clearInterval(timerId);
+  const q=G.qs[G.i]; G.answered=false; G.cur=q; G.solText='';
+  const total=G.qs.length;
+  app.innerHTML=`
+  <div class="qtop"><div class="wrap">
+    <button class="back" id="quit">← Akten</button>
+    <span class="title"><span class="mono">${G.code}</span> ${esc(G.title)}</span>
+    <span class="streak">${G.streak>=2?'Serie ×'+G.streak:''}</span>
+    <span class="hearts" aria-label="${G.hearts} Leben">${[...Array(G.maxH).keys()].map(i=>i<G.hearts?'●':'<span class="lost">●</span>').join(' ')}</span>
+    <span class="score">${G.score}</span>
+  </div>
+  <div class="prog"><i style="width:${(G.i/total*100).toFixed(1)}%"></i></div>
+  <div class="timer" ${store.timer?'':'hidden'}><i id="tbar"></i></div></div>
+  <main class="wrap"><section class="card" id="card">
+    <div class="qkind mono"><span>${KIND[q.t]}${G.retried.has(G.i)?' · Wiederholung':''}</span><span>${G.i+1} / ${total}</span></div>
+    <div id="qbody"></div>
+    <div id="fb"></div>
+    <div class="actions" id="act"></div>
+  </section></main>`;
+  $('#quit').onclick=home;
+  const body=$('#qbody');
+  ({mc:rMC,tf:rTF,multi:rMulti,sort:rSort,order:rOrder,input:rInput,vote:rVote})[q.t](q,body);
+  window.scrollTo(0,0);
+  if(store.timer){
+    const T=TIME[q.t]; G.tleft=T; const bar=$('#tbar');
+    timerId=setInterval(()=>{G.tleft-=.1; if(bar) bar.style.width=Math.max(0,G.tleft/T*100)+'%'; if(G.tleft<=0){clearInterval(timerId); if(!G.answered){document.querySelectorAll('#qbody button,#qbody input,#chk').forEach(x=>x.disabled=true); finish(false,'Zeit abgelaufen. '+G.solText)}}},100);
+  }
+}
+
+function setAct(html){$('#act').innerHTML=html}
+function checkBtn(fn,enabled){setAct(`<button class="btn" id="chk" ${enabled?'':'disabled'}>Prüfen</button>`);$('#chk').onclick=fn}
+
+/* --- Renderer --- */
+function rMC(q,b){
+  const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));
+  b.innerHTML=`<h2 class="qtext">${esc(q.q)}</h2><div class="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i+1}</span><span>${esc(o.t)}</span></button>`).join('')}</div>`;
+  const btns=[...b.querySelectorAll('.opt')];
+  btns.forEach((x,i)=>x.onclick=()=>{ if(G.answered)return;
+    btns.forEach((y,j)=>{y.disabled=true; if(opts[j].ok) y.classList.add('right')}); if(!opts[i].ok) x.classList.add('wrong');
+    finish(opts[i].ok, opts[i].ok?'':'Richtig wäre: '+opts.find(o=>o.ok).t);
+  });
+  G.solText='Richtig wäre: '+q.o[0]; G.keys=btns;
+}
+function rTF(q,b){
+  b.innerHTML=`<h2 class="qtext">${esc(q.q)}</h2><div class="tf"><button class="opt" data-v="1"><span class="k">1</span>Stimmt</button><button class="opt" data-v="0"><span class="k">2</span>Stimmt nicht</button></div>`;
+  const btns=[...b.querySelectorAll('.opt')];
+  btns.forEach(x=>x.onclick=()=>{ if(G.answered)return; const v=x.dataset.v==='1', ok=v===q.a;
+    btns.forEach(y=>{y.disabled=true; if((y.dataset.v==='1')===q.a) y.classList.add('right')}); if(!ok)x.classList.add('wrong');
+    finish(ok, ok?'':'Die Aussage '+(q.a?'stimmt.':'stimmt nicht.'));
+  });
+  G.solText='Die Aussage '+(q.a?'stimmt.':'stimmt nicht.'); G.keys=btns;
+}
+function rMulti(q,b){
+  const opts=shuffle(q.r.map(t=>({t,ok:true})).concat(q.w.map(t=>({t,ok:false}))));
+  b.innerHTML=`<h2 class="qtext">${esc(q.q)}<small>Mehrere Antworten sind richtig. Wie viele, wird nicht verraten.</small></h2><div class="opts">${opts.map((o,i)=>`<button class="opt" aria-pressed="false"><span class="k">${i+1}</span><span>${esc(o.t)}</span></button>`).join('')}</div>`;
+  const btns=[...b.querySelectorAll('.opt')];
+  btns.forEach(x=>x.onclick=()=>{ if(G.answered)return; x.setAttribute('aria-pressed',x.getAttribute('aria-pressed')==='true'?'false':'true'); $('#chk').disabled=!btns.some(y=>y.getAttribute('aria-pressed')==='true')});
+  checkBtn(()=>{ let ok=true;
+    btns.forEach((y,j)=>{const on=y.getAttribute('aria-pressed')==='true';y.disabled=true;
+      if(on&&opts[j].ok)y.classList.add('right'); else if(on&&!opts[j].ok){y.classList.add('wrong');ok=false} else if(!on&&opts[j].ok){y.classList.add('missed');ok=false}});
+    finish(ok, ok?'':'Richtig sind: '+q.r.join(' · '));
+  },false);
+  G.solText='Richtig sind: '+q.r.join(' · '); G.keys=btns;
+}
+function rSort(q,b){
+  const cats=Object.keys(q.cats);
+  let items=Object.entries(q.cats).flatMap(([c,arr])=>arr.map(t=>({t,c})));
+  if(items.length>8){ // höchstens 8 Elemente, aber jede Kategorie mindestens einmal
+    const pick=cats.map(c=>shuffle(items.filter(x=>x.c===c))[0]);
+    items=pick.concat(shuffle(items.filter(x=>!pick.includes(x))).slice(0,8-pick.length));
+  }
+  items=shuffle(items); const ans=Array(items.length).fill(null);
+  b.innerHTML=`<h2 class="qtext">${esc(q.q)}</h2><div>${items.map((it,i)=>`<div class="sortrow"><div class="item">${esc(it.t)}</div><div class="seg" role="group">${cats.map(c=>`<button data-i="${i}" data-c="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join('')}</div></div>`).join('')}</div>`;
+  const all=[...b.querySelectorAll('.seg button')];
+  all.forEach(x=>x.onclick=()=>{ if(G.answered)return; const i=+x.dataset.i; ans[i]=x.dataset.c;
+    all.filter(y=>+y.dataset.i===i).forEach(y=>y.setAttribute('aria-pressed',y===x?'true':'false')); $('#chk').disabled=ans.includes(null)});
+  checkBtn(()=>{ let wrong=0;
+    all.forEach(y=>{y.disabled=true;const i=+y.dataset.i,c=y.dataset.c; if(ans[i]===c&&items[i].c===c)y.classList.add('right'); else if(ans[i]===c){y.classList.add('wrong');} else if(items[i].c===c&&ans[i]!==c) y.classList.add('missed')});
+    items.forEach((it,i)=>{if(ans[i]!==it.c)wrong++});
+    finish(wrong===0, wrong?wrong+' von '+items.length+' falsch zugeordnet. Die gestrichelten Felder sind richtig.':'');
+  },false);
+}
+function rOrder(q,b){
+  const pool=shuffle(q.items.map((t,i)=>({t,i}))); const seq=[];
+  b.innerHTML=`<h2 class="qtext">${esc(q.q)}<small>Tippe die Einträge in der richtigen Reihenfolge an. Tippe oben auf einen Eintrag, um ihn zurückzulegen.</small></h2><div class="seq" id="seq"></div><div class="pool" id="pool"></div>`;
+  const draw=()=>{
+    $('#seq').innerHTML=q.items.map((_,k)=>seq[k]?`<button class="slot filled" data-k="${k}"><span class="n">${k+1}.</span><span>${esc(seq[k].t)}</span></button>`:`<div class="slot"><span class="n">${k+1}.</span></div>`).join('');
+    $('#pool').innerHTML=pool.filter(p=>!seq.includes(p)).map(p=>`<button data-i="${p.i}">${esc(p.t)}</button>`).join('');
+    $('#seq').querySelectorAll('button').forEach(x=>x.onclick=()=>{if(G.answered)return;seq.splice(+x.dataset.k,1);draw()});
+    $('#pool').querySelectorAll('button').forEach(x=>x.onclick=()=>{if(G.answered)return;seq.push(pool.find(p=>p.i===+x.dataset.i));draw()});
+    const c=$('#chk'); if(c) c.disabled=seq.length!==q.items.length;
+  };
+  checkBtn(()=>{ let wrong=0; $('#seq').querySelectorAll('.slot').forEach((s,k)=>{s.disabled=true;if(seq[k].i===k)s.classList.add('right');else{s.classList.add('wrong');wrong++}});
+    finish(wrong===0, wrong?'Richtige Reihenfolge: '+q.items.map((t,k)=>(k+1)+'. '+t).join(' → '):'');
+  },false);
+  G.solText='Richtige Reihenfolge: '+q.items.join(' → ');
+  draw();
+}
+function rInput(q,b){
+  b.innerHTML=`<h2 class="qtext">${esc(q.q)}</h2><form class="inp" id="f"><input id="ans" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Deine Antwort" placeholder="Antwort eingeben"><button class="btn" id="chk">Prüfen</button></form>`;
+  G.solText='Erwartet: '+q.a[0];
+  const inp=$('#ans'); setTimeout(()=>inp.focus(),50);
+  $('#f').onsubmit=e=>{e.preventDefault(); if(G.answered||!inp.value.trim())return;
+    const v=inp.value, ok=q.a.some(a=>normTight(a)===normTight(v));
+    inp.disabled=true; inp.classList.add(ok?'right':'wrong'); $('#chk').remove();
+    finish(ok, ok?'':'Erwartet: '+q.a[0]);
+  };
+}
+function rVote(q,b){
+  const seat=(name,k,v,p)=>`<div class="seat ${v} ${p?'p5':''}"><b>${k}</b>${v==='ja'?'Ja':v==='nein'?'Nein':'Enth.'}</div>`;
+  const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));
+  b.innerHTML=`<h2 class="qtext">Resolutionsentwurf: ${esc(q.topic)}. Wie geht die Abstimmung aus?<small>Dick umrandet: ständige Mitglieder. N1–N10: nichtständige Mitglieder.</small></h2>
+   <div class="council">${q.p5.map((v,i)=>seat(P5[i],P5K[i],v,true)).join('')}${q.e10.map((v,i)=>seat('','N'+(i+1),v,false)).join('')}</div>
+   <div class="opts">${opts.map((o,i)=>`<button class="opt"><span class="k">${i+1}</span><span>${esc(o.t)}</span></button>`).join('')}</div>`;
+  const btns=[...b.querySelectorAll('.opt')];
+  btns.forEach((x,i)=>x.onclick=()=>{ if(G.answered)return;
+    btns.forEach((y,j)=>{y.disabled=true;if(opts[j].ok)y.classList.add('right')}); if(!opts[i].ok)x.classList.add('wrong');
+    finish(opts[i].ok,'');
+  });
+  G.solText='Richtig: '+q.o[0]+'.'; G.keys=btns;
+}
+
+/* --- Auswertung einer Antwort --- */
+function finish(ok,sol){
+  if(G.answered)return; G.answered=true; clearInterval(timerId);
+  const q=G.cur, first=!G.retried.has(G.i);
+  let pts=0;
+  if(ok){
+    G.streak++; if(first)G.firstRight++;
+    pts=Math.round(BASE[q.t]*(1+Math.min(G.streak-1,5)*0.1)*(store.timer?1.5:1)+(store.timer?Math.max(0,Math.round(G.tleft))*5:0));
+    if(!first) pts=Math.round(pts/2);
+    G.score+=pts;
+    if(q.id && q.id!=='V'){ store.wrong=store.wrong.filter(x=>x!==q.id); }
+  } else {
+    G.streak=0; G.hearts--;
+    if(q.id && q.id!=='V' && !store.wrong.includes(q.id)) store.wrong.push(q.id);
+    if(first){ G.retry.push(q.t==='vote'?makeVote():q); }
+    G.log.push(q);
+    const c=$('#card'); c.classList.add('shake'); setTimeout(()=>c.classList.remove('shake'),400);
+  }
+  save();
+  $('#fb').innerHTML=`<div class="fb ${ok?'':'bad'}" role="status"><span class="pts">${ok?'+'+pts:'−1 Leben'}</span><h4>${ok?'Richtig':'Falsch'}</h4>${sol?`<p class="sol">${esc(sol)}</p>`:''}<p>${esc(q.e||'')}</p></div>`;
+  // Kopfzeile aktualisieren
+  const h=document.querySelector('.hearts'); if(h) h.innerHTML=[...Array(G.maxH).keys()].map(i=>i<G.hearts?'●':'<span class="lost">●</span>').join(' ');
+  const s=document.querySelector('.score'); if(s) s.textContent=G.score;
+  const st=document.querySelector('.streak'); if(st) st.textContent=G.streak>=2?'Serie ×'+G.streak:'';
+  setAct(`<button class="btn" id="nxt">${G.hearts<=0?'Auswertung':'Weiter'}</button>`);
+  $('#nxt').onclick=next; $('#nxt').focus({preventScroll:true});
+  G.keys=null;
+}
+function next(){
+  if(G.hearts<=0) return result(false);
+  G.i++;
+  if(G.i>=G.qs.length){
+    if(G.retry.length){ const start=G.qs.length; G.qs=G.qs.concat(G.retry); for(let k=start;k<G.qs.length;k++)G.retried.add(k); G.retry=[]; }
+    else return result(true);
+  }
+  renderQ();
+}
+function result(passed){
+  clearInterval(timerId); document.body.classList.remove('inquiz');
+  const pct=G.firstTotal?Math.round(G.firstRight/G.firstTotal*100):0;
+  let stars=0; if(passed){stars=1; if(pct>=75)stars=2; if(pct>=90)stars=3;}
+  const isDossier=D.some(d=>d.key===G.key)||G.key==='FINAL';
+  let newBest=false;
+  if(isDossier){ if(stars>(store.stars[G.key]||0)) store.stars[G.key]=stars; if(passed && G.score>(store.best[G.key]||0)){store.best[G.key]=G.score;newBest=true} save(); }
+  const uniq=[...new Map(G.log.map(q=>[q.id+(q.q||q.topic),q])).values()];
+  app.innerHTML=`<main class="wrap result"><section class="card">
+    <div class="mono" style="color:var(--muted)">${G.code} · ${esc(G.title)}</div>
+    <h2>${passed?(stars===3?'Exzellent verhandelt.':stars===2?'Mission erfüllt.':'Knapp bestanden.'):'Mission gescheitert.'}</h2>
+    <div class="bigstars">${[0,1,2].map(i=>i<stars?'★':'<span class="off">★</span>').join('')}</div>
+    <div class="kpis">
+      <div class="kpi"><b>${G.score}</b><span>Punkte${newBest?' · neuer Rekord':''}</span></div>
+      <div class="kpi"><b>${pct} %</b><span>beim ersten Versuch richtig</span></div>
+      <div class="kpi"><b>${G.hearts}</b><span>Leben übrig</span></div>
+    </div>
+    ${passed?'':'<p>Alle Leben sind weg. Lies die Erklärungen unten und versuche es noch einmal – die Fragen werden neu gemischt.</p>'}
+    ${uniq.length?`<h3>Das solltest du wiederholen</h3><ol class="review">${uniq.map(q=>`<li><div class="q">${esc(q.q||('Sicherheitsrat: '+q.topic))}</div><div class="a">${esc(q.e||'')}</div></li>`).join('')}</ol><p class="hint">Diese Fragen liegen jetzt in deiner Fehlerkartei.</p>`:''}
+    <div class="actions"><button class="btn" id="again">Noch einmal</button><button class="btn ghost" id="back">Zu den Akten</button></div>
+  </section></main>`;
+  $('#again').onclick=()=>start(G.key); $('#back').onclick=home;
+  window.scrollTo(0,0);
+}
+
+document.addEventListener('keydown',e=>{
+  if(!G||!document.body.classList.contains('inquiz'))return;
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='Enter'){const n=$('#nxt')||(($('#chk')&&!$('#chk').disabled)?$('#chk'):null); if(n){e.preventDefault();n.click()}}
+  else if(/^[1-9]$/.test(e.key)&&G.keys&&!G.answered){const b=G.keys[+e.key-1]; if(b)b.click()}
+});
+home();
+</script>
+</body>
+</html>
